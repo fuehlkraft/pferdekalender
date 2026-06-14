@@ -982,6 +982,16 @@ img, input, textarea, select {
 
 /* ── NAV TOOLTIPS ── */
 .nav-tooltip-wrap{display:inline-block;position:static;}
+/* ── DRUCK/TEILEN ── */
+@media print {
+  .header, .main-nav, .pk-nav, .sub-nav, .back-btn, .save-btn, .no-print, #fk-login-screen, #backup-reminder, #pwa-banner, #update-dot { display:none !important; }
+  .print-only { display:block !important; }
+  body { background:white !important; }
+  .card { box-shadow:none !important; border:1pt solid #ddd !important; break-inside:avoid; }
+}
+.print-only { display:none; }
+.fk-share-btn { background:linear-gradient(135deg,#7a9e7e,#5a8a5e);border:none;border-radius:10px;padding:8px 16px;font-size:12px;font-weight:700;color:white;cursor:pointer;font-family:Lato,sans-serif;display:inline-flex;align-items:center;gap:6px; }
+
 /* ── LOGIN SCREEN ── */
 #fk-login-screen{display:none;position:fixed;inset:0;z-index:99999;background:linear-gradient(135deg,#ede8fb,#f5d8e8,#e8f4ec);align-items:center;justify-content:center;font-family:'Lato',sans-serif;}
 #fk-login-screen.active{display:flex;}
@@ -1321,7 +1331,8 @@ img, input, textarea, select {
       <!-- GESUNDHEITSAKTE -->
       <div id="pk-view-gesundheit" style="display:none">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
-          <div class="sec-title" style="margin:0">🩺 Gesundheitsakte, <span id="ga-horse-name" style="color:var(--lilac2)">Sir Harry</span></div>
+          <div class="sec-title" style="margin:0;flex:1;">🩺 Gesundheitsakte, <span id="ga-horse-name" style="color:var(--lilac2)">Sir Harry</span></div>
+          <button class="fk-share-btn no-print" onclick="printGesundheitsakte()">🖨️ Teilen</button>
           <select id="ga-horse-sel" onchange="document.getElementById('ga-horse-name').textContent=this.options[this.selectedIndex].text" onchange="renderGesundheit()" style="margin-left:auto;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 12px;font-size:12px;background:white;color:var(--deep);outline:none;font-family:'Lato',sans-serif;"></select>
         </div>
         <div id="ga-content"></div>
@@ -1347,7 +1358,8 @@ img, input, textarea, select {
       <!-- HUFPFLEGE -->
       <div id="pk-view-huf" style="display:none">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
-          <div class="sec-title" style="margin:0">🔧 Hufpflege, <span id="huf-horse-name" style="color:var(--lilac2)">Sir Harry</span></div>
+          <div class="sec-title" style="margin:0;flex:1;">🔧 Hufpflege, <span id="huf-horse-name" style="color:var(--lilac2)">Sir Harry</span></div>
+          <button class="fk-share-btn no-print" onclick="printHufpflege()">🖨️ Teilen</button>
           <select id="huf-horse-sel" onchange="document.getElementById('huf-horse-name').textContent=this.options[this.selectedIndex].text" onchange="renderHufView()" style="margin-left:auto;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 12px;font-size:12px;background:white;color:var(--deep);outline:none;font-family:'Lato',sans-serif;"></select>
           <button onclick="addHufEintrag()" class="save-btn" style="padding:6px 14px;">+ Termin</button>
         </div>
@@ -1410,8 +1422,9 @@ img, input, textarea, select {
       <!-- FÜTTERUNG -->
       <div id="pk-view-futter" style="display:none">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
-          <div class="sec-title" style="margin:0">🌾 Fütterung, <span id="fut-horse-name" style="color:var(--lilac2)">Sir Harry</span></div>
-          <select id="fut-horse-sel" onchange="document.getElementById('fut-horse-name').textContent=this.options[this.selectedIndex].text" onchange="renderFutter()" style="margin-left:auto;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 12px;font-size:12px;background:white;color:var(--deep);outline:none;font-family:'Lato',sans-serif;"></select>
+          <div class="sec-title" style="margin:0;flex:1;">🌾 Fütterung, <span id="fut-horse-name" style="color:var(--lilac2)">Sir Harry</span></div>
+          <button class="fk-share-btn no-print" onclick="printFuetterung()">🖨️ Teilen</button>
+          <select id="fut-horse-sel" onchange="document.getElementById('fut-horse-name').textContent=this.options[this.selectedIndex].text;renderFutter();" style="border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 12px;font-size:12px;background:white;color:var(--deep);outline:none;font-family:'Lato',sans-serif;"></select>
         </div>
         <!-- Infotext Fütterung -->
         <div class="card" style="margin-bottom:14px;background:linear-gradient(135deg,rgba(200,234,223,0.2),rgba(240,232,192,0.15));">
@@ -1626,7 +1639,8 @@ img, input, textarea, select {
       <!-- PACKLISTE -->
       <div id="pk-view-packliste" style="display:none">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
-          <div class="sec-title" style="margin:0">🎒 Packliste Turnier</div>
+          <div class="sec-title" style="margin:0;flex:1;">🎒 Packliste Turnier</div>
+          <button class="fk-share-btn no-print" onclick="printPackliste()">🖨️ Teilen</button>
           <button onclick="addPackItem('custom')" class="save-btn" style="padding:6px 14px;margin-left:auto;">+ Eigener Punkt</button>
           <button onclick="resetPackliste()" style="background:rgba(232,228,240,0.5);border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;font-family:'Lato',sans-serif;">↺ Zurücksetzen</button>
         </div>
@@ -1759,7 +1773,8 @@ img, input, textarea, select {
       <!-- FERNURLAUB MIT PFERD -->
       <div id="pk-view-urlaub" style="display:none">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
-          <div class="sec-title" style="margin:0">🐴 Pferdeurlaub</div>
+          <div class="sec-title" style="margin:0;flex:1;">🐴 Pferdeurlaub</div>
+          <button class="fk-share-btn no-print" onclick="printPackliste()">🖨️ Teilen</button>
           <button onclick="addUrlaubEintrag()" class="save-btn" style="padding:6px 14px;margin-left:auto;">+ Neuer Urlaub</button>
         </div>
         <!-- Infotext Pferdeurlaub -->
@@ -4202,6 +4217,154 @@ function buildCollageBilder(){
 
 // ═══ UPDATE CHECK ═══
 var FK_VERSION = '1.0.0'; // Aktuelle Version des Kalenders
+
+// ═══ DRUCKEN / TEILEN ═══
+function printBereich(titel, htmlContent){
+  var win = window.open('', '_blank');
+  win.document.write(`<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>${titel} - Fühlkraft Kalender</title>
+<style>
+  body { font-family: 'Georgia', serif; color: #5a3224; background: white; padding: 20mm; margin: 0; }
+  h1 { font-size: 22pt; color: #5a3224; border-bottom: 1pt solid #c57f63; padding-bottom: 8pt; margin-bottom: 16pt; }
+  h2 { font-size: 14pt; color: #5a3224; margin-top: 14pt; }
+  h3 { font-size: 11pt; color: #c57f63; margin-top: 10pt; }
+  table { width: 100%; border-collapse: collapse; margin: 8pt 0; }
+  td, th { padding: 6pt 8pt; border: 0.5pt solid #d8cff0; font-size: 10pt; }
+  th { background: #ede8fb; font-weight: 700; }
+  .header-print { text-align: center; margin-bottom: 20pt; }
+  .logo { font-size: 18pt; font-weight: 700; color: #5a3224; }
+  .logo-sub { font-style: italic; color: #c57f63; font-size: 12pt; }
+  .footer-print { margin-top: 20pt; font-size: 8pt; color: #9a8878; text-align: center; border-top: 0.5pt solid #d8cff0; padding-top: 8pt; }
+  .card-print { border: 0.5pt solid #d8cff0; border-radius: 4pt; padding: 10pt; margin: 8pt 0; }
+  @media print { .no-print { display: none; } }
+</style>
+</head>
+<body>
+<div class="header-print">
+  <div class="logo">Fühlkraft</div>
+  <div class="logo-sub">Kalender</div>
+</div>
+<h1>${titel}</h1>
+${htmlContent}
+<div class="footer-print">Fühlkraft Kalender · fuehlkraft.de · © 2026 Nadine Kernig</div>
+<div class="no-print" style="text-align:center;margin-top:20pt;">
+  <button onclick="window.print()" style="background:#5a3224;border:none;border-radius:8pt;padding:10pt 24pt;font-size:12pt;color:white;cursor:pointer;">🖨️ Drucken / Als PDF speichern</button>
+  <button onclick="window.close()" style="background:#eae1d8;border:none;border-radius:8pt;padding:10pt 24pt;font-size:12pt;color:#5a3224;cursor:pointer;margin-left:8pt;">✕ Schließen</button>
+</div>
+</body></html>`);
+  win.document.close();
+  setTimeout(function(){ win.focus(); }, 300);
+}
+
+function printFuetterung(){
+  var idx=parseInt(document.getElementById('fut-horse-sel').value)||0;
+  var h=horses[idx];
+  var fd=pkExtra.futter&&pkExtra.futter[h]?pkExtra.futter[h]:{};
+  var html='<p style="color:#9a8878;font-size:9pt;margin-bottom:12pt;">Erstellt am '+new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'})+'</p>';
+  html+='<h2>🐴 Pferd: '+h+'</h2>';
+  ['morgen','mittag','abend','nacht'].forEach(function(key){
+    var labels={morgen:'🌅 Morgen',mittag:'☀️ Mittag',abend:'🌙 Abend',nacht:'⭐ Nacht'};
+    if(!fd[key]||!fd[key].zeilen||!fd[key].zeilen.length)return;
+    html+='<h3>'+labels[key]+'</h3>';
+    html+='<table><tr><th>Futter</th><th>Menge</th><th>Einheit</th></tr>';
+    fd[key].zeilen.forEach(function(z){
+      if(z.futter||z.menge)html+='<tr><td>'+( z.futter||'')+'</td><td>'+(z.menge||'')+'</td><td>'+(z.einheit||'')+'</td></tr>';
+    });
+    html+='</table>';
+    if(fd[key].hinweis)html+='<div class="card-print"><b>Hinweis:</b> '+fd[key].hinweis+'</div>';
+  });
+  if(fd.ergaenzung)html+='<div class="card-print"><b>🌿 Ergänzungen:</b> '+fd.ergaenzung+'</div>';
+  if(fd.notiz)html+='<div class="card-print"><b>📝 Notizen:</b> '+fd.notiz+'</div>';
+  printBereich('Fütterungsplan: '+h, html);
+}
+
+function printHufpflege(){
+  var idx=parseInt(document.getElementById('huf-horse-sel').value)||0;
+  var h=horses[idx];
+  var items=pkExtra.huf&&pkExtra.huf[h]?pkExtra.huf[h]:[];
+  var html='<p style="color:#9a8878;font-size:9pt;margin-bottom:12pt;">Erstellt am '+new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'})+'</p>';
+  html+='<h2>🐴 Pferd: '+h+'</h2>';
+  if(!items.length){html+='<p>Noch keine Einträge.</p>';}
+  else{
+    html+='<table><tr><th>Datum</th><th>Hufschmied</th><th>Art</th><th>Kosten</th><th>Nächster Termin</th></tr>';
+    items.forEach(function(item){
+      html+='<tr><td>'+(item.datum||'')+'</td><td>'+(item.schmied||'')+'</td><td>'+(item.art||'')+'</td><td>'+(item.kosten?item.kosten+' €':'')+'</td><td>'+(item.naechster||'')+'</td></tr>';
+    });
+    html+='</table>';
+  }
+  printBereich('Hufpflege: '+h, html);
+}
+
+function printGesundheitsakte(){
+  var idx=parseInt(document.getElementById('ga-horse-sel')?document.getElementById('ga-horse-sel').value:0)||0;
+  var h=horses[idx]||horses[0];
+  var ga=pkExtra.ga&&pkExtra.ga[h]?pkExtra.ga[h]:{};
+  var html='<p style="color:#9a8878;font-size:9pt;margin-bottom:12pt;">Erstellt am '+new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'})+'</p>';
+  html+='<h2>🐴 Pferd: '+h+'</h2>';
+  var sections=[
+    {key:'impfungen',label:'💉 Impfungen'},
+    {key:'wurm',label:'🐛 Entwurmung'},
+    {key:'zahnarzt',label:'🦷 Zahnarzt'},
+    {key:'tierarzt',label:'👨‍⚕️ Tierarzt'},
+    {key:'medikamente',label:'💊 Medikamente'},
+  ];
+  sections.forEach(function(s){
+    var items=ga[s.key]||[];
+    if(!items.length)return;
+    html+='<h3>'+s.label+'</h3>';
+    html+='<table><tr><th>Datum</th><th>Notizen</th></tr>';
+    items.forEach(function(item){
+      html+='<tr><td>'+(item.datum||'')+'</td><td>'+(item.notes||item.name||'')+'</td></tr>';
+    });
+    html+='</table>';
+  });
+  if(ga.notizen)html+='<div class="card-print"><b>📝 Notizen:</b> '+ga.notizen+'</div>';
+  printBereich('Gesundheitsakte: '+h, html);
+}
+
+function printMedikamente(){
+  var items=getVD('items')||[];
+  var html='<p style="color:#9a8878;font-size:9pt;margin-bottom:12pt;">Erstellt am '+new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'})+'</p>';
+  if(!items.length){html+='<p>Noch keine Einträge.</p>';}
+  else{
+    html+='<table><tr><th>Medikament</th><th>Dosis</th><th>Morgen</th><th>Abend</th><th>Hinweis</th></tr>';
+    items.forEach(function(item){
+      html+='<tr><td>'+(item.name||'')+'</td><td>'+(item.dosis||'')+'</td><td>'+(item.morgen||'')+'</td><td>'+(item.abend||'')+'</td><td>'+(item.hinweis||'')+'</td></tr>';
+    });
+    html+='</table>';
+  }
+  printBereich('Medikamentenplan', html);
+}
+
+function printPackliste(){
+  var reise=oData&&oData.reise?oData.reise:{};
+  var html='<p style="color:#9a8878;font-size:9pt;margin-bottom:12pt;">Erstellt am '+new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'})+'</p>';
+  if(reise.name)html+='<h2>✈️ Reise: '+reise.name+'</h2>';
+  var packliste=reise.packliste||{items:[]};
+  var items=packliste.items||[];
+  if(!items.length){html+='<p>Noch keine Einträge.</p>';}
+  else{
+    // Group by person
+    var persons={};
+    items.forEach(function(item){
+      var p=item.person||'ich';
+      if(!persons[p])persons[p]=[];
+      persons[p].push(item);
+    });
+    Object.keys(persons).forEach(function(p){
+      html+='<h3>'+p.charAt(0).toUpperCase()+p.slice(1)+'</h3>';
+      html+='<table><tr><th>Gegenstand</th><th>Eingepackt</th></tr>';
+      persons[p].forEach(function(item){
+        html+='<tr><td>'+(item.text||'')+'</td><td>'+(item.done?'✓':'☐')+'</td></tr>';
+      });
+      html+='</table>';
+    });
+  }
+  printBereich('Packliste', html);
+}
 
 // ═══ LOGIN ═══
 // Passwörter für den Fühlkraft Kalender
