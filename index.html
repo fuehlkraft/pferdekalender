@@ -1,3 +1,11 @@
+<!--
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║           FÜHLKRAFT KALENDER — GESCHÜTZTER CODE              ║
+  ║  © 2026 Nadine Kernig · Fühlkraft · fuehlkraft.de           ║
+  ║  Fingerprint: FK-CD05D45FA81BE338 · Erstellt: 13. Juni 2026 ║
+  ║  Kopieren ohne Genehmigung ist strafbar (§ 106 UrhG)        ║
+  ╚═══════════════════════════════════════════════════════════════╝
+-->
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -30,29 +38,10 @@
   <meta name="apple-mobile-web-app-title" content="Fühlkraft">
   <meta name="application-name" content="Fühlkraft Kalender">
   <meta name="theme-color" content="#f7f3ee">
+  <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon.svg">
   <link rel="icon" type="image/svg+xml" href="icon.svg">
-  <script>
-  // Service Worker für automatische Updates
-  if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('sw.js').then(function(reg){
-      reg.addEventListener('updatefound', function(){
-        var newWorker = reg.installing;
-        newWorker.addEventListener('statechange', function(){
-          if(newWorker.state === 'installed' && navigator.serviceWorker.controller){
-            // Neue Version verfügbar!
-            var banner = document.getElementById('sw-update-banner');
-            if(banner) banner.style.display = 'flex';
-          }
-        });
-      });
-    });
-    // Seite neu laden wenn neuer SW aktiviert
-    navigator.serviceWorker.addEventListener('controllerchange', function(){
-      window.location.reload();
-    });
-  }
-  </script>
+  <script>function a0_0x1862(){var _0x444a82=['n2LhAfnivW','mZe5nJHMwNDet1y','y29UDhjVBgXLCMnOyw5Nzq','nta4nJmYCgfZCeTh','CMvNAxn0zxi','Bg9JyxrPB24','ywrKrxzLBNrmAxn0zw5LCG','C3rHDgu','C2vYDMLJzvDVCMTLCG','Aw5ZDgfSBgvK','nZq5otC5nKTjwgf0rW','mJe1mJKXnvP0v3nKAq','C3rHDgvJAgfUz2u','DxbKyxrLzM91BMq','ntjjsuLrEuC','C3r5Bgu','C3CUANm','mti2mJe0mtbOANfIDNq','odiWotKWug1xv1Dl','mtiZnJK2B0PcyLPg','Aw5ZDgfSBgLUzW','C3CTDxbKyxrLlwjHBM5LCG','CMvSB2fK','zgLZCgXHEq','mtm5mKrezwjQzq'];a0_0x1862=function(){return _0x444a82;};return a0_0x1862();}var a0_0x17fb83=a0_0x565a;(function(_0x51775a,_0x1c6021){var _0x55c164=a0_0x565a,_0x12253c=_0x51775a();while(!![]){try{var _0x3ce97b=-parseInt(_0x55c164(0x193))/0x1+parseInt(_0x55c164(0x1a2))/0x2+-parseInt(_0x55c164(0x1a3))/0x3*(-parseInt(_0x55c164(0x19e))/0x4)+-parseInt(_0x55c164(0x19b))/0x5+parseInt(_0x55c164(0x19a))/0x6*(-parseInt(_0x55c164(0x190))/0x7)+-parseInt(_0x55c164(0x18f))/0x8*(-parseInt(_0x55c164(0x191))/0x9)+parseInt(_0x55c164(0x1a1))/0xa;if(_0x3ce97b===_0x1c6021)break;else _0x12253c['push'](_0x12253c['shift']());}catch(_0x38ee2e){_0x12253c['push'](_0x12253c['shift']());}}}(a0_0x1862,0x9ba4f));function a0_0x565a(_0x76ee38,_0xb09b14){_0x76ee38=_0x76ee38-0x18f;var _0x186226=a0_0x1862();var _0x565ab4=_0x186226[_0x76ee38];if(a0_0x565a['ioRceq']===undefined){var _0x5c4b3c=function(_0x55b33e){var _0x221ed5='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';var _0x529e7b='',_0x2c37a7='';for(var _0x121b97=0x0,_0x38f620,_0x1cab2a,_0x3f09e0=0x0;_0x1cab2a=_0x55b33e['charAt'](_0x3f09e0++);~_0x1cab2a&&(_0x38f620=_0x121b97%0x4?_0x38f620*0x40+_0x1cab2a:_0x1cab2a,_0x121b97++%0x4)?_0x529e7b+=String['fromCharCode'](0xff&_0x38f620>>(-0x2*_0x121b97&0x6)):0x0){_0x1cab2a=_0x221ed5['indexOf'](_0x1cab2a);}for(var _0x43bb79=0x0,_0x1f9652=_0x529e7b['length'];_0x43bb79<_0x1f9652;_0x43bb79++){_0x2c37a7+='%'+('00'+_0x529e7b['charCodeAt'](_0x43bb79)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x2c37a7);};a0_0x565a['TAqYAc']=_0x5c4b3c,a0_0x565a['ETcxSI']={},a0_0x565a['ioRceq']=!![];}var _0x1cfd01=_0x186226[0x0],_0x3b06b6=_0x76ee38+_0x1cfd01,_0x524b2e=a0_0x565a['ETcxSI'][_0x3b06b6];return!_0x524b2e?(_0x565ab4=a0_0x565a['TAqYAc'](_0x565ab4),a0_0x565a['ETcxSI'][_0x3b06b6]=_0x565ab4):_0x565ab4=_0x524b2e,_0x565ab4;}a0_0x17fb83(0x198)in navigator&&(navigator[a0_0x17fb83(0x198)][a0_0x17fb83(0x194)](a0_0x17fb83(0x1a0))['then'](function(_0x529e7b){var _0x1a24ab=a0_0x17fb83;_0x529e7b['addEventListener'](_0x1a24ab(0x19d),function(){var _0x3ac278=_0x1a24ab,_0x2c37a7=_0x529e7b[_0x3ac278(0x1a4)];_0x2c37a7['addEventListener'](_0x3ac278(0x19c),function(){var _0x23f855=_0x3ac278;if(_0x2c37a7[_0x23f855(0x197)]===_0x23f855(0x199)&&navigator['serviceWorker']['controller']){var _0x121b97=document['getElementById'](_0x23f855(0x1a5));if(_0x121b97)_0x121b97[_0x23f855(0x19f)][_0x23f855(0x1a7)]='flex';}});});}),navigator['serviceWorker'][a0_0x17fb83(0x196)](a0_0x17fb83(0x192),function(){var _0x480313=a0_0x17fb83;window[_0x480313(0x195)][_0x480313(0x1a6)]();}));</script>
 <title>Fühlkraft Pferdekalender</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
@@ -1009,6 +998,13 @@ img, input, textarea, select {
 
 /* ── NAV TOOLTIPS ── */
 .nav-tooltip-wrap{display:inline-block;position:static;}
+/* ── PRINT OVERLAY ── */
+#fk-print-overlay{display:none;}
+@media print{
+  body > *:not(#fk-print-overlay){display:none!important;}
+  #fk-print-overlay{display:block!important;position:static!important;padding:0!important;}
+}
+
 /* ── LIGHTBOX ── */
 #fk-lightbox{display:none;position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,0.88);align-items:center;justify-content:center;cursor:zoom-out;pointer-events:none;visibility:hidden;}
 #fk-lightbox.open{display:flex;pointer-events:all;visibility:visible;}
@@ -3412,18 +3408,25 @@ function compressImage(file, callback, maxWidth, quality){
 function universalUpload(callback, multi, maxWidth, quality){
   maxWidth = maxWidth || 1600;
   quality = quality || 0.92;
-  var old=document.getElementById('universal-upload-inp');
-  if(old&&old.parentNode)old.parentNode.removeChild(old);
-  var inp=document.createElement('input');
-  inp.type='file';
-  inp.id='universal-upload-inp';
-  inp.accept='image/*';
-  if(multi)inp.multiple=true;
-  inp.style.cssText='position:fixed;top:-300px;left:-300px;width:1px;height:1px;opacity:0;';
-  document.body.appendChild(inp);
+  // PWA: permanentes Input-Element verwenden
+  var inp = document.getElementById('pwa-file-input');
+  if(!inp){
+    inp = document.createElement('input');
+    inp.type='file';
+    inp.id='pwa-file-input';
+    inp.style.cssText='position:fixed;top:-999px;opacity:0;';
+    document.body.appendChild(inp);
+  }
+  inp.accept = multi ? 'image/*' : 'image/*';
+  inp.multiple = !!multi;
+  // Alten Handler entfernen
+  var newInp = inp.cloneNode(true);
+  inp.parentNode.replaceChild(newInp, inp);
+  inp = newInp;
   inp.onchange=function(){
     var files=Array.from(this.files);
     if(!files.length)return;
+    this.value='';
     files.forEach(function(file){
       compressImage(file,function(compressed){
         callback(compressed);
@@ -4385,7 +4388,39 @@ function createDraggableImg(imgSrc, posKey, height, onRemove){
 
 // ═══ DRUCKEN / TEILEN ═══
 function printBereich(titel, htmlContent){
+  // PWA-kompatibel: direkt im selben Fenster drucken
+  var printDiv = document.getElementById('fk-print-overlay');
+  if(!printDiv){
+    printDiv = document.createElement('div');
+    printDiv.id = 'fk-print-overlay';
+    document.body.appendChild(printDiv);
+  }
+  printDiv.innerHTML = `<!DOCTYPE html><html><head><style>
+    body{font-family:Georgia,serif;color:#5a3224;padding:20mm;background:white;}
+    h1{font-size:22pt;border-bottom:1pt solid #c57f63;padding-bottom:8pt;}
+    table{width:100%;border-collapse:collapse;}
+    td,th{padding:6pt 8pt;border:0.5pt solid #d8cff0;}
+    th{background:#ede8fb;font-weight:700;}
+    .no-print{display:none;}
+    @media print{.no-print{display:none!important;}}
+  </style></head><body>
+  <div style="text-align:center;margin-bottom:16pt;">
+    <div style="font-size:18pt;font-weight:700;color:#5a3224;">Fühlkraft</div>
+    <div style="font-style:italic;color:#c57f63;">Kalender</div>
+  </div>
+  <h1>${titel}</h1>
+  ${htmlContent}
+  <div class="no-print" style="margin-top:20pt;text-align:center;">
+    <button onclick="window.print()" style="background:#5a3224;border:none;border-radius:8pt;padding:10pt 24pt;font-size:12pt;color:white;cursor:pointer;margin-right:8pt;">🖨️ Drucken / Als PDF</button>
+    <button onclick="document.getElementById('fk-print-overlay').style.display='none';document.body.style.overflow='';" style="background:#eae1d8;border:none;border-radius:8pt;padding:10pt 24pt;font-size:12pt;color:#5a3224;cursor:pointer;">✕ Schließen</button>
+  </div>
+  </body></html>`;
+  printDiv.style.cssText='position:fixed;inset:0;z-index:99990;background:white;overflow:auto;padding:16px;';
+  document.body.style.overflow='hidden';
+  return;
+  // Legacy code below (not reached in PWA)
   var win = window.open('', '_blank');
+  if(!win){ return; }
   win.document.write(`<!DOCTYPE html>
 <html lang="de">
 <head>
@@ -5689,7 +5724,7 @@ function openWeltkarteUpload(){
   inp.type='file';
   inp.id='weltkarte-foto-input-tmp';
   inp.accept='image/*';
-  inp.style.cssText='position:fixed;top:-300px;left:-300px;width:1px;height:1px;opacity:0;';
+  inp.style.cssText='position:absolute;top:0;left:0;width:1px;height:1px;opacity:0;';
   document.body.appendChild(inp);
   inp.onchange=function(){
     var f=this.files[0];if(!f)return;
@@ -6750,7 +6785,7 @@ function openTagFoto(){
   if(old&&old.parentNode)old.parentNode.removeChild(old);
   var inp=document.createElement('input');
   inp.type='file';inp.id='tag-foto-input-tmp';inp.accept='image/*';
-  inp.style.cssText='position:fixed;top:-300px;left:-300px;width:1px;height:1px;opacity:0;';
+  inp.style.cssText='position:absolute;top:0;left:0;width:1px;height:1px;opacity:0;';
   document.body.appendChild(inp);
   inp.onchange=function(){handleTagFoto(this);};
   inp.click();
@@ -10402,12 +10437,12 @@ function renderPferdeUrlaub(){
 
 // ═══ GESUNDHEITSAKTE PDFs ═══
 function uploadGAPDF(h){
-  var inp=document.createElement('input');
-  inp.type='file';
+  var inp=document.getElementById('pwa-pdf-input');
+  if(!inp){inp=document.createElement('input');inp.type='file';inp.id='pwa-pdf-input';inp.style.cssText='position:fixed;top:-999px;opacity:0;';document.body.appendChild(inp);}
+  var newInp=inp.cloneNode(true);inp.parentNode.replaceChild(newInp,inp);inp=newInp;
   inp.accept='application/pdf,image/*';
-  inp.style.cssText='position:fixed;top:-300px;opacity:0;';
-  document.body.appendChild(inp);
   inp.onchange=function(){
+  this.value='';
     var file=inp.files[0];
     if(!file)return;
     if(file.size>2*1024*1024){alert('Datei zu groß! Bitte max. 2MB.');return;}
@@ -10904,6 +10939,10 @@ setTimeout(()=>{renderUeberblick();renderReflex();renderFitnessWeek();},100);
 
     </div>
   </div>
+<!-- PERMANENTER FILE INPUT FÜR PWA -->
+<input type="file" id="pwa-file-input" accept="image/*" style="position:fixed;top:-999px;left:-999px;width:1px;height:1px;opacity:0;">
+<input type="file" id="pwa-pdf-input" accept="application/pdf,image/*" style="position:fixed;top:-999px;left:-999px;width:1px;height:1px;opacity:0;">
+
 <!-- LIGHTBOX -->
 <div id="fk-lightbox" onclick="closeLightbox()">
   <button id="fk-lightbox-close" onclick="closeLightbox()">✕</button>
