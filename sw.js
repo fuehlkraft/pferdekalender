@@ -1,5 +1,5 @@
 // Fühlkraft Kalender - Service Worker
-const CACHE_NAME = 'fuehlkraft-kalender-v7';
+const CACHE_NAME = 'fuehlkraft-kalender-v8;
 
 // Installation
 self.addEventListener('install', function(e){
