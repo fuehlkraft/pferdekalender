@@ -1201,19 +1201,18 @@ img, input, textarea, select {
 
     <!-- FOTO-RAHMEN -->
     <div class="photo-frame" id="photo-frame-el"
-      onclick="setTimeout(function(){if(!window._coverDragMoved){document.getElementById('photo-input').click();}window._coverDragMoved=false;},50)"
       ontouchstart="coverDragStart(event)"
       ontouchmove="coverDragMove(event)"
-      ontouchend="coverDragEnd(event)"
+      ontouchend="coverDragEndAndUpload(event)"
       onmousedown="if(typeof coverMouseDown==='function')coverMouseDown(event)"
       onmousemove="if(typeof coverMouseMove==='function')coverMouseMove(event)"
-      onmouseup="if(typeof coverMouseUp==='function')coverMouseUp(event)">
+      onmouseup="if(typeof coverMouseUp==='function')coverMouseUp(event);if(!window._coverDragMoved&&!window._photoDragging)document.getElementById('photo-input').click();window._coverDragMoved=false;">
       <img id="cover-photo" alt="">
       <div id="cover-drag-hint" style="display:none;position:absolute;bottom:8px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.45);color:white;font-size:10px;padding:3px 10px;border-radius:10px;white-space:nowrap;pointer-events:none;">✥ Bild verschieben</div>
-      <div class="photo-placeholder" id="photo-ph">
+      <label for="photo-input" class="photo-placeholder" id="photo-ph" style="cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;">
         <div class="icon">🐴</div>
         <p>Tippe hier, um dein<br>Lieblingsfoto hinzuzufügen</p>
-      </div>
+      </label>
     </div>
     <input type="file" id="photo-input" accept="image/*" onchange="loadPhoto(event)">
     <div style="position:absolute;width:0;height:0;overflow:hidden;opacity:0;">
@@ -3658,6 +3657,16 @@ function coverDragMove(e){
   coverPhotoPos.y=Math.max(0,Math.min(100,_coverDrag.startPosY-(dy/2)));
   applyCoverPhotoPos();
 }
+function coverDragEndAndUpload(e){
+  coverDragEnd(e);
+  // Wenn kein Drag = Upload öffnen
+  if(!window._coverDragMoved){
+    setTimeout(function(){
+      document.getElementById('photo-input').click();
+    }, 10);
+  }
+  window._coverDragMoved=false;
+}
 function coverDragEnd(e){
   if(!_coverDrag.active)return;
   _coverDrag.active=false;
@@ -4900,6 +4909,37 @@ function hfDragEnd(e){
   var hp=getHP(h);
   hp.fotoPos={x:newX,y:newY};
   saveHP();
+}
+
+
+function toggleUbLock(){
+  var locked = localStorage.getItem('pk_ub_locked') === '1';
+  var card = document.getElementById('ub-header-card');
+  var btn = document.getElementById('ub-lock-btn');
+  if(locked){
+    // Entsperren
+    localStorage.removeItem('pk_ub_locked');
+    card.style.cursor='grab';
+    card.setAttribute('ontouchstart','ubDragStart(event)');
+    card.setAttribute('ontouchmove','ubDragMove(event)');
+    card.setAttribute('ontouchend','ubDragEnd(event)');
+    card.setAttribute('onmousedown','ubDragStart(event)');
+    card.setAttribute('onmousemove','ubDragMove(event)');
+    card.setAttribute('onmouseup','ubDragEnd(event)');
+    if(btn) btn.textContent='🔒 Position fixieren';
+  } else {
+    // Sperren
+    localStorage.setItem('pk_ub_locked','1');
+    card.style.cursor='default';
+    card.removeAttribute('ontouchstart');
+    card.removeAttribute('ontouchmove');
+    card.removeAttribute('ontouchend');
+    card.removeAttribute('onmousedown');
+    card.removeAttribute('onmousemove');
+    card.removeAttribute('onmouseup');
+    if(btn) btn.textContent='🔓 Position freigeben';
+  }
+  closeUbMenu();
 }
 
 // ═══ SERVICE WORKER UPDATE ═══
@@ -8306,6 +8346,7 @@ const VORLAGE_RENDERERS={
             <button onclick="renderUeberblick();closeUbMenu()" style="display:block;width:100%;text-align:left;background:none;border:none;padding:9px 14px;font-family:Lato,sans-serif;font-size:13px;color:var(--deep);cursor:pointer;border-radius:8px;">↻ Aktualisieren</button>
             <button onclick="uploadUeberblickFoto()" style="display:block;width:100%;text-align:left;background:none;border:none;padding:9px 14px;font-family:Lato,sans-serif;font-size:13px;color:var(--deep);cursor:pointer;border-radius:8px;">📷 Hintergrundbild hochladen</button>
             <button onclick="removeUeberblickFoto();closeUbMenu()" id="ub-remove-btn" style="display:none;width:100%;text-align:left;background:none;border:none;padding:9px 14px;font-family:Lato,sans-serif;font-size:13px;color:#c04;cursor:pointer;border-radius:8px;">✕ Bild entfernen</button>
+            <button onclick="toggleUbLock()" id="ub-lock-btn" style="display:none;width:100%;text-align:left;background:none;border:none;padding:9px 14px;font-family:Lato,sans-serif;font-size:13px;color:var(--deep);cursor:pointer;border-radius:8px;">🔒 Position fixieren</button>
           </div>
         </div>
       </div>
@@ -8844,6 +8885,7 @@ function updateUbHeader(){
     if(date){date.style.color='rgba(255,255,255,0.9)';date.style.textShadow='0 1px 4px rgba(0,0,0,0.4)';}
     // moveSection nicht mehr nötig - Drag direkt auf Karte
     var rb=document.getElementById('ub-remove-btn');if(rb)rb.style.display='block';
+    var lb=document.getElementById('ub-lock-btn');if(lb){lb.style.display='block';lb.textContent=localStorage.getItem('pk_ub_locked')==='1'?'🔓 Position freigeben':'🔒 Position fixieren';}
     // Slider auf gespeicherte Position setzen
     var sx=document.getElementById('ub-slider-x');if(sx)sx.value=pos.x;
     var sy=document.getElementById('ub-slider-y');if(sy)sy.value=pos.y;
@@ -8856,6 +8898,7 @@ function updateUbHeader(){
     if(date){date.style.color='var(--muted)';date.style.textShadow='';}
     if(moveSection)moveSection.style.display='none';
     var rb=document.getElementById('ub-remove-btn');if(rb)rb.style.display='none';
+  var lb=document.getElementById('ub-lock-btn');if(lb)lb.style.display='none';
   }
 }
 
