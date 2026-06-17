@@ -3654,10 +3654,11 @@ var _coverDrag={active:false,startX:0,startY:0,startPosX:50,startPosY:50};
 function coverDragStart(e){
   var img=document.getElementById('cover-photo');
   if(!img||!img.classList.contains('visible'))return;
-  // Placeholder nicht abfangen - der öffnet Upload
+  // Placeholder nicht abfangen
   if(e.target&&e.target.id==='photo-ph')return;
   if(e.target&&e.target.closest&&e.target.closest('#photo-ph'))return;
-  e.preventDefault();
+  // e.preventDefault() erst in coverDragMove - nicht beim Start!
+  // Sonst blockiert es onclick auf Android
   _coverDrag.active=true;
   window._photoDragging=false;
   var t=e.touches?e.touches[0]:e;
@@ -3669,6 +3670,7 @@ function coverDragStart(e){
 }
 function coverDragMove(e){
   if(!_coverDrag.active)return;
+  e.preventDefault();
   e.preventDefault();
   window._photoDragging=true;
   var t=e.touches?e.touches[0]:e;
@@ -4705,7 +4707,7 @@ function removeCoverPhoto(){
     });
   }
   document.addEventListener('DOMContentLoaded',init);
-  setTimeout(init,500);
+  setTimeout(init,1000);
 })();
 
 // Position nach Drag speichern - zuverlässige Version
@@ -11395,30 +11397,69 @@ setTimeout(()=>{renderUeberblick();renderReflex();renderFitnessWeek();},100);
 // ═══ SWIPE NAVIGATION (nur Touch) ═══
 (function(){
   var TABS=['ueberblick','pferde','glueck','persoenlich','organisation','kalender','vorlagen'];
-  var _sw={startX:0,startY:0,active:false};
-  function getTab(){for(var i=0;i<TABS.length;i++){var el=document.getElementById('section-'+TABS[i]);if(el&&el.style.display!=='none')return i;}return 0;}
-  function goTab(i){if(i<0||i>=TABS.length)return;switchTab(TABS[i]);var b=document.getElementById('tab-'+TABS[i]);if(b)b.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}
+  var _sw={startX:0,startY:0,active:false,moved:false};
+
+  function getTab(){
+    for(var i=0;i<TABS.length;i++){
+      var el=document.getElementById('section-'+TABS[i]);
+      if(el&&el.style.display==='block')return i;
+    }
+    return 0;
+  }
+
+  function goTab(i){
+    if(i<0||i>=TABS.length)return;
+    switchTab(TABS[i]);
+    window.scrollTo(0,0);
+    var b=document.getElementById('tab-'+TABS[i]);
+    if(b)b.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  }
+
   document.addEventListener('touchstart',function(e){
     var t=e.target;
+    // Eingabefelder ignorieren
     if(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.tagName==='SELECT')return;
-    var menu=document.getElementById('ub-menu');if(menu&&menu.style.display==='block')return;
-    var ubCard=document.getElementById('ub-header-card');if(ubCard&&ubCard.contains(t))return;
-    var cover=document.getElementById('photo-frame-el');if(cover&&cover.contains(t))return;
-    _sw.startX=e.touches[0].clientX;_sw.startY=e.touches[0].clientY;_sw.active=true;
+    // App muss offen sein
+    var app=document.getElementById('app');
+    if(!app||app.style.display==='none'||app.style.display==='')return;
+    // Menüs offen → ignorieren
+    var m1=document.getElementById('ub-menu');
+    if(m1&&m1.style.display==='block')return;
+    var m2=document.getElementById('cover-longpress-menu');
+    if(m2&&m2.style.display==='block')return;
+    // Nur Hamburger-Button und photo-frame ausschließen
+    var hw=document.getElementById('ub-menu-wrap');
+    if(hw&&hw.contains(t))return;
+    var pf=document.getElementById('photo-frame-el');
+    if(pf&&pf.contains(t))return;
+    _sw.startX=e.touches[0].clientX;
+    _sw.startY=e.touches[0].clientY;
+    _sw.active=true;
+    _sw.moved=false;
   },{passive:true});
+
   document.addEventListener('touchmove',function(e){
     if(!_sw.active)return;
-    if(Math.abs(e.touches[0].clientY-_sw.startY)>Math.abs(e.touches[0].clientX-_sw.startX))_sw.active=false;
+    var dx=Math.abs(e.touches[0].clientX-_sw.startX);
+    var dy=Math.abs(e.touches[0].clientY-_sw.startY);
+    _sw.moved=true;
+    // Mehr vertikal = Scrollen, kein Swipe
+    if(dy>dx&&dy>20)_sw.active=false;
   },{passive:true});
+
   document.addEventListener('touchend',function(e){
-    if(!_sw.active)return;_sw.active=false;
+    if(!_sw.active||!_sw.moved){_sw.active=false;return;}
+    _sw.active=false;
     var dx=e.changedTouches[0].clientX-_sw.startX;
     var dy=e.changedTouches[0].clientY-_sw.startY;
-    if(Math.abs(dx)<70||Math.abs(dy)>60)return;
+    if(Math.abs(dx)<55||Math.abs(dy)>90)return;
     goTab(dx<0?getTab()+1:getTab()-1);
   },{passive:true});
+
+  // Pfeiltasten PC
   document.addEventListener('keydown',function(e){
-    if(document.activeElement&&(document.activeElement.tagName==='INPUT'||document.activeElement.tagName==='TEXTAREA'))return;
+    var ae=document.activeElement;
+    if(ae&&(ae.tagName==='INPUT'||ae.tagName==='TEXTAREA'))return;
     if(e.key==='ArrowRight')goTab(getTab()+1);
     if(e.key==='ArrowLeft')goTab(getTab()-1);
   });
@@ -11479,7 +11520,7 @@ function removeCoverPhoto(){
     });
   }
   document.addEventListener('DOMContentLoaded',init);
-  setTimeout(init,500);
+  setTimeout(init,1000);
 })();
 
 // Position nach Drag speichern - zuverlässige Version
