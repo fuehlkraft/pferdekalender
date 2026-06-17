@@ -80,7 +80,7 @@ body{background:var(--grad);font-family:'Lato',sans-serif;color:var(--text);min-
 .photo-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;}
 .photo-placeholder .icon{font-size:38px;opacity:0.5;}
 .photo-placeholder p{font-size:12px;color:var(--muted);text-align:center;padding:0 20px;line-height:1.5;}
-#photo-input{display:none;}
+#photo-input{position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;}
 .cover-logo{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:400;letter-spacing:4px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;}
 .cover-title{font-family:'Cormorant Garamond',serif;font-size:46px;font-weight:600;color:var(--deep);text-align:center;line-height:1.1;margin-bottom:4px;}
 .cover-title em{font-style:italic;color:var(--muted);font-weight:400;}
@@ -415,7 +415,6 @@ html, body {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
   overflow-x: hidden;
-  overflow-y: auto;
 }
 *, *::before, *::after {
   box-sizing: border-box;
@@ -439,7 +438,6 @@ img, input, textarea, select {
 
 /* Handy: scrollen statt umbrechen */
 @media (max-width: 600px) {
-  #ub-header-card { min-height: 260px !important; }
   .sub-nav { flex-wrap: nowrap; }
 }
 
@@ -1211,12 +1209,13 @@ img, input, textarea, select {
       onmouseup="if(typeof coverMouseUp==='function')coverMouseUp(event)">
       <img id="cover-photo" alt="">
       <div id="cover-drag-hint" style="display:none;position:absolute;bottom:8px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.45);color:white;font-size:10px;padding:3px 10px;border-radius:10px;white-space:nowrap;pointer-events:none;">✥ Bild verschieben</div>
-      <div class="photo-placeholder" id="photo-ph">
-        <div class="icon">🐴</div>
-        <p>Tippe hier, um dein<br>Lieblingsfoto hinzuzufügen</p>
-      </div>
+      <label for="photo-input" class="photo-placeholder" id="photo-ph" style="cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:all;">
+        <div class="icon" style="pointer-events:none;">🐴</div>
+        <p style="pointer-events:none;">Tippe hier, um dein<br>Lieblingsfoto hinzuzufügen</p>
+      </label>
     </div>
     <input type="file" id="photo-input" accept="image/*" onchange="loadPhoto(event)">
+    <label for="photo-input" id="cover-change-btn" style="display:none;margin-top:6px;background:rgba(255,255,255,0.82);border:1px solid rgba(191,179,224,0.35);border-radius:50px;padding:6px 16px;font-size:11px;font-weight:700;color:#8878a8;cursor:pointer;font-family:Lato,sans-serif;touch-action:manipulation;-webkit-tap-highlight-color:transparent;pointer-events:all;z-index:10;letter-spacing:0.5px;">📷 Foto ändern</label>
     <div style="position:absolute;width:0;height:0;overflow:hidden;opacity:0;">
       <input type="file" id="ub-foto-input" accept="image/*" onchange="loadUeberblickFotoFromInput(this)">
       <input type="file" id="reise-foto-input" accept="image/*" onchange="handleReiseFoto(this)">
@@ -3490,6 +3489,8 @@ function loadAll(){
   if(sp){
     const i=document.getElementById('cover-photo');i.src=sp;i.classList.add('visible');
     document.getElementById('photo-ph').style.display='none';
+    var ccb2=document.getElementById('cover-change-btn');if(ccb2)ccb2.style.display='block';
+    var ccb=document.getElementById('cover-change-btn');if(ccb)ccb.style.display='block';
     try{const pos=JSON.parse(localStorage.getItem('pk_cover_pos'));if(pos)coverPhotoPos=pos;}catch(e){}
     applyCoverPhotoPos();
   }
@@ -3623,9 +3624,11 @@ function loadPhoto(ev){
   r.onload=e=>{
     const i=document.getElementById('cover-photo');i.src=e.target.result;i.classList.add('visible');
     document.getElementById('photo-ph').style.display='none';
-    coverPhotoPos={x:50,y:50,zoom:100};
+    var ccb=document.getElementById('cover-change-btn');if(ccb)ccb.style.display='block';
+    coverPhotoPos={x:50,y:30,zoom:100};
     applyCoverPhotoPos();
     localStorage.setItem('pk_cover_photo',e.target.result);
+    localStorage.setItem('pk_cover_pos',JSON.stringify(coverPhotoPos));
     localStorage.setItem('pk_cover_pos',JSON.stringify(coverPhotoPos));
   };r.readAsDataURL(f);
 }
@@ -3636,6 +3639,9 @@ var _coverDrag={active:false,startX:0,startY:0,startPosX:50,startPosY:50};
 function coverDragStart(e){
   var img=document.getElementById('cover-photo');
   if(!img||!img.classList.contains('visible'))return;
+  // Placeholder nicht abfangen - der öffnet Upload
+  if(e.target&&e.target.id==='photo-ph')return;
+  if(e.target&&e.target.closest&&e.target.closest('#photo-ph'))return;
   e.preventDefault();
   _coverDrag.active=true;
   window._photoDragging=false;
@@ -4627,60 +4633,33 @@ ${htmlContent}
 
 // ═══ SWIPE NAVIGATION (nur Touch) ═══
 (function(){
-  var TABS = ['ueberblick','pferde','glueck','persoenlich','organisation','kalender','vorlagen'];
-  var _sw = {startX:0, startY:0, active:false};
-
-  function getCurrentTab(){
-    for(var i=0;i<TABS.length;i++){
-      var el=document.getElementById('section-'+TABS[i]);
-      if(el&&el.style.display!=='none')return i;
-    }
-    return 0;
-  }
-  function goTab(idx){
-    if(idx<0||idx>=TABS.length)return;
-    switchTab(TABS[idx]);
-    var btn=document.getElementById('tab-'+TABS[idx]);
-    if(btn)btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
-  }
-
+  var TABS=['ueberblick','pferde','glueck','persoenlich','organisation','kalender','vorlagen'];
+  var _sw={startX:0,startY:0,active:false};
+  function getTab(){for(var i=0;i<TABS.length;i++){var el=document.getElementById('section-'+TABS[i]);if(el&&el.style.display!=='none')return i;}return 0;}
+  function goTab(i){if(i<0||i>=TABS.length)return;switchTab(TABS[i]);var b=document.getElementById('tab-'+TABS[i]);if(b)b.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}
   document.addEventListener('touchstart',function(e){
     var t=e.target;
     if(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.tagName==='SELECT')return;
-    var menu=document.getElementById('ub-menu');
-    if(menu&&menu.style.display==='block')return;
-    // Nicht swapen wenn auf dem Überblick-Banner (der hat eigenen Drag)
-    var ubCard=document.getElementById('ub-header-card');
-    if(ubCard&&ubCard.contains(t))return;
-    // Nicht swapen wenn auf Cover (Titelbild)
-    var cover=document.getElementById('photo-frame-el');
-    if(cover&&cover.contains(t))return;
-    _sw.startX=e.touches[0].clientX;
-    _sw.startY=e.touches[0].clientY;
-    _sw.active=true;
+    var menu=document.getElementById('ub-menu');if(menu&&menu.style.display==='block')return;
+    var ubCard=document.getElementById('ub-header-card');if(ubCard&&ubCard.contains(t))return;
+    var cover=document.getElementById('photo-frame-el');if(cover&&cover.contains(t))return;
+    _sw.startX=e.touches[0].clientX;_sw.startY=e.touches[0].clientY;_sw.active=true;
   },{passive:true});
-
   document.addEventListener('touchmove',function(e){
     if(!_sw.active)return;
-    var dx=Math.abs(e.touches[0].clientX-_sw.startX);
-    var dy=Math.abs(e.touches[0].clientY-_sw.startY);
-    if(dy>dx&&dy>20)_sw.active=false;
+    if(Math.abs(e.touches[0].clientY-_sw.startY)>Math.abs(e.touches[0].clientX-_sw.startX))_sw.active=false;
   },{passive:true});
-
   document.addEventListener('touchend',function(e){
-    if(!_sw.active)return;
-    _sw.active=false;
+    if(!_sw.active)return;_sw.active=false;
     var dx=e.changedTouches[0].clientX-_sw.startX;
     var dy=e.changedTouches[0].clientY-_sw.startY;
     if(Math.abs(dx)<70||Math.abs(dy)>60)return;
-    goTab(dx<0?getCurrentTab()+1:getCurrentTab()-1);
+    goTab(dx<0?getTab()+1:getTab()-1);
   },{passive:true});
-
-  // Pfeiltasten für PC
   document.addEventListener('keydown',function(e){
     if(document.activeElement&&(document.activeElement.tagName==='INPUT'||document.activeElement.tagName==='TEXTAREA'))return;
-    if(e.key==='ArrowRight')goTab(getCurrentTab()+1);
-    if(e.key==='ArrowLeft')goTab(getCurrentTab()-1);
+    if(e.key==='ArrowRight')goTab(getTab()+1);
+    if(e.key==='ArrowLeft')goTab(getTab()-1);
   });
 })();
 
@@ -8306,17 +8285,17 @@ const VORLAGE_RENDERERS={
 
 
       <!-- HEADER -->
-      <div id="ub-header-card" style="border-radius:14px;padding:22px;border:1px solid rgba(255,255,255,0.8);position:relative;overflow:hidden;margin-bottom:6px;min-height:380px;background:linear-gradient(135deg,rgba(216,207,240,0.35),rgba(242,200,216,0.25),rgba(200,234,223,0.25));cursor:default;" ontouchstart="ubDragStart(event)" ontouchmove="ubDragMove(event)" ontouchend="ubDragEnd(event)" onmousedown="ubDragStart(event)" onmousemove="ubDragMove(event)" onmouseup="ubDragEnd(event)" onmouseleave="ubDragEnd(event)">
+      <div id="ub-header-card" style="border-radius:14px;padding:22px;border:1px solid rgba(255,255,255,0.8);position:relative;overflow:visible;margin-bottom:6px;min-height:380px;background:linear-gradient(135deg,rgba(216,207,240,0.35),rgba(242,200,216,0.25),rgba(200,234,223,0.25));cursor:default;" ontouchstart="ubDragStart(event)" ontouchmove="ubDragMove(event)" ontouchend="ubDragEnd(event)" onmousedown="ubDragStart(event)" onmousemove="ubDragMove(event)" onmouseup="ubDragEnd(event)" onmouseleave="ubDragEnd(event)">
         <div id="ub-overlay" style="display:none;position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.1),rgba(0,0,0,0.45));border-radius:14px;"></div>
         <div id="ub-drag-hint" style="display:none;position:absolute;bottom:8px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.4);color:white;font-size:10px;border-radius:10px;padding:3px 10px;pointer-events:none;white-space:nowrap;">✥ Bild ziehen zum Verschieben</div>
         <div style="position:absolute;bottom:18px;left:22px;z-index:2;">
           <div id="ub-title" style="font-family:Cormorant Garamond,serif;font-size:28px;font-weight:600;color:white;text-shadow:0 1px 8px rgba(0,0,0,0.3);margin-bottom:4px;">Mein Überblick</div>
           <div id="ub-date" style="font-size:13px;color:rgba(255,255,255,0.85);text-shadow:0 1px 4px rgba(0,0,0,0.3);">${todayLong} · Alle Bereiche auf einen Blick</div>
         </div>
-        <!-- Hamburger Menü -->
-        <div style="position:absolute;top:12px;right:12px;z-index:10;" id="ub-menu-wrap">
-          <button onclick="toggleUbMenu()" id="ub-menu-btn" style="background:rgba(255,255,255,0.85);border:none;border-radius:8px;width:36px;height:36px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.15);">☰</button>
-          <div id="ub-menu" style="display:none;position:absolute;top:42px;right:0;background:white;border:1px solid rgba(180,160,220,0.3);border-radius:12px;padding:6px;box-shadow:0 8px 24px rgba(0,0,0,0.12);min-width:220px;z-index:200;">
+        <!-- Hamburger Menü - außerhalb overflow:hidden -->
+        <div style="position:absolute;top:12px;right:12px;z-index:9999;" id="ub-menu-wrap">
+          <button onclick="toggleUbMenu()" id="ub-menu-btn" style="background:rgba(255,255,255,0.85);border:none;border-radius:8px;width:44px;height:44px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.15);touch-action:manipulation;-webkit-tap-highlight-color:transparent;">☰</button>
+          <div id="ub-menu" style="display:none;position:absolute;top:42px;right:0;background:white;border:1px solid rgba(180,160,220,0.3);border-radius:12px;padding:6px;box-shadow:0 8px 24px rgba(0,0,0,0.12);min-width:220px;z-index:9999;">
             <button onclick="renderUeberblick();closeUbMenu()" style="display:block;width:100%;text-align:left;background:none;border:none;padding:9px 14px;font-family:Lato,sans-serif;font-size:13px;color:var(--deep);cursor:pointer;border-radius:8px;">↻ Aktualisieren</button>
             <button onclick="uploadUeberblickFoto()" style="display:block;width:100%;text-align:left;background:none;border:none;padding:9px 14px;font-family:Lato,sans-serif;font-size:13px;color:var(--deep);cursor:pointer;border-radius:8px;">📷 Hintergrundbild hochladen</button>
             <button onclick="removeUeberblickFoto();closeUbMenu()" id="ub-remove-btn" style="display:none;width:100%;text-align:left;background:none;border:none;padding:9px 14px;font-family:Lato,sans-serif;font-size:13px;color:#c04;cursor:pointer;border-radius:8px;">✕ Bild entfernen</button>
@@ -8753,6 +8732,9 @@ var _ubDrag={active:false,startX:0,startY:0,startPosX:50,startPosY:50};
 function ubDragStart(e){
   var foto=localStorage.getItem('pk_ueberblick_foto');
   if(!foto)return; // nur wenn Bild da
+  // Hamburger-Bereich NICHT abfangen
+  var menuWrap=document.getElementById('ub-menu-wrap');
+  if(menuWrap&&menuWrap.contains(e.target))return;
   e.preventDefault();
   _ubDrag.active=true;
   var t=e.touches?e.touches[0]:e;
@@ -8772,6 +8754,8 @@ function ubDragMove(e){
   var t=e.touches?e.touches[0]:e;
   var dx=t.clientX-_ubDrag.startX;
   var dy=t.clientY-_ubDrag.startY;
+  _ubDrag.lastDx=dx;
+  _ubDrag.lastDy=dy;
   var newX=Math.max(0,Math.min(100,_ubDrag.startPosX-(dx/2)));
   var newY=Math.max(0,Math.min(100,_ubDrag.startPosY-(dy/2)));
   var card=document.getElementById('ub-header-card');
@@ -8780,13 +8764,14 @@ function ubDragMove(e){
 function ubDragEnd(e){
   if(!_ubDrag.active)return;
   _ubDrag.active=false;
+  window._ubDragJustEnded=true;
+  setTimeout(function(){window._ubDragJustEnded=false;},300);
   var card=document.getElementById('ub-header-card');
   if(card){
-    // Position speichern
-    var pos=card.style.backgroundPosition.split(' ');
-    var x=parseFloat(pos[0]||50);
-    var y=parseFloat(pos[1]||50);
-    localStorage.setItem('pk_ueberblick_pos',JSON.stringify({x:x,y:y}));
+    // Position direkt aus den gespeicherten Werten nehmen (nicht aus backgroundPosition String)
+    var newX=Math.max(0,Math.min(100,_ubDrag.startPosX-(((_ubDrag.lastDx||0))/2)));
+    var newY=Math.max(0,Math.min(100,_ubDrag.startPosY-(((_ubDrag.lastDy||0))/2)));
+    localStorage.setItem('pk_ueberblick_pos',JSON.stringify({x:newX,y:newY}));
     card.style.cursor='grab';
   }
   var hint=document.getElementById('ub-drag-hint');
@@ -11345,60 +11330,33 @@ setTimeout(()=>{renderUeberblick();renderReflex();renderFitnessWeek();},100);
 
 // ═══ SWIPE NAVIGATION (nur Touch) ═══
 (function(){
-  var TABS = ['ueberblick','pferde','glueck','persoenlich','organisation','kalender','vorlagen'];
-  var _sw = {startX:0, startY:0, active:false};
-
-  function getCurrentTab(){
-    for(var i=0;i<TABS.length;i++){
-      var el=document.getElementById('section-'+TABS[i]);
-      if(el&&el.style.display!=='none')return i;
-    }
-    return 0;
-  }
-  function goTab(idx){
-    if(idx<0||idx>=TABS.length)return;
-    switchTab(TABS[idx]);
-    var btn=document.getElementById('tab-'+TABS[idx]);
-    if(btn)btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
-  }
-
+  var TABS=['ueberblick','pferde','glueck','persoenlich','organisation','kalender','vorlagen'];
+  var _sw={startX:0,startY:0,active:false};
+  function getTab(){for(var i=0;i<TABS.length;i++){var el=document.getElementById('section-'+TABS[i]);if(el&&el.style.display!=='none')return i;}return 0;}
+  function goTab(i){if(i<0||i>=TABS.length)return;switchTab(TABS[i]);var b=document.getElementById('tab-'+TABS[i]);if(b)b.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}
   document.addEventListener('touchstart',function(e){
     var t=e.target;
     if(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.tagName==='SELECT')return;
-    var menu=document.getElementById('ub-menu');
-    if(menu&&menu.style.display==='block')return;
-    // Nicht swapen wenn auf dem Überblick-Banner (der hat eigenen Drag)
-    var ubCard=document.getElementById('ub-header-card');
-    if(ubCard&&ubCard.contains(t))return;
-    // Nicht swapen wenn auf Cover (Titelbild)
-    var cover=document.getElementById('photo-frame-el');
-    if(cover&&cover.contains(t))return;
-    _sw.startX=e.touches[0].clientX;
-    _sw.startY=e.touches[0].clientY;
-    _sw.active=true;
+    var menu=document.getElementById('ub-menu');if(menu&&menu.style.display==='block')return;
+    var ubCard=document.getElementById('ub-header-card');if(ubCard&&ubCard.contains(t))return;
+    var cover=document.getElementById('photo-frame-el');if(cover&&cover.contains(t))return;
+    _sw.startX=e.touches[0].clientX;_sw.startY=e.touches[0].clientY;_sw.active=true;
   },{passive:true});
-
   document.addEventListener('touchmove',function(e){
     if(!_sw.active)return;
-    var dx=Math.abs(e.touches[0].clientX-_sw.startX);
-    var dy=Math.abs(e.touches[0].clientY-_sw.startY);
-    if(dy>dx&&dy>20)_sw.active=false;
+    if(Math.abs(e.touches[0].clientY-_sw.startY)>Math.abs(e.touches[0].clientX-_sw.startX))_sw.active=false;
   },{passive:true});
-
   document.addEventListener('touchend',function(e){
-    if(!_sw.active)return;
-    _sw.active=false;
+    if(!_sw.active)return;_sw.active=false;
     var dx=e.changedTouches[0].clientX-_sw.startX;
     var dy=e.changedTouches[0].clientY-_sw.startY;
     if(Math.abs(dx)<70||Math.abs(dy)>60)return;
-    goTab(dx<0?getCurrentTab()+1:getCurrentTab()-1);
+    goTab(dx<0?getTab()+1:getTab()-1);
   },{passive:true});
-
-  // Pfeiltasten für PC
   document.addEventListener('keydown',function(e){
     if(document.activeElement&&(document.activeElement.tagName==='INPUT'||document.activeElement.tagName==='TEXTAREA'))return;
-    if(e.key==='ArrowRight')goTab(getCurrentTab()+1);
-    if(e.key==='ArrowLeft')goTab(getCurrentTab()-1);
+    if(e.key==='ArrowRight')goTab(getTab()+1);
+    if(e.key==='ArrowLeft')goTab(getTab()-1);
   });
 })();
 
