@@ -11402,7 +11402,12 @@ setTimeout(()=>{renderUeberblick();renderReflex();renderFitnessWeek();},100);
   function getTab(){
     for(var i=0;i<TABS.length;i++){
       var el=document.getElementById('section-'+TABS[i]);
-      if(el&&el.style.display==='block')return i;
+      if(el&&el.style.display!=='none'&&el.style.display!=='')return i;
+    }
+    // Fallback: aktiven Tab-Button suchen
+    for(var i=0;i<TABS.length;i++){
+      var btn=document.getElementById('tab-'+TABS[i]);
+      if(btn&&btn.classList.contains('active'))return i;
     }
     return 0;
   }
@@ -11448,11 +11453,12 @@ setTimeout(()=>{renderUeberblick();renderReflex();renderFitnessWeek();},100);
   },{passive:true});
 
   document.addEventListener('touchend',function(e){
-    if(!_sw.active||!_sw.moved){_sw.active=false;return;}
+    if(!_sw.active){return;}
     _sw.active=false;
     var dx=e.changedTouches[0].clientX-_sw.startX;
     var dy=e.changedTouches[0].clientY-_sw.startY;
-    if(Math.abs(dx)<55||Math.abs(dy)>90)return;
+    if(Math.abs(dx)<50)return;
+    if(Math.abs(dy)>Math.abs(dx))return;
     goTab(dx<0?getTab()+1:getTab()-1);
   },{passive:true});
 
