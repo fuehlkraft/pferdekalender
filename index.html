@@ -415,6 +415,7 @@ html, body {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 *, *::before, *::after {
   box-sizing: border-box;
@@ -438,6 +439,7 @@ img, input, textarea, select {
 
 /* Handy: scrollen statt umbrechen */
 @media (max-width: 600px) {
+  #ub-header-card { min-height: 260px !important; }
   .sub-nav { flex-wrap: nowrap; }
 }
 
@@ -4622,6 +4624,66 @@ ${htmlContent}
   <button onclick="window.print()" style="background:#5a3224;border:none;border-radius:8pt;padding:10pt 24pt;font-size:12pt;color:white;cursor:pointer;">🖨️ Drucken / Als PDF speichern</button>
   <button onclick="window.close()" style="background:#eae1d8;border:none;border-radius:8pt;padding:10pt 24pt;font-size:12pt;color:#5a3224;cursor:pointer;margin-left:8pt;">✕ Schließen</button>
 </div>
+
+// ═══ SWIPE NAVIGATION (nur Touch) ═══
+(function(){
+  var TABS = ['ueberblick','pferde','glueck','persoenlich','organisation','kalender','vorlagen'];
+  var _sw = {startX:0, startY:0, active:false};
+
+  function getCurrentTab(){
+    for(var i=0;i<TABS.length;i++){
+      var el=document.getElementById('section-'+TABS[i]);
+      if(el&&el.style.display!=='none')return i;
+    }
+    return 0;
+  }
+  function goTab(idx){
+    if(idx<0||idx>=TABS.length)return;
+    switchTab(TABS[idx]);
+    var btn=document.getElementById('tab-'+TABS[idx]);
+    if(btn)btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  }
+
+  document.addEventListener('touchstart',function(e){
+    var t=e.target;
+    if(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.tagName==='SELECT')return;
+    var menu=document.getElementById('ub-menu');
+    if(menu&&menu.style.display==='block')return;
+    // Nicht swapen wenn auf dem Überblick-Banner (der hat eigenen Drag)
+    var ubCard=document.getElementById('ub-header-card');
+    if(ubCard&&ubCard.contains(t))return;
+    // Nicht swapen wenn auf Cover (Titelbild)
+    var cover=document.getElementById('photo-frame-el');
+    if(cover&&cover.contains(t))return;
+    _sw.startX=e.touches[0].clientX;
+    _sw.startY=e.touches[0].clientY;
+    _sw.active=true;
+  },{passive:true});
+
+  document.addEventListener('touchmove',function(e){
+    if(!_sw.active)return;
+    var dx=Math.abs(e.touches[0].clientX-_sw.startX);
+    var dy=Math.abs(e.touches[0].clientY-_sw.startY);
+    if(dy>dx&&dy>20)_sw.active=false;
+  },{passive:true});
+
+  document.addEventListener('touchend',function(e){
+    if(!_sw.active)return;
+    _sw.active=false;
+    var dx=e.changedTouches[0].clientX-_sw.startX;
+    var dy=e.changedTouches[0].clientY-_sw.startY;
+    if(Math.abs(dx)<70||Math.abs(dy)>60)return;
+    goTab(dx<0?getCurrentTab()+1:getCurrentTab()-1);
+  },{passive:true});
+
+  // Pfeiltasten für PC
+  document.addEventListener('keydown',function(e){
+    if(document.activeElement&&(document.activeElement.tagName==='INPUT'||document.activeElement.tagName==='TEXTAREA'))return;
+    if(e.key==='ArrowRight')goTab(getCurrentTab()+1);
+    if(e.key==='ArrowLeft')goTab(getCurrentTab()-1);
+  });
+})();
+
 </body></html>`);
   win.document.close();
   setTimeout(function(){ win.focus(); }, 300);
@@ -8244,12 +8306,12 @@ const VORLAGE_RENDERERS={
 
 
       <!-- HEADER -->
-      <div id="ub-header-card" style="border-radius:14px;padding:22px;border:1px solid rgba(255,255,255,0.8);position:relative;overflow:hidden;margin-bottom:6px;min-height:200px;background:linear-gradient(135deg,rgba(216,207,240,0.35),rgba(242,200,216,0.25),rgba(200,234,223,0.25));cursor:default;" ontouchstart="ubDragStart(event)" ontouchmove="ubDragMove(event)" ontouchend="ubDragEnd(event)" onmousedown="ubDragStart(event)" onmousemove="ubDragMove(event)" onmouseup="ubDragEnd(event)" onmouseleave="ubDragEnd(event)">
+      <div id="ub-header-card" style="border-radius:14px;padding:22px;border:1px solid rgba(255,255,255,0.8);position:relative;overflow:hidden;margin-bottom:6px;min-height:380px;background:linear-gradient(135deg,rgba(216,207,240,0.35),rgba(242,200,216,0.25),rgba(200,234,223,0.25));cursor:default;" ontouchstart="ubDragStart(event)" ontouchmove="ubDragMove(event)" ontouchend="ubDragEnd(event)" onmousedown="ubDragStart(event)" onmousemove="ubDragMove(event)" onmouseup="ubDragEnd(event)" onmouseleave="ubDragEnd(event)">
         <div id="ub-overlay" style="display:none;position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.1),rgba(0,0,0,0.45));border-radius:14px;"></div>
         <div id="ub-drag-hint" style="display:none;position:absolute;bottom:8px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.4);color:white;font-size:10px;border-radius:10px;padding:3px 10px;pointer-events:none;white-space:nowrap;">✥ Bild ziehen zum Verschieben</div>
-        <div style="position:relative;z-index:1;">
-          <div id="ub-title" style="font-family:Cormorant Garamond,serif;font-size:28px;font-weight:600;color:var(--deep);margin-bottom:4px;">Mein Überblick</div>
-          <div id="ub-date" style="font-size:13px;color:var(--muted);">${todayLong} · Alle Bereiche auf einen Blick</div>
+        <div style="position:absolute;bottom:18px;left:22px;z-index:2;">
+          <div id="ub-title" style="font-family:Cormorant Garamond,serif;font-size:28px;font-weight:600;color:white;text-shadow:0 1px 8px rgba(0,0,0,0.3);margin-bottom:4px;">Mein Überblick</div>
+          <div id="ub-date" style="font-size:13px;color:rgba(255,255,255,0.85);text-shadow:0 1px 4px rgba(0,0,0,0.3);">${todayLong} · Alle Bereiche auf einen Blick</div>
         </div>
         <!-- Hamburger Menü -->
         <div style="position:absolute;top:12px;right:12px;z-index:10;" id="ub-menu-wrap">
@@ -8789,7 +8851,7 @@ function updateUbHeader(){
     card.style.backgroundImage='url('+foto+')';
     card.style.backgroundSize='cover';
     card.style.backgroundPosition=pos.x+'% '+pos.y+'%';
-    card.style.minHeight='200px';
+    card.style.minHeight='380px';
     card.style.cursor='grab';
     if(overlay)overlay.style.display='block';
     if(title){title.style.color='white';title.style.textShadow='0 1px 6px rgba(0,0,0,0.5)';}
@@ -8802,7 +8864,7 @@ function updateUbHeader(){
   } else {
     card.style.backgroundImage='';
     card.style.background='linear-gradient(135deg,rgba(216,207,240,0.35),rgba(242,200,216,0.25),rgba(200,234,223,0.25))';
-    card.style.minHeight='200px';
+    card.style.minHeight='380px';
     if(overlay)overlay.style.display='none';
     if(title){title.style.color='var(--deep)';title.style.textShadow='';}
     if(date){date.style.color='var(--muted)';date.style.textShadow='';}
@@ -11279,6 +11341,66 @@ setTimeout(()=>{renderUeberblick();renderReflex();renderFitnessWeek();},100);
     <div class="fk-login-error" id="fk-login-error">Falsches Passwort. Bitte versuche es erneut.</div>
     <div class="fk-login-hint">Dein Passwort erhältst du nach dem Kauf<br>per E-Mail von uns. 🌸</div>
   </div>
+
+
+// ═══ SWIPE NAVIGATION (nur Touch) ═══
+(function(){
+  var TABS = ['ueberblick','pferde','glueck','persoenlich','organisation','kalender','vorlagen'];
+  var _sw = {startX:0, startY:0, active:false};
+
+  function getCurrentTab(){
+    for(var i=0;i<TABS.length;i++){
+      var el=document.getElementById('section-'+TABS[i]);
+      if(el&&el.style.display!=='none')return i;
+    }
+    return 0;
+  }
+  function goTab(idx){
+    if(idx<0||idx>=TABS.length)return;
+    switchTab(TABS[idx]);
+    var btn=document.getElementById('tab-'+TABS[idx]);
+    if(btn)btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  }
+
+  document.addEventListener('touchstart',function(e){
+    var t=e.target;
+    if(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.tagName==='SELECT')return;
+    var menu=document.getElementById('ub-menu');
+    if(menu&&menu.style.display==='block')return;
+    // Nicht swapen wenn auf dem Überblick-Banner (der hat eigenen Drag)
+    var ubCard=document.getElementById('ub-header-card');
+    if(ubCard&&ubCard.contains(t))return;
+    // Nicht swapen wenn auf Cover (Titelbild)
+    var cover=document.getElementById('photo-frame-el');
+    if(cover&&cover.contains(t))return;
+    _sw.startX=e.touches[0].clientX;
+    _sw.startY=e.touches[0].clientY;
+    _sw.active=true;
+  },{passive:true});
+
+  document.addEventListener('touchmove',function(e){
+    if(!_sw.active)return;
+    var dx=Math.abs(e.touches[0].clientX-_sw.startX);
+    var dy=Math.abs(e.touches[0].clientY-_sw.startY);
+    if(dy>dx&&dy>20)_sw.active=false;
+  },{passive:true});
+
+  document.addEventListener('touchend',function(e){
+    if(!_sw.active)return;
+    _sw.active=false;
+    var dx=e.changedTouches[0].clientX-_sw.startX;
+    var dy=e.changedTouches[0].clientY-_sw.startY;
+    if(Math.abs(dx)<70||Math.abs(dy)>60)return;
+    goTab(dx<0?getCurrentTab()+1:getCurrentTab()-1);
+  },{passive:true});
+
+  // Pfeiltasten für PC
+  document.addEventListener('keydown',function(e){
+    if(document.activeElement&&(document.activeElement.tagName==='INPUT'||document.activeElement.tagName==='TEXTAREA'))return;
+    if(e.key==='ArrowRight')goTab(getCurrentTab()+1);
+    if(e.key==='ArrowLeft')goTab(getCurrentTab()-1);
+  });
+})();
 
 </body>
 </html>
