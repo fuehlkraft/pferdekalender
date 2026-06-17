@@ -1215,7 +1215,23 @@ img, input, textarea, select {
       </label>
     </div>
     <input type="file" id="photo-input" accept="image/*" onchange="loadPhoto(event)">
-    <label for="photo-input" id="cover-change-btn" style="display:none;margin-top:6px;background:rgba(255,255,255,0.82);border:1px solid rgba(191,179,224,0.35);border-radius:50px;padding:6px 16px;font-size:11px;font-weight:700;color:#8878a8;cursor:pointer;font-family:Lato,sans-serif;touch-action:manipulation;-webkit-tap-highlight-color:transparent;pointer-events:all;z-index:10;letter-spacing:0.5px;">📷 Foto ändern</label>
+
+<!-- Langedrück-Menü Titelbild -->
+<div id="cover-longpress-menu" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;border-radius:18px;padding:8px;box-shadow:0 12px 40px rgba(74,56,96,0.25);z-index:9999;min-width:220px;border:1px solid rgba(191,179,224,0.2);">
+  <label for="photo-input" onclick="closeCoverMenu()" style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:12px;cursor:pointer;font-family:Lato,sans-serif;font-size:15px;color:#4a3860;font-weight:600;-webkit-tap-highlight-color:transparent;">
+    <span style="font-size:20px;">📷</span> Bild wechseln
+  </label>
+  <div style="height:1px;background:rgba(191,179,224,0.2);margin:0 8px;"></div>
+  <button onclick="removeCoverPhoto()" style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:12px;cursor:pointer;font-family:Lato,sans-serif;font-size:15px;color:#c04040;font-weight:600;background:none;border:none;width:100%;text-align:left;-webkit-tap-highlight-color:transparent;">
+    <span style="font-size:20px;">🗑️</span> Bild entfernen
+  </button>
+  <div style="height:1px;background:rgba(191,179,224,0.2);margin:0 8px;"></div>
+  <button onclick="closeCoverMenu()" style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:12px;cursor:pointer;font-family:Lato,sans-serif;font-size:15px;color:#8878a8;background:none;border:none;width:100%;text-align:left;-webkit-tap-highlight-color:transparent;">
+    <span style="font-size:20px;">✕</span> Abbrechen
+  </button>
+</div>
+<div id="cover-longpress-overlay" onclick="closeCoverMenu()" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(74,56,96,0.2);backdrop-filter:blur(2px);"></div>
+    
     <div style="position:absolute;width:0;height:0;overflow:hidden;opacity:0;">
       <input type="file" id="ub-foto-input" accept="image/*" onchange="loadUeberblickFotoFromInput(this)">
       <input type="file" id="reise-foto-input" accept="image/*" onchange="handleReiseFoto(this)">
@@ -3624,7 +3640,6 @@ function loadPhoto(ev){
   r.onload=e=>{
     const i=document.getElementById('cover-photo');i.src=e.target.result;i.classList.add('visible');
     document.getElementById('photo-ph').style.display='none';
-    var ccb=document.getElementById('cover-change-btn');if(ccb)ccb.style.display='block';
     coverPhotoPos={x:50,y:30,zoom:100};
     applyCoverPhotoPos();
     localStorage.setItem('pk_cover_photo',e.target.result);
@@ -3703,6 +3718,10 @@ function zoomCoverPhoto(dz){
 function startApp(){
   document.getElementById('cover').style.display='none';
   document.getElementById('app').style.display='block';
+  // Sofort nach oben scrollen
+  window.scrollTo(0,0);
+  document.body.scrollTop=0;
+  document.documentElement.scrollTop=0;
   setTimeout(updateUbHeader,300);
   renderPkYear();renderBdays();renderLebensrad();renderBuckets();renderZeitstrahl();
   renderVision();renderHabits();renderRoutinen();renderMedia();renderWeight();
@@ -4631,37 +4650,82 @@ ${htmlContent}
   <button onclick="window.close()" style="background:#eae1d8;border:none;border-radius:8pt;padding:10pt 24pt;font-size:12pt;color:#5a3224;cursor:pointer;margin-left:8pt;">✕ Schließen</button>
 </div>
 
-// ═══ SWIPE NAVIGATION (nur Touch) ═══
+
+// ═══ TITELBILD LANGEDRÜCKEN & FIXIERUNG ═══
+var _coverLongPress = null;
+var _coverLongPressed = false;
+
+function openCoverMenu(){
+  document.getElementById('cover-longpress-menu').style.display='block';
+  document.getElementById('cover-longpress-overlay').style.display='block';
+}
+function closeCoverMenu(){
+  document.getElementById('cover-longpress-menu').style.display='none';
+  document.getElementById('cover-longpress-overlay').style.display='none';
+}
+function removeCoverPhoto(){
+  closeCoverMenu();
+  localStorage.removeItem('pk_cover_photo');
+  localStorage.removeItem('pk_cover_pos');
+  var img=document.getElementById('cover-photo');
+  if(img){img.src='';img.classList.remove('visible');}
+  var ph=document.getElementById('photo-ph');
+  if(ph)ph.style.display='flex';
+  coverPhotoPos={x:50,y:50,zoom:100};
+}
+
+// Langedrücken auf photo-frame
 (function(){
-  var TABS=['ueberblick','pferde','glueck','persoenlich','organisation','kalender','vorlagen'];
-  var _sw={startX:0,startY:0,active:false};
-  function getTab(){for(var i=0;i<TABS.length;i++){var el=document.getElementById('section-'+TABS[i]);if(el&&el.style.display!=='none')return i;}return 0;}
-  function goTab(i){if(i<0||i>=TABS.length)return;switchTab(TABS[i]);var b=document.getElementById('tab-'+TABS[i]);if(b)b.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}
-  document.addEventListener('touchstart',function(e){
-    var t=e.target;
-    if(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.tagName==='SELECT')return;
-    var menu=document.getElementById('ub-menu');if(menu&&menu.style.display==='block')return;
-    var ubCard=document.getElementById('ub-header-card');if(ubCard&&ubCard.contains(t))return;
-    var cover=document.getElementById('photo-frame-el');if(cover&&cover.contains(t))return;
-    _sw.startX=e.touches[0].clientX;_sw.startY=e.touches[0].clientY;_sw.active=true;
-  },{passive:true});
-  document.addEventListener('touchmove',function(e){
-    if(!_sw.active)return;
-    if(Math.abs(e.touches[0].clientY-_sw.startY)>Math.abs(e.touches[0].clientX-_sw.startX))_sw.active=false;
-  },{passive:true});
-  document.addEventListener('touchend',function(e){
-    if(!_sw.active)return;_sw.active=false;
-    var dx=e.changedTouches[0].clientX-_sw.startX;
-    var dy=e.changedTouches[0].clientY-_sw.startY;
-    if(Math.abs(dx)<70||Math.abs(dy)>60)return;
-    goTab(dx<0?getTab()+1:getTab()-1);
-  },{passive:true});
-  document.addEventListener('keydown',function(e){
-    if(document.activeElement&&(document.activeElement.tagName==='INPUT'||document.activeElement.tagName==='TEXTAREA'))return;
-    if(e.key==='ArrowRight')goTab(getTab()+1);
-    if(e.key==='ArrowLeft')goTab(getTab()-1);
-  });
+  var frame=null;
+  function init(){
+    frame=document.getElementById('photo-frame-el');
+    if(!frame)return;
+
+    // Touch: Langedrücken
+    frame.addEventListener('touchstart',function(e){
+      _coverLongPressed=false;
+      _coverLongPress=setTimeout(function(){
+        _coverLongPressed=true;
+        openCoverMenu();
+      },600);
+    },{passive:true});
+
+    frame.addEventListener('touchend',function(){
+      clearTimeout(_coverLongPress);
+    },{passive:true});
+
+    frame.addEventListener('touchmove',function(){
+      clearTimeout(_coverLongPress);
+    },{passive:true});
+
+    // Desktop: Rechtsklick oder langes Drücken mit Maus
+    frame.addEventListener('contextmenu',function(e){
+      e.preventDefault();
+      openCoverMenu();
+    });
+  }
+  document.addEventListener('DOMContentLoaded',init);
+  setTimeout(init,500);
 })();
+
+// Position nach Drag speichern - zuverlässige Version
+var _coverDragFix_origEnd = null;
+setTimeout(function(){
+  var origEnd = window.coverDragEnd;
+  if(origEnd){
+    window.coverDragEnd = function(e){
+      origEnd(e);
+      // Direkt aus img.style.objectPosition lesen
+      var img=document.getElementById('cover-photo');
+      if(img&&img.style.objectPosition){
+        var parts=img.style.objectPosition.split(' ');
+        var x=parseFloat(parts[0])||50;
+        var y=parseFloat(parts[1])||50;
+        localStorage.setItem('pk_cover_pos',JSON.stringify({x:x,y:y,zoom:coverPhotoPos?coverPhotoPos.zoom:100}));
+      }
+    };
+  }
+},800);
 
 </body></html>`);
   win.document.close();
@@ -11359,6 +11423,83 @@ setTimeout(()=>{renderUeberblick();renderReflex();renderFitnessWeek();},100);
     if(e.key==='ArrowLeft')goTab(getTab()-1);
   });
 })();
+
+
+// ═══ TITELBILD LANGEDRÜCKEN & FIXIERUNG ═══
+var _coverLongPress = null;
+var _coverLongPressed = false;
+
+function openCoverMenu(){
+  document.getElementById('cover-longpress-menu').style.display='block';
+  document.getElementById('cover-longpress-overlay').style.display='block';
+}
+function closeCoverMenu(){
+  document.getElementById('cover-longpress-menu').style.display='none';
+  document.getElementById('cover-longpress-overlay').style.display='none';
+}
+function removeCoverPhoto(){
+  closeCoverMenu();
+  localStorage.removeItem('pk_cover_photo');
+  localStorage.removeItem('pk_cover_pos');
+  var img=document.getElementById('cover-photo');
+  if(img){img.src='';img.classList.remove('visible');}
+  var ph=document.getElementById('photo-ph');
+  if(ph)ph.style.display='flex';
+  coverPhotoPos={x:50,y:50,zoom:100};
+}
+
+// Langedrücken auf photo-frame
+(function(){
+  var frame=null;
+  function init(){
+    frame=document.getElementById('photo-frame-el');
+    if(!frame)return;
+
+    // Touch: Langedrücken
+    frame.addEventListener('touchstart',function(e){
+      _coverLongPressed=false;
+      _coverLongPress=setTimeout(function(){
+        _coverLongPressed=true;
+        openCoverMenu();
+      },600);
+    },{passive:true});
+
+    frame.addEventListener('touchend',function(){
+      clearTimeout(_coverLongPress);
+    },{passive:true});
+
+    frame.addEventListener('touchmove',function(){
+      clearTimeout(_coverLongPress);
+    },{passive:true});
+
+    // Desktop: Rechtsklick oder langes Drücken mit Maus
+    frame.addEventListener('contextmenu',function(e){
+      e.preventDefault();
+      openCoverMenu();
+    });
+  }
+  document.addEventListener('DOMContentLoaded',init);
+  setTimeout(init,500);
+})();
+
+// Position nach Drag speichern - zuverlässige Version
+var _coverDragFix_origEnd = null;
+setTimeout(function(){
+  var origEnd = window.coverDragEnd;
+  if(origEnd){
+    window.coverDragEnd = function(e){
+      origEnd(e);
+      // Direkt aus img.style.objectPosition lesen
+      var img=document.getElementById('cover-photo');
+      if(img&&img.style.objectPosition){
+        var parts=img.style.objectPosition.split(' ');
+        var x=parseFloat(parts[0])||50;
+        var y=parseFloat(parts[1])||50;
+        localStorage.setItem('pk_cover_pos',JSON.stringify({x:x,y:y,zoom:coverPhotoPos?coverPhotoPos.zoom:100}));
+      }
+    };
+  }
+},800);
 
 </body>
 </html>
