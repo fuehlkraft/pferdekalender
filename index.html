@@ -80,7 +80,7 @@ body{background:var(--grad);font-family:'Lato',sans-serif;color:var(--text);min-
 .photo-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;}
 .photo-placeholder .icon{font-size:38px;opacity:0.5;}
 .photo-placeholder p{font-size:12px;color:var(--muted);text-align:center;padding:0 20px;line-height:1.5;}
-#photo-input{position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;}
+#photo-input{display:none;}
 .cover-logo{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:400;letter-spacing:4px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;}
 .cover-title{font-family:'Cormorant Garamond',serif;font-size:46px;font-weight:600;color:var(--deep);text-align:center;line-height:1.1;margin-bottom:4px;}
 .cover-title em{font-style:italic;color:var(--muted);font-weight:400;}
@@ -1209,29 +1209,12 @@ img, input, textarea, select {
       onmouseup="if(typeof coverMouseUp==='function')coverMouseUp(event)">
       <img id="cover-photo" alt="">
       <div id="cover-drag-hint" style="display:none;position:absolute;bottom:8px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.45);color:white;font-size:10px;padding:3px 10px;border-radius:10px;white-space:nowrap;pointer-events:none;">✥ Bild verschieben</div>
-      <label for="photo-input" class="photo-placeholder" id="photo-ph" style="cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:all;">
-        <div class="icon" style="pointer-events:none;">🐴</div>
-        <p style="pointer-events:none;">Tippe hier, um dein<br>Lieblingsfoto hinzuzufügen</p>
-      </label>
+      <div class="photo-placeholder" id="photo-ph">
+        <div class="icon">🐴</div>
+        <p>Tippe hier, um dein<br>Lieblingsfoto hinzuzufügen</p>
+      </div>
     </div>
     <input type="file" id="photo-input" accept="image/*" onchange="loadPhoto(event)">
-
-<!-- Langedrück-Menü Titelbild -->
-<div id="cover-longpress-menu" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;border-radius:18px;padding:8px;box-shadow:0 12px 40px rgba(74,56,96,0.25);z-index:9999;min-width:220px;border:1px solid rgba(191,179,224,0.2);">
-  <label for="photo-input" onclick="closeCoverMenu()" style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:12px;cursor:pointer;font-family:Lato,sans-serif;font-size:15px;color:#4a3860;font-weight:600;-webkit-tap-highlight-color:transparent;">
-    <span style="font-size:20px;">📷</span> Bild wechseln
-  </label>
-  <div style="height:1px;background:rgba(191,179,224,0.2);margin:0 8px;"></div>
-  <button onclick="removeCoverPhoto()" style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:12px;cursor:pointer;font-family:Lato,sans-serif;font-size:15px;color:#c04040;font-weight:600;background:none;border:none;width:100%;text-align:left;-webkit-tap-highlight-color:transparent;">
-    <span style="font-size:20px;">🗑️</span> Bild entfernen
-  </button>
-  <div style="height:1px;background:rgba(191,179,224,0.2);margin:0 8px;"></div>
-  <button onclick="closeCoverMenu()" style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:12px;cursor:pointer;font-family:Lato,sans-serif;font-size:15px;color:#8878a8;background:none;border:none;width:100%;text-align:left;-webkit-tap-highlight-color:transparent;">
-    <span style="font-size:20px;">✕</span> Abbrechen
-  </button>
-</div>
-<div id="cover-longpress-overlay" onclick="closeCoverMenu()" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(74,56,96,0.2);backdrop-filter:blur(2px);"></div>
-    
     <div style="position:absolute;width:0;height:0;overflow:hidden;opacity:0;">
       <input type="file" id="ub-foto-input" accept="image/*" onchange="loadUeberblickFotoFromInput(this)">
       <input type="file" id="reise-foto-input" accept="image/*" onchange="handleReiseFoto(this)">
@@ -3505,8 +3488,6 @@ function loadAll(){
   if(sp){
     const i=document.getElementById('cover-photo');i.src=sp;i.classList.add('visible');
     document.getElementById('photo-ph').style.display='none';
-    var ccb2=document.getElementById('cover-change-btn');if(ccb2)ccb2.style.display='block';
-    var ccb=document.getElementById('cover-change-btn');if(ccb)ccb.style.display='block';
     try{const pos=JSON.parse(localStorage.getItem('pk_cover_pos'));if(pos)coverPhotoPos=pos;}catch(e){}
     applyCoverPhotoPos();
   }
@@ -3640,10 +3621,9 @@ function loadPhoto(ev){
   r.onload=e=>{
     const i=document.getElementById('cover-photo');i.src=e.target.result;i.classList.add('visible');
     document.getElementById('photo-ph').style.display='none';
-    coverPhotoPos={x:50,y:30,zoom:100};
+    coverPhotoPos={x:50,y:50,zoom:100};
     applyCoverPhotoPos();
     localStorage.setItem('pk_cover_photo',e.target.result);
-    localStorage.setItem('pk_cover_pos',JSON.stringify(coverPhotoPos));
     localStorage.setItem('pk_cover_pos',JSON.stringify(coverPhotoPos));
   };r.readAsDataURL(f);
 }
@@ -3654,11 +3634,7 @@ var _coverDrag={active:false,startX:0,startY:0,startPosX:50,startPosY:50};
 function coverDragStart(e){
   var img=document.getElementById('cover-photo');
   if(!img||!img.classList.contains('visible'))return;
-  // Placeholder nicht abfangen
   if(e.target&&e.target.id==='photo-ph')return;
-  if(e.target&&e.target.closest&&e.target.closest('#photo-ph'))return;
-  // e.preventDefault() erst in coverDragMove - nicht beim Start!
-  // Sonst blockiert es onclick auf Android
   _coverDrag.active=true;
   window._photoDragging=false;
   var t=e.touches?e.touches[0]:e;
@@ -3720,10 +3696,7 @@ function zoomCoverPhoto(dz){
 function startApp(){
   document.getElementById('cover').style.display='none';
   document.getElementById('app').style.display='block';
-  // Sofort nach oben scrollen
   window.scrollTo(0,0);
-  document.body.scrollTop=0;
-  document.documentElement.scrollTop=0;
   setTimeout(updateUbHeader,300);
   renderPkYear();renderBdays();renderLebensrad();renderBuckets();renderZeitstrahl();
   renderVision();renderHabits();renderRoutinen();renderMedia();renderWeight();
@@ -4651,85 +4624,6 @@ ${htmlContent}
   <button onclick="window.print()" style="background:#5a3224;border:none;border-radius:8pt;padding:10pt 24pt;font-size:12pt;color:white;cursor:pointer;">🖨️ Drucken / Als PDF speichern</button>
   <button onclick="window.close()" style="background:#eae1d8;border:none;border-radius:8pt;padding:10pt 24pt;font-size:12pt;color:#5a3224;cursor:pointer;margin-left:8pt;">✕ Schließen</button>
 </div>
-
-
-// ═══ TITELBILD LANGEDRÜCKEN & FIXIERUNG ═══
-var _coverLongPress = null;
-var _coverLongPressed = false;
-
-function openCoverMenu(){
-  document.getElementById('cover-longpress-menu').style.display='block';
-  document.getElementById('cover-longpress-overlay').style.display='block';
-}
-function closeCoverMenu(){
-  document.getElementById('cover-longpress-menu').style.display='none';
-  document.getElementById('cover-longpress-overlay').style.display='none';
-}
-function removeCoverPhoto(){
-  closeCoverMenu();
-  localStorage.removeItem('pk_cover_photo');
-  localStorage.removeItem('pk_cover_pos');
-  var img=document.getElementById('cover-photo');
-  if(img){img.src='';img.classList.remove('visible');}
-  var ph=document.getElementById('photo-ph');
-  if(ph)ph.style.display='flex';
-  coverPhotoPos={x:50,y:50,zoom:100};
-}
-
-// Langedrücken auf photo-frame
-(function(){
-  var frame=null;
-  function init(){
-    frame=document.getElementById('photo-frame-el');
-    if(!frame)return;
-
-    // Touch: Langedrücken
-    frame.addEventListener('touchstart',function(e){
-      _coverLongPressed=false;
-      _coverLongPress=setTimeout(function(){
-        _coverLongPressed=true;
-        openCoverMenu();
-      },600);
-    },{passive:true});
-
-    frame.addEventListener('touchend',function(){
-      clearTimeout(_coverLongPress);
-    },{passive:true});
-
-    frame.addEventListener('touchmove',function(){
-      clearTimeout(_coverLongPress);
-    },{passive:true});
-
-    // Desktop: Rechtsklick oder langes Drücken mit Maus
-    frame.addEventListener('contextmenu',function(e){
-      e.preventDefault();
-      openCoverMenu();
-    });
-  }
-  document.addEventListener('DOMContentLoaded',init);
-  setTimeout(init,1000);
-})();
-
-// Position nach Drag speichern - zuverlässige Version
-var _coverDragFix_origEnd = null;
-setTimeout(function(){
-  var origEnd = window.coverDragEnd;
-  if(origEnd){
-    window.coverDragEnd = function(e){
-      origEnd(e);
-      // Direkt aus img.style.objectPosition lesen
-      var img=document.getElementById('cover-photo');
-      if(img&&img.style.objectPosition){
-        var parts=img.style.objectPosition.split(' ');
-        var x=parseFloat(parts[0])||50;
-        var y=parseFloat(parts[1])||50;
-        localStorage.setItem('pk_cover_pos',JSON.stringify({x:x,y:y,zoom:coverPhotoPos?coverPhotoPos.zoom:100}));
-      }
-    };
-  }
-},800);
-
-
 </body></html>`);
   win.document.close();
   setTimeout(function(){ win.focus(); }, 300);
@@ -8359,7 +8253,7 @@ const VORLAGE_RENDERERS={
           <div id="ub-title" style="font-family:Cormorant Garamond,serif;font-size:28px;font-weight:600;color:white;text-shadow:0 1px 8px rgba(0,0,0,0.3);margin-bottom:4px;">Mein Überblick</div>
           <div id="ub-date" style="font-size:13px;color:rgba(255,255,255,0.85);text-shadow:0 1px 4px rgba(0,0,0,0.3);">${todayLong} · Alle Bereiche auf einen Blick</div>
         </div>
-        <!-- Hamburger Menü - außerhalb overflow:hidden -->
+        <!-- Hamburger Menü -->
         <div style="position:absolute;top:12px;right:12px;z-index:9999;" id="ub-menu-wrap">
           <button onclick="toggleUbMenu()" id="ub-menu-btn" style="background:rgba(255,255,255,0.85);border:none;border-radius:8px;width:44px;height:44px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.15);touch-action:manipulation;-webkit-tap-highlight-color:transparent;">☰</button>
           <div id="ub-menu" style="display:none;position:absolute;top:42px;right:0;background:white;border:1px solid rgba(180,160,220,0.3);border-radius:12px;padding:6px;box-shadow:0 8px 24px rgba(0,0,0,0.12);min-width:220px;z-index:9999;">
@@ -8799,7 +8693,6 @@ var _ubDrag={active:false,startX:0,startY:0,startPosX:50,startPosY:50};
 function ubDragStart(e){
   var foto=localStorage.getItem('pk_ueberblick_foto');
   if(!foto)return; // nur wenn Bild da
-  // Hamburger-Bereich NICHT abfangen
   var menuWrap=document.getElementById('ub-menu-wrap');
   if(menuWrap&&menuWrap.contains(e.target))return;
   e.preventDefault();
@@ -8831,11 +8724,8 @@ function ubDragMove(e){
 function ubDragEnd(e){
   if(!_ubDrag.active)return;
   _ubDrag.active=false;
-  window._ubDragJustEnded=true;
-  setTimeout(function(){window._ubDragJustEnded=false;},300);
   var card=document.getElementById('ub-header-card');
   if(card){
-    // Position direkt aus den gespeicherten Werten nehmen (nicht aus backgroundPosition String)
     var newX=Math.max(0,Math.min(100,_ubDrag.startPosX-(((_ubDrag.lastDx||0))/2)));
     var newY=Math.max(0,Math.min(100,_ubDrag.startPosY-(((_ubDrag.lastDy||0))/2)));
     localStorage.setItem('pk_ueberblick_pos',JSON.stringify({x:newX,y:newY}));
@@ -11290,6 +11180,67 @@ loadPKE();
 loadVorlagen();
 loadKal();
 setTimeout(()=>{renderUeberblick();renderReflex();renderFitnessWeek();},100);
+
+
+// ═══ SWIPE NAVIGATION ═══
+(function(){
+  var TABS=['ueberblick','pferde','glueck','persoenlich','organisation','kalender','vorlagen'];
+  var sx=0,sy=0,dragging=false;
+
+  function currentIdx(){
+    var btns=document.querySelectorAll('.main-nav-btn.active');
+    if(btns.length){
+      var id=btns[0].id.replace('tab-','');
+      var i=TABS.indexOf(id);
+      if(i>=0)return i;
+    }
+    return 0;
+  }
+
+  function goTab(i){
+    if(i<0||i>=TABS.length)return;
+    switchTab(TABS[i]);
+    window.scrollTo(0,0);
+    var b=document.getElementById('tab-'+TABS[i]);
+    if(b)b.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  }
+
+  document.body.addEventListener('touchstart',function(e){
+    var t=e.target;
+    if(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.tagName==='SELECT')return;
+    var hw=document.getElementById('ub-menu-wrap');
+    if(hw&&hw.contains(t))return;
+    var pf=document.getElementById('photo-frame-el');
+    if(pf&&pf.contains(t))return;
+    sx=e.touches[0].clientX;
+    sy=e.touches[0].clientY;
+    dragging=true;
+  },{passive:true});
+
+  document.body.addEventListener('touchmove',function(e){
+    if(!dragging)return;
+    var dx=Math.abs(e.touches[0].clientX-sx);
+    var dy=Math.abs(e.touches[0].clientY-sy);
+    if(dy>dx&&dy>15)dragging=false;
+  },{passive:true});
+
+  document.body.addEventListener('touchend',function(e){
+    if(!dragging)return;
+    dragging=false;
+    var dx=e.changedTouches[0].clientX-sx;
+    var dy=e.changedTouches[0].clientY-sy;
+    if(Math.abs(dx)<50)return;
+    if(Math.abs(dy)>=Math.abs(dx))return;
+    goTab(dx<0?currentIdx()+1:currentIdx()-1);
+  },{passive:true});
+
+  document.addEventListener('keydown',function(e){
+    var ae=document.activeElement;
+    if(ae&&(ae.tagName==='INPUT'||ae.tagName==='TEXTAREA'))return;
+    if(e.key==='ArrowRight')goTab(currentIdx()+1);
+    if(e.key==='ArrowLeft')goTab(currentIdx()-1);
+  });
+})();
 </script>
 
   <!-- FOOTER -->
@@ -11393,152 +11344,6 @@ setTimeout(()=>{renderUeberblick();renderReflex();renderFitnessWeek();},100);
     <div class="fk-login-error" id="fk-login-error">Falsches Passwort. Bitte versuche es erneut.</div>
     <div class="fk-login-hint">Dein Passwort erhältst du nach dem Kauf<br>per E-Mail von uns. 🌸</div>
   </div>
-
-
-
-
-
-// ═══ TITELBILD LANGEDRÜCKEN & FIXIERUNG ═══
-var _coverLongPress = null;
-var _coverLongPressed = false;
-
-function openCoverMenu(){
-  document.getElementById('cover-longpress-menu').style.display='block';
-  document.getElementById('cover-longpress-overlay').style.display='block';
-}
-function closeCoverMenu(){
-  document.getElementById('cover-longpress-menu').style.display='none';
-  document.getElementById('cover-longpress-overlay').style.display='none';
-}
-function removeCoverPhoto(){
-  closeCoverMenu();
-  localStorage.removeItem('pk_cover_photo');
-  localStorage.removeItem('pk_cover_pos');
-  var img=document.getElementById('cover-photo');
-  if(img){img.src='';img.classList.remove('visible');}
-  var ph=document.getElementById('photo-ph');
-  if(ph)ph.style.display='flex';
-  coverPhotoPos={x:50,y:50,zoom:100};
-}
-
-// Langedrücken auf photo-frame
-(function(){
-  var frame=null;
-  function init(){
-    frame=document.getElementById('photo-frame-el');
-    if(!frame)return;
-
-    // Touch: Langedrücken
-    frame.addEventListener('touchstart',function(e){
-      _coverLongPressed=false;
-      _coverLongPress=setTimeout(function(){
-        _coverLongPressed=true;
-        openCoverMenu();
-      },600);
-    },{passive:true});
-
-    frame.addEventListener('touchend',function(){
-      clearTimeout(_coverLongPress);
-    },{passive:true});
-
-    frame.addEventListener('touchmove',function(){
-      clearTimeout(_coverLongPress);
-    },{passive:true});
-
-    // Desktop: Rechtsklick oder langes Drücken mit Maus
-    frame.addEventListener('contextmenu',function(e){
-      e.preventDefault();
-      openCoverMenu();
-    });
-  }
-  document.addEventListener('DOMContentLoaded',init);
-  setTimeout(init,1000);
-})();
-
-// Position nach Drag speichern - zuverlässige Version
-var _coverDragFix_origEnd = null;
-setTimeout(function(){
-  var origEnd = window.coverDragEnd;
-  if(origEnd){
-    window.coverDragEnd = function(e){
-      origEnd(e);
-      // Direkt aus img.style.objectPosition lesen
-      var img=document.getElementById('cover-photo');
-      if(img&&img.style.objectPosition){
-        var parts=img.style.objectPosition.split(' ');
-        var x=parseFloat(parts[0])||50;
-        var y=parseFloat(parts[1])||50;
-        localStorage.setItem('pk_cover_pos',JSON.stringify({x:x,y:y,zoom:coverPhotoPos?coverPhotoPos.zoom:100}));
-      }
-    };
-  }
-},800);
-
-
-// ═══ SWIPE NAVIGATION (DEBUG) ═══
-(function(){
-  var TABS=['ueberblick','pferde','glueck','persoenlich','organisation','kalender','vorlagen'];
-  var sx=0,sy=0,dragging=false;
-
-  // Debug-Anzeige
-  var dbg=document.createElement('div');
-  dbg.id='swipe-debug';
-  dbg.style.cssText='position:fixed;bottom:10px;left:10px;right:10px;background:rgba(0,0,0,0.85);color:#0f0;font-size:11px;padding:8px;border-radius:8px;z-index:999999;font-family:monospace;display:none;';
-  document.body.appendChild(dbg);
-  function log(msg){
-    dbg.style.display='block';
-    dbg.textContent=msg;
-  }
-
-  function currentIdx(){
-    var btns=document.querySelectorAll('.main-nav-btn.active');
-    if(btns.length){
-      var id=btns[0].id.replace('tab-','');
-      var i=TABS.indexOf(id);
-      if(i>=0)return i;
-    }
-    return 0;
-  }
-
-  function go(i){
-    if(i<0||i>=TABS.length){log('go() abgebrochen: i='+i);return;}
-    log('Wechsel zu: '+TABS[i]);
-    switchTab(TABS[i]);
-    window.scrollTo(0,0);
-  }
-
-  document.body.addEventListener('touchstart',function(e){
-    var t=e.target;
-    sx=e.touches[0].clientX;
-    sy=e.touches[0].clientY;
-    dragging=true;
-    log('START x='+Math.round(sx)+' target='+t.tagName+'.'+t.className.substring(0,20));
-  },{passive:true});
-
-  document.body.addEventListener('touchend',function(e){
-    if(!dragging){log('touchend ohne dragging');return;}
-    dragging=false;
-    var dx=e.changedTouches[0].clientX-sx;
-    var dy=e.changedTouches[0].clientY-sy;
-    log('END dx='+Math.round(dx)+' dy='+Math.round(dy));
-    if(Math.abs(dx)<50){log('zu kurz: dx='+Math.round(dx));return;}
-    if(Math.abs(dy)>=Math.abs(dx)){log('zu vertikal: dx='+Math.round(dx)+' dy='+Math.round(dy));return;}
-    var cur=currentIdx();
-    log('SWIPE! cur='+cur+' dx='+Math.round(dx));
-    go(dx<0?cur+1:cur-1);
-  },{passive:true});
-
-  document.body.addEventListener('touchmove',function(e){
-    if(!dragging)return;
-  },{passive:true});
-
-  document.addEventListener('keydown',function(e){
-    var ae=document.activeElement;
-    if(ae&&(ae.tagName==='INPUT'||ae.tagName==='TEXTAREA'))return;
-    if(e.key==='ArrowRight')go(currentIdx()+1);
-    if(e.key==='ArrowLeft')go(currentIdx()-1);
-  });
-})();
 
 </body>
 </html>
