@@ -4729,6 +4729,7 @@ setTimeout(function(){
   }
 },800);
 
+
 </body></html>`);
   win.document.close();
   setTimeout(function(){ win.focus(); }, 300);
@@ -11394,82 +11395,7 @@ setTimeout(()=>{renderUeberblick();renderReflex();renderFitnessWeek();},100);
   </div>
 
 
-// ═══ SWIPE NAVIGATION (nur Touch) ═══
-(function(){
-  var TABS=['ueberblick','pferde','glueck','persoenlich','organisation','kalender','vorlagen'];
-  var _sw={startX:0,startY:0,active:false,moved:false};
 
-  function getTab(){
-    for(var i=0;i<TABS.length;i++){
-      var el=document.getElementById('section-'+TABS[i]);
-      if(el&&el.style.display!=='none'&&el.style.display!=='')return i;
-    }
-    // Fallback: aktiven Tab-Button suchen
-    for(var i=0;i<TABS.length;i++){
-      var btn=document.getElementById('tab-'+TABS[i]);
-      if(btn&&btn.classList.contains('active'))return i;
-    }
-    return 0;
-  }
-
-  function goTab(i){
-    if(i<0||i>=TABS.length)return;
-    switchTab(TABS[i]);
-    window.scrollTo(0,0);
-    var b=document.getElementById('tab-'+TABS[i]);
-    if(b)b.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
-  }
-
-  document.addEventListener('touchstart',function(e){
-    var t=e.target;
-    // Eingabefelder ignorieren
-    if(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.tagName==='SELECT')return;
-    // App muss offen sein
-    var app=document.getElementById('app');
-    if(!app||app.style.display==='none'||app.style.display==='')return;
-    // Menüs offen → ignorieren
-    var m1=document.getElementById('ub-menu');
-    if(m1&&m1.style.display==='block')return;
-    var m2=document.getElementById('cover-longpress-menu');
-    if(m2&&m2.style.display==='block')return;
-    // Nur Hamburger-Button und photo-frame ausschließen
-    var hw=document.getElementById('ub-menu-wrap');
-    if(hw&&hw.contains(t))return;
-    var pf=document.getElementById('photo-frame-el');
-    if(pf&&pf.contains(t))return;
-    _sw.startX=e.touches[0].clientX;
-    _sw.startY=e.touches[0].clientY;
-    _sw.active=true;
-    _sw.moved=false;
-  },{passive:true});
-
-  document.addEventListener('touchmove',function(e){
-    if(!_sw.active)return;
-    var dx=Math.abs(e.touches[0].clientX-_sw.startX);
-    var dy=Math.abs(e.touches[0].clientY-_sw.startY);
-    _sw.moved=true;
-    // Mehr vertikal = Scrollen, kein Swipe
-    if(dy>dx&&dy>20)_sw.active=false;
-  },{passive:true});
-
-  document.addEventListener('touchend',function(e){
-    if(!_sw.active){return;}
-    _sw.active=false;
-    var dx=e.changedTouches[0].clientX-_sw.startX;
-    var dy=e.changedTouches[0].clientY-_sw.startY;
-    if(Math.abs(dx)<50)return;
-    if(Math.abs(dy)>Math.abs(dx))return;
-    goTab(dx<0?getTab()+1:getTab()-1);
-  },{passive:true});
-
-  // Pfeiltasten PC
-  document.addEventListener('keydown',function(e){
-    var ae=document.activeElement;
-    if(ae&&(ae.tagName==='INPUT'||ae.tagName==='TEXTAREA'))return;
-    if(e.key==='ArrowRight')goTab(getTab()+1);
-    if(e.key==='ArrowLeft')goTab(getTab()-1);
-  });
-})();
 
 
 // ═══ TITELBILD LANGEDRÜCKEN & FIXIERUNG ═══
@@ -11547,6 +11473,72 @@ setTimeout(function(){
     };
   }
 },800);
+
+
+// ═══ SWIPE NAVIGATION (DEBUG) ═══
+(function(){
+  var TABS=['ueberblick','pferde','glueck','persoenlich','organisation','kalender','vorlagen'];
+  var sx=0,sy=0,dragging=false;
+
+  // Debug-Anzeige
+  var dbg=document.createElement('div');
+  dbg.id='swipe-debug';
+  dbg.style.cssText='position:fixed;bottom:10px;left:10px;right:10px;background:rgba(0,0,0,0.85);color:#0f0;font-size:11px;padding:8px;border-radius:8px;z-index:999999;font-family:monospace;display:none;';
+  document.body.appendChild(dbg);
+  function log(msg){
+    dbg.style.display='block';
+    dbg.textContent=msg;
+  }
+
+  function currentIdx(){
+    var btns=document.querySelectorAll('.main-nav-btn.active');
+    if(btns.length){
+      var id=btns[0].id.replace('tab-','');
+      var i=TABS.indexOf(id);
+      if(i>=0)return i;
+    }
+    return 0;
+  }
+
+  function go(i){
+    if(i<0||i>=TABS.length){log('go() abgebrochen: i='+i);return;}
+    log('Wechsel zu: '+TABS[i]);
+    switchTab(TABS[i]);
+    window.scrollTo(0,0);
+  }
+
+  document.body.addEventListener('touchstart',function(e){
+    var t=e.target;
+    sx=e.touches[0].clientX;
+    sy=e.touches[0].clientY;
+    dragging=true;
+    log('START x='+Math.round(sx)+' target='+t.tagName+'.'+t.className.substring(0,20));
+  },{passive:true});
+
+  document.body.addEventListener('touchend',function(e){
+    if(!dragging){log('touchend ohne dragging');return;}
+    dragging=false;
+    var dx=e.changedTouches[0].clientX-sx;
+    var dy=e.changedTouches[0].clientY-sy;
+    log('END dx='+Math.round(dx)+' dy='+Math.round(dy));
+    if(Math.abs(dx)<50){log('zu kurz: dx='+Math.round(dx));return;}
+    if(Math.abs(dy)>=Math.abs(dx)){log('zu vertikal: dx='+Math.round(dx)+' dy='+Math.round(dy));return;}
+    var cur=currentIdx();
+    log('SWIPE! cur='+cur+' dx='+Math.round(dx));
+    go(dx<0?cur+1:cur-1);
+  },{passive:true});
+
+  document.body.addEventListener('touchmove',function(e){
+    if(!dragging)return;
+  },{passive:true});
+
+  document.addEventListener('keydown',function(e){
+    var ae=document.activeElement;
+    if(ae&&(ae.tagName==='INPUT'||ae.tagName==='TEXTAREA'))return;
+    if(e.key==='ArrowRight')go(currentIdx()+1);
+    if(e.key==='ArrowLeft')go(currentIdx()-1);
+  });
+})();
 
 </body>
 </html>
