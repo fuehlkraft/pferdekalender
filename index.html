@@ -11385,7 +11385,17 @@ setTimeout(()=>{renderUeberblick();renderReflex();renderFitnessWeek();},100);
     var hw=document.getElementById('ub-menu-wrap');
     if(hw&&hw.contains(t))return;
     var ubCard=document.getElementById('ub-header-card');
-    if(ubCard&&ubCard.contains(t))return;
+    if(ubCard&&ubCard.contains(t)){
+      // Banner nur ausschließen, wenn die Bild-Position NICHT fixiert ist
+      // (dann kann man dort wirklich ziehen). Ist sie fixiert, soll ganz normal
+      // durch den Banner hindurch geswipet werden können.
+      var fotoVorhanden=false;
+      try{ fotoVorhanden=!!localStorage.getItem('pk_ueberblick_foto'); }catch(e){}
+      var istGesperrt=false;
+      try{ istGesperrt=localStorage.getItem('pk_ub_locked')==='1'; }catch(e){}
+      if(fotoVorhanden && !istGesperrt) return; // Bild da und NICHT fixiert -> Drag hat Vorrang
+      // Sonst (kein Bild ODER fixiert): normal weiter zum Tab-Swipe
+    }
     // Titelbild ausschließen
     var pf=document.getElementById('photo-frame-el');
     if(pf&&pf.contains(t))return;
