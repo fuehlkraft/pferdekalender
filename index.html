@@ -1221,9 +1221,9 @@ img, input, textarea, select {
 
 <!-- Langedrück-Menü Titelbild -->
 <div id="cover-longpress-menu" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;border-radius:18px;padding:8px;box-shadow:0 12px 40px rgba(74,56,96,0.25);z-index:9999;min-width:220px;border:1px solid rgba(191,179,224,0.2);">
-  <label for="photo-input" onclick="closeCoverMenu()" style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:12px;cursor:pointer;font-family:Lato,sans-serif;font-size:15px;color:#4a3860;font-weight:600;-webkit-tap-highlight-color:transparent;">
+  <button type="button" onclick="closeCoverMenu();setTimeout(function(){document.getElementById('photo-input').click();},150);" style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:12px;cursor:pointer;font-family:Lato,sans-serif;font-size:15px;color:#4a3860;font-weight:600;-webkit-tap-highlight-color:transparent;background:none;border:none;width:100%;text-align:left;">
     <span style="font-size:20px;">📷</span> Bild wechseln
-  </label>
+  </button>
   <div style="height:1px;background:rgba(191,179,224,0.2);margin:0 8px;"></div>
   <button onclick="removeCoverPhoto()" style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:12px;cursor:pointer;font-family:Lato,sans-serif;font-size:15px;color:#c04040;font-weight:600;background:none;border:none;width:100%;text-align:left;-webkit-tap-highlight-color:transparent;">
     <span style="font-size:20px;">🗑️</span> Bild entfernen
@@ -11344,27 +11344,16 @@ setTimeout(()=>{renderUeberblick();renderReflex();renderFitnessWeek();},100);
 
   // Prüft ob wir in einer Detail-/Unteransicht sind (Pferde-Module, Organisation, Persönlich)
   function inDetailView(){
-    // Nur prüfen wenn der jeweilige HAUPT-Tab auch wirklich aktiv/sichtbar ist
+    // NUR Pferde hat eine echte "Übersicht vs Detail"-Unterscheidung:
+    // 'overview' ist die Standardansicht, alles andere ist eine bewusst geöffnete Detailseite.
+    // Organisation und Persönlich haben IMMER eine Unteransicht offen (das ist normal) -
+    // dort wird der Swipe stattdessen über die Sub-Nav-Leisten-Erkennung (isInsideHScroll) gesteuert.
     var secPferde=document.getElementById('section-pferde');
     if(secPferde&&secPferde.style.display==='block'){
       var pkViews=['costs','gesundheit','kontrolle','huf','futter','training','verhalten','packliste','allergie','urlaub','achtsamkeit','month'];
       for(var i=0;i<pkViews.length;i++){
         var el=document.getElementById('pk-view-'+pkViews[i]);
         if(el&&el.style.display==='block')return true;
-      }
-    }
-    var secOrg=document.getElementById('section-organisation');
-    if(secOrg&&secOrg.style.display==='block'){
-      var orgSections=secOrg.querySelectorAll('.org-section');
-      for(var j=0;j<orgSections.length;j++){
-        if(orgSections[j].style.display==='block')return true;
-      }
-    }
-    var secPers=document.getElementById('section-persoenlich');
-    if(secPers&&secPers.style.display==='block'){
-      var persSections=secPers.querySelectorAll('.pers-section');
-      for(var k=0;k<persSections.length;k++){
-        if(persSections[k].style.display==='block')return true;
       }
     }
     return false;
