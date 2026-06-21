@@ -5001,9 +5001,8 @@ function dismissBackupReminder(){
 }
 
 function checkForUpdate(){
-  // Prüft ob eine neue Version verfügbar ist
-  // Du änderst die version.json auf Netlify wenn ein Update kommt
-  fetch('https://fuehlkraft.github.io/pferdekalender/version.json?t='+Date.now())
+  // Prüft ob eine neue Version verfügbar ist (per version.json, unabhängig vom Service Worker Cache)
+  fetch('https://fuehlkraft.github.io/pferdekalender/version.json?t='+Date.now(), {cache:'no-store'})
     .then(function(r){return r.json();})
     .then(function(data){
       if(data && data.version && data.version !== FK_VERSION){
@@ -5015,6 +5014,9 @@ function checkForUpdate(){
         if(lastSeen !== data.version){
           localStorage.setItem('fk_update_available', data.version);
           localStorage.setItem('fk_update_info', data.info || 'Neue Version verfügbar');
+          // Großen Banner oben anzeigen
+          var banner = document.getElementById('sw-update-banner');
+          if(banner) banner.style.display = 'flex';
         }
       }
     })
@@ -11285,6 +11287,34 @@ setTimeout(()=>{renderUeberblick();renderReflex();renderFitnessWeek();},100);
     if(b)b.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
   }
 
+  // Prüft ob wir in einer Detail-/Unteransicht sind (Pferde-Module, Organisation, Persönlich)
+  function inDetailView(){
+    // Nur prüfen wenn der jeweilige HAUPT-Tab auch wirklich aktiv/sichtbar ist
+    var secPferde=document.getElementById('section-pferde');
+    if(secPferde&&secPferde.style.display==='block'){
+      var pkViews=['costs','gesundheit','kontrolle','huf','futter','training','verhalten','packliste','allergie','urlaub','achtsamkeit','month'];
+      for(var i=0;i<pkViews.length;i++){
+        var el=document.getElementById('pk-view-'+pkViews[i]);
+        if(el&&el.style.display==='block')return true;
+      }
+    }
+    var secOrg=document.getElementById('section-organisation');
+    if(secOrg&&secOrg.style.display==='block'){
+      var orgSections=secOrg.querySelectorAll('.org-section');
+      for(var j=0;j<orgSections.length;j++){
+        if(orgSections[j].style.display==='block')return true;
+      }
+    }
+    var secPers=document.getElementById('section-persoenlich');
+    if(secPers&&secPers.style.display==='block'){
+      var persSections=secPers.querySelectorAll('.pers-section');
+      for(var k=0;k<persSections.length;k++){
+        if(persSections[k].style.display==='block')return true;
+      }
+    }
+    return false;
+  }
+
   document.body.addEventListener('touchstart',function(e){
     var t=e.target;
     // Eingabefelder ignorieren
@@ -11302,6 +11332,8 @@ setTimeout(()=>{renderUeberblick();renderReflex();renderFitnessWeek();},100);
     if(m1&&m1.style.display==='block')return;
     var m2=document.getElementById('cover-longpress-menu');
     if(m2&&m2.style.display==='block')return;
+    // In einer Unteransicht (z.B. Gesundheitsakte, Reflexion, Ziele) → kein Tab-Swipe
+    if(inDetailView())return;
 
     sx=e.touches[0].clientX;
     sy=e.touches[0].clientY;
@@ -11310,6 +11342,9 @@ setTimeout(()=>{renderUeberblick();renderReflex();renderFitnessWeek();},100);
 
   document.body.addEventListener('touchmove',function(e){
     if(!dragging)return;
+    // Falls Banner-Drag währenddessen aktiv wird, sofort abbrechen
+    if(typeof _ubDrag!=='undefined'&&_ubDrag.active){dragging=false;return;}
+    if(typeof _coverDrag!=='undefined'&&_coverDrag.active){dragging=false;return;}
     var dx=Math.abs(e.touches[0].clientX-sx);
     var dy=Math.abs(e.touches[0].clientY-sy);
     // Eindeutig vertikal → das ist normales Scrollen, kein Tab-Swipe
