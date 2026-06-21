@@ -1292,7 +1292,7 @@ img, input, textarea, select {
     <div style="font-size:11px;opacity:0.85;">Deine Daten bleiben erhalten. ✨</div>
   </div>
   <button onclick="updateSW()" style="background:white;border:none;border-radius:8px;padding:7px 16px;font-size:12px;font-weight:700;color:#5a3224;cursor:pointer;font-family:Lato,sans-serif;white-space:nowrap;">✓ Jetzt aktualisieren</button>
-  <button onclick="document.getElementById('sw-update-banner').style.display='none'" style="background:rgba(255,255,255,0.2);border:none;color:white;border-radius:6px;padding:7px 10px;cursor:pointer;font-size:13px;">✕</button>
+  <button onclick="markUpdateSeen();document.getElementById('sw-update-banner').style.display='none'" style="background:rgba(255,255,255,0.2);border:none;color:white;border-radius:6px;padding:7px 10px;cursor:pointer;font-size:13px;">✕</button>
 </div>
 
 <!-- PWA Install Banner -->
@@ -3734,9 +3734,13 @@ function zoomCoverPhoto(dz){
   localStorage.setItem('pk_cover_pos',JSON.stringify(coverPhotoPos));
 }
 function startApp(){
+  // WICHTIG: gespeicherten Tab AUSLESEN bevor er gleich überschrieben wird
+  var _restoreTab=null;
+  try{ _restoreTab=localStorage.getItem('pk_active_tab'); }catch(e){}
+
+  try{localStorage.setItem('pk_was_in_app','1');}catch(e){}
   document.getElementById('cover').style.display='none';
   document.getElementById('app').style.display='block';
-  // Sofort nach oben scrollen
   window.scrollTo(0,0);
   document.body.scrollTop=0;
   document.documentElement.scrollTop=0;
@@ -3745,6 +3749,10 @@ function startApp(){
   renderVision();renderHabits();renderRoutinen();renderMedia();renderWeight();
   switchTab('ueberblick');
   initFarbthema();
+  // Zuletzt aktiven Tab wiederherstellen (mit dem VORHER gemerkten Wert)
+  if(_restoreTab && _restoreTab!=='ueberblick'){
+    setTimeout(function(){ switchTab(_restoreTab); }, 150);
+  }
 }
 function goToCover(){
   document.getElementById('cover').style.display='flex';
@@ -3761,7 +3769,7 @@ function goToCover(){
 
 function scrollPkNav(by){const el=document.getElementById('pk-subnav');if(el)el.scrollBy({left:by,behavior:'smooth'});}
 function scrollMainNav(by){const el=document.getElementById('main-nav-inner');if(el)el.scrollBy({left:by,behavior:'smooth'});}
-function switchTab(t){ _switchTabFinal(t); }
+function switchTab(t){ _switchTabFinal(t); try{localStorage.setItem('pk_active_tab',t);}catch(e){} }
 const ACHTSAMKEIT_IMPULSE=[
   {titel:'Heute nur ankommen',untertitel:'Heute passiert gar nichts, und das ist der Punkt.',impuls:'Klingt komisch? Dann lies weiter.\n\nDie meisten Menschen die zu einem Pferd gehen haben einen Plan. Reiten. Putzen. Trainieren. Longieren. Irgendwas tun. Das Pferd soll etwas leisten oder zumindest mitmachen.\n\nHeute nicht.\n\nHeute gehst du einfach hin. Du bleibst stehen oder setzt dich. Du schaust. Du atmest. Du bist da.\n\nUnd das Pferd, das wird dich beobachten. Vielleicht kommt es näher. Vielleicht dreht es sich weg. Vielleicht schnaubt es. Vielleicht ignoriert es dich komplett und frisst weiter.\n\nAlles davon ist richtig. Alles davon erzählt dir etwas.\n\nPferde registrieren in Sekunden wer zu ihnen kommt und in welchem Zustand diese Person ist. Angespannt? Das Pferd weiß es. Gestresst? Es weiß es. Wirklich ruhig und ohne Agenda? Das weiß es auch.\n\nHeute ist dein einziger Auftrag: Lass das Pferd merken dass du nichts willst. Dass du einfach nur da bist.\n\nDas ist schwieriger als es klingt. Und schöner als du denkst.'},
   {titel:'Der erste Atemzug',untertitel:'Pferde atmen ca. 8–16 Mal pro Minute. Menschen in Stress bis zu 20 Mal.',impuls:'Heute geht es um Atem. Den des Pferdes. Und deinen.\n\nStell dich oder setz dich in die Nähe deines Pferdes und beobachte erst einmal wie es atmet. Der Bauch hebt und senkt sich. Die Nüstern bewegen sich leicht. Manchmal ein tiefes Ausatmen, ein entspanntes Schnauben. Das ist kein Geräusch das Pferde machen wenn sie genervt sind. Es ist ein Zeichen dass sie loslassen.\n\nJetzt spür mal deinen eigenen Atem. Wie oft atmest du pro Minute? Flach? Tief? Oben in der Brust oder unten im Bauch?\n\nDie meisten Menschen die zu Pferden gehen atmen zu flach. Zu schnell. Zu wenig. Weil sie gestresst sind, aufgeregt sind, irgendetwas wollen oder beweisen möchten.\n\nPferde mögen tiefe Atemzüge. Sie entspannen sich wenn der Mensch neben ihnen wirklich atmet.\n\nVersuch heute folgendes: Atme drei Mal bewusst tief ein und aus. Komplett. Bis in den Bauch. Und beobachte ob das Pferd reagiert. Oft passiert etwas Erstaunliches, das Pferd schnaubt zurück. Als würde es sagen: Ja. So. Jetzt bist du wirklich hier.'},
@@ -4902,10 +4910,19 @@ document.addEventListener('DOMContentLoaded', function(){
       inp.focus();
     }
   }, 300);
+  // War der Nutzer schon mal "in der App" (z.B. nach Reload/Pull-to-Refresh)?
+  // Dann direkt durchstarten statt Cover zu zeigen
+  try{
+    if(localStorage.getItem('pk_was_in_app')==='1'){
+      startApp();
+    }
+  }catch(e){}
 });
 
 // ═══ SERVICE WORKER UPDATE ═══
 function updateSW(){
+  markUpdateSeen();
+  document.getElementById('sw-update-banner').style.display='none';
   if('serviceWorker' in navigator){
     navigator.serviceWorker.getRegistration().then(function(reg){
       if(reg && reg.waiting){
@@ -4914,6 +4931,8 @@ function updateSW(){
         window.location.reload();
       }
     });
+  } else {
+    window.location.reload();
   }
 }
 
@@ -8338,6 +8357,7 @@ const VORLAGE_RENDERERS={
             <button onclick="renderUeberblick();closeUbMenu()" style="display:block;width:100%;text-align:left;background:none;border:none;padding:9px 14px;font-family:Lato,sans-serif;font-size:13px;color:var(--deep);cursor:pointer;border-radius:8px;">↻ Aktualisieren</button>
             <button onclick="uploadUeberblickFoto()" style="display:block;width:100%;text-align:left;background:none;border:none;padding:9px 14px;font-family:Lato,sans-serif;font-size:13px;color:var(--deep);cursor:pointer;border-radius:8px;">📷 Hintergrundbild hochladen</button>
             <button onclick="removeUeberblickFoto();closeUbMenu()" id="ub-remove-btn" style="display:none;width:100%;text-align:left;background:none;border:none;padding:9px 14px;font-family:Lato,sans-serif;font-size:13px;color:#c04;cursor:pointer;border-radius:8px;">✕ Bild entfernen</button>
+            <button onclick="toggleUbLock()" id="ub-lock-btn" style="display:none;width:100%;text-align:left;background:none;border:none;padding:9px 14px;font-family:Lato,sans-serif;font-size:13px;color:var(--deep);cursor:pointer;border-radius:8px;">🔒 Position fixieren</button>
           </div>
         </div>
       </div>
@@ -8732,12 +8752,27 @@ function _switchTabFinal(t){
   if(t==='glueck'){loadGlueck();renderGlueckTab();}
   if(t==='ueberblick'){setTimeout(updateUbHeader,100);}
 }
-switchTab=_switchTabFinal;
+switchTab=function(t){ _switchTabFinal(t); try{localStorage.setItem('pk_active_tab',t);}catch(e){} };
 
 
 
 
 // ═══ ÜBERBLICK HEADER MENÜ & DRAG ═══
+
+function toggleUbLock(){
+  var locked = localStorage.getItem('pk_ub_locked') === '1';
+  var btn = document.getElementById('ub-lock-btn');
+  if(locked){
+    localStorage.removeItem('pk_ub_locked');
+    if(btn) btn.textContent='🔒 Position fixieren';
+  } else {
+    localStorage.setItem('pk_ub_locked','1');
+    if(btn) btn.textContent='🔓 Position freigeben';
+  }
+  closeUbMenu();
+  updateUbHeader();
+}
+
 function toggleUbMenu(){
   var m=document.getElementById('ub-menu');
   if(!m)return;
@@ -8771,6 +8806,7 @@ var _ubDrag={active:false,startX:0,startY:0,startPosX:50,startPosY:50};
 function ubDragStart(e){
   var foto=localStorage.getItem('pk_ueberblick_foto');
   if(!foto)return; // nur wenn Bild da
+  if(localStorage.getItem('pk_ub_locked')==='1')return; // Position fixiert
   // Hamburger-Bereich NICHT abfangen
   var menuWrap=document.getElementById('ub-menu-wrap');
   if(menuWrap&&menuWrap.contains(e.target))return;
@@ -8882,6 +8918,13 @@ function updateUbHeader(){
     if(date){date.style.color='rgba(255,255,255,0.9)';date.style.textShadow='0 1px 4px rgba(0,0,0,0.4)';}
     // moveSection nicht mehr nötig - Drag direkt auf Karte
     var rb=document.getElementById('ub-remove-btn');if(rb)rb.style.display='block';
+    var lb=document.getElementById('ub-lock-btn');
+    if(lb){
+      lb.style.display='block';
+      var isLocked=localStorage.getItem('pk_ub_locked')==='1';
+      lb.textContent=isLocked?'🔓 Position freigeben':'🔒 Position fixieren';
+    }
+    if(card){ card.style.cursor = (localStorage.getItem('pk_ub_locked')==='1') ? 'default' : 'grab'; }
     // Slider auf gespeicherte Position setzen
     var sx=document.getElementById('ub-slider-x');if(sx)sx.value=pos.x;
     var sy=document.getElementById('ub-slider-y');if(sy)sy.value=pos.y;
@@ -11315,6 +11358,24 @@ setTimeout(()=>{renderUeberblick();renderReflex();renderFitnessWeek();},100);
     return false;
   }
 
+  // Prüft ob der Touch auf einem horizontal scrollbaren Element (oder dessen Kind) liegt
+  var H_SCROLL_CLASSES=['pk-subnav-inner','sub-nav','gantt-wrap','stundenplan','horse-filter'];
+  function isInsideHScroll(el){
+    while(el && el !== document.body){
+      // Bekannte scrollbare Leisten-Klassen direkt erkennen (unabhängig von Render-Breite)
+      for(var i=0;i<H_SCROLL_CLASSES.length;i++){
+        if(el.classList && el.classList.contains(H_SCROLL_CLASSES[i]))return true;
+      }
+      // Generische Erkennung über tatsächliche Scroll-Breite
+      if(el.scrollWidth > el.clientWidth + 3){
+        var ov = window.getComputedStyle(el).overflowX;
+        if(ov === 'auto' || ov === 'scroll')return true;
+      }
+      el = el.parentElement;
+    }
+    return false;
+  }
+
   document.body.addEventListener('touchstart',function(e){
     var t=e.target;
     // Eingabefelder ignorieren
@@ -11334,6 +11395,8 @@ setTimeout(()=>{renderUeberblick();renderReflex();renderFitnessWeek();},100);
     if(m2&&m2.style.display==='block')return;
     // In einer Unteransicht (z.B. Gesundheitsakte, Reflexion, Ziele) → kein Tab-Swipe
     if(inDetailView())return;
+    // Auf einer horizontal scrollbaren Leiste (z.B. Pferde-Module-Kacheln) → kein Tab-Swipe
+    if(isInsideHScroll(t))return;
 
     sx=e.touches[0].clientX;
     sy=e.touches[0].clientY;
