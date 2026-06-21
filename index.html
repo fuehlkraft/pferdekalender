@@ -149,7 +149,10 @@ body{background:var(--grad);font-family:'Lato',sans-serif;color:var(--text);min-
 /* pk-scroll-btn entfernt */
 
 .main-nav-btn{background:rgba(255,255,255,0.6);border:1px solid rgba(180,160,220,0.4);border-radius:20px;padding:6px 16px;font-family:'Lato',sans-serif;font-size:13px;color:var(--deep);cursor:pointer;transition:all 0.25s;white-space:nowrap;flex-shrink:0;}
-.main-nav-btn.active,.main-nav-btn:hover{background:var(--lilac);border-color:var(--lilac2);box-shadow:0 2px 10px rgba(180,160,220,0.3);}
+.main-nav-btn.active{background:var(--lilac);border-color:var(--lilac2);box-shadow:0 2px 10px rgba(180,160,220,0.3);}
+@media (hover: hover) {
+  .main-nav-btn:hover{background:var(--lilac);border-color:var(--lilac2);box-shadow:0 2px 10px rgba(180,160,220,0.3);}
+}
 
 .body{padding:20px 32px;max-width:1200px;margin:0 auto;}
 
@@ -3653,6 +3656,15 @@ function updateFooter(){
 // ── COVER ──
 let coverPhotoPos={x:50,y:50,zoom:100};
 function loadPhoto(ev){
+  // Sicherheit: Langedrück-Timer/Menü immer zurücksetzen, falls währenddessen ausgelöst
+  try{
+    if(typeof _coverLongPress!=='undefined')clearTimeout(_coverLongPress);
+    _coverLongPressed=false;
+    var lm=document.getElementById('cover-longpress-menu');
+    if(lm)lm.style.display='none';
+    var lo=document.getElementById('cover-longpress-overlay');
+    if(lo)lo.style.display='none';
+  }catch(e){}
   const f=ev.target.files[0];if(!f)return;
   const r=new FileReader();
   r.onload=e=>{
@@ -11470,7 +11482,7 @@ function removeCoverPhoto(){
       _coverLongPress=setTimeout(function(){
         _coverLongPressed=true;
         openCoverMenu();
-      },600);
+      },700);
     },{passive:true});
 
     frame.addEventListener('touchend',function(){
