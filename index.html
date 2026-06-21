@@ -4670,81 +4670,7 @@ ${htmlContent}
 
 
 
-// ═══ TITELBILD LANGEDRÜCKEN & FIXIERUNG ═══
-var _coverLongPress = null;
-var _coverLongPressed = false;
 
-function openCoverMenu(){
-  document.getElementById('cover-longpress-menu').style.display='block';
-  document.getElementById('cover-longpress-overlay').style.display='block';
-}
-function closeCoverMenu(){
-  document.getElementById('cover-longpress-menu').style.display='none';
-  document.getElementById('cover-longpress-overlay').style.display='none';
-}
-function removeCoverPhoto(){
-  closeCoverMenu();
-  localStorage.removeItem('pk_cover_photo');
-  localStorage.removeItem('pk_cover_pos');
-  var img=document.getElementById('cover-photo');
-  if(img){img.src='';img.classList.remove('visible');}
-  var ph=document.getElementById('photo-ph');
-  if(ph)ph.style.display='flex';
-  coverPhotoPos={x:50,y:50,zoom:100};
-}
-
-// Langedrücken auf photo-frame
-(function(){
-  var frame=null;
-  function init(){
-    frame=document.getElementById('photo-frame-el');
-    if(!frame)return;
-
-    // Touch: Langedrücken
-    frame.addEventListener('touchstart',function(e){
-      _coverLongPressed=false;
-      _coverLongPress=setTimeout(function(){
-        _coverLongPressed=true;
-        openCoverMenu();
-      },600);
-    },{passive:true});
-
-    frame.addEventListener('touchend',function(){
-      clearTimeout(_coverLongPress);
-    },{passive:true});
-
-    frame.addEventListener('touchmove',function(){
-      clearTimeout(_coverLongPress);
-    },{passive:true});
-
-    // Desktop: Rechtsklick oder langes Drücken mit Maus
-    frame.addEventListener('contextmenu',function(e){
-      e.preventDefault();
-      openCoverMenu();
-    });
-  }
-  document.addEventListener('DOMContentLoaded',init);
-  setTimeout(init,500);
-})();
-
-// Position nach Drag speichern - zuverlässige Version
-var _coverDragFix_origEnd = null;
-setTimeout(function(){
-  var origEnd = window.coverDragEnd;
-  if(origEnd){
-    window.coverDragEnd = function(e){
-      origEnd(e);
-      // Direkt aus img.style.objectPosition lesen
-      var img=document.getElementById('cover-photo');
-      if(img&&img.style.objectPosition){
-        var parts=img.style.objectPosition.split(' ');
-        var x=parseFloat(parts[0])||50;
-        var y=parseFloat(parts[1])||50;
-        localStorage.setItem('pk_cover_pos',JSON.stringify({x:x,y:y,zoom:coverPhotoPos?coverPhotoPos.zoom:100}));
-      }
-    };
-  }
-},800);
 
 </body></html>`);
   win.document.close();
@@ -11409,6 +11335,82 @@ setTimeout(()=>{renderUeberblick();renderReflex();renderFitnessWeek();},100);
     if(e.key==='ArrowLeft')goTab(currentIdx()-1);
   });
 })();
+
+// ═══ TITELBILD LANGEDRÜCKEN & FIXIERUNG ═══
+var _coverLongPress = null;
+var _coverLongPressed = false;
+
+function openCoverMenu(){
+  document.getElementById('cover-longpress-menu').style.display='block';
+  document.getElementById('cover-longpress-overlay').style.display='block';
+}
+function closeCoverMenu(){
+  document.getElementById('cover-longpress-menu').style.display='none';
+  document.getElementById('cover-longpress-overlay').style.display='none';
+}
+function removeCoverPhoto(){
+  closeCoverMenu();
+  localStorage.removeItem('pk_cover_photo');
+  localStorage.removeItem('pk_cover_pos');
+  var img=document.getElementById('cover-photo');
+  if(img){img.src='';img.classList.remove('visible');}
+  var ph=document.getElementById('photo-ph');
+  if(ph)ph.style.display='flex';
+  coverPhotoPos={x:50,y:50,zoom:100};
+}
+
+// Langedrücken auf photo-frame
+(function(){
+  var frame=null;
+  function init(){
+    frame=document.getElementById('photo-frame-el');
+    if(!frame)return;
+
+    // Touch: Langedrücken
+    frame.addEventListener('touchstart',function(e){
+      _coverLongPressed=false;
+      _coverLongPress=setTimeout(function(){
+        _coverLongPressed=true;
+        openCoverMenu();
+      },600);
+    },{passive:true});
+
+    frame.addEventListener('touchend',function(){
+      clearTimeout(_coverLongPress);
+    },{passive:true});
+
+    frame.addEventListener('touchmove',function(){
+      clearTimeout(_coverLongPress);
+    },{passive:true});
+
+    // Desktop: Rechtsklick oder langes Drücken mit Maus
+    frame.addEventListener('contextmenu',function(e){
+      e.preventDefault();
+      openCoverMenu();
+    });
+  }
+  document.addEventListener('DOMContentLoaded',init);
+  setTimeout(init,500);
+})();
+
+// Position nach Drag speichern - zuverlässige Version
+var _coverDragFix_origEnd = null;
+setTimeout(function(){
+  var origEnd = window.coverDragEnd;
+  if(origEnd){
+    window.coverDragEnd = function(e){
+      origEnd(e);
+      // Direkt aus img.style.objectPosition lesen
+      var img=document.getElementById('cover-photo');
+      if(img&&img.style.objectPosition){
+        var parts=img.style.objectPosition.split(' ');
+        var x=parseFloat(parts[0])||50;
+        var y=parseFloat(parts[1])||50;
+        localStorage.setItem('pk_cover_pos',JSON.stringify({x:x,y:y,zoom:coverPhotoPos?coverPhotoPos.zoom:100}));
+      }
+    };
+  }
+},800);
 </script>
 
   <!-- FOOTER -->
@@ -11517,81 +11519,7 @@ setTimeout(()=>{renderUeberblick();renderReflex();renderFitnessWeek();},100);
 
 
 
-// ═══ TITELBILD LANGEDRÜCKEN & FIXIERUNG ═══
-var _coverLongPress = null;
-var _coverLongPressed = false;
 
-function openCoverMenu(){
-  document.getElementById('cover-longpress-menu').style.display='block';
-  document.getElementById('cover-longpress-overlay').style.display='block';
-}
-function closeCoverMenu(){
-  document.getElementById('cover-longpress-menu').style.display='none';
-  document.getElementById('cover-longpress-overlay').style.display='none';
-}
-function removeCoverPhoto(){
-  closeCoverMenu();
-  localStorage.removeItem('pk_cover_photo');
-  localStorage.removeItem('pk_cover_pos');
-  var img=document.getElementById('cover-photo');
-  if(img){img.src='';img.classList.remove('visible');}
-  var ph=document.getElementById('photo-ph');
-  if(ph)ph.style.display='flex';
-  coverPhotoPos={x:50,y:50,zoom:100};
-}
-
-// Langedrücken auf photo-frame
-(function(){
-  var frame=null;
-  function init(){
-    frame=document.getElementById('photo-frame-el');
-    if(!frame)return;
-
-    // Touch: Langedrücken
-    frame.addEventListener('touchstart',function(e){
-      _coverLongPressed=false;
-      _coverLongPress=setTimeout(function(){
-        _coverLongPressed=true;
-        openCoverMenu();
-      },600);
-    },{passive:true});
-
-    frame.addEventListener('touchend',function(){
-      clearTimeout(_coverLongPress);
-    },{passive:true});
-
-    frame.addEventListener('touchmove',function(){
-      clearTimeout(_coverLongPress);
-    },{passive:true});
-
-    // Desktop: Rechtsklick oder langes Drücken mit Maus
-    frame.addEventListener('contextmenu',function(e){
-      e.preventDefault();
-      openCoverMenu();
-    });
-  }
-  document.addEventListener('DOMContentLoaded',init);
-  setTimeout(init,500);
-})();
-
-// Position nach Drag speichern - zuverlässige Version
-var _coverDragFix_origEnd = null;
-setTimeout(function(){
-  var origEnd = window.coverDragEnd;
-  if(origEnd){
-    window.coverDragEnd = function(e){
-      origEnd(e);
-      // Direkt aus img.style.objectPosition lesen
-      var img=document.getElementById('cover-photo');
-      if(img&&img.style.objectPosition){
-        var parts=img.style.objectPosition.split(' ');
-        var x=parseFloat(parts[0])||50;
-        var y=parseFloat(parts[1])||50;
-        localStorage.setItem('pk_cover_pos',JSON.stringify({x:x,y:y,zoom:coverPhotoPos?coverPhotoPos.zoom:100}));
-      }
-    };
-  }
-},800);
 
 </body>
 </html>
