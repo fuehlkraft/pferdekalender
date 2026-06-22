@@ -159,7 +159,10 @@ body{background:var(--grad);font-family:'Lato',sans-serif;color:var(--text);min-
 /* ── SUB-NAV PERSÖNLICH ── */
 .sub-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;padding:12px 16px;background:rgba(255,255,255,0.5);border-radius:14px;border:1px solid rgba(255,255,255,0.8);}
 .sub-btn{background:transparent;border:1px solid rgba(180,160,220,0.3);border-radius:16px;padding:5px 13px;font-family:'Lato',sans-serif;font-size:12px;color:var(--muted);cursor:pointer;transition:all 0.2s;white-space:nowrap;}
-.sub-btn.active,.sub-btn:hover{background:var(--lilac);border-color:var(--lilac2);color:var(--deep);}
+.sub-btn.active{background:var(--lilac);border-color:var(--lilac2);color:var(--deep);}
+@media (hover: hover) {
+  .sub-btn:hover{background:var(--lilac);border-color:var(--lilac2);color:var(--deep);}
+}
 
 /* ── SECTION TITLE ── */
 .sec-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--deep);margin-bottom:16px;}
@@ -347,7 +350,10 @@ canvas#lebensrad-canvas{max-width:220px;width:100%;}
 .cal-day.empty{cursor:default;}
 .horse-filter{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;}
 .horse-chip{background:rgba(255,255,255,0.6);border:1px solid rgba(180,160,220,0.3);border-radius:20px;padding:5px 16px;font-size:12px;color:var(--deep);cursor:pointer;transition:all 0.2s;font-family:'Lato',sans-serif;}
-.horse-chip.active,.horse-chip:hover{background:var(--mint);border-color:var(--mint2);}
+.horse-chip.active{background:var(--mint);border-color:var(--mint2);}
+@media (hover: hover) {
+  .horse-chip:hover{background:var(--mint);border-color:var(--mint2);}
+}
 .entries-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 @media(max-width:600px){.entries-grid{grid-template-columns:1fr;}}
 .entry-cat{background:rgba(255,255,255,0.65);border:1px solid rgba(255,255,255,0.85);border-radius:14px;padding:14px;box-shadow:0 2px 12px rgba(180,160,220,0.08);}
@@ -4626,6 +4632,20 @@ function closePrintOverlay(){
   document.body.style.overflow='';
 }
 
+
+function fkShareBereich(){
+  if(!navigator.share){
+    alert('Teilen wird auf diesem Gerät leider nicht unterstützt. Du kannst stattdessen drucken oder als PDF speichern.');
+    return;
+  }
+  navigator.share({
+    title: 'Fühlkraft Kalender – ' + (window._fkShareTitel||''),
+    text: (window._fkShareText||'')
+  }).catch(function(err){
+    // Abbrechen durch den Nutzer ist kein Fehler, ignorieren
+  });
+}
+
 function printBereich(titel, htmlContent){
   var printDiv = document.getElementById('fk-print-overlay');
   if(!printDiv){
@@ -4633,11 +4653,19 @@ function printBereich(titel, htmlContent){
     printDiv.id = 'fk-print-overlay';
     document.body.appendChild(printDiv);
   }
+  // Inhalt für das Teilen merken (als reiner Text, HTML-Tags entfernt)
+  window._fkShareTitel = titel;
+  window._fkShareText = htmlContent.replace(/<[^>]*>/g,'\n').replace(/\n{3,}/g,'\n\n').trim();
+
+  var shareBtnHtml = (navigator.share)
+    ? '<button onclick="fkShareBereich()" style="background:rgba(255,255,255,0.9);border:none;color:var(--deep,#4a3860);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:Lato,sans-serif;touch-action:manipulation;margin-right:6px;">📤 Teilen</button>'
+    : '';
 
   printDiv.innerHTML =
     '<div id="fk-print-toolbar">'
     +'<button onclick="closePrintOverlay()" style="background:rgba(255,255,255,0.2);border:none;color:white;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:Lato,sans-serif;">← Zurück</button>'
     +'<span style="color:white;font-size:13px;font-weight:700;flex:1;text-align:center;">'+titel+'</span>'
+    +shareBtnHtml
     +'<button onclick="window.print()" style="background:white;border:none;color:var(--deep,#4a3860);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:Lato,sans-serif;touch-action:manipulation;">🖨️ Drucken</button>'
     +'</div>'
     +'<div id="fk-print-content">'
@@ -11475,8 +11503,12 @@ function removeCoverPhoto(){
     frame=document.getElementById('photo-frame-el');
     if(!frame)return;
 
-    // Touch: Langedrücken
+    // Touch: Langedrücken - NUR wenn schon ein Bild vorhanden ist
     frame.addEventListener('touchstart',function(e){
+      // Kein Bild vorhanden -> Langedrücken komplett deaktivieren,
+      // der Klick auf den Platzhalter soll direkt zur Dateiauswahl führen
+      var img=document.getElementById('cover-photo');
+      if(!img || !img.classList.contains('visible')) return;
       _coverLongPressed=false;
       _coverLongPress=setTimeout(function(){
         _coverLongPressed=true;
