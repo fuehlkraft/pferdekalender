@@ -1033,11 +1033,29 @@ img, input, textarea, select {
   position:sticky;
   top:0;
   background:var(--deep,#4a3860);
-  padding:12px 16px;
+  padding:10px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  z-index:1;
+}
+#fk-print-toolbar-row1{
   display:flex;
   align-items:center;
-  gap:10px;
-  z-index:1;
+  gap:8px;
+  width:100%;
+}
+#fk-print-toolbar-row2{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+#fk-print-toolbar button{
+  white-space:nowrap;
+  font-size:12px!important;
+  padding:7px 10px!important;
 }
 #fk-print-toolbar button{
   font-family:'Lato',sans-serif;
@@ -7133,15 +7151,21 @@ function fkSharePdf(){
       return;
     }
 
-    // Fallback: PDF einfach herunterladen, falls Datei-Teilen nicht unterstützt wird
+    // Fallback: PDF in neuem Tab öffnen (zeigt das PDF direkt an, statt es nur unsichtbar herunterzuladen)
     var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = dateiname;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
+    var opened = window.open(url, '_blank');
+    if(!opened){
+      // Popup-Blocker o.ä. -> dann wenigstens als Download anbieten
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = dateiname;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+    // Deutliche Rückmeldung, damit klar ist dass etwas passiert ist
+    alert('✅ PDF wurde erstellt: ' + dateiname + '\n\nFalls sich kein neues Fenster geöffnet hat, schau in deinem Download-Ordner nach.');
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 60000);
   }).catch(function(err){
     if(btn){ btn.textContent=originalText; btn.disabled=false; }
     if(content.parentNode) content.parentNode.removeChild(content);
@@ -7180,11 +7204,15 @@ function printBereich(titel, htmlContent){
 
   printDiv.innerHTML =
     '<div id="fk-print-toolbar">'
-    +'<button onclick="closePrintOverlay()" style="background:rgba(255,255,255,0.2);border:none;color:white;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:Lato,sans-serif;">← Zurück</button>'
-    +'<span style="color:white;font-size:13px;font-weight:700;flex:1;text-align:center;">'+titel+'</span>'
+    +'<div id="fk-print-toolbar-row1">'
+    +'<button onclick="closePrintOverlay()" style="background:rgba(255,255,255,0.2);border:none;color:white;border-radius:8px;padding:8px 12px;font-size:13px;font-weight:700;cursor:pointer;font-family:Lato,sans-serif;flex-shrink:0;">← Zurück</button>'
+    +'<span style="color:white;font-size:13px;font-weight:700;flex:1;text-align:center;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 6px;">'+titel+'</span>'
+    +'</div>'
+    +'<div id="fk-print-toolbar-row2">'
     +shareBtnHtml
     +pdfBtnHtml
-    +'<button onclick="window.print()" style="background:white;border:none;color:var(--deep,#4a3860);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:Lato,sans-serif;touch-action:manipulation;">🖨️ Drucken</button>'
+    +'<button onclick="window.print()" style="background:white;border:none;color:var(--deep,#4a3860);border-radius:8px;padding:8px 12px;font-size:13px;font-weight:700;cursor:pointer;font-family:Lato,sans-serif;touch-action:manipulation;flex-shrink:0;">🖨️ Drucken</button>'
+    +'</div>'
     +'</div>'
     +'<div id="fk-print-content">'
     +'<div style="text-align:center;margin-bottom:20px;padding-top:10px;">'
