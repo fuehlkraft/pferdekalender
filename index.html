@@ -7101,6 +7101,8 @@ function fkSharePdf(){
     return;
   }
 
+
+
   var originalText = btn ? btn.textContent : '';
   if(btn){ btn.textContent='⏳ Erstelle PDF...'; btn.disabled=true; }
 
@@ -7151,20 +7153,17 @@ function fkSharePdf(){
       return;
     }
 
-    // Fallback: PDF in neuem Tab öffnen (zeigt das PDF direkt an, statt es nur unsichtbar herunterzuladen)
+    // Kein natives Teilen verfügbar -> PDF direkt herunterladen.
+    // Das ist der zuverlässigste Weg auf allen Geräten/Browsern (kein Popup-Blocker-Risiko,
+    // keine Cross-Origin-Probleme mit Blob-URLs in neuen Tabs).
     var url = URL.createObjectURL(blob);
-    var opened = window.open(url, '_blank');
-    if(!opened){
-      // Popup-Blocker o.ä. -> dann wenigstens als Download anbieten
-      var a = document.createElement('a');
-      a.href = url;
-      a.download = dateiname;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    }
-    // Deutliche Rückmeldung, damit klar ist dass etwas passiert ist
-    alert('✅ PDF wurde erstellt: ' + dateiname + '\n\nFalls sich kein neues Fenster geöffnet hat, schau in deinem Download-Ordner nach.');
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = dateiname;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    alert('✅ PDF wurde erstellt und heruntergeladen:\n' + dateiname + '\n\nDu findest die Datei in deinem Download-Ordner. Von dort kannst du sie öffnen oder weiterleiten.');
     setTimeout(function(){ URL.revokeObjectURL(url); }, 60000);
   }).catch(function(err){
     if(btn){ btn.textContent=originalText; btn.disabled=false; }
