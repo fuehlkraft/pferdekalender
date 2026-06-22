@@ -7176,17 +7176,40 @@ function fkSharePdf(){
     dlog('12. canShare mit Datei: ' + canShareFile);
     if(canShareFile){
       dlog('13. Rufe navigator.share() auf...');
+      var shareSettled = false;
+      // Sicherheits-Timeout: falls share() nie reagiert (hängt fest), nach 4s Fallback zeigen
+      var shareTimeout = setTimeout(function(){
+        if(shareSettled) return;
+        shareSettled = true;
+        dlog('14. TIMEOUT - share() hat nicht reagiert, biete Download als Fallback an');
+        downloadFallback();
+      }, 4000);
+
       navigator.share({
         title: 'Fühlkraft Kalender – ' + titel,
         files: [file]
       }).then(function(){
+        if(shareSettled) return;
+        shareSettled = true;
+        clearTimeout(shareTimeout);
         dlog('14. Share erfolgreich!');
       }).catch(function(shareErr){
-        dlog('14. Share abgebrochen/Fehler: ' + shareErr.message);
+        if(shareSettled) return;
+        shareSettled = true;
+        clearTimeout(shareTimeout);
+        dlog('14. Share abgebrochen/Fehler: ' + shareErr.name + ' - ' + shareErr.message);
+        // Bei echtem Fehler (nicht Nutzer-Abbruch) Download als Fallback anbieten
+        if(shareErr.name !== 'AbortError'){
+          downloadFallback();
+        }
       });
       return;
     }
     dlog('13b. Kein Datei-Teilen, nutze Download...');
+    downloadFallback();
+    return;
+
+    function downloadFallback(){
 
     // Kein natives Teilen verfügbar -> PDF direkt herunterladen.
     // Das ist der zuverlässigste Weg auf allen Geräten/Browsern (kein Popup-Blocker-Risiko,
@@ -7202,6 +7225,7 @@ function fkSharePdf(){
     dlog('15. Download ausgelöst!');
     alert('✅ PDF wurde erstellt und heruntergeladen:\n' + dateiname + '\n\nDu findest die Datei in deinem Download-Ordner. Von dort kannst du sie öffnen oder weiterleiten.');
     setTimeout(function(){ URL.revokeObjectURL(url); }, 60000);
+    } // Ende downloadFallback()
   }).catch(function(err){
     dlog('FEHLER bei html2pdf: ' + err.message + ' | ' + err.stack);
     if(btn){ btn.textContent=originalText; btn.disabled=false; }
