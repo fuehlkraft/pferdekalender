@@ -7134,26 +7134,11 @@ function fkSharePdf(){
 
   // Klon erstellen und ALLE berechneten Farben (inkl. CSS-Variablen) als feste Inline-Styles einbetten,
   // da html2pdf.js externe/abgeleitete CSS-Werte (var(--xyz)) nicht zuverlässig liest.
-  var content = contentOrig.cloneNode(true);
-  dlog('8. Klon erstellt');
-  content.style.position='fixed';
-  content.style.left='-9999px';
-  content.style.top='0';
-  content.style.background='#ffffff';
-  content.style.width = contentOrig.offsetWidth + 'px';
-  document.body.appendChild(content);
-
-  var origAll = contentOrig.querySelectorAll('*');
-  var cloneAll = content.querySelectorAll('*');
-  for(var i=0;i<origAll.length;i++){
-    var computed = window.getComputedStyle(origAll[i]);
-    cloneAll[i].style.color = computed.color;
-    cloneAll[i].style.backgroundColor = computed.backgroundColor;
-    cloneAll[i].style.borderColor = computed.borderColor;
-    cloneAll[i].style.fontFamily = computed.fontFamily;
-    cloneAll[i].style.fontSize = computed.fontSize;
-    cloneAll[i].style.fontWeight = computed.fontWeight;
-  }
+  // Direkt mit dem Original-Element arbeiten (kein Klon!).
+  // html2canvas rendert über computed styles, ein manuell kopierter Klon
+  // hat unzuverlässig zu leeren/weißen Seiten geführt (bestätigtes Verhalten).
+  var content = contentOrig;
+  dlog('8. Arbeite direkt mit Original-Element (kein Klon)');
 
   var opt = {
     margin: 10,
@@ -7166,7 +7151,6 @@ function fkSharePdf(){
   dlog('9. Starte html2pdf()...');
   html2pdf().set(opt).from(content).outputPdf('blob').then(function(blob){
     dlog('10. PDF erstellt! Größe: ' + blob.size + ' Bytes');
-    document.body.removeChild(content);
     if(btn){ btn.textContent=originalText; btn.disabled=false; }
 
     dlog('11. navigator.canShare verfügbar: ' + (!!navigator.canShare));
@@ -7229,7 +7213,6 @@ function fkSharePdf(){
   }).catch(function(err){
     dlog('FEHLER bei html2pdf: ' + err.message + ' | ' + err.stack);
     if(btn){ btn.textContent=originalText; btn.disabled=false; }
-    if(content.parentNode) content.parentNode.removeChild(content);
     alert('PDF konnte nicht erstellt werden. Bitte versuche es erneut oder nutze "Drucken".');
   });
 }
