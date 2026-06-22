@@ -5731,11 +5731,27 @@ return html2pdf;
         <div style="display:flex;flex-direction:column;gap:10px;">
           <div class="card">
             <div class="card-title"><span class="card-title-dot" style="background:var(--sky2)"></span>📅 Termine & Zeitplan</div>
-            <div id="tag-zeitplan" style="display:flex;flex-direction:column;gap:3px;margin-bottom:8px;max-height:200px;overflow-y:auto;"></div>
-            <div style="display:grid;grid-template-columns:70px 1fr auto;gap:5px;">
-              <input type="time" id="tag-zeit-time" style="border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 8px;font-size:12px;font-family:'Lato',sans-serif;background:rgba(255,255,255,0.7);color:var(--text);outline:none;">
-              <input type="text" id="tag-zeit-inp" placeholder="Termin..." style="border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 10px;font-size:12px;font-family:'Lato',sans-serif;background:rgba(255,255,255,0.7);color:var(--text);outline:none;">
-              <button onclick="addTagZeit()" style="background:var(--sky);border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;color:var(--deep);cursor:pointer;">+</button>
+            <!-- Visuelle Tagesleiste -->
+            <div id="tag-zeitleiste" style="margin-bottom:12px;"></div>
+            <div id="tag-zeitplan" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;max-height:280px;overflow-y:auto;"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px;">
+              <div>
+                <div style="font-size:9px;color:var(--muted);margin-bottom:2px;">Von</div>
+                <input type="time" id="tag-zeit-time" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 8px;font-size:12px;font-family:'Lato',sans-serif;background:rgba(255,255,255,0.7);color:var(--text);outline:none;">
+              </div>
+              <div>
+                <div style="font-size:9px;color:var(--muted);margin-bottom:2px;">Bis (optional)</div>
+                <input type="time" id="tag-zeit-time-end" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 8px;font-size:12px;font-family:'Lato',sans-serif;background:rgba(255,255,255,0.7);color:var(--text);outline:none;">
+              </div>
+            </div>
+            <input type="text" id="tag-zeit-inp" placeholder="Termin... (z.B. Seminar, Tierarzt, Reitstunde)" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 10px;font-size:12px;font-family:'Lato',sans-serif;background:rgba(255,255,255,0.7);color:var(--text);outline:none;margin-bottom:6px;box-sizing:border-box;">
+            <textarea id="tag-zeit-notiz" placeholder="Notiz (z.B. Zoom-Link, Adresse, was mitbringen...)" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 10px;font-size:11px;font-family:'Lato',sans-serif;background:rgba(255,255,255,0.7);color:var(--text);outline:none;margin-bottom:6px;min-height:44px;resize:vertical;box-sizing:border-box;"></textarea>
+            <div style="display:flex;gap:6px;align-items:center;">
+              <label style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);cursor:pointer;">
+                <input type="checkbox" id="tag-zeit-blocked" style="accent-color:var(--sky2);width:14px;height:14px;">
+                🔒 Zeit blockieren
+              </label>
+              <button onclick="addTagZeit()" style="margin-left:auto;background:var(--sky);border:none;border-radius:8px;padding:7px 18px;font-size:12px;font-weight:700;color:var(--deep);cursor:pointer;">+ Termin</button>
             </div>
           </div>
           <div class="card">
@@ -7092,30 +7108,13 @@ function closePrintOverlay(){
 
 
 function fkSharePdf(){
-  // Sichtbare Debug-Anzeige (hilft beim Auffinden des Problems auf echten Geräten)
-  var dbg = document.getElementById('fk-pdf-debug');
-  if(!dbg){
-    dbg = document.createElement('div');
-    dbg.id = 'fk-pdf-debug';
-    dbg.style.cssText = 'position:fixed;bottom:10px;left:10px;right:10px;background:rgba(0,0,0,0.92);color:#0f0;font-size:12px;padding:10px;border-radius:8px;z-index:999999;font-family:monospace;max-height:160px;overflow-y:auto;white-space:pre-wrap;';
-    document.body.appendChild(dbg);
-  }
-  dbg.style.display = 'block';
-  dbg.textContent = '';
-  function dlog(msg){ dbg.textContent += msg + '\n'; }
-
-  dlog('1. fkSharePdf() gestartet');
+  function dlog(msg){ /* Debug-Logging deaktiviert */ }
 
   var btn = document.getElementById('fk-pdf-btn');
-  dlog('2. btn gefunden: ' + !!btn);
-
   var contentOrig = document.getElementById('fk-print-content');
-  dlog('3. contentOrig gefunden: ' + !!contentOrig);
-  if(!contentOrig){ dlog('ABBRUCH: kein Inhalt'); return; }
+  if(!contentOrig){ alert('Inhalt konnte nicht gefunden werden.'); return; }
 
-  dlog('4. typeof html2pdf: ' + typeof html2pdf);
   if(typeof html2pdf === 'undefined'){
-    dlog('ABBRUCH: html2pdf nicht verfügbar');
     alert('PDF-Funktion ist noch nicht bereit. Bitte schließe die App komplett und öffne sie neu, dann versuche es erneut.');
     return;
   }
@@ -9868,21 +9867,76 @@ function delTagTodo(i){const dk=dateKey(kalState.dayDate);kalData.tagNotes[dk].t
 function renderTagZeitplan(dk){
   const note=kalData.tagNotes[dk]||{zeitplan:[]};
   const c=document.getElementById('tag-zeitplan');c.innerHTML='';
-  [...(note.zeitplan||[])].sort((a,b)=>a.time.localeCompare(b.time)).forEach((z,i)=>{
+  const sorted=[...(note.zeitplan||[])].sort((a,b)=>a.time.localeCompare(b.time));
+  sorted.forEach((z,sortedIdx)=>{
+    // Echten Index im Original-Array finden (für delTagZeit/Notiz-Toggle)
+    const i=(note.zeitplan||[]).indexOf(z);
+    const hasNotiz=z.notiz&&z.notiz.trim().length>0;
+    const noteId='tag-zeit-note-'+i;
     const div=document.createElement('div');
-    div.style.cssText='display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid rgba(216,207,240,0.25);font-size:12px;';
-    div.innerHTML='<span style="color:var(--lilac2);font-weight:700;min-width:38px">'+z.time+'</span>'+
-      '<span style="flex:1;color:var(--deep)">'+z.text+'</span>'+
-      '<button class="bucket-del" onclick="delTagZeit('+i+')">✕</button>';
+    div.style.cssText='border-radius:10px;padding:8px 10px;background:'+(z.blocked?'rgba(184,216,240,0.25)':'rgba(255,255,255,0.5)')+';border-left:3px solid '+(z.blocked?'var(--sky2)':'var(--lilac2)')+';font-size:12px;';
+    var timeLabel=z.time+(z.timeEnd?' – '+z.timeEnd:'');
+    div.innerHTML='<div style="display:flex;align-items:center;gap:6px;">'
+      +'<span style="color:'+(z.blocked?'var(--sky2)':'var(--lilac2)')+';font-weight:700;min-width:84px;font-size:11px;">'+timeLabel+(z.blocked?' 🔒':'')+'</span>'
+      +'<span style="flex:1;color:var(--deep);font-weight:600;">'+z.text+'</span>'
+      +(hasNotiz?'<button onclick="toggleTagZeitNotiz('+i+')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;" title="Notiz anzeigen">📝</button>':'')
+      +'<button class="bucket-del" onclick="delTagZeit('+i+')">✕</button>'
+      +'</div>'
+      +(hasNotiz?'<div id="'+noteId+'" style="display:none;margin-top:6px;padding:6px 8px;background:rgba(255,255,255,0.6);border-radius:6px;font-size:11px;color:var(--text);white-space:pre-wrap;word-break:break-word;">'+z.notiz.replace(/</g,'&lt;')+'</div>':'');
     c.appendChild(div);
   });
-  if(!(note.zeitplan||[]).length)c.innerHTML='<div style="text-align:center;padding:10px;color:var(--muted);font-size:11px">Noch keine Termine</div>';
+  if(!sorted.length)c.innerHTML='<div style="text-align:center;padding:10px;color:var(--muted);font-size:11px">Noch keine Termine</div>';
+  renderTagZeitleiste(dk);
+}
+function toggleTagZeitNotiz(i){
+  var el=document.getElementById('tag-zeit-note-'+i);
+  if(el) el.style.display = el.style.display==='none' ? 'block' : 'none';
+}
+function renderTagZeitleiste(dk){
+  var wrap=document.getElementById('tag-zeitleiste');
+  if(!wrap)return;
+  const note=kalData.tagNotes[dk]||{zeitplan:[]};
+  const items=(note.zeitplan||[]).filter(function(z){return z.time && z.time!=='--:--';});
+  if(!items.length){ wrap.innerHTML=''; return; }
+
+  function toMinutes(t){ var p=t.split(':'); return (+p[0])*60+(+p[1]); }
+  var dayStart=6*60, dayEnd=22*60; // 6 Uhr bis 22 Uhr abgebildet
+  var totalSpan=dayEnd-dayStart;
+
+  var bars='';
+  items.forEach(function(z){
+    var startMin=Math.max(dayStart, Math.min(dayEnd, toMinutes(z.time)));
+    var endMin=z.timeEnd ? Math.max(startMin+15, Math.min(dayEnd, toMinutes(z.timeEnd))) : startMin+30;
+    var leftPct=((startMin-dayStart)/totalSpan*100);
+    var widthPct=Math.max(2,((endMin-startMin)/totalSpan*100));
+    var col=z.blocked?'var(--sky2)':'var(--lilac2)';
+    bars+='<div title="'+z.time+(z.timeEnd?'–'+z.timeEnd:'')+' '+z.text.replace(/"/g,'')+'" style="position:absolute;left:'+leftPct+'%;width:'+widthPct+'%;top:4px;bottom:4px;background:'+col+';border-radius:4px;opacity:0.85;"></div>';
+  });
+
+  var marks='';
+  [6,9,12,15,18,21].forEach(function(h){
+    var pct=((h*60-dayStart)/totalSpan*100);
+    marks+='<div style="position:absolute;left:'+pct+'%;top:0;font-size:8px;color:var(--muted);transform:translateX(-50%);">'+h+'h</div>';
+  });
+
+  wrap.innerHTML='<div style="position:relative;height:34px;background:rgba(232,228,240,0.35);border-radius:8px;margin-bottom:14px;">'+bars+'</div>'
+    +'<div style="position:relative;height:10px;margin-top:-10px;">'+marks+'</div>';
 }
 function addTagZeit(){
-  const time=document.getElementById('tag-zeit-time').value;const text=document.getElementById('tag-zeit-inp').value.trim();
-  if(!text)return;const dk=dateKey(kalState.dayDate);
-  kalData.tagNotes[dk].zeitplan.push({time:time||'--:--',text});
-  document.getElementById('tag-zeit-inp').value='';saveKal();renderTagZeitplan(dk);
+  const time=document.getElementById('tag-zeit-time').value;
+  const timeEnd=document.getElementById('tag-zeit-time-end').value;
+  const text=document.getElementById('tag-zeit-inp').value.trim();
+  const notiz=document.getElementById('tag-zeit-notiz').value.trim();
+  const blocked=document.getElementById('tag-zeit-blocked').checked;
+  if(!text)return;
+  const dk=dateKey(kalState.dayDate);
+  if(!kalData.tagNotes[dk])kalData.tagNotes[dk]={intention:'',prios:[],todos:[],zeitplan:[],journal:'',abschluss:'',mood:''};
+  if(!kalData.tagNotes[dk].zeitplan)kalData.tagNotes[dk].zeitplan=[];
+  kalData.tagNotes[dk].zeitplan.push({time:time||'--:--', timeEnd:timeEnd||'', text:text, notiz:notiz, blocked:blocked});
+  document.getElementById('tag-zeit-inp').value='';
+  document.getElementById('tag-zeit-notiz').value='';
+  document.getElementById('tag-zeit-blocked').checked=false;
+  saveKal();renderTagZeitplan(dk);
 }
 function delTagZeit(i){const dk=dateKey(kalState.dayDate);kalData.tagNotes[dk].zeitplan.splice(i,1);saveKal();renderTagZeitplan(dk);}
 
