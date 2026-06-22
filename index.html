@@ -7093,25 +7093,49 @@ function closePrintOverlay(){
 
 
 function fkSharePdf(){
+  // Sichtbare Debug-Anzeige (hilft beim Auffinden des Problems auf echten Geräten)
+  var dbg = document.getElementById('fk-pdf-debug');
+  if(!dbg){
+    dbg = document.createElement('div');
+    dbg.id = 'fk-pdf-debug';
+    dbg.style.cssText = 'position:fixed;bottom:10px;left:10px;right:10px;background:rgba(0,0,0,0.92);color:#0f0;font-size:12px;padding:10px;border-radius:8px;z-index:999999;font-family:monospace;max-height:160px;overflow-y:auto;white-space:pre-wrap;';
+    document.body.appendChild(dbg);
+  }
+  dbg.style.display = 'block';
+  dbg.textContent = '';
+  function dlog(msg){ dbg.textContent += msg + '\n'; }
+
+  dlog('1. fkSharePdf() gestartet');
+
   var btn = document.getElementById('fk-pdf-btn');
+  dlog('2. btn gefunden: ' + !!btn);
+
   var contentOrig = document.getElementById('fk-print-content');
-  if(!contentOrig){ alert('Inhalt konnte nicht gefunden werden.'); return; }
+  dlog('3. contentOrig gefunden: ' + !!contentOrig);
+  if(!contentOrig){ dlog('ABBRUCH: kein Inhalt'); return; }
+
+  dlog('4. typeof html2pdf: ' + typeof html2pdf);
   if(typeof html2pdf === 'undefined'){
-    alert('PDF-Funktion wird gerade geladen, bitte kurz warten und nochmal versuchen.\n(Du brauchst dafür einmalig Internetverbindung.)');
+    dlog('ABBRUCH: html2pdf nicht verfügbar');
+    alert('PDF-Funktion ist noch nicht bereit. Bitte schließe die App komplett und öffne sie neu, dann versuche es erneut.');
     return;
   }
 
 
 
+  dlog('5. Button-Text wird geändert...');
   var originalText = btn ? btn.textContent : '';
   if(btn){ btn.textContent='⏳ Erstelle PDF...'; btn.disabled=true; }
+  dlog('6. Button-Text jetzt: ' + (btn?btn.textContent:'kein btn'));
 
   var titel = window._fkShareTitel || 'Fühlkraft Export';
   var dateiname = titel.replace(/[^a-zA-Z0-9äöüÄÖÜß \-]/g,'').trim().replace(/\s+/g,'_') + '.pdf';
+  dlog('7. Dateiname: ' + dateiname);
 
   // Klon erstellen und ALLE berechneten Farben (inkl. CSS-Variablen) als feste Inline-Styles einbetten,
   // da html2pdf.js externe/abgeleitete CSS-Werte (var(--xyz)) nicht zuverlässig liest.
   var content = contentOrig.cloneNode(true);
+  dlog('8. Klon erstellt');
   content.style.position='fixed';
   content.style.left='-9999px';
   content.style.top='0';
@@ -7139,23 +7163,35 @@ function fkSharePdf(){
     jsPDF: { unit:'mm', format:'a4', orientation:'portrait' }
   };
 
+  dlog('9. Starte html2pdf()...');
   html2pdf().set(opt).from(content).outputPdf('blob').then(function(blob){
+    dlog('10. PDF erstellt! Größe: ' + blob.size + ' Bytes');
     document.body.removeChild(content);
     if(btn){ btn.textContent=originalText; btn.disabled=false; }
 
+    dlog('11. navigator.canShare verfügbar: ' + (!!navigator.canShare));
     // Bevorzugt: natives Teilen MIT Datei-Anhang (funktioniert auf den meisten Handys)
     var file = new File([blob], dateiname, {type:'application/pdf'});
-    if(navigator.canShare && navigator.canShare({files:[file]})){
+    var canShareFile = navigator.canShare && navigator.canShare({files:[file]});
+    dlog('12. canShare mit Datei: ' + canShareFile);
+    if(canShareFile){
+      dlog('13. Rufe navigator.share() auf...');
       navigator.share({
         title: 'Fühlkraft Kalender – ' + titel,
         files: [file]
-      }).catch(function(){ /* Abbruch durch Nutzer, kein Fehler */ });
+      }).then(function(){
+        dlog('14. Share erfolgreich!');
+      }).catch(function(shareErr){
+        dlog('14. Share abgebrochen/Fehler: ' + shareErr.message);
+      });
       return;
     }
+    dlog('13b. Kein Datei-Teilen, nutze Download...');
 
     // Kein natives Teilen verfügbar -> PDF direkt herunterladen.
     // Das ist der zuverlässigste Weg auf allen Geräten/Browsern (kein Popup-Blocker-Risiko,
     // keine Cross-Origin-Probleme mit Blob-URLs in neuen Tabs).
+    dlog('14b. Erstelle Download-Link...');
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a');
     a.href = url;
@@ -7163,9 +7199,11 @@ function fkSharePdf(){
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+    dlog('15. Download ausgelöst!');
     alert('✅ PDF wurde erstellt und heruntergeladen:\n' + dateiname + '\n\nDu findest die Datei in deinem Download-Ordner. Von dort kannst du sie öffnen oder weiterleiten.');
     setTimeout(function(){ URL.revokeObjectURL(url); }, 60000);
   }).catch(function(err){
+    dlog('FEHLER bei html2pdf: ' + err.message + ' | ' + err.stack);
     if(btn){ btn.textContent=originalText; btn.disabled=false; }
     if(content.parentNode) content.parentNode.removeChild(content);
     alert('PDF konnte nicht erstellt werden. Bitte versuche es erneut oder nutze "Drucken".');
