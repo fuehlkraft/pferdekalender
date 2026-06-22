@@ -4430,7 +4430,6 @@ return html2pdf;
       <div id="pk-view-urlaub" style="display:none">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
           <div class="sec-title" style="margin:0;flex:1;">🐴 Pferdeurlaub</div>
-          <button class="fk-share-btn no-print" onclick="printPackliste()">🖨️ Teilen</button>
           <button onclick="addUrlaubEintrag()" class="save-btn" style="padding:6px 14px;margin-left:auto;">+ Neuer Urlaub</button>
         </div>
         <!-- Infotext Pferdeurlaub -->
@@ -7453,6 +7452,56 @@ function printMedikamente(){
   printBereich('Medikamentenplan', html);
 }
 
+function printUrlaub(ui){
+  var u = pkExtra.urlaub && pkExtra.urlaub[ui];
+  if(!u){ alert('Urlaub nicht gefunden.'); return; }
+  var html = '<p style="color:#9a8878;font-size:9pt;margin-bottom:12pt;">Erstellt am ' + new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'}) + '</p>';
+  html += '<h2>✈️ ' + (u.titel || 'Pferdeurlaub') + '</h2>';
+  if(u.von || u.bis){
+    html += '<p>Reisedaten: ' + (u.von||'?') + ' bis ' + (u.bis||'?') + '</p>';
+  }
+
+  // Dokumente-Checkliste
+  var dokItems = [['Equidenpass / Impfpass','dok_pass'],['Gesundheitszeugnis','dok_gesund'],['Versicherungsnachweis','dok_vers'],['EU-Tiergesundheitszeugnis','dok_eu'],['Tierarzt-Kontakt am Zielort','dok_ta'],['Notfallkontakte','dok_notfall']];
+  html += '<h3>📄 Dokumente</h3><table><tr><th>Dokument</th><th>Erledigt</th></tr>';
+  dokItems.forEach(function(item){
+    html += '<tr><td>' + item[0] + '</td><td>' + (u[item[1]] ? '✓' : '☐') + '</td></tr>';
+  });
+  html += '</table>';
+
+  // Packliste Pferd & Mensch
+  if(u.packliste && u.packliste.length){
+    html += '<h3>🎒 Packliste, Pferd & Mensch</h3>';
+    var cats = {};
+    u.packliste.forEach(function(item){
+      if(!cats[item.cat]) cats[item.cat] = [];
+      cats[item.cat].push(item);
+    });
+    Object.keys(cats).forEach(function(cat){
+      html += '<h4>' + cat + '</h4><table><tr><th>Gegenstand</th><th>Eingepackt</th></tr>';
+      cats[cat].forEach(function(item){
+        html += '<tr><td>' + (item.l||'') + '</td><td>' + (item.done?'✓':'☐') + '</td></tr>';
+      });
+      html += '</table>';
+    });
+  }
+
+  // Hund-Packliste, nur wenn Hund mitkommt
+  if(u.mitHund && typeof HUND_ITEMS !== 'undefined'){
+    html += '<h3>🐾 Packliste, Hund</h3><table><tr><th>Gegenstand</th><th>Eingepackt</th></tr>';
+    HUND_ITEMS.forEach(function(item){
+      html += '<tr><td>' + item[0] + '</td><td>' + (u[item[1]]?'✓':'☐') + '</td></tr>';
+    });
+    html += '</table>';
+  }
+
+  if(!u.packliste && !u.mitHund && !dokItems.some(function(item){return u[item[1]];})){
+    html += '<p>Noch keine Einträge.</p>';
+  }
+
+  printBereich('Pferdeurlaub: ' + (u.titel||''), html);
+}
+
 function printPackliste(){
   var reise=oData&&oData.reise?oData.reise:{};
   var html='<p style="color:#9a8878;font-size:9pt;margin-bottom:12pt;">Erstellt am '+new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'})+'</p>';
@@ -8308,7 +8357,7 @@ function renderBdays(){
       '<div style="flex:1;"><div style="font-weight:700;font-size:15px;color:var(--deep);">'+b.name+'</div>'+
       '<div style="font-size:11px;color:var(--muted);">'+fmt(b.date)+'</div></div>'+
       '<div style="background:'+(urgent?'rgba(242,200,216,0.8)':soon?'rgba(240,232,192,0.8)':'rgba(200,234,223,0.7)')+';border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;color:var(--deep);">'+(days===0?'🎂 Heute!':days+' Tage')+'</div>'+
-      '<button onclick="delBday(\"+oi+\")" style="background:none;border:none;color:rgba(180,160,220,0.5);cursor:pointer;font-size:16px;padding:0 4px;">✕</button>';
+      '<button onclick="delBday('+oi+')" style="background:none;border:none;color:rgba(180,160,220,0.5);cursor:pointer;font-size:16px;padding:0 4px;">✕</button>';
     card.appendChild(header);
 
     // Notiz
@@ -9780,9 +9829,9 @@ function renderTagPrios(dk){
   const c=document.getElementById('tag-prio-list');c.innerHTML='';
   (note.prios||[]).forEach((p,i)=>{
     const div=document.createElement('div');div.className='bucket-item';
-    div.innerHTML='<div class="bucket-check'+(p.done?' done':'')+'" onclick="toggleTagPrio(\"+i+\")">'+(p.done?'✓':'')+'</div>'+
+    div.innerHTML='<div class="bucket-check'+(p.done?' done':'')+'" onclick="toggleTagPrio('+i+')">'+(p.done?'✓':'')+'</div>'+
       '<div class="bucket-text'+(p.done?' done':'')+'">'+p.text+'</div>'+
-      '<button class="bucket-del" onclick="delTagPrio(\"+i+\")">✕</button>';
+      '<button class="bucket-del" onclick="delTagPrio('+i+')">✕</button>';
     c.appendChild(div);
   });
 }
@@ -9802,9 +9851,9 @@ function renderTagTodos(dk){
   const c=document.getElementById('tag-todo-list');c.innerHTML='';
   (note.todos||[]).forEach((t,i)=>{
     const div=document.createElement('div');div.className='bucket-item';
-    div.innerHTML='<div class="bucket-check'+(t.done?' done':'')+'" onclick="toggleTagTodo(\"+i+\")">'+(t.done?'✓':'')+'</div>'+
+    div.innerHTML='<div class="bucket-check'+(t.done?' done':'')+'" onclick="toggleTagTodo('+i+')">'+(t.done?'✓':'')+'</div>'+
       '<div class="bucket-text'+(t.done?' done':'')+'">'+t.text+'</div>'+
-      '<button class="bucket-del" onclick="delTagTodo(\"+i+\")">✕</button>';
+      '<button class="bucket-del" onclick="delTagTodo('+i+')">✕</button>';
     c.appendChild(div);
   });
 }
@@ -9824,7 +9873,7 @@ function renderTagZeitplan(dk){
     div.style.cssText='display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid rgba(216,207,240,0.25);font-size:12px;';
     div.innerHTML='<span style="color:var(--lilac2);font-weight:700;min-width:38px">'+z.time+'</span>'+
       '<span style="flex:1;color:var(--deep)">'+z.text+'</span>'+
-      '<button class="bucket-del" onclick="delTagZeit(\"+i+\")">✕</button>';
+      '<button class="bucket-del" onclick="delTagZeit('+i+')">✕</button>';
     c.appendChild(div);
   });
   if(!(note.zeitplan||[]).length)c.innerHTML='<div style="text-align:center;padding:10px;color:var(--muted);font-size:11px">Noch keine Termine</div>';
@@ -13312,6 +13361,7 @@ function renderPferdeUrlaub(){
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(216,207,240,0.3);">
       <div style="font-size:24px;">✈️</div>
       <input value="${u.titel||''}" onchange="updateUrl(${ui},'titel',this.value)" style="font-family:Cormorant Garamond,serif;font-size:20px;font-weight:600;color:var(--deep);border:none;border-bottom:1px solid rgba(180,160,220,0.3);background:transparent;outline:none;flex:1;" placeholder="Urlaubsname / Ziel...">
+      <button onclick="printUrlaub(${ui})" class="fk-share-btn no-print" style="padding:5px 12px;font-size:11px;">🖨️ Teilen</button>
       <button onclick="delUrl(${ui})" style="background:none;border:none;color:rgba(180,160,220,0.4);cursor:pointer;font-size:14px;">✕</button>
     </div>
 
@@ -13695,7 +13745,7 @@ function renderUrlPackliste(ui, u){
     +'<div style="height:6px;flex:1;margin:0 10px;background:rgba(216,207,240,0.3);border-radius:3px;overflow:hidden;">'
     +'<div style="height:100%;width:'+(total?Math.round(done/total*100):0)+'%;background:var(--lilac2);border-radius:3px;transition:width 0.3s;"></div>'
     +'</div>'
-    +'<button onclick="resetUrlPack(\"+ui+\")" style="background:none;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:3px 10px;font-size:10px;cursor:pointer;color:var(--muted);">↺ Reset</button>'
+    +'<button onclick="resetUrlPack('+ui+')" style="background:none;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:3px 10px;font-size:10px;cursor:pointer;color:var(--muted);">↺ Reset</button>'
     +'</div>';
   Object.keys(cats).forEach(function(cat){
     html += '<div style="margin-bottom:8px;">'
@@ -13777,7 +13827,7 @@ function renderHundPack(ui, u) {
     HUND_ITEMS.forEach(function(item) {
       var l = item[0]; var k = item[1];
       var done = !!u[k];
-      wrap += '<div onclick="toggleUrlCheck(' + ui + ',\"' + k + '\")" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;background:' +
+      wrap += '<div onclick="toggleUrlCheck(' + ui + ",'" + k + "')\" style=\"display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;background:" +
         (done ? 'rgba(200,234,223,0.45)' : 'rgba(255,255,255,0.6)') + ';cursor:pointer;border:1px solid rgba(216,207,240,0.3);">' +
         '<div style="width:18px;height:18px;border-radius:4px;border:1.5px solid rgba(180,160,220,0.5);flex-shrink:0;background:' +
         (done ? 'var(--lilac2)' : 'transparent') + ';display:flex;align-items:center;justify-content:center;font-size:11px;color:white;">' +
