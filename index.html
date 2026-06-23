@@ -3739,18 +3739,28 @@ return html2pdf;
     </div>
     <div class="header-nav">
     <div class="main-nav" id="main-nav-inner">
-      <div class="nav-tooltip-wrap"><button class="main-nav-btn active" id="tab-ueberblick" onclick="switchTab('ueberblick')">Überblick</button><div class="nav-tooltip"><strong>Mein Überblick</strong><br>Deine persönliche Schaltzentrale. Nächste Termine, offene To-Dos, Pferde-Status, Jahresziele und Glücksmomente, alles auf einen Blick.</div></div>
-      <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-pferde" onclick="switchTab('pferde')">🐴 Pferde</button><div class="nav-tooltip"><strong>🐴 Pferde</strong><br>Alles rund um Sir Harry, Bo und Tari. Gesundheitsakte, Hufpflege, Fütterung, Impfungen, Kosten und Trainingsnotizen, lückenlos dokumentiert.</div></div>
-      <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-glueck" onclick="switchTab('glueck')">❤️ Glücksmomente</button><div class="nav-tooltip"><strong>❤️ Glücksmomente</strong><br>Halte fest was dich wirklich berührt hat. Mit Foto, Datum und Text. Dein persönliches Archiv der schönen Momente, für schwierige Tage.</div></div>
-      <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-persoenlich" onclick="switchTab('persoenlich')">✨ Persönlich</button><div class="nav-tooltip"><strong>✨ Persönlich</strong><br>Habits, Routinen, Reflexion, Vision Board, Fitness, Geburtstage, Lebensrad, Bucket List, Weltkarte und Zeitstrahl.</div></div>
-      <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-organisation" onclick="switchTab('organisation')">📋 Organisation</button><div class="nav-tooltip"><strong>📋 Organisation</strong><br>Ziele, Braindump, To-Dos, Verleih, Urlaub, Essen, Vorsorge, Wann-zuletzt, Putzplan, Finanzen und Abos.</div></div>
-      <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-kalender" onclick="switchTab('kalender')">📆 Kalender</button><div class="nav-tooltip"><strong>📆 Kalender</strong><br>Monats- und Tagesansicht mit Pferde-Einträgen, Tagesnotizen, Intentionen und Journal. Für Mensch und Pferd gemeinsam.</div></div>
-      <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-vorlagen" onclick="switchTab('vorlagen')">📄 Vorlagen</button><div class="nav-tooltip"><strong>📄 Vorlagen</strong><br>38 Vorlagen: Liniert, Kariert, Journal, Cornell, Pomodoro, Dankbarkeit, Zyklus-Tracker und mehr. Alle druckfertig.</div></div>
+      <div class="nav-tooltip-wrap"><button class="main-nav-btn active" id="tab-ueberblick" onclick="switchTab('ueberblick')">Überblick<span class="tab-update-dot" id="tab-update-dot-ueberblick" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>Mein Überblick</strong><br>Deine persönliche Schaltzentrale. Nächste Termine, offene To-Dos, Pferde-Status, Jahresziele und Glücksmomente, alles auf einen Blick.</div></div>
+      <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-pferde" onclick="switchTab('pferde')">🐴 Pferde<span class="tab-update-dot" id="tab-update-dot-pferde" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>🐴 Pferde</strong><br>Alles rund um Sir Harry, Bo und Tari. Gesundheitsakte, Hufpflege, Fütterung, Impfungen, Kosten und Trainingsnotizen, lückenlos dokumentiert.</div></div>
+      <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-glueck" onclick="switchTab('glueck')">❤️ Glücksmomente<span class="tab-update-dot" id="tab-update-dot-glueck" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>❤️ Glücksmomente</strong><br>Halte fest was dich wirklich berührt hat. Mit Foto, Datum und Text. Dein persönliches Archiv der schönen Momente, für schwierige Tage.</div></div>
+      <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-persoenlich" onclick="switchTab('persoenlich')">✨ Persönlich<span class="tab-update-dot" id="tab-update-dot-persoenlich" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>✨ Persönlich</strong><br>Habits, Routinen, Reflexion, Vision Board, Fitness, Geburtstage, Lebensrad, Bucket List, Weltkarte und Zeitstrahl.</div></div>
+      <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-organisation" onclick="switchTab('organisation')">📋 Organisation<span class="tab-update-dot" id="tab-update-dot-organisation" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>📋 Organisation</strong><br>Ziele, Braindump, To-Dos, Verleih, Urlaub, Essen, Vorsorge, Wann-zuletzt, Putzplan, Finanzen und Abos.</div></div>
+      <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-kalender" onclick="switchTab('kalender')">📆 Kalender<span class="tab-update-dot" id="tab-update-dot-kalender" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>📆 Kalender</strong><br>Monats- und Tagesansicht mit Pferde-Einträgen, Tagesnotizen, Intentionen und Journal. Für Mensch und Pferd gemeinsam.</div></div>
+      <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-vorlagen" onclick="switchTab('vorlagen')">📄 Vorlagen<span class="tab-update-dot" id="tab-update-dot-vorlagen" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>📄 Vorlagen</strong><br>38 Vorlagen: Liniert, Kariert, Journal, Cornell, Pomodoro, Dankbarkeit, Zyklus-Tracker und mehr. Alle druckfertig.</div></div>
       <div class="nav-tooltip-wrap"><div class="nav-update-wrap"><button class="main-nav-btn" onclick="toggleBackupMenu()" id="backup-btn" style="white-space:nowrap;">💾 Backup</button><div id="update-dot" class="update-dot" title="Neue Version verfügbar!"></div></div><div class="nav-tooltip"><strong>💾 Backup</strong><br>Deine Daten bleiben lokal auf deinem Gerät. Sichere regelmäßig als JSON-Datei, empfohlen: wöchentlich.</div></div>
       <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="btn-einstellungen" onclick="toggleEinstellungenPanel()" style="white-space:nowrap;">🎨</button><div class="nav-tooltip"><strong>🎨 Kalenderfarbe</strong><br>6 Aquarell-Farbthemen für den ganzen Kalender. Die Wahl wird gespeichert.</div></div>
     </div>
     </div>
-    <!-- SW Update Banner -->
+    <!-- Bereichs-bezogene Update-Info-Box -->
+<div id="tab-update-info-box" style="display:none;position:fixed;top:60px;left:50%;transform:translateX(-50%);background:white;border:1.5px solid rgba(232,85,85,0.3);border-radius:14px;padding:16px 18px;box-shadow:0 12px 32px rgba(74,56,96,0.18);z-index:99996;max-width:340px;width:90%;">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+    <span style="font-size:16px;">🆕</span>
+    <div id="tab-update-info-title" style="font-size:13px;font-weight:700;color:var(--deep);flex:1;"></div>
+    <button onclick="closeTabUpdateInfo()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;">✕</button>
+  </div>
+  <div id="tab-update-info-list" style="font-size:12px;color:var(--text);line-height:1.6;"></div>
+</div>
+
+<!-- SW Update Banner -->
 <div id="sw-update-banner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:99997;background:linear-gradient(135deg,#4a3860,#6a5280);padding:12px 16px;align-items:center;gap:12px;box-shadow:0 2px 12px rgba(74,56,96,0.3);">
   <span style="font-size:18px;">🆕</span>
   <div style="flex:1;color:white;">
@@ -6265,6 +6275,9 @@ function startApp(){
   if(_restoreTab && _restoreTab!=='ueberblick'){
     setTimeout(function(){ switchTab(_restoreTab); }, 150);
   }
+  // Update-Punkte an den Tabs aus dem letzten (zugestimmten) Update-Check wiederherstellen.
+  // Das ist KEINE neue Verbindung, nur lokale Daten.
+  try{ restoreTabUpdateDots(); }catch(e){}
 }
 function goToCover(){
   document.getElementById('cover').style.display='flex';
@@ -7718,6 +7731,77 @@ function dismissBackupReminder(){
   localStorage.setItem('pk_backup_reminder_dismissed',Date.now());
 }
 
+
+function applyTabUpdateDots(changesByTab){
+  var tabs = ['ueberblick','pferde','glueck','persoenlich','organisation','kalender','vorlagen'];
+  tabs.forEach(function(tab){
+    var dot = document.getElementById('tab-update-dot-' + tab);
+    if(!dot) return;
+    var hasChanges = changesByTab && changesByTab[tab] && changesByTab[tab].length;
+    dot.style.display = hasChanges ? 'inline-block' : 'none';
+  });
+}
+function restoreTabUpdateDots(){
+  // Beim App-Start die zuletzt gespeicherten Punkte wiederherstellen (keine neue Verbindung nötig)
+  try{
+    var raw = localStorage.getItem('fk_update_changes_by_tab');
+    var seenTabs = JSON.parse(localStorage.getItem('fk_update_tabs_seen')||'[]');
+    if(raw){
+      var data = JSON.parse(raw);
+      var filtered = {};
+      Object.keys(data).forEach(function(tab){
+        if(seenTabs.indexOf(tab) === -1) filtered[tab] = data[tab];
+      });
+      applyTabUpdateDots(filtered);
+    }
+  }catch(e){}
+}
+var TAB_LABELS = {
+  ueberblick:'Überblick', pferde:'Pferde', glueck:'Glücksmomente',
+  persoenlich:'Persönlich', organisation:'Organisation', kalender:'Kalender', vorlagen:'Vorlagen'
+};
+function showTabUpdateInfo(tab){
+  try{
+    var raw = localStorage.getItem('fk_update_changes_by_tab');
+    var seenTabsCheck = JSON.parse(localStorage.getItem('fk_update_tabs_seen')||'[]');
+    var data = raw ? JSON.parse(raw) : {};
+    var items = data[tab];
+    // Kein Update für diesen Tab ODER schon gesehen -> Box sicher schließen, nicht nur "nicht öffnen"
+    if(!items || !items.length || seenTabsCheck.indexOf(tab) !== -1){
+      closeTabUpdateInfo();
+      return;
+    }
+
+    var box = document.getElementById('tab-update-info-box');
+    var title = document.getElementById('tab-update-info-title');
+    var list = document.getElementById('tab-update-info-list');
+    if(!box) return;
+
+    title.textContent = 'Neu in ' + (TAB_LABELS[tab]||tab) + ':';
+    list.innerHTML = '';
+    items.forEach(function(item){
+      var row = document.createElement('div');
+      row.style.cssText = 'display:flex;gap:6px;margin-bottom:5px;align-items:flex-start;';
+      row.innerHTML = '<span style="color:var(--mint2);flex-shrink:0;">✓</span><span>'+item.replace(/</g,'&lt;')+'</span>';
+      list.appendChild(row);
+    });
+    box.style.display = 'block';
+
+    // Diesen Tab als "gesehen" markieren - Punkt verschwindet, Liste bleibt im Backup-Menü erhalten
+    var seenTabs = JSON.parse(localStorage.getItem('fk_update_tabs_seen')||'[]');
+    if(seenTabs.indexOf(tab) === -1){
+      seenTabs.push(tab);
+      localStorage.setItem('fk_update_tabs_seen', JSON.stringify(seenTabs));
+    }
+    var dot = document.getElementById('tab-update-dot-' + tab);
+    if(dot) dot.style.display = 'none';
+  }catch(e){}
+}
+function closeTabUpdateInfo(){
+  var box = document.getElementById('tab-update-info-box');
+  if(box) box.style.display = 'none';
+}
+
 function checkForUpdate(){
   // Diese Funktion stellt eine externe Verbindung zu fuehlkraft.github.io her.
   // Sie wird AUSSCHLIESSLICH durch einen aktiven Klick der Nutzerin ausgelöst
@@ -7737,6 +7821,27 @@ function checkForUpdate(){
         if(lastSeen !== data.version){
           localStorage.setItem('fk_update_available', data.version);
           localStorage.setItem('fk_update_info', data.info || 'Neue Version verfügbar');
+          // changes: Array mit einzelnen Stichpunkten, falls in version.json vorhanden.
+          // changes kann entweder ein einfaches Array sein (Backup-Menü-Liste)
+          // oder ein nach Tab-Bereichen kategorisiertes Objekt (z.B. {kalender:[...], pferde:[...]}).
+          // Aus dem kategorisierten Objekt entsteht zusätzlich eine flache Liste fürs Backup-Menü.
+          if(data.changes){
+            if(Array.isArray(data.changes)){
+              localStorage.setItem('fk_update_changes', JSON.stringify(data.changes));
+              localStorage.removeItem('fk_update_changes_by_tab');
+            } else if(typeof data.changes === 'object'){
+              localStorage.setItem('fk_update_changes_by_tab', JSON.stringify(data.changes));
+              var flatList = [];
+              Object.keys(data.changes).forEach(function(tabKey){
+                (data.changes[tabKey]||[]).forEach(function(item){ flatList.push(item); });
+              });
+              localStorage.setItem('fk_update_changes', JSON.stringify(flatList));
+              applyTabUpdateDots(data.changes);
+            }
+          } else {
+            localStorage.removeItem('fk_update_changes');
+            localStorage.removeItem('fk_update_changes_by_tab');
+          }
           var banner = document.getElementById('sw-update-banner');
           if(banner) banner.style.display = 'flex';
         }
@@ -7784,9 +7889,12 @@ function markUpdateSeen(){
   if(v){
     localStorage.setItem('fk_last_seen_version', v);
     localStorage.removeItem('fk_update_available');
+    localStorage.removeItem('fk_update_changes');
   }
   var dot = document.getElementById('update-dot');
   if(dot) dot.style.display = 'none';
+  var notice = document.getElementById('update-notice');
+  if(notice) notice.style.display = 'none';
 }
 
 // Update check beim Start (nach 2 Sekunden)
@@ -7831,13 +7939,29 @@ function toggleBackupMenu(){
     }
     // Update-Hinweis anzeigen wenn vorhanden
     if(m.style.display==='block'){
-      var info=localStorage.getItem('fk_update_info');
       var version=localStorage.getItem('fk_update_available');
       var notice=document.getElementById('update-notice');
       var noticeText=document.getElementById('update-notice-text');
       if(notice&&version){
         notice.style.display='block';
-        if(noticeText)noticeText.textContent=info||'Version '+version+' ist verfügbar, lade die Seite neu!';
+        if(noticeText){
+          noticeText.innerHTML='';
+          var changesRaw=localStorage.getItem('fk_update_changes');
+          var changes=[];
+          try{ changes = changesRaw ? JSON.parse(changesRaw) : []; }catch(e){ changes=[]; }
+          if(!changes.length){
+            var info=localStorage.getItem('fk_update_info');
+            changes = info ? [info] : ['Version '+version+' ist verfügbar.'];
+          }
+          var ul = document.createElement('div');
+          changes.forEach(function(item){
+            var row = document.createElement('div');
+            row.style.cssText='display:flex;gap:5px;margin-bottom:3px;align-items:flex-start;';
+            row.innerHTML='<span style="color:var(--mint2);flex-shrink:0;">✓</span><span>'+item.replace(/</g,'&lt;')+'</span>';
+            ul.appendChild(row);
+          });
+          noticeText.appendChild(ul);
+        }
       } else if(notice){
         notice.style.display='none';
       }
@@ -11580,7 +11704,7 @@ function _switchTabFinal(t){
   if(t==='glueck'){loadGlueck();renderGlueckTab();}
   if(t==='ueberblick'){setTimeout(updateUbHeader,100);}
 }
-switchTab=function(t){ _switchTabFinal(t); try{localStorage.setItem('pk_active_tab',t);}catch(e){} };
+switchTab=function(t){ _switchTabFinal(t); try{localStorage.setItem('pk_active_tab',t);}catch(e){} try{showTabUpdateInfo(t);}catch(e){} };
 
 
 
