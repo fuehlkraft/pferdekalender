@@ -1,4 +1,12 @@
 {
-  "version": "1.2.4",
-  "info": "Update-Banner-Fehler behoben, Tab bleibt nach Neuladen erhalten, Bild-Position fixierbar, Swipe in Unterseiten korrigiert"
+  "version": "1.2.5",
+  "info": "Neue Termin-Funktionen im Kalender",
+  "changes": {
+    "kalender": [
+      "Termine planbar mit genauer Von- und Bis-Zeit",
+      "Notizfeld pro Termin, z.B. für Zoom-Links oder Adressen",
+      "Visuelle Tagesleiste zeigt deine Termine auf einen Blick",
+      "Option 'Zeit blockieren' für wichtige Termine"
+    ]
+  }
 }
