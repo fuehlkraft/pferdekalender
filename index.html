@@ -81,7 +81,7 @@ body{background:var(--grad);font-family:Arial,sans-serif;color:var(--text);min-h
 .photo-placeholder p{font-size:12px;color:var(--muted);text-align:center;padding:0 20px;line-height:1.5;}
 #photo-input{position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;}
 .cover-logo{font-family:Georgia,serif;font-size:13px;font-weight:400;letter-spacing:4px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;}
-.cover-title{font-family:Georgia,serif;font-size:46px;font-weight:600;color:var(--deep);text-align:center;line-height:1.1;margin-bottom:4px;}
+.cover-title{font-family:Georgia,serif;font-size:clamp(28px,9vw,46px);font-weight:600;color:var(--deep);text-align:center;line-height:1.1;margin-bottom:4px;max-width:100%;padding:0 10px;box-sizing:border-box;word-break:break-word;}
 .cover-title em{font-style:italic;color:var(--muted);font-weight:400;}
 .cover-year{font-family:Georgia,serif;font-size:20px;font-weight:300;color:var(--muted);letter-spacing:6px;margin-bottom:24px;}
 .cover-deco{display:flex;align-items:center;gap:12px;margin-bottom:24px;width:200px;}
@@ -3794,6 +3794,20 @@ return html2pdf;
       <input type="file" id="import-file-hdr" accept=".json" style="display:none" onchange="importData(event);closeBackupMenu()">
       <button onclick="document.getElementById('import-file-hdr').click()" style="display:block;width:100%;text-align:left;background:none;border:none;padding:10px 14px;font-family:Arial,sans-serif;font-size:13px;color:var(--deep);cursor:pointer;border-radius:8px;">⬆ Backup laden</button>
       <button onclick="exportData();closeBackupMenu()" style="display:block;width:100%;text-align:left;background:none;border:none;padding:10px 14px;font-family:Arial,sans-serif;font-size:13px;color:var(--deep);cursor:pointer;border-radius:8px;">⬇ Backup speichern</button>
+      <div style="height:1px;background:rgba(180,160,220,0.2);margin:6px 0;"></div>
+      <button id="update-check-btn" onclick="requestUpdateCheck()" style="display:block;width:100%;text-align:left;background:none;border:none;padding:10px 14px;font-family:Arial,sans-serif;font-size:13px;color:var(--deep);cursor:pointer;border-radius:8px;">🔄 Update prüfen</button>
+      <div id="update-check-result" style="display:none;font-size:11px;color:var(--muted);padding:4px 14px 8px;line-height:1.4;"></div>
+
+      <!-- DSGVO-Hinweis vor der ersten Verbindung -->
+      <div id="update-consent-box" style="display:none;background:rgba(232,228,240,0.6);border-radius:8px;padding:10px 12px;margin-top:6px;border:1px solid rgba(180,160,220,0.3);">
+        <div style="font-size:11px;color:var(--deep);line-height:1.5;margin-bottom:8px;">
+          Für die Update-Prüfung wird eine Verbindung zu <strong>fuehlkraft.github.io</strong> hergestellt. Dabei kann deine IP-Adresse technisch übermittelt werden. Möchtest du fortfahren?
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button onclick="confirmUpdateConsent()" style="flex:1;background:var(--deep);border:none;border-radius:6px;padding:6px 10px;font-size:11px;font-weight:700;color:white;cursor:pointer;font-family:Arial,sans-serif;">Ja, verbinden</button>
+          <button onclick="cancelUpdateConsent()" style="flex:1;background:none;border:1px solid rgba(180,160,220,0.4);border-radius:6px;padding:6px 10px;font-size:11px;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;">Abbrechen</button>
+        </div>
+      </div>
     </div>
 <div id="einstellungen-panel" style="display:none;position:absolute;top:56px;right:16px;background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);border-radius:16px;padding:18px 22px;border:1px solid rgba(255,255,255,0.9);box-shadow:0 8px 32px rgba(180,160,220,0.25);z-index:1000;min-width:300px;">
 </div>
@@ -7705,28 +7719,64 @@ function dismissBackupReminder(){
 }
 
 function checkForUpdate(){
-  // Prüft ob eine neue Version verfügbar ist (per version.json, unabhängig vom Service Worker Cache)
+  // Diese Funktion stellt eine externe Verbindung zu fuehlkraft.github.io her.
+  // Sie wird AUSSCHLIESSLICH durch einen aktiven Klick der Nutzerin ausgelöst
+  // (siehe requestUpdateCheck()), niemals automatisch.
+  var btn = document.getElementById('update-check-btn');
+  var originalText = btn ? btn.textContent : '';
+  if(btn){ btn.textContent='⏳ Prüfe...'; btn.disabled=true; }
+
   fetch('https://fuehlkraft.github.io/pferdekalender/version.json?t='+Date.now(), {cache:'no-store'})
     .then(function(r){return r.json();})
     .then(function(data){
+      if(btn){ btn.textContent=originalText; btn.disabled=false; }
       if(data && data.version && data.version !== FK_VERSION){
-        // Neue Version gefunden!
         var dot = document.getElementById('update-dot');
         if(dot) dot.style.display = 'block';
-        // Info in Backup-Menü eintragen
         var lastSeen = localStorage.getItem('fk_last_seen_version');
         if(lastSeen !== data.version){
           localStorage.setItem('fk_update_available', data.version);
           localStorage.setItem('fk_update_info', data.info || 'Neue Version verfügbar');
-          // Großen Banner oben anzeigen
           var banner = document.getElementById('sw-update-banner');
           if(banner) banner.style.display = 'flex';
         }
+        showUpdateCheckResult('🆕 Neue Version verfügbar: ' + data.version);
+      } else {
+        showUpdateCheckResult('✓ Du nutzt bereits die aktuelle Version.');
       }
     })
     .catch(function(){
-      // Kein Internet oder Datei nicht gefunden, kein Problem
+      if(btn){ btn.textContent=originalText; btn.disabled=false; }
+      showUpdateCheckResult('⚠ Update-Prüfung war nicht möglich. Bitte prüfe deine Internetverbindung.');
     });
+}
+
+function showUpdateCheckResult(msg){
+  var el = document.getElementById('update-check-result');
+  if(el){ el.textContent = msg; el.style.display = 'block'; }
+}
+
+function requestUpdateCheck(){
+  // Punkt 3: Hinweis vor der ersten Verbindung zeigen, Punkt 4: erst nach Zustimmung abrufen.
+  var alreadyConsented = localStorage.getItem('fk_update_consent') === '1';
+  if(alreadyConsented){
+    checkForUpdate();
+    return;
+  }
+  var consentBox = document.getElementById('update-consent-box');
+  if(consentBox) consentBox.style.display = 'block';
+}
+
+function confirmUpdateConsent(){
+  localStorage.setItem('fk_update_consent','1');
+  var consentBox = document.getElementById('update-consent-box');
+  if(consentBox) consentBox.style.display = 'none';
+  checkForUpdate();
+}
+
+function cancelUpdateConsent(){
+  var consentBox = document.getElementById('update-consent-box');
+  if(consentBox) consentBox.style.display = 'none';
 }
 
 function markUpdateSeen(){
@@ -7744,14 +7794,15 @@ setTimeout(function(){
   checkBackupReminder();
 }, 3000);
 
+// Update-Check läuft NICHT mehr automatisch (DSGVO-konform).
+// Nur der lokal gespeicherte Status (vom letzten manuellen Check) wird angezeigt,
+// das verursacht KEINE neue Netzwerkverbindung.
 setTimeout(function(){
-  // Auch gespeicherten Update-Status prüfen
   var savedUpdate = localStorage.getItem('fk_update_available');
   if(savedUpdate){
     var dot = document.getElementById('update-dot');
     if(dot) dot.style.display = 'block';
   }
-  checkForUpdate();
 }, 2000);
 
 
