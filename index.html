@@ -157,6 +157,48 @@ body{background:var(--grad);font-family:Arial,sans-serif;color:var(--text);min-h
 
 /* ── SUB-NAV PERSÖNLICH ── */
 .sub-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;padding:12px 16px;background:rgba(255,255,255,0.5);border-radius:14px;border:1px solid rgba(255,255,255,0.8);}
+
+/* ── Scroll-Hinweis: sanfter Schatten am Rand, wenn noch mehr Inhalt zum Scrollen da ist ── */
+.scroll-fade-wrap{position:relative;}
+/* Schatten am rechten Rand (zeigt: hier geht's weiter) */
+.scroll-fade-wrap::before{
+  content:'';
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  width:40px;
+  background:linear-gradient(to right, transparent, rgba(216,207,240,0.9));
+  pointer-events:none;
+  opacity:0;
+  transition:opacity 0.25s;
+  z-index:1;
+  border-radius:0 14px 14px 0;
+}
+.scroll-fade-wrap.has-more-right::before{opacity:1;}
+/* Kleiner Pfeil-Kreis, der über dem Schatten sitzt */
+.scroll-fade-wrap::after{
+  content:'›';
+  position:absolute;
+  top:50%;
+  right:8px;
+  transform:translateY(-50%);
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  background:var(--deep);
+  color:white;
+  font-size:15px;
+  font-weight:700;
+  line-height:24px;
+  text-align:center;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity 0.25s;
+  box-shadow:0 2px 6px rgba(74,56,96,0.3);
+  z-index:2;
+}
+.scroll-fade-wrap.has-more-right::after{opacity:1;}
 .sub-btn{background:transparent;border:1px solid rgba(180,160,220,0.3);border-radius:16px;padding:5px 13px;font-family:Arial,sans-serif;font-size:12px;color:var(--muted);cursor:pointer;transition:all 0.2s;white-space:nowrap;}
 .sub-btn.active{background:var(--lilac);border-color:var(--lilac2);color:var(--deep);}
 @media (hover: hover) {
@@ -3783,7 +3825,7 @@ return html2pdf;
       </div>
     </div>
 
-    <div class="header-nav">
+    <div class="header-nav scroll-fade-wrap" id="header-nav-wrap">
     <div class="main-nav" id="main-nav-inner">
       <div class="nav-tooltip-wrap"><button class="main-nav-btn active" id="tab-ueberblick" onclick="switchTab('ueberblick')">Überblick<span class="tab-update-dot" id="tab-update-dot-ueberblick" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>Mein Überblick</strong><br>Deine persönliche Schaltzentrale. Nächste Termine, offene To-Dos, Pferde-Status, Jahresziele und Glücksmomente, alles auf einen Blick.</div></div>
       <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-pferde" onclick="switchTab('pferde')">🐴 Pferde<span class="tab-update-dot" id="tab-update-dot-pferde" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>🐴 Pferde</strong><br>Alles rund um Sir Harry, Bo und Tari. Gesundheitsakte, Hufpflege, Fütterung, Impfungen, Kosten und Trainingsnotizen, lückenlos dokumentiert.</div></div>
@@ -6325,6 +6367,7 @@ function startApp(){
   try{ restoreTabUpdateDots(); }catch(e){}
   // Glocken-Punkt initial setzen (rein lokal, keine Verbindung)
   try{ refreshHeaderBell(); }catch(e){}
+  setTimeout(function(){ try{initScrollFades();}catch(e){} }, 200);
 }
 function goToCover(){
   document.getElementById('cover').style.display='flex';
@@ -10467,6 +10510,44 @@ function fillZeitDropdowns(){
   });
 }
 
+
+// ═══ SCROLL-HINWEIS: sanfter Schatten bei scrollbaren Leisten ═══
+function updateScrollFade(el){
+  if(!el) return;
+  // Die Klasse kommt direkt auf das scrollbare Element selbst (nicht den Parent),
+  // damit der Hinweis exakt an der richtigen Stelle erscheint, egal wie groß
+  // der umgebende Container ist.
+  var hasMoreRight = (el.scrollWidth - el.scrollLeft - el.clientWidth) > 4;
+  var hasMoreLeft = el.scrollLeft > 4;
+  el.classList.toggle('has-more-right', hasMoreRight);
+  el.classList.toggle('has-more-left', hasMoreLeft);
+}
+function initScrollFades(){
+  // Haupt-Tab-Leiste: Event-Listener nur EINMAL anhängen, aber Status IMMER neu berechnen
+  var mainNav = document.getElementById('main-nav-inner');
+  if(mainNav){
+    mainNav.classList.add('scroll-fade-wrap');
+    if(!mainNav._scrollFadeInit){
+      mainNav._scrollFadeInit = true;
+      mainNav.addEventListener('scroll', function(){ updateScrollFade(mainNav); }, {passive:true});
+    }
+    updateScrollFade(mainNav);
+  }
+  // Alle Sub-Nav-Leisten und Pferde-Modul-Leisten: Klasse direkt auf das scrollbare Element selbst
+  document.querySelectorAll('.sub-nav, .pk-subnav-inner').forEach(function(nav){
+    nav.classList.add('scroll-fade-wrap');
+    if(!nav._scrollFadeInit){
+      nav._scrollFadeInit = true;
+      nav.addEventListener('scroll', function(){ updateScrollFade(nav); }, {passive:true});
+    }
+    updateScrollFade(nav);
+  });
+}
+// Bei jedem Tab-Wechsel und Resize neu prüfen (neue Inhalte könnten dazugekommen sein)
+window.addEventListener('resize', function(){
+  document.querySelectorAll('.sub-nav, .pk-subnav-inner, #main-nav-inner').forEach(updateScrollFade);
+});
+
 function renderTagZeitplan(dk){
   fillZeitDropdowns();
   const note=kalData.tagNotes[dk]||{zeitplan:[]};
@@ -12097,7 +12178,7 @@ function _switchTabFinal(t){
   if(t==='glueck'){loadGlueck();renderGlueckTab();}
   if(t==='ueberblick'){setTimeout(updateUbHeader,100);}
 }
-switchTab=function(t){ _switchTabFinal(t); try{localStorage.setItem('pk_active_tab',t);}catch(e){} try{showTabUpdateInfo(t);}catch(e){} };
+switchTab=function(t){ _switchTabFinal(t); try{localStorage.setItem('pk_active_tab',t);}catch(e){} try{showTabUpdateInfo(t);}catch(e){} setTimeout(function(){ try{initScrollFades();}catch(e){} }, 50); };
 
 
 
