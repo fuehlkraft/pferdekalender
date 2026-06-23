@@ -1,7 +1,12 @@
 {
-  "version": "1.2.5",
-  "info": "Neue Termin-Funktionen im Kalender",
+  "version": "1.3.0",
+  "info": "Neuer Header mit Profilbereich, Glocke und Einstellungen",
   "changes": {
+    "ueberblick": [
+      "Neuer Header: Logo, Glocke für Erinnerungen, Einstellungen und Profilbild",
+      "Glocke zeigt jetzt Updates, Backup-Erinnerung und bald fällige Impfungen gebündelt",
+      "Neuer Einstellungen-Bereich: Profil, Meine Daten, Notfallkontakte, Kalenderfarbe, Backup"
+    ],
     "kalender": [
       "Termine planbar mit genauer Von- und Bis-Zeit",
       "Notizfeld pro Termin, z.B. für Zoom-Links oder Adressen",
