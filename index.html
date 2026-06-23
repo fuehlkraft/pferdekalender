@@ -3792,8 +3792,7 @@ return html2pdf;
       <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-organisation" onclick="switchTab('organisation')">📋 Organisation<span class="tab-update-dot" id="tab-update-dot-organisation" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>📋 Organisation</strong><br>Ziele, Braindump, To-Dos, Verleih, Urlaub, Essen, Vorsorge, Wann-zuletzt, Putzplan, Finanzen und Abos.</div></div>
       <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-kalender" onclick="switchTab('kalender')">📆 Kalender<span class="tab-update-dot" id="tab-update-dot-kalender" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>📆 Kalender</strong><br>Monats- und Tagesansicht mit Pferde-Einträgen, Tagesnotizen, Intentionen und Journal. Für Mensch und Pferd gemeinsam.</div></div>
       <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-vorlagen" onclick="switchTab('vorlagen')">📄 Vorlagen<span class="tab-update-dot" id="tab-update-dot-vorlagen" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>📄 Vorlagen</strong><br>38 Vorlagen: Liniert, Kariert, Journal, Cornell, Pomodoro, Dankbarkeit, Zyklus-Tracker und mehr. Alle druckfertig.</div></div>
-      <div class="nav-tooltip-wrap"><div class="nav-update-wrap"><button class="main-nav-btn" onclick="toggleBackupMenu()" id="backup-btn" style="white-space:nowrap;">💾 Backup</button><div id="update-dot" class="update-dot" title="Neue Version verfügbar!"></div></div><div class="nav-tooltip"><strong>💾 Backup</strong><br>Deine Daten bleiben lokal auf deinem Gerät. Sichere regelmäßig als JSON-Datei, empfohlen: wöchentlich.</div></div>
-      <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="btn-einstellungen" onclick="toggleEinstellungenPanel()" style="white-space:nowrap;">🎨</button><div class="nav-tooltip"><strong>🎨 Kalenderfarbe</strong><br>6 Aquarell-Farbthemen für den ganzen Kalender. Die Wahl wird gespeichert.</div></div>
+      <!-- Backup und Kalenderfarbe sind jetzt ausschließlich über ⚙️ Einstellungen erreichbar -->
     </div>
     </div>
     <!-- Bereichs-bezogene Update-Info-Box -->
@@ -7873,7 +7872,7 @@ function refreshHeaderBell(){
     items.push({
       icon:'🆕',
       title:'Neue Version verfügbar: '+updateVersion,
-      action:"toggleHeaderBell();toggleBackupMenu();",
+      action:"toggleHeaderBell();openSettings();showSettingsTab(\'backup\');",
       isUpdate:true
     });
   }
@@ -8212,8 +8211,6 @@ function checkForUpdate(){
         lastSeen = data.version;
       }
       if(data && data.version && data.version !== lastSeen){
-        var dot = document.getElementById('update-dot');
-        if(dot) dot.style.display = 'block';
         localStorage.setItem('fk_update_available', data.version);
           localStorage.setItem('fk_update_info', data.info || 'Neue Version verfügbar');
           // changes: Array mit einzelnen Stichpunkten, falls in version.json vorhanden.
@@ -8243,6 +8240,7 @@ function checkForUpdate(){
       } else {
         showUpdateCheckResult('✓ Du nutzt bereits die aktuelle Version.');
       }
+      try{ refreshHeaderBell(); }catch(e){}
     })
     .catch(function(){
       btns.forEach(function(b,i){ b.textContent=originalTexts[i]; b.disabled=false; });
@@ -8293,8 +8291,7 @@ function markUpdateSeen(){
     localStorage.removeItem('fk_update_available');
     localStorage.removeItem('fk_update_changes');
   }
-  var dot = document.getElementById('update-dot');
-  if(dot) dot.style.display = 'none';
+  try{ refreshHeaderBell(); }catch(e){}
   var notice = document.getElementById('update-notice');
   if(notice) notice.style.display = 'none';
 }
@@ -8307,13 +8304,7 @@ setTimeout(function(){
 // Update-Check läuft NICHT mehr automatisch (DSGVO-konform).
 // Nur der lokal gespeicherte Status (vom letzten manuellen Check) wird angezeigt,
 // das verursacht KEINE neue Netzwerkverbindung.
-setTimeout(function(){
-  var savedUpdate = localStorage.getItem('fk_update_available');
-  if(savedUpdate){
-    var dot = document.getElementById('update-dot');
-    if(dot) dot.style.display = 'block';
-  }
-}, 2000);
+// Glocken-Status wird bereits in startApp() via refreshHeaderBell() gesetzt
 
 
 function _backupOutsideClick(e){
