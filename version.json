@@ -1,17 +1,18 @@
 {
-  "version": "1.3.2",
-  "info": "Neuer Header mit Profilbereich, Glocke und Einstellungen",
+  "version": "1.3.4",
+  "info": "Geburtstags-Hinweis, neues Logo & Icon, Desktop-Ausrichtung, rechtliche Ergänzungen",
   "changes": {
     "ueberblick": [
-      "Neuer Header: Logo, Glocke für Erinnerungen, Einstellungen und Profilbild",
-      "Glocke zeigt jetzt Updates, Backup-Erinnerung und bald fällige Impfungen gebündelt",
-      "Neuer Einstellungen-Bereich: Profil, Meine Daten, Notfallkontakte, Kalenderfarbe, Backup"
+      "Neu: Hat heute jemand Geburtstag (Pferd oder Mensch), erscheint ein Hinweis direkt unter dem Datum"
     ],
-    "kalender": [
-      "Termine planbar mit genauer Von- und Bis-Zeit",
-      "Notizfeld pro Termin, z.B. für Zoom-Links oder Adressen",
-      "Visuelle Tagesleiste zeigt deine Termine auf einen Blick",
-      "Option 'Zeit blockieren' für wichtige Termine"
+    "allgemein": [
+      "Fühlkraft-Logo auf der Titelseite deutlich größer, zudem über Handy, Tablet und PC hinweg getestet und angepasst",
+      "Titelseite passt jetzt auf allen Geräten ohne Scrollen auf den Bildschirm",
+      "Login-Bildschirm jetzt in den Lila-Farbtönen des Kalenders statt in Braun, Text 'von mir' statt 'von uns'",
+      "Header und Tab-Leiste sind in der PC-Ansicht jetzt exakt auf die Breite des restlichen Kalenders ausgerichtet",
+      "Störender Pfeil bei den scrollbaren Tab-Leisten wieder entfernt",
+      "Neues App-Icon mit dem aktuellen Fühlkraft-Logo (icon-192.png, icon-512.png)",
+      "Datenschutz- und Urheberrechtstexte um Hinweise zu GitHub-Hosting, lokaler Speicherung, Datensicherung und Nutzungsbedingungen ergänzt"
     ]
   }
 }
