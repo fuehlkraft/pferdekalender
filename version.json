@@ -1,18 +1,14 @@
 {
-  "version": "1.3.7",
-  "info": "Geburtstags-Hinweis, neues Logo & Icon, Desktop-Ausrichtung, rechtliche Ergänzungen",
+  "version": "1.4.2",
+  "info": "Profilbild im Header korrigiert, neue Erinnerungs-Popups bei Terminen",
   "changes": {
     "ueberblick": [
-      "Neu: Hat heute jemand Geburtstag (Pferd oder Mensch), erscheint ein Hinweis direkt unter dem Datum"
+      "Das Profilbild oben rechts im Header wird jetzt beim Öffnen der App korrekt geladen, vorher zeigte es nur direkt nach dem Hochladen in den Einstellungen das richtige Foto"
     ],
-    "allgemein": [
-      "Fühlkraft-Logo auf der Titelseite deutlich größer, zudem über Handy, Tablet und PC hinweg getestet und angepasst",
-      "Titelseite passt jetzt auf allen Geräten ohne Scrollen auf den Bildschirm",
-      "Login-Bildschirm jetzt in den Lila-Farbtönen des Kalenders statt in Braun, Text 'von mir' statt 'von uns'",
-      "Header und Tab-Leiste sind in der PC-Ansicht jetzt exakt auf die Breite des restlichen Kalenders ausgerichtet",
-      "Störender Pfeil bei den scrollbaren Tab-Leisten wieder entfernt",
-      "Neues App-Icon mit dem aktuellen Fühlkraft-Logo (icon-192.png, icon-512.png)",
-      "Datenschutz- und Urheberrechtstexte um Hinweise zu GitHub-Hosting, lokaler Speicherung, Datensicherung und Nutzungsbedingungen ergänzt"
+    "kalender": [
+      "Neue eigene 🔔 Erinnerungs-Markierung pro Termin (unabhängig von 🔒 Zeit blockieren)",
+      "Ist ein Termin als Erinnerung markiert, poppt zur eingetragenen Uhrzeit ein Popup mit Titel und Notiz auf, egal in welchem Bereich der App du dich gerade befindest",
+      "Wichtig: das funktioniert nur, solange der Kalender geöffnet ist, da die App ohne eigenen Server läuft und deshalb keine Push-Benachrichtigungen bei komplett geschlossener App senden kann"
     ]
   }
 }
