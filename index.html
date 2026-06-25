@@ -3779,6 +3779,7 @@ return html2pdf;
           <button class="settings-tab-btn" data-tab="notfall" onclick="showSettingsTab('notfall')" style="white-space:nowrap;background:rgba(232,228,240,0.5);border:none;border-radius:14px;padding:7px 14px;font-size:12px;font-weight:600;color:var(--deep);cursor:pointer;">🚨 Notfallkontakte</button>
           <button class="settings-tab-btn" data-tab="design" onclick="showSettingsTab('design')" style="white-space:nowrap;background:rgba(232,228,240,0.5);border:none;border-radius:14px;padding:7px 14px;font-size:12px;font-weight:600;color:var(--deep);cursor:pointer;">🎨 Kalenderfarbe</button>
           <button class="settings-tab-btn" data-tab="backup" onclick="showSettingsTab('backup')" style="white-space:nowrap;background:rgba(232,228,240,0.5);border:none;border-radius:14px;padding:7px 14px;font-size:12px;font-weight:600;color:var(--deep);cursor:pointer;">💾 Backup &amp; Update</button>
+          <button class="settings-tab-btn" data-tab="hilfe" onclick="showSettingsTab('hilfe')" style="white-space:nowrap;background:rgba(232,228,240,0.5);border:none;border-radius:14px;padding:7px 14px;font-size:12px;font-weight:600;color:var(--deep);cursor:pointer;">❓ Hilfe</button>
         </div>
 
         <div style="flex:1;overflow-y:auto;padding:18px;">
@@ -3787,6 +3788,7 @@ return html2pdf;
           <div id="settings-panel-notfall" class="settings-panel" style="display:none;"></div>
           <div id="settings-panel-design" class="settings-panel" style="display:none;"></div>
           <div id="settings-panel-backup" class="settings-panel" style="display:none;"></div>
+          <div id="settings-panel-hilfe" class="settings-panel" style="display:none;"></div>
         </div>
       </div>
     </div>
@@ -8111,6 +8113,7 @@ function showSettingsTab(tab){
     if(tab === 'notfall') renderSettingsNotfall(target);
     if(tab === 'design') renderSettingsDesign(target);
     if(tab === 'backup') renderSettingsBackup(target);
+    if(tab === 'hilfe') renderSettingsHilfe(target);
   }
 }
 function getFkSettings(){
@@ -8325,6 +8328,161 @@ function renderSettingsBackup(container){
     +   '</div>'
     + '</div>';
 }
+
+// ═══════════════════════════════════════════════════════════
+// HILFE-SEITE: Inhaltsverzeichnis mit Suche
+// Wichtig: wird eine Funktion der App geändert, ergänzt oder entfernt,
+// muss der passende Eintrag hier mit aktualisiert werden!
+// ═══════════════════════════════════════════════════════════
+const HELP_CONTENT = [
+  { section:'Mein Überblick', icon:'🏠', topics:[
+    {title:'Wofür ist die Überblick-Seite?', text:'Deine Schaltzentrale: alles Wichtige aus allen Bereichen auf einen Blick, ohne erst in jeden Tab einzeln zu wechseln.'},
+    {title:'Hintergrundbild ändern', text:'Tippe oben rechts auf das ☰-Symbol, dort kannst du ein eigenes Foto hochladen oder wieder entfernen, und die Position per Ziehen anpassen.'},
+    {title:'Heute im Fokus', text:'Zeigt deine heutige Intention, Top-Prioritäten und Termine. Steht noch nichts drin, kommst du über "jetzt ausfüllen" direkt zur Tagesseite. Ist schon etwas eingetragen, bringt dich "weiter bearbeiten" ebenfalls dorthin.'},
+    {title:'Pferde-Status', text:'Zeigt pro Pferd, wann zuletzt Tierarzt, Hufschmied, Impfung, Wurmkur, Osteopathie/Physio und Zahnkontrolle dran waren. Die Farbe richtet sich nach dem Intervall, das du unter Pferde → Meine Pferde pro Pferd selbst einstellst. Auf eine Kachel tippen öffnet direkt einen neuen Eintrag mit dem richtigen Pferd und der richtigen Kategorie. Auf den runden Button mit dem Pferdenamen tippen öffnet den Foto-Upload.'},
+    {title:'Offene To-Dos', text:'Zeigt deine unerledigten Aufgaben aus Organisation → To-Dos.'},
+    {title:'Nächste 14 Tage', text:'Fasst anstehende Termine aus dem Kalender und wichtige Daten der nächsten zwei Wochen zusammen.'},
+    {title:'Jahresziele', text:'Zeigt deine unter Organisation → Ziele eingetragenen Jahresziele.'},
+    {title:'Bald fällig', text:'Zeigt Vorsorgetermine aus Organisation → Vorsorge, die in den nächsten 90 Tagen anstehen.'},
+    {title:'Geburtstags-Hinweis', text:'Hat heute jemand aus deiner Geburtstagsliste Geburtstag, erscheint oben ein kleiner Hinweis-Banner.'},
+  ]},
+  { section:'Pferde', icon:'🐴', topics:[
+    {title:'Jahresübersicht', text:'Zeigt deinen Pferdekalender als Jahr mit Monatskacheln. Über "+ Eintrag" trägst du Tierarzt, Hufschmied, Gesundheit, Blutbefund, Impfung, Wurmkur, Osteopathie/Physio, Zahnkontrolle, Kosten oder ein Highlight ein, jeweils mit Pferd, Datum und Titel.'},
+    {title:'Meine Pferde', text:'Hier verwaltest du Name, Foto, Geburtstag, Rasse, Farbe, Chip- und Equidenpass-Nummer, Versicherung sowie Tierarzt- und Hufschmied-Kontakt pro Pferd. Auf das Foto tippen lädt ein neues hoch.'},
+    {title:'Erinnerungs-Intervalle einstellen', text:'Ganz unten bei jedem Pferd unter Meine Pferde stellst du pro Kategorie (Tierarzt, Hufschmied, Impfung, Wurmkur, Osteopathie/Physio, Zahnkontrolle) ein eigenes Intervall ein, z.B. Hufschmied alle 6 Wochen bei einem beschlagenen Pferd, alle 10 Wochen bei einem Barhufpferd. Davon hängt ab, wann eine Kachel im Pferde-Status grün, gelb oder rosa wird.'},
+    {title:'Kosten erfassen & teilen', text:'Unter Pferde → Kosten trägst du Ausgaben mit Kategorie, Betrag und Pferd ein. Wählst du als Pferd "Alle Pferde", wird der Betrag automatisch gleichmäßig auf alle deine Pferde geteilt, du musst nicht selbst rechnen.'},
+    {title:'Gesundheitsakte', text:'Führt für jedes Pferd ein ausführliches Protokoll: Impfungen, Wurmkuren, Zahnkontrollen, Osteopathie-Termine, Tierarztbesuche und Dauermedikamente, jeweils mit Datum, Befund und Notiz.'},
+    {title:'Hufpflege', text:'Eigener Bereich für alles rund um die Hufe: Beschlag- oder Barhuf-Termine, Beobachtungen, Fotos vom Hufzustand.'},
+    {title:'Gesundheitskontrolle', text:'Zum Festhalten von Vitalwerten wie Puls, Atmung, Temperatur und Kapillarfüllzeit, inklusive kurzer Erklärung, wie man die Kapillarfüllzeit überhaupt misst.'},
+    {title:'Fütterung', text:'Für Futterplan, Mengen und Ergänzungsfuttermittel pro Pferd.'},
+    {title:'Training', text:'Dein Trainingstagebuch: was wurde geübt, wie lief es, welche Fortschritte gab es.'},
+    {title:'Verhalten', text:'Zum Beobachten und Festhalten von Verhaltensänderungen deines Pferdes, hilfreich um Muster über die Zeit zu erkennen.'},
+    {title:'Packliste Turnier', text:'Checkliste für Turniertage, damit nichts Wichtiges vergessen wird.'},
+    {title:'Allergie & Husten', text:'Protokolliert Symptome, bekannte Auslöser, Diagnosen und Behandlungen bei Atemwegs- oder Hautproblemen.'},
+    {title:'Pferdeurlaub', text:'Für die Planung, wenn dein Pferd z.B. auf einen Wanderreit-Urlaub oder eine auswärtige Unterbringung geht.'},
+    {title:'Achtsamkeit (Tagesimpuls)', text:'Ein 40-Tage-Programm mit täglichen Impulsen rund um achtsame Pferdebegegnung, erscheint automatisch oben im Überblick, solange es aktiv ist.'},
+  ]},
+  { section:'Kalender', icon:'📅', topics:[
+    {title:'Tagesseite', text:'Dein zentraler Tagesplaner: Intention, Top-3-Prioritäten, To-Dos, Termine & Zeitplan, Tagebuch und Tagesabschluss mit Stimmung. Über "Tag speichern" unten wird alles gespeichert, der Button wird dabei kurz grün.'},
+    {title:'Termine eintragen', text:'Bei Termine & Zeitplan tippst du auf Von oder Bis, um die Uhrzeit über ein Ziffernblatt einzustellen, erst Stunde, dann Minute. Titel und Notiz dazu, fertig. Der Button wechselt von "+ Termin" zu "Speichern" in Grün, sobald du etwas eintippst.'},
+    {title:'Termin mit Pferd verknüpfen', text:'Beim Eintragen eines Termins kannst du optional ein Pferd und eine Kategorie (Tierarzt, Hufschmied, Impfung, Wurmkur, Osteopathie/Physio, Zahnkontrolle) auswählen. Ist beides ausgewählt, taucht der Termin automatisch auch im Pferde-Status im Überblick auf.'},
+    {title:'Zeit blockieren & Erinnerung', text:'"Zeit blockieren" markiert den Termin optisch als reservierte Zeit in der Tagesleiste. "Erinnerung" lässt zur eingetragenen Uhrzeit ein Popup mit Titel und Notiz aufspringen, das funktioniert nur, solange der Kalender bei dir geöffnet ist, da es keinen Server im Hintergrund gibt.'},
+    {title:'Top-3-Prioritäten & To-Dos', text:'Beide Listen lassen sich nachträglich bearbeiten, einfach in die Zeile tippen und den Text ändern. Häkchen setzen mit Tippen auf den Kreis links, löschen über das Kreuz rechts.'},
+    {title:'Wochenzeitplan', text:'Zeigt deine Woche als Stunden-Raster, in jede Zelle kannst du kurz eintragen, was zu der Zeit geplant ist.'},
+    {title:'Woche Horizontal & Journal-Woche', text:'Zwei weitere Wochenansichten: einmal als durchgehende Zeitleiste, einmal als Journal mit Platz für Notizen pro Tag.'},
+    {title:'Monat Liste & Monat Raster', text:'Zwei Monatsansichten, einmal als Liste aller Einträge, einmal als klassisches Kalenderraster mit Notizfeld pro Tag.'},
+    {title:'Halbjahr', text:'Gibt einen groben Überblick über ein halbes Jahr auf einen Blick.'},
+  ]},
+  { section:'Organisation', icon:'📋', topics:[
+    {title:'Ziele', text:'Für deine Jahresziele, groß und inspirierend gedacht, nicht zwingend messbar.'},
+    {title:'To-Dos', text:'Allgemeine Aufgabenliste, unabhängig vom Tagesplan im Kalender. Erscheint auch im Überblick unter "Offene To-Dos".'},
+    {title:'Braindump', text:'Ein Ort, um den Kopf freizumachen, alles aufschreiben, was gerade im Kopf herumschwirrt, ohne es sofort sortieren zu müssen.'},
+    {title:'Essen', text:'Essensplan für die Woche, hilft beim Einkaufen und spart Zeit bei der täglichen "was koche ich"-Frage.'},
+    {title:'Finanzen', text:'Nach dem Unterkonto-Prinzip: Geld gedanklich auf verschiedene Töpfe aufteilen, um den Überblick zu behalten.'},
+    {title:'Putzplan', text:'Verteilt Hausarbeit auf wiederkehrende Aufgaben, damit nichts vergessen wird und keiner alles allein macht.'},
+    {title:'Abos', text:'Liste aller laufenden Abonnements, damit keine stillen Kosten unbemerkt weiterlaufen.'},
+    {title:'Verleih', text:'Hält fest, was du an wen verliehen hast, damit nichts in Vergessenheit gerät.'},
+    {title:'Urlaub', text:'Planung für Urlaubsreisen, auch wenn kein Pferd mitkommt.'},
+    {title:'Vorsorge', text:'Vorsorgetermine für dich selbst, mit Erinnerung im Überblick, wenn ein Termin in den nächsten 90 Tagen anstand.'},
+    {title:'Wann zuletzt', text:'Für alles, was man sich merken will, aber leicht vergisst, z.B. wann die Heizung gewartet wurde.'},
+  ]},
+  { section:'Persönlich', icon:'✨', topics:[
+    {title:'Geburtstage & Geschenke', text:'Trage Name und Datum ein, beides lässt sich danach jederzeit direkt in der Karte ändern. Dazu Notizen und Geschenkideen mit Foto pro Person.'},
+    {title:'Habits', text:'Habit-Tracker für Gewohnheiten, die du aufbauen möchtest, mit Strähnen-Anzeige.'},
+    {title:'Routinen', text:'Für feste Morgen- oder Abendroutinen, die du regelmäßig abhaken kannst.'},
+    {title:'Bucket List', text:'Liste der Dinge, die du im Leben noch erleben oder tun möchtest.'},
+    {title:'Fitness', text:'Verfolgt Gewicht und Fitness-Fortschritt über die Zeit.'},
+    {title:'Lebensrad', text:'Visualisiert verschiedene Lebensbereiche als Rad, um zu sehen, wo gerade Balance fehlt.'},
+    {title:'Vision Board', text:'Eine Foto-Collage für das, was du dir für dein Leben wünschst, als visuelle Erinnerung.'},
+    {title:'Reflexion', text:'Raum für regelmäßige Selbstreflexion mit festen Leitfragen.'},
+    {title:'Tracker', text:'Allgemeiner Tracker, z.B. für Filme, Serien oder Bücher, die du gesehen oder gelesen hast.'},
+    {title:'Weltkarte', text:'Markiert die Orte, an denen du schon warst.'},
+    {title:'Zeitstrahl', text:'Zeigt wichtige Lebensereignisse als Zeitstrahl.'},
+  ]},
+  { section:'Glücksmomente', icon:'❤️', topics:[
+    {title:'Wofür sind Glücksmomente?', text:'Ein Ort, um schöne, kleine Augenblicke mit deinem Pferd festzuhalten, mit Foto und kurzer Beschreibung, damit sie nicht im Alltag verloren gehen. Über die Filterleiste oben lassen sich Einträge nach Pferd oder Stimmung eingrenzen.'},
+  ]},
+  { section:'Vorlagen', icon:'📄', topics:[
+    {title:'Was sind Vorlagen?', text:'Fertige Vorlagen zum Ausfüllen und Ausdrucken, sortiert nach Papier, Business, Gesundheit, Kreativ, Leben und Produktivität. Eigene Texte werden direkt in der Vorlage gespeichert, der Speichern-Button wird dabei kurz grün.'},
+    {title:'Vorlage drucken', text:'Über den Drucken-Button in der jeweiligen Vorlage öffnet sich die Druckansicht deines Browsers.'},
+  ]},
+  { section:'Einstellungen & Allgemein', icon:'⚙️', topics:[
+    {title:'Profilbild ändern', text:'Unter Einstellungen → Mein Profil über "Foto wählen" hochladen. Große Handyfotos werden automatisch verkleinert, damit der Speicher nicht überläuft.'},
+    {title:'Backup erstellen', text:'Unter Einstellungen → Backup & Update über "Backup speichern" eine Sicherungsdatei herunterladen, über "Backup laden" eine vorhandene Datei wieder einspielen.'},
+    {title:'Update prüfen', text:'Über "Update prüfen" wird einmalig (nur nach deiner Zustimmung) nachgesehen, ob eine neuere Version der App verfügbar ist.'},
+    {title:'App installieren', text:'Über das Chrome-Menü (drei Punkte) → "Zum Startbildschirm hinzufügen" lässt sich die App wie eine normale App auf dem Handy installieren.'},
+    {title:'Datenschutz', text:'Alle Daten bleiben ausschließlich auf deinem Gerät gespeichert, es gibt keinen Server, der mitliest, außer du nutzt aktiv "Update prüfen", das einzig zu fuehlkraft.github.io verbindet.'},
+  ]},
+];
+
+function renderSettingsHilfe(container){
+  container.innerHTML =
+    '<input type="text" id="hilfe-search" oninput="filterHilfe()" placeholder="🔍 Suchen, z. B. \'Kosten teilen\' oder \'Erinnerung\'..." style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:10px;padding:10px 12px;font-size:13px;font-family:Arial,sans-serif;background:rgba(255,255,255,0.7);color:var(--text);outline:none;margin-bottom:14px;box-sizing:border-box;">'
+    + '<div id="hilfe-empty" style="display:none;text-align:center;color:var(--muted);font-size:12px;padding:14px;">Keine Treffer. Versuch es mit einem anderen Begriff.</div>'
+    + '<div id="hilfe-list"></div>';
+  buildHilfeList();
+}
+function buildHilfeList(){
+  const list=document.getElementById('hilfe-list');if(!list)return;
+  list.innerHTML = HELP_CONTENT.map(function(sec,si){
+    return '<div class="hilfe-section" data-si="'+si+'" style="margin-bottom:10px;border:1px solid rgba(180,160,220,0.2);border-radius:10px;overflow:hidden;">'
+      + '<button onclick="toggleHilfeSection('+si+')" style="width:100%;text-align:left;background:rgba(232,228,240,0.35);border:none;padding:11px 14px;font-family:Georgia,serif;font-size:14px;font-weight:600;color:var(--deep);cursor:pointer;display:flex;align-items:center;justify-content:space-between;">'
+      +   '<span>'+sec.icon+' '+sec.section+'</span><span id="hilfe-arrow-'+si+'">▾</span>'
+      + '</button>'
+      + '<div id="hilfe-body-'+si+'" style="display:none;padding:4px 14px 10px;">'
+      +   sec.topics.map(function(t,ti){
+            return '<div class="hilfe-topic" data-si="'+si+'" data-ti="'+ti+'" style="padding:8px 0;border-top:1px solid rgba(216,207,240,0.2);">'
+              + '<div style="font-size:12.5px;font-weight:700;color:var(--deep);margin-bottom:3px;">'+t.title+'</div>'
+              + '<div style="font-size:12px;color:var(--text);line-height:1.6;">'+t.text+'</div>'
+              + '</div>';
+          }).join('')
+      + '</div></div>';
+  }).join('');
+}
+function toggleHilfeSection(si){
+  const body=document.getElementById('hilfe-body-'+si);
+  const arrow=document.getElementById('hilfe-arrow-'+si);
+  if(!body)return;
+  const open=body.style.display!=='none';
+  body.style.display=open?'none':'block';
+  if(arrow)arrow.textContent=open?'▾':'▴';
+}
+function filterHilfe(){
+  const q=(document.getElementById('hilfe-search').value||'').trim().toLowerCase();
+  const words=q.split(/\s+/).filter(Boolean);
+  const sections=document.querySelectorAll('.hilfe-section');
+  let anyVisible=false;
+  if(!words.length){
+    sections.forEach(function(sec){
+      sec.style.display='';
+      sec.querySelectorAll('.hilfe-topic').forEach(function(t){t.style.display='';});
+      var si=sec.getAttribute('data-si');
+      document.getElementById('hilfe-body-'+si).style.display='none';
+      document.getElementById('hilfe-arrow-'+si).textContent='▾';
+    });
+    document.getElementById('hilfe-empty').style.display='none';
+    return;
+  }
+  sections.forEach(function(sec){
+    var si=sec.getAttribute('data-si');
+    var sectionMatches=false;
+    var topics=sec.querySelectorAll('.hilfe-topic');
+    topics.forEach(function(t){
+      var text=t.textContent.toLowerCase();
+      var match=words.every(function(w){return text.indexOf(w)>-1;});
+      t.style.display=match?'':'none';
+      if(match)sectionMatches=true;
+    });
+    sec.style.display=sectionMatches?'':'none';
+    if(sectionMatches){
+      anyVisible=true;
+      document.getElementById('hilfe-body-'+si).style.display='block';
+      document.getElementById('hilfe-arrow-'+si).textContent='▴';
+    }
+  });
+  document.getElementById('hilfe-empty').style.display=anyVisible?'none':'block';
+}
+
 
 function checkForUpdate(){
   // Diese Funktion stellt eine externe Verbindung zu fuehlkraft.github.io her.
@@ -12170,11 +12328,11 @@ const VORLAGE_RENDERERS={
           const hIdx=horses.indexOf(h);
           const hCol=HORSE_COLORS[hIdx%HORSE_COLORS.length]||HORSE_COLORS[0];
           const avatar=(hp&&hp.foto)
-            ?'<div onclick="event.stopPropagation();horseUpload('+hIdx+')" style="width:34px;height:34px;border-radius:50%;overflow:hidden;cursor:pointer;flex-shrink:0;margin-right:8px;border:2px solid rgba(255,255,255,0.8);"><img src="'+hp.foto+'" style="width:100%;height:100%;object-fit:cover;"></div>'
-            :'<div onclick="event.stopPropagation();horseUpload('+hIdx+')" style="width:34px;height:34px;border-radius:50%;background:'+hCol+';display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:15px;font-weight:700;color:var(--deep);cursor:pointer;flex-shrink:0;margin-right:8px;border:2px solid rgba(255,255,255,0.8);" title="Foto hinzufügen">'+(hp.name||h)[0].toUpperCase()+'</div>';
+            ?'<div onclick="event.stopPropagation();horseUpload('+hIdx+')" style="width:52px;height:52px;border-radius:50%;overflow:hidden;cursor:pointer;flex-shrink:0;margin-right:10px;border:2px solid rgba(255,255,255,0.8);"><img src="'+hp.foto+'" style="width:100%;height:100%;object-fit:cover;"></div>'
+            :'<div onclick="event.stopPropagation();horseUpload('+hIdx+')" style="width:52px;height:52px;border-radius:50%;background:'+hCol+';display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:22px;font-weight:700;color:var(--deep);cursor:pointer;flex-shrink:0;margin-right:10px;border:2px solid rgba(255,255,255,0.8);" title="Foto hinzufügen">'+(hp.name||h)[0].toUpperCase()+'</div>';
           return `
           <div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(216,207,240,0.2);">
-            <div style="font-weight:700;font-size:13px;color:var(--deep);margin-bottom:5px;display:flex;align-items:center;">${avatar}${h}</div>
+            <div style="font-weight:700;font-size:15px;color:var(--deep);margin-bottom:8px;display:flex;align-items:center;">${avatar}${h}</div>
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;">
               ${[['Tierarzt','vet','🩺'],['Hufschmied','huf','🔧'],['Impfung','vacc','💉'],['Wurmkur','wurm','🪱'],['Osteopathie','osteo','🤲'],['Zahnkontrolle','teeth','🦷']].map(([l,k,ico])=>{
                 const d = last[k];
