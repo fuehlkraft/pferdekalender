@@ -1,14 +1,11 @@
 {
-  "version": "1.4.2",
-  "info": "Profilbild im Header korrigiert, neue Erinnerungs-Popups bei Terminen",
+  "version": "1.6.1",
+  "info": "Echte Pferdefotos als runde Buttons im Pferde-Status",
   "changes": {
     "ueberblick": [
-      "Das Profilbild oben rechts im Header wird jetzt beim Öffnen der App korrekt geladen, vorher zeigte es nur direkt nach dem Hochladen in den Einstellungen das richtige Foto"
-    ],
-    "kalender": [
-      "Neue eigene 🔔 Erinnerungs-Markierung pro Termin (unabhängig von 🔒 Zeit blockieren)",
-      "Ist ein Termin als Erinnerung markiert, poppt zur eingetragenen Uhrzeit ein Popup mit Titel und Notiz auf, egal in welchem Bereich der App du dich gerade befindest",
-      "Wichtig: das funktioniert nur, solange der Kalender geöffnet ist, da die App ohne eigenen Server läuft und deshalb keine Push-Benachrichtigungen bei komplett geschlossener App senden kann"
+      "Bei Pferde-Status zeigt jeder Pferdename jetzt einen echten runden Button wie bei Meine Pferde, mit Foto wenn vorhanden, sonst ein farbiger Kreis mit Anfangsbuchstabe",
+      "Das Pferde-Emoji ist dafür komplett weg",
+      "Ein Tipp auf den runden Button öffnet direkt den Foto-Upload für dieses Pferd"
     ]
   }
 }
