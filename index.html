@@ -178,6 +178,7 @@ body{background:var(--grad);font-family:Arial,sans-serif;color:var(--text);min-h
 @media(max-width:650px){.grid2,.grid3{grid-template-columns:1fr;}}
 .card-title{font-size:11px;font-weight:700;letter-spacing:0.8px;color:var(--muted);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
 .card-title-dot{width:8px;height:8px;border-radius:50%;}
+.ub-heading{font-family:Georgia,serif!important;font-size:17px!important;font-weight:600!important;color:var(--deep)!important;text-transform:none!important;letter-spacing:0!important;}
 
 /* ── HABIT TRACKER ── */
 .habit-month-tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px;}
@@ -3935,6 +3936,9 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
           <div class="year-title" id="year-title">2026</div>
           <button class="arrow" onclick="changeYear(1)">&#8250;</button>
         </div>
+        <div style="display:flex;justify-content:flex-end;margin-bottom:10px;">
+          <button class="add-main-btn" onclick="openModal()">+ Eintrag</button>
+        </div>
         <div class="pk-stats">
           <div class="pk-stat" style="background:linear-gradient(135deg,rgba(200,234,223,0.7),rgba(168,216,203,0.5))"><div class="pk-stat-num" id="stat-vet">0</div><div class="pk-stat-label">Tierarztbesuche</div></div>
           <div class="pk-stat" style="background:linear-gradient(135deg,rgba(216,207,240,0.7),rgba(191,179,224,0.5))"><div class="pk-stat-num" id="stat-huf">0</div><div class="pk-stat-label">Hufschmied</div></div>
@@ -5854,6 +5858,24 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
             </div>
             <input type="text" id="tag-zeit-inp" oninput="updateTagZeitBtn()" placeholder="Termin... (z.B. Seminar, Tierarzt, Reitstunde)" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 10px;font-size:12px;font-family:Arial,sans-serif;background:rgba(255,255,255,0.7);color:var(--text);outline:none;margin-bottom:6px;box-sizing:border-box;">
             <textarea id="tag-zeit-notiz" placeholder="Notiz (z.B. Zoom-Link, Adresse, was mitbringen...)" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 10px;font-size:11px;font-family:Arial,sans-serif;background:rgba(255,255,255,0.7);color:var(--text);outline:none;margin-bottom:6px;min-height:44px;resize:vertical;box-sizing:border-box;"></textarea>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px;">
+              <div>
+                <div style="font-size:9px;color:var(--muted);margin-bottom:2px;">Pferd (optional)</div>
+                <select id="tag-zeit-horse" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 6px;font-size:11px;font-family:Arial,sans-serif;background:rgba(255,255,255,0.7);color:var(--text);outline:none;box-sizing:border-box;">
+                  <option value="">Kein Pferd</option>
+                  <option>Sir Harry</option><option>Bo</option><option>Tari</option><option value="Alle">Alle Pferde</option>
+                </select>
+              </div>
+              <div>
+                <div style="font-size:9px;color:var(--muted);margin-bottom:2px;">Kategorie (optional)</div>
+                <select id="tag-zeit-cat" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 6px;font-size:11px;font-family:Arial,sans-serif;background:rgba(255,255,255,0.7);color:var(--text);outline:none;box-sizing:border-box;">
+                  <option value="">Keine Kategorie</option>
+                  <option value="vet">🩺 Tierarzt</option>
+                  <option value="huf">🔧 Hufschmied</option>
+                  <option value="vacc">💉 Impfung</option>
+                </select>
+              </div>
+            </div>
             <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
               <label style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);cursor:pointer;">
                 <input type="checkbox" id="tag-zeit-blocked" style="accent-color:var(--sky2);width:14px;height:14px;">
@@ -6019,6 +6041,9 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
         <option value="health">Gesundheit / Allergie</option>
         <option value="blood">Blutbefund</option>
         <option value="vacc">Impfung</option>
+        <option value="wurm">Wurmkur</option>
+        <option value="osteo">Osteopathie / Physio / Chiropraktik</option>
+        <option value="teeth">Zahnkontrolle</option>
         <option value="cost">Kosten / Ausgaben</option>
         <option value="hl">Highlight / Foto-Moment</option>
       </select>
@@ -6058,8 +6083,8 @@ Object.freeze(FK_COPYRIGHT);
 // ═══════════════════════════════════════════════
 const MONTHS=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
 const WEEKDAYS=['Mo','Di','Mi','Do','Fr','Sa','So'];
-const CAT_LABELS={vet:'Tierarzt',huf:'Hufschmied',health:'Gesundheit',blood:'Blutbefund',vacc:'Impfung',cost:'Kosten',hl:'Highlight'};
-const CAT_COLORS={vet:'#a8d8cb',huf:'#bfb3e0',health:'#e8a8c0',blood:'#90bce0',vacc:'#c8eadf',cost:'#d4c080',hl:'#b8d8f0'};
+const CAT_LABELS={vet:'Tierarzt',huf:'Hufschmied',health:'Gesundheit',blood:'Blutbefund',vacc:'Impfung',wurm:'Wurmkur',osteo:'Osteopathie/Physio',teeth:'Zahnkontrolle',cost:'Kosten',hl:'Highlight'};
+const CAT_COLORS={vet:'#a8d8cb',huf:'#bfb3e0',health:'#e8a8c0',blood:'#90bce0',vacc:'#c8eadf',wurm:'#d8c9a8',osteo:'#c9b8e0',teeth:'#a8c8d8',cost:'#d4c080',hl:'#b8d8f0'};
 const HORSE_COLORS=['rgba(200,234,223,0.7)','rgba(216,207,240,0.7)','rgba(242,200,216,0.7)'];
 const MG=['linear-gradient(135deg,rgba(200,234,223,0.55),rgba(216,207,240,0.35))','linear-gradient(135deg,rgba(216,207,240,0.55),rgba(242,200,216,0.35))','linear-gradient(135deg,rgba(242,200,216,0.55),rgba(184,216,240,0.35))','linear-gradient(135deg,rgba(184,216,240,0.55),rgba(200,234,223,0.35))','linear-gradient(135deg,rgba(240,232,192,0.45),rgba(242,200,216,0.35))','linear-gradient(135deg,rgba(200,234,223,0.55),rgba(184,216,240,0.35))','linear-gradient(135deg,rgba(242,200,216,0.55),rgba(216,207,240,0.35))','linear-gradient(135deg,rgba(184,216,240,0.55),rgba(240,232,192,0.35))','linear-gradient(135deg,rgba(216,207,240,0.55),rgba(200,234,223,0.35))','linear-gradient(135deg,rgba(242,200,216,0.45),rgba(184,216,240,0.35))','linear-gradient(135deg,rgba(200,234,223,0.55),rgba(242,200,216,0.35))','linear-gradient(135deg,rgba(184,216,240,0.55),rgba(216,207,240,0.35))'];
 
@@ -6257,16 +6282,16 @@ function loadPhoto(ev){
     if(lo)lo.style.display='none';
   }catch(e){}
   const f=ev.target.files[0];if(!f)return;
-  const r=new FileReader();
-  r.onload=e=>{
-    const i=document.getElementById('cover-photo');i.src=e.target.result;i.classList.add('visible');
+  compressImage(f, function(dataUrl){
+    const i=document.getElementById('cover-photo');i.src=dataUrl;i.classList.add('visible');
     document.getElementById('photo-ph').style.display='none';
     coverPhotoPos={x:50,y:30,zoom:100};
     applyCoverPhotoPos();
-    localStorage.setItem('pk_cover_photo',e.target.result);
-    localStorage.setItem('pk_cover_pos',JSON.stringify(coverPhotoPos));
-    localStorage.setItem('pk_cover_pos',JSON.stringify(coverPhotoPos));
-  };r.readAsDataURL(f);
+    fkSafeSaveStorage(function(){
+      localStorage.setItem('pk_cover_photo',dataUrl);
+      localStorage.setItem('pk_cover_pos',JSON.stringify(coverPhotoPos));
+    });
+  }, 900, 0.85);
 }
 
 // ── COVER FOTO DRAG ──
@@ -6733,7 +6758,7 @@ function renderEntries(){
   let me=getMonth(pkState.year,pkState.month);
   if(pkState.filterHorse!=='Alle')me=me.filter(e=>e.horse===pkState.filterHorse||e.horse==='Alle');
   const el=document.getElementById('entries-list');el.innerHTML='';let any=false;
-  ['vet','huf','health','blood','vacc','cost','hl'].forEach(cat=>{
+  ['vet','huf','health','blood','vacc','wurm','osteo','teeth','cost','hl'].forEach(cat=>{
     const ce=me.filter(e=>e.cat===cat);if(!ce.length)return;any=true;
     const div=document.createElement('div');div.className='entry-cat';div.style.borderTop='3px solid '+CAT_COLORS[cat];
     div.innerHTML='<div class="entry-cat-title"><span class="cat-dot" style="background:'+CAT_COLORS[cat]+'"></span>'+CAT_LABELS[cat]+'</div>'+
@@ -6750,7 +6775,7 @@ function renderEntries(){
   if(!any)el.innerHTML='<div class="empty-month"><h3>Noch keine Einträge</h3><p style="margin-bottom:16px;font-size:13px">Trage deinen ersten Eintrag für '+MONTHS[pkState.month-1]+' ein.</p><button class="add-main-btn" onclick="openModal()" style="margin:0">+ Ersten Eintrag</button></div>';
 }
 if(!window.horseProfiles)window.horseProfiles={};
-function getHP(h){if(!horseProfiles[h])horseProfiles[h]={name:h,foto:'',geburtsdatum:'',rasse:'',farbe:'',besonderheiten:'',tierarzt:'',hufschmied:'',versicherung:'',chip:'',pass:''};return horseProfiles[h];}
+function getHP(h){if(!horseProfiles[h])horseProfiles[h]={name:h,foto:'',geburtsdatum:'',rasse:'',farbe:'',besonderheiten:'',tierarzt:'',hufschmied:'',versicherung:'',chip:'',pass:''};if(!horseProfiles[h].intervals)horseProfiles[h].intervals={vet:365,huf:42,vacc:365,wurm:84,osteo:84,teeth:365};return horseProfiles[h];}
 function saveHP(){localStorage.setItem('pk_horse_profiles',JSON.stringify(horseProfiles));}
 function loadHP(){try{const d=JSON.parse(localStorage.getItem('pk_horse_profiles'));if(d)horseProfiles=d;}catch(e){}}
 
@@ -6796,6 +6821,21 @@ function renderOverview(){
       <div class="horse-info-block" style="background:rgba(216,207,240,0.5)"><div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:3px">Letzter Hufschmied</div><div style="font-size:12px;color:var(--deep)">${lh?fmt(lh.date)+' · '+lh.title:'–'}</div></div>
       <div class="horse-info-block" style="background:rgba(242,200,216,0.5)"><div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:3px">Letzte Impfung</div><div style="font-size:12px;color:var(--deep)">${li?fmt(li.date)+' · '+li.title:'–'}</div></div>
       <div class="horse-info-block" style="background:rgba(184,216,240,0.5)"><div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:3px">Einträge gesamt</div><div style="font-size:12px;color:var(--deep)">${he.length}</div></div>
+    </div>
+    <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(216,207,240,0.25);">
+      <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">⏱️ Erinnerungs-Intervalle für Pferde-Status (im Überblick)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        ${[['Tierarzt','vet',30],['Hufschmied','huf',7],['Impfung','vacc',30],['Wurmkur','wurm',7],['Osteopathie/Physio','osteo',7],['Zahnkontrolle','teeth',30]].map(([l,k,div])=>{
+          const days=hp.intervals[k];
+          const unit=div===30?'Monate':'Wochen';
+          const val=Math.round(days/div);
+          return `<div style="display:flex;align-items:center;gap:5px;">
+            <span style="font-size:10px;color:var(--text);flex:1;">${l}</span>
+            <input type="number" min="1" value="${val}" onchange="updateHorseInterval(${i},'${k}',this.value,${div})" style="width:38px;border:1px solid rgba(180,160,220,0.25);border-radius:6px;padding:3px 4px;font-size:11px;text-align:center;background:rgba(255,255,255,0.7);">
+            <span style="font-size:9px;color:var(--muted);white-space:nowrap;">${unit}</span>
+          </div>`;
+        }).join('')}
+      </div>
     </div>`;
     // Gesundheitsakte Zusammenfassung - vereinfacht
     try{
@@ -6897,7 +6937,14 @@ function addHorse(){
   renderOverview();
   fillHorseSelects();
 }
-function loadHorseFoto(idx,fId,inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{const h=horses[idx];const hp=getHP(h);hp.foto=e.target.result;saveHP();renderOverview();};r.readAsDataURL(f);}
+function loadHorseFoto(idx,fId,inp){
+  const f=inp.files[0];if(!f)return;
+  compressImage(f, function(dataUrl){
+    const h=horses[idx];const hp=getHP(h);hp.foto=dataUrl;
+    if(!fkSafeSaveStorage(saveHP)) return;
+    renderOverview();
+  }, 600, 0.85);
+}
 
 function horseUpload(idx){
   var old=document.getElementById('horse-up-global');
@@ -6923,6 +6970,13 @@ function horseUpload(idx){
 }
 function renameHorse(idx,val){if(!val.trim())return;const old=horses[idx];const hp=getHP(old);hp.name=val;horseProfiles[val]=hp;if(val!==old)delete horseProfiles[old];horses[idx]=val;saveAll();saveHP();}
 function updateHP(idx,key,val){const h=horses[idx];const hp=getHP(h);hp[key]=val;saveHP();}
+function updateHorseInterval(idx,key,val,divisor){
+  const h=horses[idx];const hp=getHP(h);
+  const n=Math.max(1,Math.round(parseFloat(val))||1);
+  if(!hp.intervals)hp.intervals={vet:365,huf:42,vacc:365,wurm:84,osteo:84,teeth:365};
+  hp.intervals[key]=n*divisor;
+  saveHP();
+}
 
 
 function openKostenModal(){
@@ -6978,10 +7032,11 @@ function renderCosts(){
     '<div style="text-align:center;padding:40px;color:var(--muted)">Noch keine Kosteneinträge.</div>');
 }
 function toggleCostRow(){document.getElementById('cost-row').style.display=document.getElementById('f-cat').value==='cost'?'block':'none';}
-function openModal(cat){
+function openModal(cat, horse){
   const td=new Date().toISOString().split('T')[0];
   document.getElementById('f-date').value=pkState.month?pkState.year+'-'+(pkState.month<10?'0':'')+pkState.month+'-'+td.split('-')[2]:td;
   document.getElementById('f-cat').value=cat||'vet';
+  if(horse) document.getElementById('f-horse').value=horse;
   document.getElementById('f-title').value='';document.getElementById('f-notes').value='';document.getElementById('f-amount').value='';
   toggleCostRow();document.getElementById('modal').classList.add('open');
 }
@@ -8089,17 +8144,42 @@ function renderSettingsProfil(container){
     + '<button onclick="saveSettingsProfil()" style="width:100%;background:var(--deep);color:white;border:none;border-radius:10px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;">Speichern</button>'
     + '<div id="settings-profil-saved" style="display:none;text-align:center;color:var(--mint2);font-size:12px;margin-top:8px;">✓ Gespeichert</div>';
 }
+// ═══ Fotos vor dem Speichern automatisch verkleinern (Handyfotos sind oft 4-8 MB, der Speicher der App ist viel kleiner) ═══
+// Nutzt die bereits vorhandene compressImage()-Funktion, siehe weiter oben.
+function fkSafeSaveStorage(saveFn){
+  try{
+    saveFn();
+    return true;
+  }catch(err){
+    alert('Das Foto ist leider zu groß für den verfügbaren Speicher. Bitte versuch es mit einem anderen Foto, oder lösche zuerst ein älteres Foto in der App (z.B. unter Meine Daten).');
+    return false;
+  }
+}
+// ═══ Einheitliches Feedback für Speichern-Buttons: kurz grün mit Häkchen, dann zurück zur Ausgangsfarbe/-text ═══
+function fkFlashSaveButton(btn, ms){
+  if(!btn) return;
+  ms = ms || 1600;
+  var origText = btn.textContent;
+  var origBg = btn.style.background;
+  var origBorder = btn.style.borderColor;
+  btn.textContent = '✓ Gespeichert!';
+  btn.style.background = 'var(--mint2)';
+  btn.style.borderColor = 'var(--mint2)';
+  setTimeout(function(){
+    btn.textContent = origText;
+    btn.style.background = origBg;
+    btn.style.borderColor = origBorder;
+  }, ms);
+}
 function handleProfileFotoUpload(input){
   var file = input.files[0];
   if(!file) return;
-  var reader = new FileReader();
-  reader.onload = function(e){
-    saveFkSettings({profileImg: e.target.result});
+  compressImage(file, function(dataUrl){
+    if(!fkSafeSaveStorage(function(){ saveFkSettings({profileImg: dataUrl}); })) return;
     updateHeaderProfileDisplay();
     var preview = document.getElementById('settings-profile-preview');
-    if(preview) preview.innerHTML = '<img src="'+e.target.result+'" style="width:100%;height:100%;object-fit:cover;">';
-  };
-  reader.readAsDataURL(file);
+    if(preview) preview.innerHTML = '<img src="'+dataUrl+'" style="width:100%;height:100%;object-fit:cover;">';
+  }, 400, 0.85);
 }
 function updateProfileNameLive(name){
   var initials = name.trim().split(/\s+/).map(function(w){return w[0];}).join('').substring(0,2).toUpperCase();
@@ -8991,11 +9071,41 @@ function renderBdays(){
     const header=document.createElement('div');
     header.style.cssText='display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;';
     header.innerHTML=
-      '<div style="width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:20px;font-weight:700;color:var(--deep);flex-shrink:0;">'+b.name[0].toUpperCase()+'</div>'+
-      '<div style="flex:1;"><div style="font-weight:700;font-size:15px;color:var(--deep);">'+b.name+'</div>'+
-      '<div style="font-size:11px;color:var(--muted);">'+fmt(b.date)+'</div></div>'+
-      '<div style="background:'+(urgent?'rgba(242,200,216,0.8)':soon?'rgba(240,232,192,0.8)':'rgba(200,234,223,0.7)')+';border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;color:var(--deep);">'+(days===0?'🎂 Heute!':days+' Tage')+'</div>'+
-      '<button onclick="delBday('+oi+')" style="background:none;border:none;color:rgba(180,160,220,0.5);cursor:pointer;font-size:16px;padding:0 4px;">✕</button>';
+      '<div style="width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:20px;font-weight:700;color:var(--deep);flex-shrink:0;">'+b.name[0].toUpperCase()+'</div>';
+
+    const infoWrap=document.createElement('div');
+    infoWrap.style.cssText='flex:1;min-width:130px;display:flex;flex-direction:column;gap:4px;';
+    const nameInp=document.createElement('input');
+    nameInp.type='text';
+    nameInp.value=b.name;
+    nameInp.style.cssText='font-weight:700;font-size:14px;color:var(--deep);border:1px solid rgba(180,160,220,0.25);border-radius:6px;padding:4px 7px;background:rgba(255,255,255,0.6);font-family:Arial,sans-serif;width:100%;box-sizing:border-box;outline:none;';
+    (function(idx){nameInp.onchange=function(){
+      const v=this.value.trim();
+      if(!v){this.value=pData.geburtstage[idx].name;return;}
+      pData.geburtstage[idx].name=v;saveAll();renderBdays();
+    };})(oi);
+    const dateInp=document.createElement('input');
+    dateInp.type='date';
+    dateInp.value=b.date;
+    dateInp.style.cssText='font-size:11px;color:var(--muted);border:1px solid rgba(180,160,220,0.2);border-radius:6px;padding:3px 7px;background:rgba(255,255,255,0.5);font-family:Arial,sans-serif;width:100%;box-sizing:border-box;outline:none;';
+    (function(idx){dateInp.onchange=function(){
+      if(!this.value)return;
+      pData.geburtstage[idx].date=this.value;saveAll();renderBdays();
+    };})(oi);
+    infoWrap.appendChild(nameInp);
+    infoWrap.appendChild(dateInp);
+    header.appendChild(infoWrap);
+
+    const badge=document.createElement('div');
+    badge.style.cssText='background:'+(urgent?'rgba(242,200,216,0.8)':soon?'rgba(240,232,192,0.8)':'rgba(200,234,223,0.7)')+';border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;color:var(--deep);white-space:nowrap;';
+    badge.textContent=(days===0?'🎂 Heute!':days+' Tage');
+    header.appendChild(badge);
+
+    const delHeaderBtn=document.createElement('button');
+    delHeaderBtn.textContent='✕';
+    delHeaderBtn.style.cssText='background:none;border:none;color:rgba(180,160,220,0.5);cursor:pointer;font-size:16px;padding:0 4px;';
+    (function(idx){delHeaderBtn.onclick=function(){delBday(idx);};})(oi);
+    header.appendChild(delHeaderBtn);
     card.appendChild(header);
 
     // Notiz
@@ -10290,7 +10400,7 @@ function saveTagNotiz(){
   if(!kalData.tagNotes[ds])kalData.tagNotes[ds]={intention:'',prios:[],todos:[],zeitplan:[],journal:'',abschluss:'',mood:''};
   kalData.tagNotes[ds].intention=document.getElementById('monat-raster-notiz-text').value;
   saveKal();renderMonatRaster();
-  const b=event&&event.target;if(b&&b.tagName==='BUTTON'){b.textContent='✓ Gespeichert!';setTimeout(function(){b.textContent='✓ Speichern';},1500);}
+  const b=event&&event.target;if(b&&b.tagName==='BUTTON'){fkFlashSaveButton(b,1500);}
 }
 
 // ── MONATSANSICHT LISTE ──
@@ -10467,9 +10577,24 @@ function renderTagPrios(dk){
   const c=document.getElementById('tag-prio-list');c.innerHTML='';
   (note.prios||[]).forEach((p,i)=>{
     const div=document.createElement('div');div.className='bucket-item';
-    div.innerHTML='<div class="bucket-check'+(p.done?' done':'')+'" onclick="toggleTagPrio('+i+')">'+(p.done?'✓':'')+'</div>'+
-      '<div class="bucket-text'+(p.done?' done':'')+'">'+p.text+'</div>'+
-      '<button class="bucket-del" onclick="delTagPrio('+i+')">✕</button>';
+    const check=document.createElement('div');
+    check.className='bucket-check'+(p.done?' done':'');
+    check.textContent=p.done?'✓':'';
+    check.onclick=function(){toggleTagPrio(i);};
+    const txt=document.createElement('input');
+    txt.type='text';
+    txt.value=p.text;
+    txt.className='bucket-text'+(p.done?' done':'');
+    txt.style.cssText='flex:1;border:none;background:transparent;font-family:Arial,sans-serif;outline:none;padding:0;';
+    txt.onchange=function(){
+      const v=this.value.trim();
+      if(!v){this.value=kalData.tagNotes[dk].prios[i].text;return;}
+      kalData.tagNotes[dk].prios[i].text=v;saveKal();
+    };
+    const del=document.createElement('button');
+    del.className='bucket-del';del.textContent='✕';
+    del.onclick=function(){delTagPrio(i);};
+    div.appendChild(check);div.appendChild(txt);div.appendChild(del);
     c.appendChild(div);
   });
 }
@@ -10489,9 +10614,24 @@ function renderTagTodos(dk){
   const c=document.getElementById('tag-todo-list');c.innerHTML='';
   (note.todos||[]).forEach((t,i)=>{
     const div=document.createElement('div');div.className='bucket-item';
-    div.innerHTML='<div class="bucket-check'+(t.done?' done':'')+'" onclick="toggleTagTodo('+i+')">'+(t.done?'✓':'')+'</div>'+
-      '<div class="bucket-text'+(t.done?' done':'')+'">'+t.text+'</div>'+
-      '<button class="bucket-del" onclick="delTagTodo('+i+')">✕</button>';
+    const check=document.createElement('div');
+    check.className='bucket-check'+(t.done?' done':'');
+    check.textContent=t.done?'✓':'';
+    check.onclick=function(){toggleTagTodo(i);};
+    const txt=document.createElement('input');
+    txt.type='text';
+    txt.value=t.text;
+    txt.className='bucket-text'+(t.done?' done':'');
+    txt.style.cssText='flex:1;border:none;background:transparent;font-family:Arial,sans-serif;outline:none;padding:0;';
+    txt.onchange=function(){
+      const v=this.value.trim();
+      if(!v){this.value=kalData.tagNotes[dk].todos[i].text;return;}
+      kalData.tagNotes[dk].todos[i].text=v;saveKal();
+    };
+    const del=document.createElement('button');
+    del.className='bucket-del';del.textContent='✕';
+    del.onclick=function(){delTagTodo(i);};
+    div.appendChild(check);div.appendChild(txt);div.appendChild(del);
     c.appendChild(div);
   });
 }
@@ -10553,9 +10693,12 @@ function renderTagZeitplan(dk){
     const div=document.createElement('div');
     div.style.cssText='border-radius:10px;padding:8px 10px;background:'+(z.blocked?'rgba(184,216,240,0.25)':'rgba(255,255,255,0.5)')+';border-left:3px solid '+(z.blocked?'var(--sky2)':'var(--lilac2)')+';font-size:12px;';
     var timeLabel=z.time+(z.timeEnd?' – '+z.timeEnd:'');
+    const catIco={vet:'🩺',huf:'🔧',vacc:'💉'};
+    const linkBadge=z.linkedEntryId?'<span style="background:rgba(200,234,223,0.6);border-radius:10px;padding:1px 7px;font-size:9px;color:var(--deep);font-weight:700;white-space:nowrap;" title="Verknüpft mit Pferde-Status">'+(catIco[z.cat]||'')+' '+(z.horse==='Alle'?'Alle Pferde':z.horse)+'</span>':'';
     div.innerHTML='<div style="display:flex;align-items:center;gap:6px;">'
       +'<span style="color:'+(z.blocked?'var(--sky2)':'var(--lilac2)')+';font-weight:700;min-width:84px;font-size:11px;">'+timeLabel+(z.blocked?' 🔒':'')+(z.reminder?' 🔔':'')+'</span>'
       +'<span style="flex:1;color:var(--deep);font-weight:600;">'+z.text+'</span>'
+      +linkBadge
       +(hasNotiz?'<button onclick="toggleTagZeitNotiz('+i+')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;" title="Notiz anzeigen">📝</button>':'')
       +'<button class="bucket-del" onclick="delTagZeit('+i+')">✕</button>'
       +'</div>'
@@ -10767,23 +10910,41 @@ function addTagZeit(){
   const notiz=document.getElementById('tag-zeit-notiz').value.trim();
   const blocked=document.getElementById('tag-zeit-blocked').checked;
   const reminder=document.getElementById('tag-zeit-reminder').checked;
+  const zHorse=document.getElementById('tag-zeit-horse').value;
+  const zCat=document.getElementById('tag-zeit-cat').value;
   if(!text)return;
   const dk=dateKey(kalState.dayDate);
   if(!kalData.tagNotes[dk])kalData.tagNotes[dk]={intention:'',prios:[],todos:[],zeitplan:[],journal:'',abschluss:'',mood:''};
   if(!kalData.tagNotes[dk].zeitplan)kalData.tagNotes[dk].zeitplan=[];
   const id='tz_'+Date.now()+'_'+Math.floor(Math.random()*10000);
-  kalData.tagNotes[dk].zeitplan.push({id:id, time:time||'--:--', timeEnd:timeEnd||'', text:text, notiz:notiz, blocked:blocked, reminder:reminder});
+  let linkedEntryId=null;
+  if(zHorse && zCat && typeof pkEntries!=='undefined'){
+    linkedEntryId='pke_'+Date.now()+'_'+Math.floor(Math.random()*10000);
+    pkEntries.push({id:linkedEntryId, date:dk, horse:zHorse, cat:zCat, title:text, notes:notiz, amount:null});
+  }
+  kalData.tagNotes[dk].zeitplan.push({id:id, time:time||'--:--', timeEnd:timeEnd||'', text:text, notiz:notiz, blocked:blocked, reminder:reminder, horse:zHorse||'', cat:zCat||'', linkedEntryId:linkedEntryId});
   document.getElementById('tag-zeit-inp').value='';
   document.getElementById('tag-zeit-notiz').value='';
   document.getElementById('tag-zeit-blocked').checked=false;
   document.getElementById('tag-zeit-reminder').checked=false;
+  document.getElementById('tag-zeit-horse').value='';
+  document.getElementById('tag-zeit-cat').value='';
   fkZeitVon='';fkZeitBis='';
   document.getElementById('tag-zeit-von-chip').textContent='--:--';
   document.getElementById('tag-zeit-bis-chip').textContent='--:--';
   updateTagZeitBtn();
+  if(linkedEntryId) saveAll();
   saveKal();renderTagZeitplan(dk);
 }
-function delTagZeit(i){const dk=dateKey(kalState.dayDate);kalData.tagNotes[dk].zeitplan.splice(i,1);saveKal();renderTagZeitplan(dk);}
+function delTagZeit(i){
+  const dk=dateKey(kalState.dayDate);
+  const entry=kalData.tagNotes[dk].zeitplan[i];
+  if(entry && entry.linkedEntryId && typeof pkEntries!=='undefined'){
+    pkEntries=pkEntries.filter(e=>e.id!==entry.linkedEntryId);
+    saveAll();
+  }
+  kalData.tagNotes[dk].zeitplan.splice(i,1);saveKal();renderTagZeitplan(dk);
+}
 
 function setMood(m){
   const dk=dateKey(kalState.dayDate);
@@ -10798,7 +10959,7 @@ function saveTagData(){
   kalData.tagNotes[dk].journal=document.getElementById('tag-journal').value;
   kalData.tagNotes[dk].abschluss=document.getElementById('tag-abschluss').value;
   saveKal();
-  const btn=event.target;btn.textContent='✓ Gespeichert!';setTimeout(()=>btn.textContent='✓ Tag speichern',1500);
+  const btn=event.target;fkFlashSaveButton(btn,1500);
 }
 
 // Patch initOrgViews in switchTab
@@ -10816,7 +10977,7 @@ kalState.year=new Date().getFullYear();
 // ═══════════════════════════════════════════
 let vorlagenData={};
 function loadVorlagen(){try{const d=JSON.parse(localStorage.getItem('pk_vorlagen'));if(d)vorlagenData=d;}catch(e){}}
-function saveVorlage(){localStorage.setItem('pk_vorlagen',JSON.stringify(vorlagenData));const b=event.target;b.textContent='✓ Gespeichert!';setTimeout(()=>b.textContent='✓ Speichern',1500);}
+function saveVorlage(){localStorage.setItem('pk_vorlagen',JSON.stringify(vorlagenData));fkFlashSaveButton(event.target,1500);}
 function printVorlage(){
   // Aktuelle Vorlage-ID und Titel für den Druck merken
   var title=document.getElementById('vorlage-title').textContent;
@@ -11915,10 +12076,11 @@ const VORLAGE_RENDERERS={
 
     // ── Nächste Pferdeeinträge Zusammenfassung ──
     const pferdeStatus = {};
+    const PS_CATS = ['vet','huf','vacc','wurm','osteo','teeth'];
     if(typeof pkEntries !== 'undefined' && typeof horses !== 'undefined'){
       [...new Set(horses)].forEach(h=>{
-        const last = {tierarzt:null, hufschmied:null, impfung:null};
-        ['tierarzt','hufschmied','impfung'].forEach(cat=>{
+        const last = {vet:null, huf:null, vacc:null, wurm:null, osteo:null, teeth:null};
+        PS_CATS.forEach(cat=>{
           const e = [...pkEntries].filter(x=>(x.horse===h||x.horse==='Alle')&&x.cat===cat).sort((a,b)=>b.date.localeCompare(a.date))[0];
           if(e) last[cat]=e.date;
         });
@@ -11978,30 +12140,55 @@ const VORLAGE_RENDERERS={
       ${(function(){
         var tn=kalData.tagNotes[todayKey];
         var hasContent=tn&&(tn.intention||(tn.prios||[]).length||(tn.zeitplan||[]).length);
-        var header='<div class="card" style="margin-bottom:0;background:linear-gradient(135deg,rgba(216,207,240,0.2),rgba(242,200,216,0.15));"><div class="card-title" style="margin-bottom:10px;"><span class="card-title-dot" style="background:var(--lilac2)"></span>☀️ Heute im Fokus, '+today.getDate()+'. '+MONTHS[today.getMonth()]+' '+today.getFullYear()+'</div>';
+        var header='<div class="card" style="margin-bottom:0;background:linear-gradient(135deg,rgba(216,207,240,0.2),rgba(242,200,216,0.15));"><div class="card-title ub-heading" style="margin-bottom:10px;"><span class="card-title-dot" style="background:var(--lilac2)"></span>☀️ Heute im Fokus, '+today.getDate()+'. '+MONTHS[today.getMonth()]+' '+today.getFullYear()+'</div>';
         if(!hasContent)return header+'<div style="text-align:center;padding:10px;color:var(--muted);font-size:12px;font-style:italic;">Noch kein Tageseintrag, <span onclick="goToTagesansicht()" style="color:var(--lilac2);cursor:pointer;text-decoration:underline;">jetzt ausfüllen →</span></div></div>';
         var prios=(tn.prios||[]).map(function(p){return '<div style="font-size:12px;color:var(--deep);padding:2px 0;'+(p.done?'text-decoration:line-through;color:var(--muted)':'')+'">'+(p.done?'✓ ':'')+p.text+'</div>';}).join('');
         var termine=(tn.zeitplan||[]).slice().sort(function(a,b){return a.time.localeCompare(b.time);}).map(function(z){return '<div style="font-size:12px;color:var(--deep);padding:2px 0;"><span style="color:var(--lilac2);font-weight:700;">'+z.time+'</span> '+z.text+'</div>';}).join('');
-        return header+'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;"><div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Intention</div><div style="font-size:12px;color:var(--deep);font-style:italic;">'+(tn.intention||',')+'</div></div><div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Top Prioritäten</div>'+(prios||'<div style=\"font-size:12px;color:var(--muted);\">,</div>')+'</div><div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Termine heute</div>'+(termine||'<div style=\"font-size:12px;color:var(--muted);\">Keine Termine</div>')+'</div></div></div>';
+        return header+'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;"><div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Intention</div><div style="font-size:12px;color:var(--deep);font-style:italic;">'+(tn.intention||',')+'</div></div><div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Top Prioritäten</div>'+(prios||'<div style=\"font-size:12px;color:var(--muted);\">,</div>')+'</div><div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Termine heute</div>'+(termine||'<div style=\"font-size:12px;color:var(--muted);\">Keine Termine</div>')+'</div></div><div style="text-align:right;margin-top:10px;"><span onclick="goToTagesansicht()" style="color:var(--lilac2);cursor:pointer;text-decoration:underline;font-size:12px;font-weight:700;">weiter bearbeiten →</span></div></div>';
       })()}
 
       <!-- PFERDE-STATUS -->
       <div class="card" style="margin-bottom:14px;">
-        <div class="card-title" style="margin-bottom:10px;"><span class="card-title-dot" style="background:var(--mint2)"></span>🐴 Pferde-Status</div>
+        <div class="card-title ub-heading" style="margin-bottom:4px;"><span class="card-title-dot" style="background:var(--mint2)"></span>🐴 Pferde-Status</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5;">Wann war zuletzt was dran, gemessen an dem Intervall, das du pro Pferd unter Meine Pferde eingestellt hast. Tippe auf ein Feld, um es direkt festzuhalten.</div>
+        ${(function(){
+          let ueberfaellig=0, gesamt=0;
+          Object.entries(pferdeStatus).forEach(([h,last])=>{
+            const hp=(typeof getHP==='function')?getHP(h):{intervals:{}};
+            PS_CATS.forEach(k=>{
+              if(last[k]){gesamt++;const diff=Math.round((today-new Date(last[k]))/86400000);const interval=hp.intervals[k]||365;if(diff>interval)ueberfaellig++;}
+            });
+          });
+          if(Object.keys(pferdeStatus).length===0) return '';
+          if(ueberfaellig>0) return '<div style="background:rgba(242,200,216,0.4);border-radius:8px;padding:6px 10px;font-size:11px;color:var(--deep);font-weight:700;margin-bottom:10px;">⚠ '+ueberfaellig+' Termin'+(ueberfaellig>1?'e liegen':' liegt')+' über dem eingestellten Intervall zurück</div>';
+          if(gesamt===0) return '';
+          return '<div style="background:rgba(200,234,223,0.4);border-radius:8px;padding:6px 10px;font-size:11px;color:var(--deep);font-weight:700;margin-bottom:10px;">✓ Alles im grünen Bereich</div>';
+        })()}
         ${Object.keys(pferdeStatus).length===0?'<div style="font-size:12px;color:var(--muted);text-align:center;padding:10px;">Noch keine Pferde-Einträge</div>':
-        Object.entries(pferdeStatus).map(([h,last])=>`
+        Object.entries(pferdeStatus).map(([h,last])=>{
+          const hp=(typeof getHP==='function')?getHP(h):{intervals:{}};
+          const hIdx=horses.indexOf(h);
+          const hCol=HORSE_COLORS[hIdx%HORSE_COLORS.length]||HORSE_COLORS[0];
+          const avatar=(hp&&hp.foto)
+            ?'<div onclick="event.stopPropagation();horseUpload('+hIdx+')" style="width:34px;height:34px;border-radius:50%;overflow:hidden;cursor:pointer;flex-shrink:0;margin-right:8px;border:2px solid rgba(255,255,255,0.8);"><img src="'+hp.foto+'" style="width:100%;height:100%;object-fit:cover;"></div>'
+            :'<div onclick="event.stopPropagation();horseUpload('+hIdx+')" style="width:34px;height:34px;border-radius:50%;background:'+hCol+';display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:15px;font-weight:700;color:var(--deep);cursor:pointer;flex-shrink:0;margin-right:8px;border:2px solid rgba(255,255,255,0.8);" title="Foto hinzufügen">'+(hp.name||h)[0].toUpperCase()+'</div>';
+          return `
           <div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(216,207,240,0.2);">
-            <div style="font-weight:700;font-size:13px;color:var(--deep);margin-bottom:5px;">${h==='Sir Harry'?'🐴':h==='Bo'?'🐎':'🦄'} ${h}</div>
+            <div style="font-weight:700;font-size:13px;color:var(--deep);margin-bottom:5px;display:flex;align-items:center;">${avatar}${h}</div>
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;">
-              ${[['Tierarzt','tierarzt','🩺'],['Hufschmied','hufschmied','🔧'],['Impfung','impfung','💉']].map(([l,k,ico])=>{
+              ${[['Tierarzt','vet','🩺'],['Hufschmied','huf','🔧'],['Impfung','vacc','💉'],['Wurmkur','wurm','🪱'],['Osteopathie','osteo','🤲'],['Zahnkontrolle','teeth','🦷']].map(([l,k,ico])=>{
                 const d = last[k];
-                if(!d) return `<div style="font-size:10px;text-align:center;background:rgba(232,228,240,0.2);border-radius:6px;padding:4px;">${ico}<br><span style="color:var(--muted)">,</span></div>`;
+                const interval = hp.intervals[k]||365;
+                const onclickAttr = `onclick="openModal('${k}','${h}')"`;
+                if(!d) return `<div ${onclickAttr} style="font-size:10px;text-align:center;background:rgba(232,228,240,0.2);border-radius:6px;padding:4px;cursor:pointer;">${ico}<br><span style="color:var(--muted);font-size:8px;">${l}</span><br><span style="color:var(--lilac2);font-size:9px;font-weight:700;">+ eintragen</span></div>`;
                 const diff = Math.round((today-new Date(d))/86400000);
-                const col = diff>180?'rgba(242,200,216,0.5)':diff>90?'rgba(240,232,192,0.4)':'rgba(200,234,223,0.4)';
-                return `<div style="font-size:10px;text-align:center;background:${col};border-radius:6px;padding:4px;" title="${l}: ${d}">${ico}<br><span style="font-weight:700;color:var(--deep)">vor ${diff}d</span></div>`;
+                const col = diff>interval?'rgba(242,200,216,0.5)':diff>interval*0.75?'rgba(240,232,192,0.4)':'rgba(200,234,223,0.4)';
+                return `<div ${onclickAttr} style="font-size:10px;text-align:center;background:${col};border-radius:6px;padding:4px;cursor:pointer;" title="${l}: ${d} · Intervall: ${interval} Tage · Antippen für neuen Eintrag">${ico}<br><span style="color:var(--muted);font-size:8px;">${l}</span><br><span style="font-weight:700;color:var(--deep)">vor ${diff}d</span></div>`;
               }).join('')}
             </div>
-          </div>`).join('')}
+          </div>`;
+        }).join('')}
+        ${Object.keys(pferdeStatus).length>0?'<div style="display:flex;gap:8px;justify-content:center;margin-bottom:8px;font-size:8px;color:var(--muted);flex-wrap:wrap;"><span><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:rgb(200,234,223);margin-right:3px;"></span>aktuell</span><span><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:rgb(240,232,192);margin-right:3px;"></span>bald wieder dran</span><span><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:rgb(242,200,216);margin-right:3px;"></span>schon länger her</span></div>':''}
         <button onclick="switchTab('pferde')" style="width:100%;background:transparent;border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:6px;font-size:11px;color:var(--muted);cursor:pointer;font-family:Arial,sans-serif;">→ Zum Pferdekalender</button>
           </div>
 
@@ -12012,7 +12199,7 @@ const VORLAGE_RENDERERS={
 
           <!-- OFFENE TO-DOS -->
           <div class="card">
-        <div class="card-title" style="margin-bottom:10px;"><span class="card-title-dot" style="background:var(--rose2)"></span>✅ Offene To-Dos</div>
+        <div class="card-title ub-heading" style="margin-bottom:10px;"><span class="card-title-dot" style="background:var(--rose2)"></span>✅ Offene To-Dos</div>
         ${offeneTodos.length===0?'<div style="font-size:12px;color:var(--muted);text-align:center;padding:10px;">Keine offenen To-Dos 🎉</div>':
         offeneTodos.slice(0,8).map(t=>`<div style="display:flex;align-items:center;gap:7px;padding:4px 0;border-bottom:1px solid rgba(216,207,240,0.15);font-size:12px;color:var(--deep);">
           <div style="width:7px;height:7px;border-radius:50%;background:${t.k==='dringend'?'var(--rose2)':t.k==='wichtig'?'var(--lilac2)':t.k==='pferde'?'var(--mint2)':'rgba(180,160,220,0.4)'};flex-shrink:0;"></div>
@@ -12027,7 +12214,7 @@ const VORLAGE_RENDERERS={
 
           <!-- NÄCHSTE 14 TAGE -->
           <div class="card">
-            <div class="card-title" style="margin-bottom:12px;"><span class="card-title-dot" style="background:var(--lilac2)"></span>📆 Nächste 14 Tage</div>
+            <div class="card-title ub-heading" style="margin-bottom:12px;"><span class="card-title-dot" style="background:var(--lilac2)"></span>📆 Nächste 14 Tage</div>
             ${groupedArr.length===0?'<div style="text-align:center;padding:16px;color:var(--muted);font-size:12px;">Keine Einträge in den nächsten 14 Tagen</div>':
             groupedArr.map(g=>`<div style="margin-bottom:10px;">
               <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:5px;${g.i===0?'color:var(--lilac2);':g.i===1?'color:var(--deep);':''}">${g.label}</div>
@@ -12043,7 +12230,7 @@ const VORLAGE_RENDERERS={
 
           <!-- JAHRESZIELE -->
           <div class="card">
-            <div class="card-title" style="margin-bottom:10px;"><span class="card-title-dot" style="background:var(--butter,#f0e8c0)"></span>🌟 Jahresziele ${today.getFullYear()}</div>
+            <div class="card-title ub-heading" style="margin-bottom:10px;"><span class="card-title-dot" style="background:var(--butter,#f0e8c0)"></span>🌟 Jahresziele ${today.getFullYear()}</div>
             ${jahresziele.length===0?'<div style="font-size:12px;color:var(--muted);text-align:center;padding:10px;">Noch keine Jahresziele eingetragen</div>':
             jahresziele.map(z=>`<div style="display:flex;align-items:center;gap:7px;padding:4px 0;border-bottom:1px solid rgba(216,207,240,0.15);font-size:12px;color:var(--deep);">
               <div style="width:7px;height:7px;border-radius:50%;background:${z.done?'var(--mint2)':'rgba(240,232,192,0.8)'};flex-shrink:0;"></div>
@@ -12055,7 +12242,7 @@ const VORLAGE_RENDERERS={
 
           <!-- GEBURTSTAGE & VORSORGE -->
           <div class="card">
-            <div class="card-title" style="margin-bottom:10px;"><span class="card-title-dot" style="background:var(--sky2,#8ab8d8)"></span>🎂 Bald fällig</div>
+            <div class="card-title ub-heading" style="margin-bottom:10px;"><span class="card-title-dot" style="background:var(--sky2,#8ab8d8)"></span>🎂 Bald fällig</div>
             ${geburtstage.length===0&&vorsorge.length===0?'<div style="font-size:12px;color:var(--muted);text-align:center;padding:10px;">Keine Einträge in den nächsten 60 Tagen</div>':''}
             ${geburtstage.map(g=>{
               const col = g.diff===0?'rgba(242,200,216,0.5)':g.diff<=7?'rgba(240,232,192,0.4)':'rgba(232,228,240,0.2)';
