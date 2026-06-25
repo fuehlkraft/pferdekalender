@@ -1,11 +1,9 @@
 {
-  "version": "1.6.1",
-  "info": "Echte Pferdefotos als runde Buttons im Pferde-Status",
+  "version": "1.7.1",
+  "info": "Pferdefotos im Pferde-Status größer",
   "changes": {
     "ueberblick": [
-      "Bei Pferde-Status zeigt jeder Pferdename jetzt einen echten runden Button wie bei Meine Pferde, mit Foto wenn vorhanden, sonst ein farbiger Kreis mit Anfangsbuchstabe",
-      "Das Pferde-Emoji ist dafür komplett weg",
-      "Ein Tipp auf den runden Button öffnet direkt den Foto-Upload für dieses Pferd"
+      "Die runden Pferde-Buttons bei Pferde-Status sind jetzt deutlich größer (52px statt 34px), Foto bzw. Anfangsbuchstabe sind dadurch besser erkennbar"
     ]
   }
 }
