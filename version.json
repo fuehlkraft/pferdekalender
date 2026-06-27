@@ -1,9 +1,28 @@
 {
-  "version": "1.7.1",
-  "info": "Pferdefotos im Pferde-Status größer",
+  "version": "1.9.3",
+  "info": "Fix: Achtsamkeits-Karte erscheint jetzt zuverlässig auf der Tagesseite",
   "changes": {
+    "kalender": [
+      "Kalender öffnet jetzt zuerst die Tagesseite (vorher Halbjahr); Halbjahr steht in der Leiste direkt danach.",
+      "Neu: 🔁 Wiederkehrende Zeiten – über den Button bei der Halbjahresübersicht lassen sich feste Wochentermine (z.B. 'jeden Montag 17 Uhr: Reitstunde') anlegen. Sie erscheinen automatisch jede Woche auf der Tagesseite und in der Zeitleiste, ohne dass man sie neu eintragen muss.",
+      "Termine im Tages-Zeitplan lassen sich jetzt über ein ✏️-Symbol bearbeiten, statt sie löschen und neu anlegen zu müssen.",
+      "Uhrzeit-Kreis zeigt jetzt durchgehend die echte 24-Stunden-Zahl (z.B. 14 statt 2 + 'nachmittags'), damit eindeutig ist, welche Tageshälfte gerade eingestellt ist.",
+      "Erinnerungsfunktion erweitert: statt nur an/aus kann jetzt eine Vorlaufzeit gewählt werden (zur Startzeit, 1 Std., 3 Std., 1 Tag, 1 Woche, 2 Wochen vorher). Im Erinnerungs-Popup gibt es jetzt zusätzlich '⏰ Erinnere mich in 10 Min noch mal'. Kurz vor dem eigentlichen Termin (letzte 15 Minuten) wird die 🔔-Markierung in der Tagesseite rot mit 'Jetzt!'.",
+      "Die '40 Tage Achtsamkeit'-Karte zeigt jetzt nur noch eine kurze Vorschau des Tagesimpulses statt des ganzen Textes, mit 'mehr lesen →' für den vollen Text in einem eigenen, schließbaren Fenster.",
+      "Die '40 Tage Achtsamkeit'-Karte steht jetzt direkt unter 'To-Do heute' in der linken Spalte, zusammen mit den anderen Karten, statt als eigener breiter Balken unterhalb der ganzen Seite.",
+      "Echter Fehler behoben: Die 40-Tage-Achtsamkeit-Karte wurde nur sichtbar, wenn man über einen Tag im Kalender-Raster dorthin gesprungen ist, nicht aber beim normalen Öffnen der Tagesseite über den Reiter oben. Sie erscheint jetzt in jedem Fall zuverlässig."
+    ],
     "ueberblick": [
-      "Die runden Pferde-Buttons bei Pferde-Status sind jetzt deutlich größer (52px statt 34px), Foto bzw. Anfangsbuchstabe sind dadurch besser erkennbar"
+      "Heute im Fokus zeigt jetzt oben eine antippbare Zeitleiste für den ganzen Tag (inkl. wiederkehrender Termine); ein Tipp auf einen Block öffnet ein Pop-up mit allen Details (Zeit, Titel, Notiz)."
+    ],
+    "pferde": [
+      "Echter Fehler behoben: War bei einem Pferd schon ein Foto vorhanden, hat ein Tipp auf das Bild nur die Vergrößerung geöffnet statt den Foto-Wechsel, weil das Klick-Ereignis verschluckt wurde (gleiches Problem wie zuvor beim Titelbild). Ein Tipp auf das Foto öffnet jetzt zuverlässig den Foto-Wechsel; ein kleines 🔍-Symbol unten am Foto öffnet weiterhin die Vergrößerung.",
+      "Pferde-Status in Mein Überblick: Einträge, die direkt aus den Status-Kacheln (Tierarzt, Hufschmied usw.) gespeichert wurden, erscheinen jetzt sofort aktualisiert in Mein Überblick, ohne dass man erst den Tab wechseln muss.",
+      "Schriftgrößen im Pferde-Status (Mein Überblick) deutlich vergrößert, u.a. bei den Bezeichnungen wie 'Tierarzt'.",
+      "Neu: Über das ⚙️-Symbol bei 'Pferde-Status' in Mein Überblick lässt sich jetzt frei einstellen, welche Kacheln dort angezeigt werden, neben den bisherigen sechs (Tierarzt, Hufschmied, Impfung, Wurmkur, Osteopathie, Zahnkontrolle) stehen jetzt auch Allergie & Husten, Verhalten, Training, Hufpflege (Detail) und Fütterung (Änderungen) zur Auswahl. Ein Tipp auf eine Modul-Kachel führt direkt zum passenden Bereich für das jeweilige Pferd."
+    ],
+    "kosten": [
+      "Neu: Beim Eintragen von Kosten kann jetzt frei ausgewählt werden, für welche Pferde der Eintrag gilt (Checkboxen statt Einzelauswahl). Sind alle aktuellen Pferde angehakt, verhält es sich wie bisher (automatische Aufteilung auf alle, auch künftig neu angelegte Pferde). Wird gezielt ein Pferd abgewählt, bleibt die Aufteilung fest auf die ausgewählten Pferde beschränkt, auch wenn später ein neues Pferd dazukommt."
     ]
   }
 }
