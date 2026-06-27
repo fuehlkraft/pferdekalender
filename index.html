@@ -10853,6 +10853,7 @@ function deleteRecurring(id){
 }
 
 function renderTag(){
+  if(typeof fkZeitEditId!=='undefined'&&fkZeitEditId)cancelTagZeitEdit();
   const dk=dateKey(kalState.dayDate);
   document.getElementById('kal-day-title').textContent=fmtLong(kalState.dayDate);
   document.getElementById('kal-day-picker').value=dk;
@@ -11375,9 +11376,11 @@ function addTagZeit(){
   if(!kalData.tagNotes[dk])kalData.tagNotes[dk]={intention:'',prios:[],todos:[],zeitplan:[],journal:'',abschluss:'',mood:''};
   if(!kalData.tagNotes[dk].zeitplan)kalData.tagNotes[dk].zeitplan=[];
 
+  let editHandled=false;
   if(fkZeitEditId){
     const idx=kalData.tagNotes[dk].zeitplan.findIndex(function(z){return z.id===fkZeitEditId;});
     if(idx>=0){
+      editHandled=true;
       const entry=kalData.tagNotes[dk].zeitplan[idx];
       entry.time=time||'--:--'; entry.timeEnd=timeEnd||''; entry.text=text; entry.notiz=notiz; entry.blocked=blocked;
       entry.reminderLead=reminderLead; entry.reminder=!!reminderLead;
@@ -11392,9 +11395,12 @@ function addTagZeit(){
         saveAll();
       }
     }
+    // War der Termin (z.B. nach Tageswechsel) nicht mehr auffindbar: als neuen Termin anlegen,
+    // statt die Eingabe kommentarlos zu verwerfen.
     fkZeitEditId=null;
     var ceEl=document.getElementById('tag-zeit-cancel-edit'); if(ceEl)ceEl.style.display='none';
-  } else {
+  }
+  if(!editHandled){
     const id='tz_'+Date.now()+'_'+Math.floor(Math.random()*10000);
     let linkedEntryId=null;
     if(zHorse && zCat && typeof pkEntries!=='undefined'){
@@ -13264,7 +13270,9 @@ function updateUbHeader(){
 
 function uploadUeberblickFoto(){
   universalUpload(function(src){
-    localStorage.setItem('pk_ueberblick_foto',src);
+    fkSafeSaveStorage(function(){
+      localStorage.setItem('pk_ueberblick_foto',src);
+    });
     closeUbMenu();
     updateUbHeader();
   },false);
@@ -13272,7 +13280,9 @@ function uploadUeberblickFoto(){
 function loadUeberblickFotoFromInput(inp){
   var f=inp.files[0];if(!f)return;
   compressImage(f,function(src){
-    localStorage.setItem('pk_ueberblick_foto',src);
+    fkSafeSaveStorage(function(){
+      localStorage.setItem('pk_ueberblick_foto',src);
+    });
     closeUbMenu();
     updateUbHeader();
   },1920,0.92);
@@ -13284,8 +13294,9 @@ function removeUeberblickFoto(){
 function loadUeberblickFoto(inp){
   var f=inp.files[0];if(!f)return;
   compressImage(f,function(compressed){
-    localStorage.setItem('pk_ueberblick_foto',compressed);
-    renderUeberblick();
+    if(fkSafeSaveStorage(function(){ localStorage.setItem('pk_ueberblick_foto',compressed); })){
+      renderUeberblick();
+    }
   },300,0.8);
 }
 
