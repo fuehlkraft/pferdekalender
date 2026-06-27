@@ -1,6 +1,6 @@
 {
-  "version": "1.9.3",
-  "info": "Fix: Achtsamkeits-Karte erscheint jetzt zuverlässig auf der Tagesseite",
+  "version": "1.9.4",
+  "info": "Termin-Hinzufügen-Bug behoben, Speicher-Absicherung für Startseiten-Foto, komplette App getestet",
   "changes": {
     "kalender": [
       "Kalender öffnet jetzt zuerst die Tagesseite (vorher Halbjahr); Halbjahr steht in der Leiste direkt danach.",
@@ -10,7 +10,8 @@
       "Erinnerungsfunktion erweitert: statt nur an/aus kann jetzt eine Vorlaufzeit gewählt werden (zur Startzeit, 1 Std., 3 Std., 1 Tag, 1 Woche, 2 Wochen vorher). Im Erinnerungs-Popup gibt es jetzt zusätzlich '⏰ Erinnere mich in 10 Min noch mal'. Kurz vor dem eigentlichen Termin (letzte 15 Minuten) wird die 🔔-Markierung in der Tagesseite rot mit 'Jetzt!'.",
       "Die '40 Tage Achtsamkeit'-Karte zeigt jetzt nur noch eine kurze Vorschau des Tagesimpulses statt des ganzen Textes, mit 'mehr lesen →' für den vollen Text in einem eigenen, schließbaren Fenster.",
       "Die '40 Tage Achtsamkeit'-Karte steht jetzt direkt unter 'To-Do heute' in der linken Spalte, zusammen mit den anderen Karten, statt als eigener breiter Balken unterhalb der ganzen Seite.",
-      "Echter Fehler behoben: Die 40-Tage-Achtsamkeit-Karte wurde nur sichtbar, wenn man über einen Tag im Kalender-Raster dorthin gesprungen ist, nicht aber beim normalen Öffnen der Tagesseite über den Reiter oben. Sie erscheint jetzt in jedem Fall zuverlässig."
+      "Echter Fehler behoben: Die 40-Tage-Achtsamkeit-Karte wurde nur sichtbar, wenn man über einen Tag im Kalender-Raster dorthin gesprungen ist, nicht aber beim normalen Öffnen der Tagesseite über den Reiter oben. Sie erscheint jetzt in jedem Fall zuverlässig.",
+      "Echter Fehler behoben: Wenn man einen Termin zum Bearbeiten geöffnet hat (✏️) und danach den Tag wechselte ohne erst auf 'Bearbeiten abbrechen' zu tippen, ist beim nächsten Versuch, einen neuen Termin hinzuzufügen, gar nichts passiert. Das ist jetzt behoben: der Bearbeitungsmodus wird beim Tageswechsel automatisch beendet, und selbst falls doch mal etwas hängen bleibt, wird die Eingabe trotzdem als neuer Termin gespeichert statt verworfen zu werden."
     ],
     "ueberblick": [
       "Heute im Fokus zeigt jetzt oben eine antippbare Zeitleiste für den ganzen Tag (inkl. wiederkehrender Termine); ein Tipp auf einen Block öffnet ein Pop-up mit allen Details (Zeit, Titel, Notiz)."
@@ -23,6 +24,10 @@
     ],
     "kosten": [
       "Neu: Beim Eintragen von Kosten kann jetzt frei ausgewählt werden, für welche Pferde der Eintrag gilt (Checkboxen statt Einzelauswahl). Sind alle aktuellen Pferde angehakt, verhält es sich wie bisher (automatische Aufteilung auf alle, auch künftig neu angelegte Pferde). Wird gezielt ein Pferd abgewählt, bleibt die Aufteilung fest auf die ausgewählten Pferde beschränkt, auch wenn später ein neues Pferd dazukommt."
+    ],
+    "allgemein": [
+      "Echter Fehler behoben: Beim Hochladen des Hintergrundbilds auf der Startseite (Mein Überblick) fehlte eine Speicher-Absicherung. War der Browser-Speicher voll, ist das Foto einfach kommentarlos nicht übernommen worden. Jetzt erscheint in diesem Fall eine klare Meldung, genau wie bei anderen Fotos in der App.",
+      "Die komplette App wurde durchgetestet (alle Hauptbereiche, Kalender-Unteransichten, Pferde-Module, Kosten, Erinnerungen, Übersicht) – dabei wurden keine weiteren Fehler gefunden."
     ]
   }
 }
