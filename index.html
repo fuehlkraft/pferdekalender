@@ -297,6 +297,10 @@ canvas#lebensrad-canvas{max-width:220px;width:100%;}
 .bucket-add{display:flex;gap:6px;}
 .bucket-add input{flex:1;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:7px 10px;font-size:12px;font-family:Arial,sans-serif;background:rgba(255,255,255,0.7);color:var(--text);outline:none;}
 .bucket-add button{background:var(--butter);border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;}
+.bucket-item.carried-over{background:rgba(220,70,70,0.08);border:1px solid rgba(220,70,70,0.25);}
+.bucket-check.carried-over-check{border-color:rgba(220,70,70,0.6);cursor:pointer;}
+.carried-over-badge{font-size:9px;font-weight:700;color:#c0392b;background:rgba(220,70,70,0.12);border-radius:5px;padding:2px 5px;white-space:nowrap;flex-shrink:0;}
+.bucket-text.carried-over-text{color:#c0392b;font-weight:700;flex:1;}
 
 /* ── WELTKARTE ── */
 .weltkarte-wrap{position:relative;width:100%;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.8);}
@@ -3832,7 +3836,10 @@ return html2pdf;
     <div id="fk-reminder-time" style="font-family:Georgia,serif;font-size:13px;color:var(--muted);margin-bottom:6px;"></div>
     <div id="fk-reminder-title" style="font-family:Georgia,serif;font-size:19px;font-weight:600;color:var(--deep);margin-bottom:8px;"></div>
     <div id="fk-reminder-notiz" style="font-size:12px;color:var(--text);margin-bottom:18px;white-space:pre-wrap;"></div>
-    <button onclick="document.getElementById('fk-reminder-popup').style.display='none';" style="background:linear-gradient(135deg,var(--lilac),var(--rose));border:none;border-radius:10px;padding:10px 30px;font-size:13px;font-weight:700;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;">Verstanden</button>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <button onclick="document.getElementById('fk-reminder-popup').style.display='none';" style="background:linear-gradient(135deg,var(--lilac),var(--rose));border:none;border-radius:10px;padding:10px 30px;font-size:13px;font-weight:700;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;">Verstanden</button>
+      <button onclick="fkSnoozeReminder()" style="background:none;border:1px solid rgba(180,160,220,0.4);border-radius:10px;padding:8px 30px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;font-family:Arial,sans-serif;">⏰ Erinnere mich in 10 Min noch mal</button>
+    </div>
   </div>
 </div>
 <!-- PWA Install Banner -->
@@ -4040,8 +4047,8 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
               <div><div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:3px;text-transform:uppercase;">Datum</div>
                 <input type="date" id="km-datum" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 10px;font-family:Arial,sans-serif;font-size:12px;outline:none;"></div>
-              <div><div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:3px;text-transform:uppercase;">Pferd</div>
-                <select id="km-horse" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 10px;font-family:Arial,sans-serif;font-size:12px;outline:none;background:white;"></select></div>
+              <div style="grid-column:1/-1;"><div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:3px;text-transform:uppercase;">Für welche Pferde gilt dieser Eintrag?</div>
+                <div id="km-horse-group" style="display:flex;flex-wrap:wrap;gap:10px;padding:8px 2px;"></div></div>
               <div style="grid-column:1/-1;"><div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:3px;text-transform:uppercase;">Beschreibung</div>
                 <input type="text" id="km-titel" placeholder="z.B. Tierarzt, Hufschmied, Futter..." style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 10px;font-family:Arial,sans-serif;font-size:12px;outline:none;"></div>
               <div><div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:3px;text-transform:uppercase;">Betrag (€)</div>
@@ -5708,19 +5715,20 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
 <div id="section-kalender" style="display:none">
   <div class="body">
     <div class="sub-nav">
-      <button class="sub-btn active" onclick="showKal('halbjahr')">🗓 Halbjahr</button>
+      <button class="sub-btn active" onclick="showKal('tag')">☀️ Tagesseite</button>
+      <button class="sub-btn" onclick="showKal('halbjahr')">🗓 Halbjahr</button>
       <button class="sub-btn" onclick="showKal('monat-raster')">📅 Monat Raster</button>
       <button class="sub-btn" onclick="showKal('monat-liste')">📋 Monat Liste</button>
       <button class="sub-btn" onclick="showKal('woche-horizontal')">➡ Woche Horizontal</button>
       <button class="sub-btn" onclick="showKal('woche-zeitplan')">⏰ Wochenzeitplan</button>
       <button class="sub-btn" onclick="showKal('woche-journal')">📓 Journal-Woche</button>
-      <button class="sub-btn" onclick="showKal('tag')">☀️ Tagesseite</button>
     </div>
 
     <!-- HALBJAHRESÜBERSICHT -->
-    <div id="kal-halbjahr" class="kal-section">
+    <div id="kal-halbjahr" class="kal-section" style="display:none">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
         <div class="sec-title" style="margin:0">Halbjahresübersicht</div>
+        <button onclick="openRecurringManager()" class="save-btn" style="padding:7px 14px;">🔁 Wiederkehrende Zeiten</button>
         <div style="display:flex;gap:6px;margin-left:auto;">
           <button class="sub-btn active" id="hj-btn-1-2026" onclick="setHalbjahr(2026,1)">1. Halbjahr 2026</button>
           <button class="sub-btn" id="hj-btn-2-2026" onclick="setHalbjahr(2026,2)">2. Halbjahr 2026</button>
@@ -5806,7 +5814,7 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
     </div>
 
     <!-- TAGESSEITE -->
-    <div id="kal-tag" class="kal-section" style="display:none">
+    <div id="kal-tag" class="kal-section">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap;">
         <button class="arrow" onclick="changeKalDay(-1)">&#8249;</button>
         <div class="sec-title" style="margin:0" id="kal-day-title">Montag, 1. Januar 2026</div>
@@ -5839,6 +5847,9 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
               <input type="text" id="tag-todo-inp" placeholder="Aufgabe...">
               <button onclick="addTagTodo()">+</button>
             </div>
+          </div>
+          <!-- Achtsamkeit Challenge Tagesimpuls -->
+          <div id="achtsamkeit-tag-card" style="display:none;border-radius:12px;overflow:hidden;">
           </div>
         </div>
         <!-- RECHTE SPALTE -->
@@ -5883,10 +5894,19 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
                 <input type="checkbox" id="tag-zeit-blocked" style="accent-color:var(--sky2);width:14px;height:14px;">
                 🔒 Zeit blockieren
               </label>
-              <label style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);cursor:pointer;">
-                <input type="checkbox" id="tag-zeit-reminder" style="accent-color:var(--rose2);width:14px;height:14px;">
+              <label style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);">
                 🔔 Erinnerung
+                <select id="tag-zeit-reminder-lead" style="border:1px solid rgba(180,160,220,0.3);border-radius:6px;padding:3px 6px;font-size:11px;font-family:Arial,sans-serif;background:rgba(255,255,255,0.8);color:var(--deep);outline:none;">
+                  <option value="">Keine</option>
+                  <option value="0">Zur Startzeit</option>
+                  <option value="1h">1 Stunde vorher</option>
+                  <option value="3h">3 Stunden vorher</option>
+                  <option value="1d">1 Tag vorher</option>
+                  <option value="1w">1 Woche vorher</option>
+                  <option value="2w">2 Wochen vorher</option>
+                </select>
               </label>
+              <span id="tag-zeit-cancel-edit" onclick="cancelTagZeitEdit()" style="display:none;font-size:11px;color:var(--muted);text-decoration:underline;cursor:pointer;">Bearbeiten abbrechen</span>
               <button onclick="addTagZeit()" id="tag-zeit-add-btn" style="margin-left:auto;background:var(--sky);border:none;border-radius:8px;padding:7px 18px;font-size:12px;font-weight:700;color:var(--deep);cursor:pointer;transition:background 0.2s;">+ Termin</button>
             </div>
           </div>
@@ -5911,9 +5931,6 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
             </div>
           </div>
         </div>
-      </div>
-      <!-- Achtsamkeit Challenge Tagesimpuls -->
-      <div id="achtsamkeit-tag-card" style="display:none;margin-top:12px;border-radius:12px;overflow:hidden;">
       </div>
 
       <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;gap:10px;flex-wrap:wrap;">
@@ -6307,6 +6324,7 @@ function coverDragStart(e){
   if(e.target&&e.target.closest&&e.target.closest('#photo-ph'))return;
   e.preventDefault();
   _coverDrag.active=true;
+  _coverDrag.moved=false;
   window._photoDragging=false;
   var t=e.touches?e.touches[0]:e;
   _coverDrag.startX=t.clientX;
@@ -6318,10 +6336,11 @@ function coverDragStart(e){
 function coverDragMove(e){
   if(!_coverDrag.active)return;
   e.preventDefault();
-  window._photoDragging=true;
   var t=e.touches?e.touches[0]:e;
   var dx=t.clientX-_coverDrag.startX;
   var dy=t.clientY-_coverDrag.startY;
+  if(Math.abs(dx)>6||Math.abs(dy)>6)_coverDrag.moved=true;
+  window._photoDragging=true;
   // Empfindlichkeit: 200px Bewegung = 100% Verschiebung
   coverPhotoPos.x=Math.max(0,Math.min(100,_coverDrag.startPosX-(dx/2)));
   coverPhotoPos.y=Math.max(0,Math.min(100,_coverDrag.startPosY-(dy/2)));
@@ -6333,6 +6352,13 @@ function coverDragEnd(e){
   document.getElementById('cover-drag-hint').style.display='none';
   localStorage.setItem('pk_cover_pos',JSON.stringify(coverPhotoPos));
   setTimeout(function(){window._photoDragging=false;},100);
+  // Kurzer Tap ohne Bewegung und ohne Langedrücken-Menü -> Datei-Upload öffnen,
+  // sonst passiert beim einfachen Antippen eines vorhandenen Titelbilds gar nichts.
+  if(!_coverDrag.moved && !_coverLongPressed){
+    setTimeout(function(){
+      if(!_coverLongPressed) document.getElementById('photo-input').click();
+    },50);
+  }
 }
 function coverMouseDown(e){
   var img=document.getElementById('cover-photo');
@@ -6379,10 +6405,9 @@ function startApp(){
   renderVision();renderHabits();renderRoutinen();renderMedia();renderWeight();
   switchTab('ueberblick');
   initFarbthema();
-  // Zuletzt aktiven Tab wiederherstellen (mit dem VORHER gemerkten Wert)
-  if(_restoreTab && _restoreTab!=='ueberblick'){
-    setTimeout(function(){ switchTab(_restoreTab); }, 150);
-  }
+  // Beim (Wieder-)Öffnen der App IMMER auf der Startseite (Mein Überblick) landen,
+  // statt zum zuletzt geöffneten Tab zurückzukehren. _restoreTab wird bewusst nicht
+  // mehr verwendet, bleibt hier nur als Variable stehen falls später wieder benötigt.
   // Update-Punkte an den Tabs aus dem letzten (zugestimmten) Update-Check wiederherstellen.
   // Das ist KEINE neue Verbindung, nur lokale Daten.
   try{ restoreTabUpdateDots(); }catch(e){}
@@ -6476,6 +6501,32 @@ function getAchtsamkeitColor(){
   return {bg:'rgba(232,100,100,0.15)',border:'#e06060',text:'#c04040',label:'⏰ Heute noch nicht vergessen!'}; // rot
 }
 
+function fkAchtsamkeitPreview(text){
+  if(!text)return '';
+  var firstPara=text.split(/\n\s*\n/)[0].trim();
+  var limit=170;
+  if(firstPara.length<=limit) return firstPara;
+  var cut=firstPara.slice(0,limit);
+  var lastSpace=cut.lastIndexOf(' ');
+  if(lastSpace>40)cut=cut.slice(0,lastSpace);
+  return cut+'…';
+}
+function openAchtsamkeitDetail(){
+  var tagIdx=getAchtsamkeitTag();
+  if(tagIdx===null)return;
+  var impuls=ACHTSAMKEIT_IMPULSE[tagIdx];
+  var box=document.getElementById('achtsamkeit-detail-modal');
+  if(!box)return;
+  box.innerHTML='<div onclick="event.stopPropagation()" style="background:white;border-radius:16px;padding:24px 22px;width:100%;max-width:560px;max-height:85vh;overflow-y:auto;box-shadow:0 12px 40px rgba(74,56,96,0.3);">'
+    +'<div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Tag '+(tagIdx+1)+' von 40 · 40 Tage Achtsamkeit</div>'
+    +'<div style="font-family:Georgia,serif;font-size:22px;font-weight:600;color:var(--deep);margin-bottom:6px;">'+impuls.titel+'</div>'
+    +(impuls.untertitel?'<div style="font-size:11px;color:var(--muted);font-weight:700;letter-spacing:0.5px;margin-bottom:14px;text-transform:uppercase;">'+impuls.untertitel+'</div>':'')
+    +'<div style="font-size:13px;color:var(--text);line-height:1.8;white-space:pre-line;margin-bottom:20px;">'+impuls.impuls+'</div>'
+    +'<div style="text-align:right;"><button onclick="closeAchtsamkeitDetail()" style="background:linear-gradient(135deg,var(--lilac),var(--rose));border:none;border-radius:10px;padding:9px 24px;font-size:13px;font-weight:700;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;">Schließen</button></div>'
+    +'</div>';
+  box.style.display='flex';
+}
+function closeAchtsamkeitDetail(){ var box=document.getElementById('achtsamkeit-detail-modal'); if(box)box.style.display='none'; }
 function renderAchtsamkeitTagCard(){
   var card=document.getElementById('achtsamkeit-tag-card');
   if(!card)return;
@@ -6488,34 +6539,28 @@ function renderAchtsamkeitTagCard(){
   card.style.display='block';
   card.innerHTML='';
   var inner=document.createElement('div');
-  inner.style.cssText='background:'+col.bg+';border:1.5px solid '+col.border+';border-radius:12px;padding:14px 16px;';
+  inner.style.cssText='background:'+col.bg+';border:1.5px solid '+col.border+';border-radius:12px;padding:12px 14px;';
   var header=document.createElement('div');
-  header.style.cssText='display:flex;align-items:center;gap:8px;margin-bottom:8px;';
-  header.innerHTML='<span style="font-size:20px;">🐴</span>'
+  header.style.cssText='display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;';
+  header.onclick=openAchtsamkeitDetail;
+  header.innerHTML='<span style="font-size:18px;">🐴</span>'
     +'<div>'
     +'<div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">Tag '+(tagIdx+1)+' von 40 · 40 Tage Achtsamkeit</div>'
-    +'<div style="font-family:Georgia,serif;font-size:17px;font-weight:600;color:var(--deep);">'+impuls.titel+'</div>'
+    +'<div style="font-family:Georgia,serif;font-size:15px;font-weight:600;color:var(--deep);">'+impuls.titel+'</div>'
     +'</div>';
-  // Untertitel
-  if(impuls.untertitel){
-    var sub=document.createElement('div');
-    sub.style.cssText='font-size:11px;color:var(--muted);font-weight:700;letter-spacing:0.5px;margin-bottom:8px;text-transform:uppercase;';
-    sub.textContent=impuls.untertitel;
-    inner.appendChild(sub);
-  }
-  // Ausführlicher Text
+  // Kurzvorschau statt vollem Text, plus "mehr lesen"
   var text=document.createElement('div');
-  text.style.cssText='font-size:13px;color:var(--text);line-height:1.8;margin-bottom:10px;white-space:pre-line;';
-  text.textContent=impuls.impuls;
+  text.style.cssText='font-size:12px;color:var(--text);line-height:1.6;margin-bottom:8px;';
+  text.innerHTML=fkAchtsamkeitPreview(impuls.impuls).replace(/</g,'&lt;')+' <span onclick="openAchtsamkeitDetail()" style="color:var(--lilac2);font-weight:700;cursor:pointer;text-decoration:underline;white-space:nowrap;">mehr lesen →</span>';
   var footer=document.createElement('div');
   footer.style.cssText='display:flex;align-items:center;justify-content:space-between;';
   if(erledigt){
-    footer.innerHTML='<span style="color:var(--mint2);font-weight:700;font-size:13px;">✓ Heute erledigt, wunderbar!</span>'
+    footer.innerHTML='<span style="color:var(--mint2);font-weight:700;font-size:12px;">✓ Heute erledigt, wunderbar!</span>'
       +'<div style="background:rgba(200,234,223,0.5);border-radius:10px;padding:3px 12px;font-size:11px;color:var(--deep);">'+pData.achtsamkeit.erledigteTage.length+' / 40 Tage</div>';
   } else {
     var btn=document.createElement('button');
     btn.textContent='✓ Heute erledigt';
-    btn.style.cssText='background:var(--deep);border:none;border-radius:10px;padding:8px 18px;font-size:12px;font-weight:700;color:white;cursor:pointer;font-family:Arial,sans-serif;';
+    btn.style.cssText='background:var(--deep);border:none;border-radius:10px;padding:7px 16px;font-size:12px;font-weight:700;color:white;cursor:pointer;font-family:Arial,sans-serif;';
     btn.onclick=function(){
       if(pData.achtsamkeit.erledigteTage.indexOf(todayKey)<0){
         pData.achtsamkeit.erledigteTage.push(todayKey);
@@ -6758,19 +6803,22 @@ function renderMonth(){
 function setFilter(h){pkState.filterHorse=h;renderMonth();}
 function renderEntries(){
   let me=getMonth(pkState.year,pkState.month);
-  if(pkState.filterHorse!=='Alle')me=me.filter(e=>e.horse===pkState.filterHorse||e.horse==='Alle');
+  if(pkState.filterHorse!=='Alle')me=me.filter(e=>e.horse===pkState.filterHorse||e.horse==='Alle'||(e.horseList&&e.horseList.indexOf(pkState.filterHorse)>=0));
   const el=document.getElementById('entries-list');el.innerHTML='';let any=false;
   ['vet','huf','health','blood','vacc','wurm','osteo','teeth','cost','hl'].forEach(cat=>{
     const ce=me.filter(e=>e.cat===cat);if(!ce.length)return;any=true;
     const div=document.createElement('div');div.className='entry-cat';div.style.borderTop='3px solid '+CAT_COLORS[cat];
     div.innerHTML='<div class="entry-cat-title"><span class="cat-dot" style="background:'+CAT_COLORS[cat]+'"></span>'+CAT_LABELS[cat]+'</div>'+
-      ce.map(e=>'<div class="entry-item" style="border-left-color:'+CAT_COLORS[cat]+'">'+
+      ce.map(e=>{
+        const horseInfo=cat==='cost'?costEntryHorses(e):{names:[e.horse],label:(e.horse==='Alle'?'Alle Pferde':e.horse)};
+        return '<div class="entry-item" style="border-left-color:'+CAT_COLORS[cat]+'">'+
         '<button class="entry-delete" onclick="deleteEntry('+e.id+')">✕</button>'+
-        '<span class="entry-horse">'+(e.horse==='Alle'?'Alle Pferde':e.horse)+'</span><strong style="font-size:13px;color:var(--deep)">'+e.title+'</strong>'+
+        '<span class="entry-horse">'+horseInfo.label+'</span><strong style="font-size:13px;color:var(--deep)">'+e.title+'</strong>'+
         (e.notes?'<div class="entry-notes">'+e.notes+'</div>':'')+
-        (cat==='cost'&&e.horse==='Alle'&&horses.length>1?'<div class="entry-notes">→ '+((parseFloat(e.amount)||0)/horses.length).toFixed(2)+' € pro Pferd, durch '+horses.length+' Pferde geteilt</div>':'')+
+        (cat==='cost'&&horseInfo.names.length>1?'<div class="entry-notes">→ '+((parseFloat(e.amount)||0)/horseInfo.names.length).toFixed(2)+' € pro Pferd, durch '+horseInfo.names.length+' Pferde geteilt</div>':'')+
         (e.amount?'<div class="entry-amount">'+parseFloat(e.amount).toFixed(2)+' €</div>':'')+
-        '<div class="entry-date">'+fmt(e.date)+'</div></div>').join('');
+        '<div class="entry-date">'+fmt(e.date)+'</div></div>';
+      }).join('');
     div.innerHTML+='<button class="add-cat-btn" onclick="openModal(\''+(cat)+'\')" >+ '+CAT_LABELS[cat]+' eintragen</button>';
     el.appendChild(div);
   });
@@ -6797,8 +6845,11 @@ function renderOverview(){
     const fotoUid='hfoto-'+i+'-'+Date.now();
     div.innerHTML=`<div class="horse-overview-grid" style="display:grid;grid-template-columns:110px 1fr;gap:18px;margin-bottom:14px;align-items:start;">
       <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
-        <div onclick="horseUpload(${i})" style="width:90px;height:90px;border-radius:50%;border:2px solid rgba(180,160,220,0.4);overflow:hidden;cursor:pointer;background:${HORSE_COLORS[i]};display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700;color:var(--deep);">
-          ${hp.foto?`<img src="${hp.foto}" onclick="openLightbox(this.src)" style="width:100%;height:100%;object-fit:cover;cursor:zoom-in;" title="Klick zum Vergrößern">`:`<span>${(hp.name||h)[0]}</span>`}
+        <div style="position:relative;width:90px;height:90px;">
+          <div onclick="horseUpload(${i})" style="width:90px;height:90px;border-radius:50%;border:2px solid rgba(180,160,220,0.4);overflow:hidden;cursor:pointer;background:${HORSE_COLORS[i]};display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700;color:var(--deep);">
+            ${hp.foto?`<img src="${hp.foto}" style="width:100%;height:100%;object-fit:cover;">`:`<span>${(hp.name||h)[0]}</span>`}
+          </div>
+          ${hp.foto?`<button onclick="event.stopPropagation();openLightbox('${hp.foto}')" title="Foto vergrößern" style="position:absolute;bottom:0;right:0;width:24px;height:24px;border-radius:50%;border:1px solid rgba(180,160,220,0.4);background:rgba(255,255,255,0.92);cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;">🔍</button>`:''}
         </div>
         <div onclick="horseUpload(${i})" style="font-size:9px;color:var(--muted);text-align:center;cursor:pointer;">📷 ändern</div>
       </div>
@@ -6982,8 +7033,13 @@ function updateHorseInterval(idx,key,val,divisor){
 
 
 function openKostenModal(){
-  var sel=document.getElementById('km-horse');
-  if(sel){sel.innerHTML=horses.map(function(h){return'<option>'+h+'</option>';}).join('')+(horses.length>1?'<option value="Alle">🐴 Alle Pferde (geteilt)</option>':'');}
+  var grp=document.getElementById('km-horse-group');
+  if(grp){
+    grp.innerHTML=horses.map(function(h){
+      return '<label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--deep);cursor:pointer;background:rgba(255,255,255,0.6);border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:5px 10px;">'
+        +'<input type="checkbox" value="'+h+'" checked style="accent-color:var(--lilac2);width:14px;height:14px;">'+h+'</label>';
+    }).join('');
+  }
   var dm=document.getElementById('km-datum');
   if(dm)dm.value=new Date().toISOString().split('T')[0];
   var _km=document.getElementById('kosten-modal');if(_km){_km.style.display='flex';_km.style.pointerEvents='all';}
@@ -6993,26 +7049,42 @@ function closeKostenModal(){
 }
 function saveKostenEintrag(){
   var d=document.getElementById('km-datum').value;
-  var h=document.getElementById('km-horse').value;
+  var checked=Array.from(document.querySelectorAll('#km-horse-group input[type=checkbox]:checked')).map(function(cb){return cb.value;});
   var t=document.getElementById('km-titel').value.trim();
   var a=document.getElementById('km-betrag').value;
   var subcat=document.getElementById('km-kat').value;
   if(!d||!t||!a){alert('Bitte Datum, Beschreibung und Betrag ausfüllen.');return;}
-  pkEntries.push({id:Date.now(),date:d,horse:h,cat:'cost',subcat:subcat,title:t,notes:'',amount:a});
+  if(!checked.length){alert('Bitte mindestens ein Pferd auswählen.');return;}
+  // Wenn wirklich ALLE aktuell vorhandenen Pferde angehakt sind, bleibt es wie bisher 'Alle' (dynamisch,
+  // bezieht auch künftig neu angelegte Pferde mit ein). Wurde gezielt abgewählt, wird die Auswahl fest gespeichert.
+  var h, horseList=null;
+  if(checked.length===horses.length){ h='Alle'; }
+  else if(checked.length===1){ h=checked[0]; }
+  else { h='Mehrere'; horseList=checked; }
+  pkEntries.push({id:Date.now(),date:d,horse:h,horseList:horseList,cat:'cost',subcat:subcat,title:t,notes:'',amount:a});
   saveAll();closeKostenModal();renderCosts();
+  try{renderUeberblick();}catch(e){}
   var b=event&&event.target;if(b&&b.tagName==='BUTTON'){b.textContent='✓ Gespeichert!';b.style.background='var(--mint2)';setTimeout(function(){b.textContent='✓ Speichern';b.style.background='';},1800);}
 }
 var KOSTEN_KAT={stall:'🏠 Stallmiete/Pension',feed:'🌾 Futter (Heu, Kraft, Ergänzung)',huf:'🔧 Hufschmied',vet:'🩺 Tierarzt',vacc:'💉 Impfung',teeth:'🦷 Zahnarzt',osteo:'🤲 Osteopathie/Physio',equip:'🏇 Ausrüstung (Sattel, Trense)',bekleidung:'🧤 Reiterausrüstung',wurm:'🪱 Wurmkur',versich:'📋 Versicherung',turnier:'🏆 Turnier/Startgeld',transport:'🚛 Transport',stall_mat:'🔨 Stallmaterial/Zubehör',einstreu:'🌿 Einstreu/Stroh',urlaub:'🐴 Pferdeurlaub/Camp',other:'✨ Sonstiges'};
+// Liefert für einen Kosteneintrag, welche Pferde betroffen sind: feste Auswahl (horseList) hat Vorrang,
+// 'Alle' bleibt weiterhin dynamisch (bezieht auch neu angelegte Pferde mit ein), sonst genau ein Pferd.
+function costEntryHorses(e){
+  if(e.horseList&&e.horseList.length)return{names:e.horseList.slice(),label:e.horseList.join(', ')};
+  if(e.horse==='Alle')return{names:horses.slice(),label:'Alle Pferde'};
+  return{names:[e.horse],label:e.horse};
+}
 function renderCosts(){
   const ce=pkEntries.filter(e=>e.cat==='cost'&&e.amount);
   const byH={};horses.forEach(h=>byH[h]=0);
   ce.forEach(e=>{
     const amt=parseFloat(e.amount)||0;
-    if(e.horse==='Alle'&&horses.length){
-      const share=amt/horses.length;
-      horses.forEach(h=>byH[h]+=share);
-    } else if(byH[e.horse]!==undefined){
-      byH[e.horse]+=amt;
+    const info=costEntryHorses(e);
+    if(info.names.length>1){
+      const share=amt/info.names.length;
+      info.names.forEach(h=>{ if(byH[h]!==undefined) byH[h]+=share; });
+    } else if(byH[info.names[0]]!==undefined){
+      byH[info.names[0]]+=amt;
     }
   });
   const total=ce.reduce((s,e)=>s+(parseFloat(e.amount)||0),0);
@@ -7022,10 +7094,11 @@ function renderCosts(){
     (ce.length?'<div class="cost-entries"><div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:0.5px;margin-bottom:12px;text-transform:uppercase">Alle Ausgaben</div>'+
     ce.sort((a,b)=>b.date.localeCompare(a.date)).map(e=>{
       const amt=parseFloat(e.amount)||0;
-      const isShared=e.horse==='Alle'&&horses.length>1;
-      const horseLabel=e.horse==='Alle'?'Alle Pferde':e.horse;
+      const info=costEntryHorses(e);
+      const isShared=info.names.length>1;
+      const horseLabel=info.label;
       const katLabel=e.subcat&&KOSTEN_KAT[e.subcat]?KOSTEN_KAT[e.subcat]:'';
-      const shareText=isShared?'<div style="font-size:11px;color:var(--muted);margin-top:2px">→ '+(amt/horses.length).toFixed(2)+' € pro Pferd, durch '+horses.length+' Pferde geteilt</div>':'';
+      const shareText=isShared?'<div style="font-size:11px;color:var(--muted);margin-top:2px">→ '+(amt/info.names.length).toFixed(2)+' € pro Pferd, durch '+info.names.length+' Pferde geteilt</div>':'';
       return '<div class="cost-row"><div><span style="background:var(--lavgray);border-radius:4px;padding:1px 7px;font-size:10px;color:var(--deep);margin-right:6px">'+horseLabel+'</span>'+e.title+
         (katLabel?'<span style="font-size:10px;color:var(--muted);margin-left:6px">'+katLabel+'</span>':'')+
         (e.notes?'<div style="font-size:11px;color:var(--muted)">'+e.notes+'</div>':'')+shareText+
@@ -7049,10 +7122,12 @@ function saveEntry(){
   if(!d||!t){alert('Bitte Datum und Titel ausfüllen.');return;}
   pkEntries.push({id:Date.now(),date:d,horse:h,cat,title:t,notes:n,amount:a||null});
   saveAll();closeModal();if(pkState.month)renderMonth();renderPkYear();
+  try{renderUeberblick();}catch(e){}
 }
 function deleteEntry(id){
   if(!confirm('Löschen?'))return;
   pkEntries=pkEntries.filter(e=>e.id!==id);saveAll();if(pkState.month)renderMonth();renderPkYear();
+  try{renderUeberblick();}catch(e){}
 }
 
 // ═══ HABIT TRACKER ═══
@@ -10415,7 +10490,7 @@ let kalState={
   weekDate: new Date(2026,0,5), // Montag der aktuellen Woche
   dayDate: new Date(2026,0,1),
   halbjahr:{year:2026, hj:1},
-  currentKalView:'halbjahr',
+  currentKalView:'tag',
   activeDay:null               // für Raster-Notiz
 };
 
@@ -10715,6 +10790,68 @@ function updateTagFoto(dk){
   if(wrap)wrap.style.display=foto?'block':'none';
   if(img&&foto)img.src=foto;
 }
+
+// ── WIEDERKEHRENDE ZEITEN (z.B. "jeden Montag 17 Uhr: Reitstunde") ──
+// weekday: 0=Montag ... 6=Sonntag, passend zu WOCHENTAGE_KURZ/-LANG
+const WOCHENTAGE_RECUR=['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'];
+function getRecurringRules(){ if(!kalData.recurring)kalData.recurring=[]; return kalData.recurring; }
+function getRecurringForDate(dateObj){
+  var wd=(dateObj.getDay()+6)%7;
+  return getRecurringRules().filter(function(r){return r.weekday===wd;}).sort(function(a,b){return (a.time||'').localeCompare(b.time||'');});
+}
+function openRecurringManager(){
+  var box=document.getElementById('recurring-manager');
+  if(!box)return;
+  renderRecurringManager();
+  box.style.display='flex';
+}
+function closeRecurringManager(){ var box=document.getElementById('recurring-manager'); if(box)box.style.display='none'; }
+function renderRecurringManager(){
+  var box=document.getElementById('recurring-manager');
+  if(!box)return;
+  var rules=getRecurringRules().slice().sort(function(a,b){ return a.weekday-b.weekday || (a.time||'').localeCompare(b.time||''); });
+  box.innerHTML='<div onclick="event.stopPropagation()" style="background:white;border-radius:14px;padding:20px;width:92%;max-width:460px;max-height:85vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,0.18);">'
+    +'<div style="font-family:Georgia,serif;font-size:18px;font-weight:600;color:var(--deep);margin-bottom:6px;">🔁 Wiederkehrende Zeiten</div>'
+    +'<div style="font-size:11px;color:var(--muted);margin-bottom:14px;">Diese Zeiten erscheinen automatisch jede Woche am gewählten Tag in der Tagesseite, auch bei der Halbjahresübersicht musst du sie nicht jedes Mal neu eintragen.</div>'
+    +'<div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px;">'
+    +(rules.length?rules.map(function(r){
+      return '<div style="display:flex;align-items:center;gap:8px;background:rgba(216,207,240,0.15);border-radius:8px;padding:6px 10px;">'
+        +'<span style="font-size:11px;font-weight:700;color:var(--lilac2);min-width:64px;">'+WOCHENTAGE_RECUR[r.weekday].slice(0,2)+' '+(r.time||'--:--')+'</span>'
+        +'<span style="flex:1;font-size:12px;color:var(--deep);">'+r.text+'</span>'
+        +'<button onclick="deleteRecurring(\''+r.id+'\')" style="background:none;border:none;color:rgba(180,160,220,0.5);cursor:pointer;font-size:13px;">✕</button>'
+        +'</div>';
+    }).join(''):'<div style="text-align:center;padding:10px;color:var(--muted);font-size:12px;">Noch keine wiederkehrenden Zeiten</div>')
+    +'</div>'
+    +'<div style="border-top:1px solid rgba(216,207,240,0.3);padding-top:12px;">'
+    +'<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Neue wiederkehrende Zeit</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">'
+    +'<select id="rec-weekday" style="border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 8px;font-size:12px;font-family:Arial,sans-serif;background:white;">'+WOCHENTAGE_RECUR.map(function(w,i){return '<option value="'+i+'">'+w+'</option>';}).join('')+'</select>'
+    +'<input type="time" id="rec-time" style="border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 8px;font-size:12px;font-family:Arial,sans-serif;">'
+    +'</div>'
+    +'<input type="text" id="rec-text" placeholder="z.B. Reitstunde, Stallarbeit..." style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 10px;font-size:12px;font-family:Arial,sans-serif;margin-bottom:8px;box-sizing:border-box;">'
+    +'<div style="display:flex;justify-content:flex-end;gap:8px;">'
+    +'<button onclick="closeRecurringManager()" style="background:rgba(232,228,240,0.5);border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:8px 16px;font-size:13px;cursor:pointer;font-family:Arial,sans-serif;color:var(--muted);">Schließen</button>'
+    +'<button onclick="addRecurring()" class="save-btn" style="padding:8px 20px;">+ Hinzufügen</button>'
+    +'</div></div></div>';
+}
+function addRecurring(){
+  var wd=parseInt(document.getElementById('rec-weekday').value,10)||0;
+  var time=document.getElementById('rec-time').value;
+  var text=document.getElementById('rec-text').value.trim();
+  if(!text){alert('Bitte einen Text eintragen.');return;}
+  getRecurringRules().push({id:'rec_'+Date.now()+'_'+Math.floor(Math.random()*10000), weekday:wd, time:time||'', text:text});
+  saveKal();
+  renderRecurringManager();
+  try{renderUeberblick();}catch(e){}
+}
+function deleteRecurring(id){
+  kalData.recurring=getRecurringRules().filter(function(r){return r.id!==id;});
+  saveKal();
+  renderRecurringManager();
+  try{renderTagZeitplan(dateKey(kalState.dayDate));}catch(e){}
+  try{renderUeberblick();}catch(e){}
+}
+
 function renderTag(){
   const dk=dateKey(kalState.dayDate);
   document.getElementById('kal-day-title').textContent=fmtLong(kalState.dayDate);
@@ -10729,10 +10866,47 @@ function renderTag(){
   // Prios
   renderTagPrios(dk);renderTagTodos(dk);renderTagZeitplan(dk);
   updateTagFoto(dk);
+  try{renderAchtsamkeitTagCard();}catch(e){}
+}
+function getCarriedPrios(dk){
+  // Sammelt alle noch nicht erledigten Top-3-Prioritäten aus VORHERIGEN Tagen (egal wie lange her),
+  // damit sie so lange rot sichtbar bleiben bis sie abgehakt werden.
+  const result=[];
+  Object.keys(kalData.tagNotes).forEach(function(otherDk){
+    if(otherDk>=dk)return;
+    const note=kalData.tagNotes[otherDk];
+    if(!note||!note.prios)return;
+    note.prios.forEach(function(p,i){ if(!p.done) result.push({dk:otherDk,i:i,text:p.text}); });
+  });
+  result.sort(function(a,b){return a.dk.localeCompare(b.dk);});
+  return result;
+}
+function getCarriedTodos(dk){
+  const result=[];
+  Object.keys(kalData.tagNotes).forEach(function(otherDk){
+    if(otherDk>=dk)return;
+    const note=kalData.tagNotes[otherDk];
+    if(!note||!note.todos)return;
+    note.todos.forEach(function(t,i){ if(!t.done) result.push({dk:otherDk,i:i,text:t.text}); });
+  });
+  result.sort(function(a,b){return a.dk.localeCompare(b.dk);});
+  return result;
 }
 function renderTagPrios(dk){
   const note=kalData.tagNotes[dk]||{prios:[]};
   const c=document.getElementById('tag-prio-list');c.innerHTML='';
+  getCarriedPrios(dk).forEach(function(co){
+    const div=document.createElement('div');div.className='bucket-item carried-over';
+    const check=document.createElement('div');
+    check.className='bucket-check carried-over-check';
+    check.onclick=function(){toggleTagPrioFor(co.dk,co.i);};
+    const badge=document.createElement('span');badge.className='carried-over-badge';badge.textContent=fmt(co.dk);
+    const txt=document.createElement('span');txt.className='bucket-text carried-over-text';txt.textContent=co.text;
+    const del=document.createElement('button');del.className='bucket-del';del.textContent='✕';
+    del.onclick=function(){delTagPrioFor(co.dk,co.i);};
+    div.appendChild(check);div.appendChild(badge);div.appendChild(txt);div.appendChild(del);
+    c.appendChild(div);
+  });
   (note.prios||[]).forEach((p,i)=>{
     const div=document.createElement('div');div.className='bucket-item';
     const check=document.createElement('div');
@@ -10764,12 +10938,34 @@ function addTagPrio(){
   kalData.tagNotes[dk].prios.push({text:v,done:false});
   document.getElementById('tag-prio-inp').value='';saveKal();renderTagPrios(dk);
 }
-function toggleTagPrio(i){const dk=dateKey(kalState.dayDate);kalData.tagNotes[dk].prios[i].done=!kalData.tagNotes[dk].prios[i].done;saveKal();renderTagPrios(dk);}
-function delTagPrio(i){const dk=dateKey(kalState.dayDate);kalData.tagNotes[dk].prios.splice(i,1);saveKal();renderTagPrios(dk);}
+function toggleTagPrioFor(dk,i){
+  if(!kalData.tagNotes[dk]||!kalData.tagNotes[dk].prios[i])return;
+  kalData.tagNotes[dk].prios[i].done=!kalData.tagNotes[dk].prios[i].done;saveKal();
+  renderTagPrios(dateKey(kalState.dayDate));
+}
+function delTagPrioFor(dk,i){
+  if(!kalData.tagNotes[dk]||!kalData.tagNotes[dk].prios[i])return;
+  kalData.tagNotes[dk].prios.splice(i,1);saveKal();
+  renderTagPrios(dateKey(kalState.dayDate));
+}
+function toggleTagPrio(i){toggleTagPrioFor(dateKey(kalState.dayDate),i);}
+function delTagPrio(i){delTagPrioFor(dateKey(kalState.dayDate),i);}
 
 function renderTagTodos(dk){
   const note=kalData.tagNotes[dk]||{todos:[]};
   const c=document.getElementById('tag-todo-list');c.innerHTML='';
+  getCarriedTodos(dk).forEach(function(co){
+    const div=document.createElement('div');div.className='bucket-item carried-over';
+    const check=document.createElement('div');
+    check.className='bucket-check carried-over-check';
+    check.onclick=function(){toggleTagTodoFor(co.dk,co.i);};
+    const badge=document.createElement('span');badge.className='carried-over-badge';badge.textContent=fmt(co.dk);
+    const txt=document.createElement('span');txt.className='bucket-text carried-over-text';txt.textContent=co.text;
+    const del=document.createElement('button');del.className='bucket-del';del.textContent='✕';
+    del.onclick=function(){delTagTodoFor(co.dk,co.i);};
+    div.appendChild(check);div.appendChild(badge);div.appendChild(txt);div.appendChild(del);
+    c.appendChild(div);
+  });
   (note.todos||[]).forEach((t,i)=>{
     const div=document.createElement('div');div.className='bucket-item';
     const check=document.createElement('div');
@@ -10798,8 +10994,18 @@ function addTagTodo(){
   const dk=dateKey(kalState.dayDate);kalData.tagNotes[dk].todos.push({text:v,done:false});
   document.getElementById('tag-todo-inp').value='';saveKal();renderTagTodos(dk);
 }
-function toggleTagTodo(i){const dk=dateKey(kalState.dayDate);kalData.tagNotes[dk].todos[i].done=!kalData.tagNotes[dk].todos[i].done;saveKal();renderTagTodos(dk);}
-function delTagTodo(i){const dk=dateKey(kalState.dayDate);kalData.tagNotes[dk].todos.splice(i,1);saveKal();renderTagTodos(dk);}
+function toggleTagTodoFor(dk,i){
+  if(!kalData.tagNotes[dk]||!kalData.tagNotes[dk].todos[i])return;
+  kalData.tagNotes[dk].todos[i].done=!kalData.tagNotes[dk].todos[i].done;saveKal();
+  renderTagTodos(dateKey(kalState.dayDate));
+}
+function delTagTodoFor(dk,i){
+  if(!kalData.tagNotes[dk]||!kalData.tagNotes[dk].todos[i])return;
+  kalData.tagNotes[dk].todos.splice(i,1);saveKal();
+  renderTagTodos(dateKey(kalState.dayDate));
+}
+function toggleTagTodo(i){toggleTagTodoFor(dateKey(kalState.dayDate),i);}
+function delTagTodo(i){delTagTodoFor(dateKey(kalState.dayDate),i);}
 
 
 // ═══ SCROLL-HINWEIS: sanfter Schatten bei scrollbaren Leisten ═══
@@ -10839,56 +11045,96 @@ window.addEventListener('resize', function(){
   document.querySelectorAll('.sub-nav, .pk-subnav-inner, #main-nav-inner').forEach(updateScrollFade);
 });
 
+function fkIsTermineImminent(dk, z){
+  if(!z.time || z.time==='--:--') return false;
+  if(dk!==dateKey(new Date())) return false;
+  var parts=z.time.split(':');
+  var now=new Date();
+  var entryDate=new Date(now.getFullYear(),now.getMonth(),now.getDate(),parseInt(parts[0],10)||0,parseInt(parts[1],10)||0,0);
+  var diffMin=(entryDate.getTime()-now.getTime())/60000;
+  return diffMin<=15 && diffMin>=-5;
+}
 function renderTagZeitplan(dk){
   const note=kalData.tagNotes[dk]||{zeitplan:[]};
   const c=document.getElementById('tag-zeitplan');c.innerHTML='';
+  const dkParts=dk.split('-');
+  const dkDate=new Date(parseInt(dkParts[0],10),parseInt(dkParts[1],10)-1,parseInt(dkParts[2],10));
+  const recurringToday=getRecurringForDate(dkDate);
+  recurringToday.forEach(function(r){
+    const div=document.createElement('div');
+    div.style.cssText='border-radius:10px;padding:8px 10px;background:rgba(216,207,240,0.18);border-left:3px solid var(--lilac);font-size:12px;';
+    div.innerHTML='<div style="display:flex;align-items:center;gap:6px;">'
+      +'<span style="color:var(--lilac2);font-weight:700;min-width:84px;font-size:11px;">'+(r.time||'--:--')+'</span>'
+      +'<span style="flex:1;color:var(--deep);font-weight:600;">'+r.text+'</span>'
+      +'<span style="font-size:9px;color:var(--muted);background:rgba(216,207,240,0.4);border-radius:10px;padding:1px 7px;white-space:nowrap;" title="Wiederkehrend, jeden '+WOCHENTAGE_RECUR[r.weekday]+'">🔁 wiederkehrend</span>'
+      +'<button onclick="openRecurringManager()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;" title="Regeln verwalten">⚙️</button>'
+      +'</div>';
+    c.appendChild(div);
+  });
   const sorted=[...(note.zeitplan||[])].sort((a,b)=>a.time.localeCompare(b.time));
   sorted.forEach((z,sortedIdx)=>{
-    // Echten Index im Original-Array finden (für delTagZeit/Notiz-Toggle)
+    // Echten Index im Original-Array finden (für delTagZeit/editTagZeit/Notiz-Toggle)
     const i=(note.zeitplan||[]).indexOf(z);
     const hasNotiz=z.notiz&&z.notiz.trim().length>0;
     const noteId='tag-zeit-note-'+i;
     const div=document.createElement('div');
-    div.style.cssText='border-radius:10px;padding:8px 10px;background:'+(z.blocked?'rgba(184,216,240,0.25)':'rgba(255,255,255,0.5)')+';border-left:3px solid '+(z.blocked?'var(--sky2)':'var(--lilac2)')+';font-size:12px;';
+    const imminent=fkIsTermineImminent(dk,z) && (z.reminder||z.reminderLead);
+    div.style.cssText='border-radius:10px;padding:8px 10px;background:'+(imminent?'rgba(232,85,85,0.12)':z.blocked?'rgba(184,216,240,0.25)':'rgba(255,255,255,0.5)')+';border-left:3px solid '+(imminent?'#e85555':z.blocked?'var(--sky2)':'var(--lilac2)')+';font-size:12px;';
     var timeLabel=z.time+(z.timeEnd?' – '+z.timeEnd:'');
     const catIco={vet:'🩺',huf:'🔧',vacc:'💉'};
     const linkBadge=z.linkedEntryId?'<span style="background:rgba(200,234,223,0.6);border-radius:10px;padding:1px 7px;font-size:9px;color:var(--deep);font-weight:700;white-space:nowrap;" title="Verknüpft mit Pferde-Status">'+(catIco[z.cat]||'')+' '+(z.horse==='Alle'?'Alle Pferde':z.horse)+'</span>':'';
+    const reminderBadge=imminent?'<span style="background:#e85555;color:white;border-radius:10px;padding:1px 7px;font-size:9px;font-weight:700;margin-left:4px;white-space:nowrap;" title="Jetzt wird es Zeit!">🔔 Jetzt!</span>':((z.reminder||z.reminderLead)?' 🔔':'');
     div.innerHTML='<div style="display:flex;align-items:center;gap:6px;">'
-      +'<span style="color:'+(z.blocked?'var(--sky2)':'var(--lilac2)')+';font-weight:700;min-width:84px;font-size:11px;">'+timeLabel+(z.blocked?' 🔒':'')+(z.reminder?' 🔔':'')+'</span>'
+      +'<span style="color:'+(imminent?'#e85555':z.blocked?'var(--sky2)':'var(--lilac2)')+';font-weight:700;min-width:84px;font-size:11px;">'+timeLabel+(z.blocked?' 🔒':'')+'</span>'
       +'<span style="flex:1;color:var(--deep);font-weight:600;">'+z.text+'</span>'
+      +reminderBadge
       +linkBadge
       +(hasNotiz?'<button onclick="toggleTagZeitNotiz('+i+')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;" title="Notiz anzeigen">📝</button>':'')
+      +'<button onclick="editTagZeit('+i+')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:13px;" title="Bearbeiten">✏️</button>'
       +'<button class="bucket-del" onclick="delTagZeit('+i+')">✕</button>'
       +'</div>'
       +(hasNotiz?'<div id="'+noteId+'" style="display:none;margin-top:6px;padding:6px 8px;background:rgba(255,255,255,0.6);border-radius:6px;font-size:11px;color:var(--text);white-space:pre-wrap;word-break:break-word;">'+z.notiz.replace(/</g,'&lt;')+'</div>':'');
     c.appendChild(div);
   });
-  if(!sorted.length)c.innerHTML='<div style="text-align:center;padding:10px;color:var(--muted);font-size:11px">Noch keine Termine</div>';
+  if(!sorted.length && !recurringToday.length)c.innerHTML='<div style="text-align:center;padding:10px;color:var(--muted);font-size:11px">Noch keine Termine</div>';
   renderTagZeitleiste(dk);
 }
 function toggleTagZeitNotiz(i){
   var el=document.getElementById('tag-zeit-note-'+i);
   if(el) el.style.display = el.style.display==='none' ? 'block' : 'none';
 }
-function renderTagZeitleiste(dk){
-  var wrap=document.getElementById('tag-zeitleiste');
-  if(!wrap)return;
+function fkGetEffectiveZeitplan(dk){
   const note=kalData.tagNotes[dk]||{zeitplan:[]};
-  const items=(note.zeitplan||[]).filter(function(z){return z.time && z.time!=='--:--';});
+  const real=(note.zeitplan||[]).filter(function(z){return z.time && z.time!=='--:--';});
+  const dkParts=dk.split('-');
+  const dkDate=new Date(parseInt(dkParts[0],10),parseInt(dkParts[1],10)-1,parseInt(dkParts[2],10));
+  const recurring=getRecurringForDate(dkDate).filter(function(r){return r.time;}).map(function(r){
+    return {time:r.time, timeEnd:'', text:r.text, notiz:'', blocked:false, reminder:false, reminderLead:'', recurring:true};
+  });
+  return real.concat(recurring);
+}
+function fkRenderTimelineBar(wrapId, dk){
+  var wrap=document.getElementById(wrapId);
+  if(!wrap)return;
+  var items=fkGetEffectiveZeitplan(dk);
+  wrap._fkItems=items;
+  wrap._fkDk=dk;
   if(!items.length){ wrap.innerHTML=''; return; }
 
   function toMinutes(t){ var p=t.split(':'); return (+p[0])*60+(+p[1]); }
   var dayStart=6*60, dayEnd=22*60; // 6 Uhr bis 22 Uhr abgebildet
   var totalSpan=dayEnd-dayStart;
+  var isToday=dk===dateKey(new Date());
 
   var bars='';
-  items.forEach(function(z){
+  items.forEach(function(z,idx){
     var startMin=Math.max(dayStart, Math.min(dayEnd, toMinutes(z.time)));
     var endMin=z.timeEnd ? Math.max(startMin+15, Math.min(dayEnd, toMinutes(z.timeEnd))) : startMin+30;
     var leftPct=((startMin-dayStart)/totalSpan*100);
     var widthPct=Math.max(2,((endMin-startMin)/totalSpan*100));
-    var col=z.blocked?'var(--sky2)':'var(--lilac2)';
-    bars+='<div title="'+z.time+(z.timeEnd?'–'+z.timeEnd:'')+' '+z.text.replace(/"/g,'')+'" style="position:absolute;left:'+leftPct+'%;width:'+widthPct+'%;top:4px;bottom:4px;background:'+col+';border-radius:4px;opacity:0.85;"></div>';
+    var imminent=isToday && !z.recurring && fkIsTermineImminent(dk,z) && (z.reminder||z.reminderLead);
+    var col=imminent?'#e85555':(z.recurring?'var(--lilac)':(z.blocked?'var(--sky2)':'var(--lilac2)'));
+    bars+='<div onclick="fkShowTimelinePopupFor(\''+wrapId+'\','+idx+')" title="'+z.time+(z.timeEnd?'–'+z.timeEnd:'')+' '+z.text.replace(/"/g,'')+'" style="position:absolute;left:'+leftPct+'%;width:'+widthPct+'%;top:4px;bottom:4px;background:'+col+';border-radius:4px;opacity:0.9;cursor:pointer;"></div>';
   });
 
   var marks='';
@@ -10897,8 +11143,28 @@ function renderTagZeitleiste(dk){
     marks+='<div style="position:absolute;left:'+pct+'%;top:0;font-size:8px;color:var(--muted);transform:translateX(-50%);">'+h+'h</div>';
   });
 
-  wrap.innerHTML='<div style="position:relative;height:34px;background:rgba(232,228,240,0.35);border-radius:8px;margin-bottom:14px;">'+bars+'</div>'
+  wrap.innerHTML='<div style="position:relative;height:34px;background:rgba(232,228,240,0.35);border-radius:8px;margin-bottom:14px;cursor:pointer;">'+bars+'</div>'
     +'<div style="position:relative;height:10px;margin-top:-10px;">'+marks+'</div>';
+}
+function fkShowTimelinePopupFor(wrapId, idx){
+  var wrap=document.getElementById(wrapId);
+  if(!wrap || !wrap._fkItems) return;
+  var z=wrap._fkItems[idx];
+  if(!z) return;
+  var box=document.getElementById('fk-timeline-popup');
+  if(!box) return;
+  box.innerHTML='<div onclick="event.stopPropagation()" style="background:white;border-radius:16px;padding:22px;width:88%;max-width:320px;box-shadow:0 12px 40px rgba(74,56,96,0.3);text-align:center;">'
+    +'<div style="font-size:28px;margin-bottom:6px;">'+(z.recurring?'🔁':(z.blocked?'🔒':'📅'))+'</div>'
+    +'<div style="font-family:Georgia,serif;font-size:14px;color:var(--muted);margin-bottom:6px;">'+z.time+(z.timeEnd?' – '+z.timeEnd:'')+(z.recurring?' · wiederkehrend':'')+'</div>'
+    +'<div style="font-family:Georgia,serif;font-size:18px;font-weight:600;color:var(--deep);margin-bottom:10px;">'+z.text+'</div>'
+    +(z.notiz?'<div style="font-size:12px;color:var(--text);margin-bottom:14px;white-space:pre-wrap;text-align:left;background:rgba(232,228,240,0.3);border-radius:8px;padding:8px 10px;">'+z.notiz.replace(/</g,'&lt;')+'</div>':'')
+    +'<button onclick="closeTimelinePopup()" style="background:linear-gradient(135deg,var(--lilac),var(--rose));border:none;border-radius:10px;padding:8px 24px;font-size:13px;font-weight:700;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;">Schließen</button>'
+    +'</div>';
+  box.style.display='flex';
+}
+function closeTimelinePopup(){ var box=document.getElementById('fk-timeline-popup'); if(box)box.style.display='none'; }
+function renderTagZeitleiste(dk){
+  fkRenderTimelineBar('tag-zeitleiste', dk);
 }
 // ═══ Eigener Zeit-Picker mit Ziffernblatt (Ersatz für native Zeit-Eingabe ohne Speichern-Button) ═══
 var fkZeitVon='', fkZeitBis='';
@@ -10908,8 +11174,8 @@ function fkTpDescribeFace(){
   var svg = document.getElementById('fk-tp-svg');
   if(!svg) return;
   var cx=110, cy=110, rNum=82;
-  var items = fkTp.mode==='hour' ? [12,1,2,3,4,5,6,7,8,9,10,11] : [0,5,10,15,20,25,30,35,40,45,50,55];
-  var selected = fkTp.mode==='hour' ? (fkTp.hour%12===0?12:fkTp.hour%12) : fkTp.minute;
+  var items = fkTp.mode==='hour' ? (fkTp.ampm==='PM' ? [12,13,14,15,16,17,18,19,20,21,22,23] : [0,1,2,3,4,5,6,7,8,9,10,11]) : [0,5,10,15,20,25,30,35,40,45,50,55];
+  var selected = fkTp.mode==='hour' ? fkTp.hour : fkTp.minute;
   var selIdx = items.indexOf(selected); if(selIdx<0) selIdx=0;
   var angle = selIdx*30*Math.PI/180;
   var hx = cx + (rNum-4)*Math.sin(angle), hy = cy - (rNum-4)*Math.cos(angle);
@@ -10925,7 +11191,7 @@ function fkTpDescribeFace(){
   html += '<circle cx="'+cx+'" cy="'+cy+'" r="4" fill="#4a3860"></circle>';
   svg.innerHTML = html;
   var hd=document.getElementById('fk-tp-hour-display'), md=document.getElementById('fk-tp-min-display');
-  if(hd){hd.textContent=String(fkTp.hour%12===0?12:fkTp.hour%12).padStart(2,'0');hd.style.color=fkTp.mode==='hour'?'#4a3860':'#8878a8';hd.style.background=fkTp.mode==='hour'?'rgba(216,207,240,0.45)':'transparent';}
+  if(hd){hd.textContent=String(fkTp.hour).padStart(2,'0');hd.style.color=fkTp.mode==='hour'?'#4a3860':'#8878a8';hd.style.background=fkTp.mode==='hour'?'rgba(216,207,240,0.45)':'transparent';}
   if(md){md.textContent=String(fkTp.minute).padStart(2,'0');md.style.color=fkTp.mode==='min'?'#4a3860':'#8878a8';md.style.background=fkTp.mode==='min'?'rgba(216,207,240,0.45)':'transparent';}
   var amB=document.getElementById('fk-tp-ampm-am'), pmB=document.getElementById('fk-tp-ampm-pm');
   if(amB)amB.style.background = fkTp.ampm==='AM' ? '#d8cff0' : 'rgba(232,228,240,0.5)';
@@ -10943,9 +11209,7 @@ function fkTpAngleToIndex(clientX, clientY){
 function fkTpHandlePointer(clientX, clientY){
   var idx = fkTpAngleToIndex(clientX, clientY);
   if(fkTp.mode==='hour'){
-    var hourVal = idx===0?12:idx;
-    var h24 = hourVal%12; if(fkTp.ampm==='PM') h24+=12;
-    fkTp.hour = h24;
+    fkTp.hour = fkTp.ampm==='PM' ? (idx===0?12:idx+12) : idx;
   } else {
     fkTp.minute = idx*5;
   }
@@ -10953,9 +11217,10 @@ function fkTpHandlePointer(clientX, clientY){
 }
 function fkTpSetMode(mode){ fkTp.mode=mode; fkTpDescribeFace(); }
 function fkTpSetAmPm(ap){
+  if(fkTp.ampm===ap){ fkTpDescribeFace(); return; }
   fkTp.ampm = ap;
-  var h12 = fkTp.hour%12; if(h12===0) h12=12;
-  fkTp.hour = ap==='PM' ? (h12%12)+12 : (h12%12);
+  if(ap==='PM' && fkTp.hour<12) fkTp.hour+=12;
+  if(ap==='AM' && fkTp.hour>=12) fkTp.hour-=12;
   fkTpDescribeFace();
 }
 (function(){
@@ -11018,7 +11283,12 @@ function fkTpClear(){
 // ═══ Erinnerungs-Popup für markierte Termine (nur während der Kalender geöffnet ist) ═══
 var _fkShownReminders = {day:'', ids:{}};
 try{ var _sr=JSON.parse(localStorage.getItem('fk_shown_reminders')||'null'); if(_sr) _fkShownReminders=_sr; }catch(e){}
+var _fkSnoozed = {};
+try{ var _snz=JSON.parse(localStorage.getItem('fk_snoozed_reminders')||'null'); if(_snz) _fkSnoozed=_snz; }catch(e){}
+var _fkCurrentReminderEntry = null;
+var FK_REMINDER_LEAD_MS = {'0':0,'1h':3600000,'3h':3*3600000,'1d':86400000,'1w':7*86400000,'2w':14*86400000};
 function fkShowReminderPopup(e){
+  _fkCurrentReminderEntry = e;
   var pop=document.getElementById('fk-reminder-popup');
   if(!pop) return;
   if(pop.parentElement!==document.body) document.body.appendChild(pop);
@@ -11029,36 +11299,66 @@ function fkShowReminderPopup(e){
   pop.style.display='flex';
   try{ if(navigator.vibrate) navigator.vibrate([150,80,150]); }catch(err){}
 }
+function fkSnoozeReminder(){
+  if(_fkCurrentReminderEntry){
+    _fkSnoozed[_fkCurrentReminderEntry.id]={until:Date.now()+10*60*1000, entry:_fkCurrentReminderEntry};
+    try{ localStorage.setItem('fk_snoozed_reminders', JSON.stringify(_fkSnoozed)); }catch(err){}
+  }
+  var pop=document.getElementById('fk-reminder-popup');
+  if(pop)pop.style.display='none';
+}
 function fkCheckReminders(){
   try{
     if(typeof kalData==='undefined' || !kalData.tagNotes) return;
-    var todayKey=dateKey(new Date());
-    if(_fkShownReminders.day!==todayKey){ _fkShownReminders={day:todayKey, ids:{}}; }
-    var note=kalData.tagNotes[todayKey];
-    if(!note || !note.zeitplan) return;
     var now=new Date();
-    note.zeitplan.forEach(function(e){
-      if(!e.reminder || !e.id || !e.time || e.time==='--:--') return;
-      if(_fkShownReminders.ids[e.id]) return;
-      var parts=e.time.split(':');
-      var entryDate=new Date(now.getFullYear(),now.getMonth(),now.getDate(),parseInt(parts[0],10)||0,parseInt(parts[1],10)||0,0);
-      var diffSec=(now-entryDate)/1000;
-      if(diffSec>=0 && diffSec<90){
-        _fkShownReminders.ids[e.id]=true;
-        try{ localStorage.setItem('fk_shown_reminders', JSON.stringify(_fkShownReminders)); }catch(err){}
-        fkShowReminderPopup(e);
+    var todayKey=dateKey(now);
+    if(_fkShownReminders.day!==todayKey){ _fkShownReminders={day:todayKey, ids:{}}; }
+    // Zurückgestellte ("Erinnere mich noch mal") Erinnerungen zuerst prüfen
+    for(var sid in _fkSnoozed){
+      if(_fkSnoozed.hasOwnProperty(sid) && now.getTime()>=_fkSnoozed[sid].until){
+        fkShowReminderPopup(_fkSnoozed[sid].entry);
+        delete _fkSnoozed[sid];
+        try{ localStorage.setItem('fk_snoozed_reminders', JSON.stringify(_fkSnoozed)); }catch(err){}
+        return;
       }
-    });
+    }
+    // Bis zu 15 Tage im Voraus durchsuchen, damit auch "2 Wochen vorher"-Erinnerungen rechtzeitig auslösen
+    for(var dOff=0; dOff<=15; dOff++){
+      var d=addDays(now, dOff);
+      var dk=dateKey(d);
+      var note=kalData.tagNotes[dk];
+      if(!note || !note.zeitplan) continue;
+      for(var i=0;i<note.zeitplan.length;i++){
+        var e=note.zeitplan[i];
+        var lead=e.reminderLead;
+        if(lead===undefined||lead===null||lead===''){ if(e.reminder){ lead='0'; } else { continue; } }
+        if(!e.id || !e.time || e.time==='--:--') continue;
+        var leadMs=FK_REMINDER_LEAD_MS.hasOwnProperty(lead)?FK_REMINDER_LEAD_MS[lead]:0;
+        var key=e.id+'_'+lead;
+        if(_fkShownReminders.ids[key]) continue;
+        var parts=e.time.split(':');
+        var entryDate=new Date(d.getFullYear(),d.getMonth(),d.getDate(),parseInt(parts[0],10)||0,parseInt(parts[1],10)||0,0);
+        var diffSec=(now.getTime()-(entryDate.getTime()-leadMs))/1000;
+        if(diffSec>=0 && diffSec<90){
+          _fkShownReminders.ids[key]=true;
+          try{ localStorage.setItem('fk_shown_reminders', JSON.stringify(_fkShownReminders)); }catch(err){}
+          fkShowReminderPopup(e);
+          return;
+        }
+      }
+    }
   }catch(err){}
 }
 setInterval(fkCheckReminders, 30000);
 setTimeout(fkCheckReminders, 3000);
 
+var fkZeitEditId = null;
 function updateTagZeitBtn(){
   var btn = document.getElementById('tag-zeit-add-btn');
   var inp = document.getElementById('tag-zeit-inp');
   if(!btn || !inp) return;
-  if(inp.value.trim().length>0){ btn.textContent='Speichern'; btn.style.background='var(--mint2)'; }
+  if(fkZeitEditId){ btn.textContent='✓ Änderung speichern'; btn.style.background='var(--mint2)'; }
+  else if(inp.value.trim().length>0){ btn.textContent='Speichern'; btn.style.background='var(--mint2)'; }
   else { btn.textContent='+ Termin'; btn.style.background='var(--sky)'; }
 }
 function addTagZeit(){
@@ -11067,41 +11367,100 @@ function addTagZeit(){
   const text=document.getElementById('tag-zeit-inp').value.trim();
   const notiz=document.getElementById('tag-zeit-notiz').value.trim();
   const blocked=document.getElementById('tag-zeit-blocked').checked;
-  const reminder=document.getElementById('tag-zeit-reminder').checked;
+  const reminderLead=document.getElementById('tag-zeit-reminder-lead').value;
   const zHorse=document.getElementById('tag-zeit-horse').value;
   const zCat=document.getElementById('tag-zeit-cat').value;
   if(!text)return;
   const dk=dateKey(kalState.dayDate);
   if(!kalData.tagNotes[dk])kalData.tagNotes[dk]={intention:'',prios:[],todos:[],zeitplan:[],journal:'',abschluss:'',mood:''};
   if(!kalData.tagNotes[dk].zeitplan)kalData.tagNotes[dk].zeitplan=[];
-  const id='tz_'+Date.now()+'_'+Math.floor(Math.random()*10000);
-  let linkedEntryId=null;
-  if(zHorse && zCat && typeof pkEntries!=='undefined'){
-    linkedEntryId='pke_'+Date.now()+'_'+Math.floor(Math.random()*10000);
-    pkEntries.push({id:linkedEntryId, date:dk, horse:zHorse, cat:zCat, title:text, notes:notiz, amount:null});
+
+  if(fkZeitEditId){
+    const idx=kalData.tagNotes[dk].zeitplan.findIndex(function(z){return z.id===fkZeitEditId;});
+    if(idx>=0){
+      const entry=kalData.tagNotes[dk].zeitplan[idx];
+      entry.time=time||'--:--'; entry.timeEnd=timeEnd||''; entry.text=text; entry.notiz=notiz; entry.blocked=blocked;
+      entry.reminderLead=reminderLead; entry.reminder=!!reminderLead;
+      entry.horse=zHorse||''; entry.cat=zCat||'';
+      if(entry.linkedEntryId && typeof pkEntries!=='undefined'){
+        const lk=pkEntries.find(function(pe){return pe.id===entry.linkedEntryId;});
+        if(lk){ lk.title=text; lk.notes=notiz; if(zHorse)lk.horse=zHorse; if(zCat)lk.cat=zCat; }
+        saveAll();
+      } else if(zHorse && zCat && typeof pkEntries!=='undefined'){
+        entry.linkedEntryId='pke_'+Date.now()+'_'+Math.floor(Math.random()*10000);
+        pkEntries.push({id:entry.linkedEntryId, date:dk, horse:zHorse, cat:zCat, title:text, notes:notiz, amount:null});
+        saveAll();
+      }
+    }
+    fkZeitEditId=null;
+    var ceEl=document.getElementById('tag-zeit-cancel-edit'); if(ceEl)ceEl.style.display='none';
+  } else {
+    const id='tz_'+Date.now()+'_'+Math.floor(Math.random()*10000);
+    let linkedEntryId=null;
+    if(zHorse && zCat && typeof pkEntries!=='undefined'){
+      linkedEntryId='pke_'+Date.now()+'_'+Math.floor(Math.random()*10000);
+      pkEntries.push({id:linkedEntryId, date:dk, horse:zHorse, cat:zCat, title:text, notes:notiz, amount:null});
+    }
+    kalData.tagNotes[dk].zeitplan.push({id:id, time:time||'--:--', timeEnd:timeEnd||'', text:text, notiz:notiz, blocked:blocked, reminder:!!reminderLead, reminderLead:reminderLead, horse:zHorse||'', cat:zCat||'', linkedEntryId:linkedEntryId});
+    if(linkedEntryId) saveAll();
   }
-  kalData.tagNotes[dk].zeitplan.push({id:id, time:time||'--:--', timeEnd:timeEnd||'', text:text, notiz:notiz, blocked:blocked, reminder:reminder, horse:zHorse||'', cat:zCat||'', linkedEntryId:linkedEntryId});
   document.getElementById('tag-zeit-inp').value='';
   document.getElementById('tag-zeit-notiz').value='';
   document.getElementById('tag-zeit-blocked').checked=false;
-  document.getElementById('tag-zeit-reminder').checked=false;
+  document.getElementById('tag-zeit-reminder-lead').value='';
   document.getElementById('tag-zeit-horse').value='';
   document.getElementById('tag-zeit-cat').value='';
   fkZeitVon='';fkZeitBis='';
   document.getElementById('tag-zeit-von-chip').textContent='--:--';
   document.getElementById('tag-zeit-bis-chip').textContent='--:--';
   updateTagZeitBtn();
-  if(linkedEntryId) saveAll();
   saveKal();renderTagZeitplan(dk);
+  try{renderUeberblick();}catch(e){}
+}
+function editTagZeit(i){
+  const dk=dateKey(kalState.dayDate);
+  const entry=kalData.tagNotes[dk].zeitplan[i];
+  if(!entry)return;
+  fkZeitEditId=entry.id;
+  fkZeitVon=(entry.time && entry.time!=='--:--')?entry.time:'';
+  fkZeitBis=entry.timeEnd||'';
+  document.getElementById('tag-zeit-von-chip').textContent=fkZeitVon||'--:--';
+  document.getElementById('tag-zeit-bis-chip').textContent=fkZeitBis||'--:--';
+  document.getElementById('tag-zeit-inp').value=entry.text||'';
+  document.getElementById('tag-zeit-notiz').value=entry.notiz||'';
+  document.getElementById('tag-zeit-blocked').checked=!!entry.blocked;
+  document.getElementById('tag-zeit-reminder-lead').value=entry.reminderLead||(entry.reminder?'0':'');
+  document.getElementById('tag-zeit-horse').value=entry.horse||'';
+  document.getElementById('tag-zeit-cat').value=entry.cat||'';
+  var ceEl=document.getElementById('tag-zeit-cancel-edit'); if(ceEl)ceEl.style.display='inline';
+  updateTagZeitBtn();
+  var inp=document.getElementById('tag-zeit-inp');
+  if(inp){ inp.focus(); try{inp.scrollIntoView({behavior:'smooth',block:'center'});}catch(e){} }
+}
+function cancelTagZeitEdit(){
+  fkZeitEditId=null;
+  document.getElementById('tag-zeit-inp').value='';
+  document.getElementById('tag-zeit-notiz').value='';
+  document.getElementById('tag-zeit-blocked').checked=false;
+  document.getElementById('tag-zeit-reminder-lead').value='';
+  document.getElementById('tag-zeit-horse').value='';
+  document.getElementById('tag-zeit-cat').value='';
+  fkZeitVon='';fkZeitBis='';
+  document.getElementById('tag-zeit-von-chip').textContent='--:--';
+  document.getElementById('tag-zeit-bis-chip').textContent='--:--';
+  var ceEl=document.getElementById('tag-zeit-cancel-edit'); if(ceEl)ceEl.style.display='none';
+  updateTagZeitBtn();
 }
 function delTagZeit(i){
   const dk=dateKey(kalState.dayDate);
   const entry=kalData.tagNotes[dk].zeitplan[i];
+  if(entry && entry.id===fkZeitEditId) cancelTagZeitEdit();
   if(entry && entry.linkedEntryId && typeof pkEntries!=='undefined'){
     pkEntries=pkEntries.filter(e=>e.id!==entry.linkedEntryId);
     saveAll();
   }
   kalData.tagNotes[dk].zeitplan.splice(i,1);saveKal();renderTagZeitplan(dk);
+  try{renderUeberblick();}catch(e){}
 }
 
 function setMood(m){
@@ -12234,13 +12593,19 @@ const VORLAGE_RENDERERS={
 
     // ── Nächste Pferdeeinträge Zusammenfassung ──
     const pferdeStatus = {};
-    const PS_CATS = ['vet','huf','vacc','wurm','osteo','teeth'];
+    const pkStatusTiles = (typeof getPkStatusTiles==='function')?getPkStatusTiles():['vet','huf','vacc','wurm','osteo','teeth'];
+    const pkLogTiles = pkStatusTiles.filter(k=>PK_STATUS_TILE_DEFS[k]&&PK_STATUS_TILE_DEFS[k].kind==='log');
+    const pkModulTiles = pkStatusTiles.filter(k=>PK_STATUS_TILE_DEFS[k]&&PK_STATUS_TILE_DEFS[k].kind==='modul');
     if(typeof pkEntries !== 'undefined' && typeof horses !== 'undefined'){
       [...new Set(horses)].forEach(h=>{
-        const last = {vet:null, huf:null, vacc:null, wurm:null, osteo:null, teeth:null};
-        PS_CATS.forEach(cat=>{
+        const last = {};
+        pkLogTiles.forEach(cat=>{
           const e = [...pkEntries].filter(x=>(x.horse===h||x.horse==='Alle')&&x.cat===cat).sort((a,b)=>b.date.localeCompare(a.date))[0];
-          if(e) last[cat]=e.date;
+          last[cat]=e?e.date:null;
+        });
+        pkModulTiles.forEach(k=>{
+          const def=PK_STATUS_TILE_DEFS[k];
+          try{ last[k]=def.getLast?def.getLast(h):null; }catch(err){ last[k]=null; }
         });
         pferdeStatus[h]=last;
       });
@@ -12296,24 +12661,26 @@ const VORLAGE_RENDERERS={
 
       <!-- HEUTE IM FOKUS -->
       ${(function(){
-        var tn=kalData.tagNotes[todayKey];
-        var hasContent=tn&&(tn.intention||(tn.prios||[]).length||(tn.zeitplan||[]).length);
+        var tn=kalData.tagNotes[todayKey]||{};
+        var effZeitplan=(typeof fkGetEffectiveZeitplan==='function')?fkGetEffectiveZeitplan(todayKey):(tn.zeitplan||[]);
+        var hasContent=tn.intention||(tn.prios||[]).length||effZeitplan.length;
         var header='<div class="card" style="margin-bottom:0;background:linear-gradient(135deg,rgba(216,207,240,0.2),rgba(242,200,216,0.15));"><div class="card-title ub-heading" style="margin-bottom:10px;"><span class="card-title-dot" style="background:var(--lilac2)"></span>☀️ Heute im Fokus, '+today.getDate()+'. '+MONTHS[today.getMonth()]+' '+today.getFullYear()+'</div>';
-        if(!hasContent)return header+'<div style="text-align:center;padding:10px;color:var(--muted);font-size:12px;font-style:italic;">Noch kein Tageseintrag, <span onclick="goToTagesansicht()" style="color:var(--lilac2);cursor:pointer;text-decoration:underline;">jetzt ausfüllen →</span></div></div>';
+        var timelineBlock=effZeitplan.length?'<div style="margin-bottom:12px;"><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">📊 Wie der Tag geblockt ist, antippen für Details</div><div id="ub-zeitleiste"></div></div>':'';
+        if(!hasContent)return header+timelineBlock+'<div style="text-align:center;padding:10px;color:var(--muted);font-size:12px;font-style:italic;">Noch kein Tageseintrag, <span onclick="goToTagesansicht()" style="color:var(--lilac2);cursor:pointer;text-decoration:underline;">jetzt ausfüllen →</span></div></div>';
         var prios=(tn.prios||[]).map(function(p){return '<div style="font-size:12px;color:var(--deep);padding:2px 0;'+(p.done?'text-decoration:line-through;color:var(--muted)':'')+'">'+(p.done?'✓ ':'')+p.text+'</div>';}).join('');
-        var termine=(tn.zeitplan||[]).slice().sort(function(a,b){return a.time.localeCompare(b.time);}).map(function(z){return '<div style="font-size:12px;color:var(--deep);padding:2px 0;"><span style="color:var(--lilac2);font-weight:700;">'+z.time+'</span> '+z.text+'</div>';}).join('');
-        return header+'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;"><div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Intention</div><div style="font-size:12px;color:var(--deep);font-style:italic;">'+(tn.intention||',')+'</div></div><div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Top Prioritäten</div>'+(prios||'<div style=\"font-size:12px;color:var(--muted);\">,</div>')+'</div><div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Termine heute</div>'+(termine||'<div style=\"font-size:12px;color:var(--muted);\">Keine Termine</div>')+'</div></div><div style="text-align:right;margin-top:10px;"><span onclick="goToTagesansicht()" style="color:var(--lilac2);cursor:pointer;text-decoration:underline;font-size:12px;font-weight:700;">weiter bearbeiten →</span></div></div>';
+        var termine=effZeitplan.slice().sort(function(a,b){return a.time.localeCompare(b.time);}).map(function(z){return '<div style="font-size:12px;color:var(--deep);padding:2px 0;"><span style="color:var(--lilac2);font-weight:700;">'+z.time+'</span> '+z.text+(z.recurring?' <span style="font-size:9px;color:var(--muted);">🔁</span>':'')+'</div>';}).join('');
+        return header+timelineBlock+'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;"><div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Intention</div><div style="font-size:12px;color:var(--deep);font-style:italic;">'+(tn.intention||',')+'</div></div><div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Top Prioritäten</div>'+(prios||'<div style=\"font-size:12px;color:var(--muted);\">,</div>')+'</div><div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Termine heute</div>'+(termine||'<div style=\"font-size:12px;color:var(--muted);\">Keine Termine</div>')+'</div></div><div style="text-align:right;margin-top:10px;"><span onclick="goToTagesansicht()" style="color:var(--lilac2);cursor:pointer;text-decoration:underline;font-size:12px;font-weight:700;">weiter bearbeiten →</span></div></div>';
       })()}
 
       <!-- PFERDE-STATUS -->
       <div class="card" style="margin-bottom:14px;">
-        <div class="card-title ub-heading" style="margin-bottom:4px;"><span class="card-title-dot" style="background:var(--mint2)"></span>🐴 Pferde-Status</div>
-        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5;">Wann war zuletzt was dran, gemessen an dem Intervall, das du pro Pferd unter Meine Pferde eingestellt hast. Tippe auf ein Feld, um es direkt festzuhalten.</div>
+        <div class="card-title ub-heading" style="margin-bottom:4px;display:flex;align-items:center;gap:8px;"><span class="card-title-dot" style="background:var(--mint2)"></span>🐴 Pferde-Status<button onclick="event.stopPropagation();openPkStatusTileSettings()" title="Kacheln anpassen" style="margin-left:auto;background:rgba(232,228,240,0.4);border:none;border-radius:8px;width:26px;height:26px;font-size:13px;cursor:pointer;">⚙️</button></div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5;">Wann war zuletzt was dran. Bei den klassischen Kategorien gemessen am eingestellten Intervall (Meine Pferde), bei den Modul-Kacheln einfach das Datum des letzten Eintrags. Tippe auf eine Kachel, um direkt etwas festzuhalten. Über ⚙️ kannst du wählen, welche Kacheln hier erscheinen.</div>
         ${(function(){
           let ueberfaellig=0, gesamt=0;
           Object.entries(pferdeStatus).forEach(([h,last])=>{
             const hp=(typeof getHP==='function')?getHP(h):{intervals:{}};
-            PS_CATS.forEach(k=>{
+            pkLogTiles.forEach(k=>{
               if(last[k]){gesamt++;const diff=Math.round((today-new Date(last[k]))/86400000);const interval=hp.intervals[k]||365;if(diff>interval)ueberfaellig++;}
             });
           });
@@ -12334,19 +12701,28 @@ const VORLAGE_RENDERERS={
           <div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(216,207,240,0.2);">
             <div style="font-weight:700;font-size:15px;color:var(--deep);margin-bottom:8px;display:flex;align-items:center;">${avatar}${h}</div>
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;">
-              ${[['Tierarzt','vet','🩺'],['Hufschmied','huf','🔧'],['Impfung','vacc','💉'],['Wurmkur','wurm','🪱'],['Osteopathie','osteo','🤲'],['Zahnkontrolle','teeth','🦷']].map(([l,k,ico])=>{
-                const d = last[k];
-                const interval = hp.intervals[k]||365;
-                const onclickAttr = `onclick="openModal('${k}','${h}')"`;
-                if(!d) return `<div ${onclickAttr} style="font-size:10px;text-align:center;background:rgba(232,228,240,0.2);border-radius:6px;padding:4px;cursor:pointer;">${ico}<br><span style="color:var(--muted);font-size:8px;">${l}</span><br><span style="color:var(--lilac2);font-size:9px;font-weight:700;">+ eintragen</span></div>`;
-                const diff = Math.round((today-new Date(d))/86400000);
-                const col = diff>interval?'rgba(242,200,216,0.5)':diff>interval*0.75?'rgba(240,232,192,0.4)':'rgba(200,234,223,0.4)';
-                return `<div ${onclickAttr} style="font-size:10px;text-align:center;background:${col};border-radius:6px;padding:4px;cursor:pointer;" title="${l}: ${d} · Intervall: ${interval} Tage · Antippen für neuen Eintrag">${ico}<br><span style="color:var(--muted);font-size:8px;">${l}</span><br><span style="font-weight:700;color:var(--deep)">vor ${diff}d</span></div>`;
+              ${pkStatusTiles.map(k=>{
+                const def=PK_STATUS_TILE_DEFS[k];if(!def)return '';
+                const ico=def.icon,l=def.label;
+                const d=last[k];
+                if(def.kind==='log'){
+                  const interval=hp.intervals[k]||365;
+                  const onclickAttr=`onclick="openModal('${k}','${h}')"`;
+                  if(!d) return `<div ${onclickAttr} style="font-size:12px;text-align:center;background:rgba(232,228,240,0.2);border-radius:6px;padding:5px 4px;cursor:pointer;">${ico}<br><span style="color:var(--muted);font-size:11px;">${l}</span><br><span style="color:var(--lilac2);font-size:11px;font-weight:700;">+ eintragen</span></div>`;
+                  const diff=Math.round((today-new Date(d))/86400000);
+                  const col=diff>interval?'rgba(242,200,216,0.5)':diff>interval*0.75?'rgba(240,232,192,0.4)':'rgba(200,234,223,0.4)';
+                  return `<div ${onclickAttr} style="font-size:12px;text-align:center;background:${col};border-radius:6px;padding:5px 4px;cursor:pointer;" title="${l}: ${d} · Intervall: ${interval} Tage · Antippen für neuen Eintrag">${ico}<br><span style="color:var(--muted);font-size:11px;">${l}</span><br><span style="font-weight:700;color:var(--deep)">vor ${diff}d</span></div>`;
+                }
+                const nameArg=def.name?`'${def.name}'`:'null';
+                const onclickAttr=`onclick="pkGoToModuleForHorse('${def.view}','${def.sel}',${nameArg},${hIdx})"`;
+                if(!d) return `<div ${onclickAttr} style="font-size:12px;text-align:center;background:rgba(216,207,240,0.15);border-radius:6px;padding:5px 4px;cursor:pointer;">${ico}<br><span style="color:var(--muted);font-size:11px;">${l}</span><br><span style="color:var(--lilac2);font-size:11px;font-weight:700;">öffnen →</span></div>`;
+                const diff=Math.round((today-new Date(d))/86400000);
+                return `<div ${onclickAttr} style="font-size:12px;text-align:center;background:rgba(216,207,240,0.22);border-radius:6px;padding:5px 4px;cursor:pointer;" title="${l}: ${d} · Antippen zum Öffnen">${ico}<br><span style="color:var(--muted);font-size:11px;">${l}</span><br><span style="font-weight:700;color:var(--deep)">vor ${diff}d</span></div>`;
               }).join('')}
             </div>
           </div>`;
         }).join('')}
-        ${Object.keys(pferdeStatus).length>0?'<div style="display:flex;gap:8px;justify-content:center;margin-bottom:8px;font-size:8px;color:var(--muted);flex-wrap:wrap;"><span><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:rgb(200,234,223);margin-right:3px;"></span>aktuell</span><span><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:rgb(240,232,192);margin-right:3px;"></span>bald wieder dran</span><span><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:rgb(242,200,216);margin-right:3px;"></span>schon länger her</span></div>':''}
+        ${Object.keys(pferdeStatus).length>0&&pkLogTiles.length>0?'<div style="display:flex;gap:8px;justify-content:center;margin-bottom:8px;font-size:10px;color:var(--muted);flex-wrap:wrap;"><span><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:rgb(200,234,223);margin-right:3px;"></span>aktuell</span><span><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:rgb(240,232,192);margin-right:3px;"></span>bald wieder dran</span><span><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:rgb(242,200,216);margin-right:3px;"></span>schon länger her</span></div>':''}
         <button onclick="switchTab('pferde')" style="width:100%;background:transparent;border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:6px;font-size:11px;color:var(--muted);cursor:pointer;font-family:Arial,sans-serif;">→ Zum Pferdekalender</button>
           </div>
 
@@ -12689,7 +13065,10 @@ function _switchTabFinal(t){
     if(!activeSection){showPers('habit');}
   }
   if(t==='organisation')initOrgViews();
-  if(t==='kalender')renderHalbjahr();
+  if(t==='kalender'){
+    const kalRenders={'halbjahr':renderHalbjahr,'monat-raster':renderMonatRaster,'monat-liste':renderMonatListe,'woche-horizontal':renderWocheHorizontal,'woche-zeitplan':renderWocheZeitplan,'woche-journal':renderWocheJournal,'tag':renderTag};
+    (kalRenders[kalState.currentKalView]||renderTag)();
+  }
   if(t==='vorlagen')renderVorlagenGrid();
   if(t==='ueberblick')renderUeberblick();
   if(t==='glueck'){loadGlueck();renderGlueckTab();}
@@ -13139,6 +13518,78 @@ function checkReminders(){
     if(b)b.style.display='none';
   }, 30000);
 }
+// ── PFERDE-STATUS: frei wählbare Kacheln im Überblick ──
+// 'log'-Kacheln nutzen die bisherigen pkEntries+Intervall-Logik (mit Ampel-Farbe).
+// 'modul'-Kacheln zeigen den letzten Eintrag aus dem jeweiligen Pferde-Modul (ohne Intervall/Ampel)
+// und führen bei Antippen direkt zu diesem Modul für das jeweilige Pferd.
+var PK_STATUS_TILE_DEFS = {
+  vet:   {icon:'🩺',label:'Tierarzt',kind:'log'},
+  huf:   {icon:'🔧',label:'Hufschmied',kind:'log'},
+  vacc:  {icon:'💉',label:'Impfung',kind:'log'},
+  wurm:  {icon:'🪱',label:'Wurmkur',kind:'log'},
+  osteo: {icon:'🤲',label:'Osteopathie',kind:'log'},
+  teeth: {icon:'🦷',label:'Zahnkontrolle',kind:'log'},
+  mod_allergie:  {icon:'🌿',label:'Allergie & Husten',kind:'modul',view:'allergie',sel:'all-horse-sel',name:'all-horse-name',
+    getLast:function(h){ var d=pkExtra.allergie&&pkExtra.allergie[h]?pkExtra.allergie[h]:null; var e=d&&d.eintraege&&d.eintraege[0]; return (e&&e.datum)?e.datum:null; }},
+  mod_verhalten: {icon:'👁',label:'Verhalten',kind:'modul',view:'verhalten',sel:'veh-horse-sel',name:null,
+    getLast:function(h){ var arr=(pkExtra.verhalten&&pkExtra.verhalten[h])?pkExtra.verhalten[h]:[]; return (arr[0]&&arr[0].datum)?arr[0].datum:null; }},
+  mod_training:  {icon:'🏇',label:'Training',kind:'modul',view:'training',sel:'tr-horse-sel',name:null,
+    getLast:function(h){ var tr=pkExtra.training&&pkExtra.training[h]; var arr=(tr&&tr.tb)?tr.tb:[]; return (arr[0]&&arr[0].datum)?arr[0].datum:null; }},
+  mod_hufpflege: {icon:'🔨',label:'Hufpflege (Detail)',kind:'modul',view:'huf',sel:'huf-horse-sel',name:'huf-horse-name',
+    getLast:function(h){ var arr=(pkExtra.huf&&pkExtra.huf[h])?pkExtra.huf[h]:[]; return (arr[0]&&arr[0].datum)?arr[0].datum:null; }},
+  mod_futter:    {icon:'🌾',label:'Fütterung (Änderung)',kind:'modul',view:'futter',sel:'fut-horse-sel',name:'fut-horse-name',
+    getLast:function(h){ var fd=pkExtra.futter&&pkExtra.futter[h]; var arr=(fd&&fd.aenderungen)?fd.aenderungen:[]; return (arr[0]&&arr[0].datum)?arr[0].datum:null; }}
+};
+var PK_STATUS_TILE_ORDER=['vet','huf','vacc','wurm','osteo','teeth','mod_allergie','mod_verhalten','mod_training','mod_hufpflege','mod_futter'];
+function getPkStatusTiles(){
+  try{
+    var raw=localStorage.getItem('pk_status_tiles_v1');
+    if(raw){ var arr=JSON.parse(raw); if(Array.isArray(arr)&&arr.length) return arr.filter(function(k){return PK_STATUS_TILE_DEFS[k];}); }
+  }catch(e){}
+  return ['vet','huf','vacc','wurm','osteo','teeth'];
+}
+function setPkStatusTiles(arr){ try{localStorage.setItem('pk_status_tiles_v1',JSON.stringify(arr));}catch(e){} }
+function openPkStatusTileSettings(){
+  var sel=getPkStatusTiles();
+  var box=document.getElementById('pk-tile-settings');
+  if(!box)return;
+  box.innerHTML='<div onclick="event.stopPropagation()" style="background:white;border-radius:14px;padding:20px;width:90%;max-width:420px;box-shadow:0 8px 40px rgba(0,0,0,0.18);">'
+    +'<div style="font-family:Georgia,serif;font-size:18px;font-weight:600;color:var(--deep);margin-bottom:6px;">⚙️ Kacheln im Pferde-Status</div>'
+    +'<div style="font-size:11px;color:var(--muted);margin-bottom:12px;">Wähle, welche Karten im Überblick angezeigt werden sollen.</div>'
+    +'<div style="display:flex;flex-direction:column;gap:6px;max-height:50vh;overflow-y:auto;">'
+    +PK_STATUS_TILE_ORDER.map(function(k){
+      var d=PK_STATUS_TILE_DEFS[k];
+      return '<label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--deep);cursor:pointer;padding:4px 2px;">'
+        +'<input type="checkbox" value="'+k+'" '+(sel.indexOf(k)>=0?'checked':'')+' style="accent-color:var(--lilac2);width:16px;height:16px;">'
+        +d.icon+' '+d.label+'</label>';
+    }).join('')
+    +'</div>'
+    +'<div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px;">'
+    +'<button onclick="closePkStatusTileSettings()" style="background:rgba(232,228,240,0.5);border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:8px 16px;font-size:13px;cursor:pointer;font-family:Arial,sans-serif;color:var(--muted);">Abbrechen</button>'
+    +'<button onclick="savePkStatusTileSettings()" class="save-btn" style="padding:8px 20px;">✓ Speichern</button>'
+    +'</div></div>';
+  box.style.display='flex';
+}
+function closePkStatusTileSettings(){ var box=document.getElementById('pk-tile-settings'); if(box)box.style.display='none'; }
+function savePkStatusTileSettings(){
+  var box=document.getElementById('pk-tile-settings');
+  var checked=box?Array.from(box.querySelectorAll('input[type=checkbox]:checked')).map(function(cb){return cb.value;}):[];
+  if(!checked.length){alert('Bitte mindestens eine Kachel auswählen.');return;}
+  setPkStatusTiles(checked);
+  closePkStatusTileSettings();
+  try{renderUeberblick();}catch(e){}
+}
+function pkGoToModuleForHorse(view,sel,nameId,horseIdx){
+  switchTab('pferde');
+  setTimeout(function(){
+    if(sel){
+      var s=document.getElementById(sel);
+      if(s){ s.value=horseIdx; if(nameId){var nm=document.getElementById(nameId);if(nm&&s.options[s.selectedIndex])nm.textContent=s.options[s.selectedIndex].text;} }
+    }
+    showPkView(view);
+  },120);
+}
+
 function renderUeberblick(){
   const body=document.getElementById('ueberblick-body');
   if(!body)return;
@@ -13147,6 +13598,7 @@ function renderUeberblick(){
   currentVorlageId='__ueberblick__';
   VORLAGE_RENDERERS.ueberblick(body);
   currentVorlageId=saved;
+  try{ fkRenderTimelineBar('ub-zeitleiste', dateKey(new Date())); }catch(e){}
   // Farbthema wird über Einstellungen-Button geändert
 }
 
@@ -13164,7 +13616,9 @@ function fillHorseSelects(){
   ['ga','gk','huf','fut','tr','veh','all'].forEach(prefix=>{
     const sel=document.getElementById(prefix+'-horse-sel');
     if(!sel)return;
+    const prev=sel.value;
     sel.innerHTML=horses.map((h,i)=>`<option value="${i}">${h}</option>`).join('');
+    if(prev!==''&&parseInt(prev)<horses.length)sel.value=prev;
   });
 }
 
@@ -15546,6 +16000,18 @@ setTimeout(function(){
   <button id="fk-lightbox-close" onclick="closeLightbox()">✕</button>
   <img id="fk-lightbox-img" src="" alt="">
 </div>
+
+<!-- PFERDE-STATUS KACHELN EINSTELLEN -->
+<div id="pk-tile-settings" onclick="closePkStatusTileSettings()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:9999;align-items:center;justify-content:center;"></div>
+
+<!-- WIEDERKEHRENDE ZEITEN VERWALTEN -->
+<div id="recurring-manager" onclick="if(event.target===this)closeRecurringManager()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:9999;align-items:center;justify-content:center;"></div>
+
+<!-- ZEITLEISTE: KLICK-POPUP FÜR EINEN TERMIN-BLOCK -->
+<div id="fk-timeline-popup" onclick="if(event.target===this)closeTimelinePopup()" style="display:none;position:fixed;inset:0;background:rgba(74,56,96,0.4);z-index:9990;align-items:center;justify-content:center;"></div>
+
+<!-- ACHTSAMKEIT: VOLLER TEXT ('MEHR LESEN') -->
+<div id="achtsamkeit-detail-modal" onclick="if(event.target===this)closeAchtsamkeitDetail()" style="display:none;position:fixed;inset:0;background:rgba(74,56,96,0.4);z-index:9990;align-items:center;justify-content:center;padding:20px;"></div>
 
 <!-- LOGIN SCREEN -->
 
