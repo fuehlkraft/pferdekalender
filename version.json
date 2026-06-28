@@ -1,6 +1,6 @@
 {
-  "version": "2.7.0",
-  "info": "Schnell-Erfassen-Button überall, plus sanfte Übergangs-Warnung vor Terminen",
+  "version": "2.8.0",
+  "info": "Erledigtes feiern, plus Notfallkarte mit allen Kontakten an einem Ort",
   "changes": {
     "organisation": [
       "Urlaubstage komplett überarbeitet: eigener Anspruch pro Jahr, ein Log für genommene Urlaubs- und Krankheitstage mit Grund, und automatisch berechnete Brückentage-Tipps für Niedersachsen, jedes Jahr neu berechnet.",
@@ -19,7 +19,9 @@
     ],
     "allgemein": [
       "Neu: Der 💭-Button unten rechts ist auf jeder Seite erreichbar, damit kein Gedanke verloren geht. Was du dort festhältst, landet in der Inbox auf der Startseite (\"Schnell erfasst\") und kann später als To-Do übernommen oder verworfen werden.",
-      "Neu: Übergangs-Warnung – ein sanfter Hinweis, bevor ein Termin mit Uhrzeit beginnt (z.B. \"In 15 Min: Stalldienst\"), automatisch für jeden Termin, ohne dass dafür extra eine Erinnerung eingestellt werden muss. Einstellbar (Vorlaufzeit, an/aus) unter Einstellungen → Mein Profil."
+      "Neu: Übergangs-Warnung – ein sanfter Hinweis, bevor ein Termin mit Uhrzeit beginnt (z.B. \"In 15 Min: Stalldienst\"), automatisch für jeden Termin, ohne dass dafür extra eine Erinnerung eingestellt werden muss. Einstellbar (Vorlaufzeit, an/aus) unter Einstellungen → Mein Profil.",
+      "Neu: Beim Abhaken von Top-Prioritäten, To-Dos, Packlisten-Punkten und Habits gibt es jetzt eine kleine, befriedigende Bestätigung (kurzes Aufblitzen mit Funken), und ab und zu eine motivierende Mitteilung wie \"5 erledigt heute, stark!\".",
+      "Neu: Der 🚨-Button oben im Kopfbereich ist von jeder Seite aus erreichbar und zeigt alle wichtigen Kontakte gesammelt an einer Stelle, automatisch zusammengezogen aus Meine Pferde, Andere Tiere und Kinder, plus allgemeine Notfallkontakte. Auf eine Telefonnummer tippen ruft direkt an."
     ]
   }
 }
