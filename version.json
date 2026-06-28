@@ -1,6 +1,6 @@
 {
-  "version": "2.8.0",
-  "info": "Erledigtes feiern, plus Notfallkarte mit allen Kontakten an einem Ort",
+  "version": "2.9.3",
+  "info": "Schnell-Erfassen-Button jetzt dunkel lila für bessere Sichtbarkeit",
   "changes": {
     "organisation": [
       "Urlaubstage komplett überarbeitet: eigener Anspruch pro Jahr, ein Log für genommene Urlaubs- und Krankheitstage mit Grund, und automatisch berechnete Brückentage-Tipps für Niedersachsen, jedes Jahr neu berechnet.",
@@ -11,7 +11,8 @@
       "Glücksmomente steht jetzt direkt neben Überblick in der Navigation.",
       "Tier-Status ist jetzt standardmäßig eingeklappt (über 'anzeigen' aufklappbar), damit andere Karten besser sichtbar sind.",
       "Bei einer bereits ausgefüllten Pferde-Status-Kachel lässt sich jetzt direkt das Datum des letzten Eintrags korrigieren und das Intervall (Zeitfenster) anpassen, statt nur einen neuen Eintrag anzulegen.",
-      "Reihenfolge auf der Startseite angepasst: Direkt unter Heute im Fokus kommen jetzt Offene To-Dos, Nächste 14 Tage, Jahresziele und Bald fällig, darunter dann Pferde-Status, Kinder-Status und Tier-Status."
+      "Reihenfolge auf der Startseite angepasst: Direkt unter Heute im Fokus kommen jetzt Offene To-Dos, Nächste 14 Tage, Jahresziele und Bald fällig, darunter dann Pferde-Status, Kinder-Status und Tier-Status.",
+      "Kinder-Status steht auf der Startseite jetzt oberhalb von Pferde-Status."
     ],
     "kalender": [
       "Termine, die sich zeitlich überlappen, werden in der Zeitleiste jetzt in eigenen Reihen nebeneinander angezeigt, statt sich zu überdecken.",
@@ -21,7 +22,11 @@
       "Neu: Der 💭-Button unten rechts ist auf jeder Seite erreichbar, damit kein Gedanke verloren geht. Was du dort festhältst, landet in der Inbox auf der Startseite (\"Schnell erfasst\") und kann später als To-Do übernommen oder verworfen werden.",
       "Neu: Übergangs-Warnung – ein sanfter Hinweis, bevor ein Termin mit Uhrzeit beginnt (z.B. \"In 15 Min: Stalldienst\"), automatisch für jeden Termin, ohne dass dafür extra eine Erinnerung eingestellt werden muss. Einstellbar (Vorlaufzeit, an/aus) unter Einstellungen → Mein Profil.",
       "Neu: Beim Abhaken von Top-Prioritäten, To-Dos, Packlisten-Punkten und Habits gibt es jetzt eine kleine, befriedigende Bestätigung (kurzes Aufblitzen mit Funken), und ab und zu eine motivierende Mitteilung wie \"5 erledigt heute, stark!\".",
-      "Neu: Der 🚨-Button oben im Kopfbereich ist von jeder Seite aus erreichbar und zeigt alle wichtigen Kontakte gesammelt an einer Stelle, automatisch zusammengezogen aus Meine Pferde, Andere Tiere und Kinder, plus allgemeine Notfallkontakte. Auf eine Telefonnummer tippen ruft direkt an."
+      "Neu: Der 🚨-Button oben im Kopfbereich ist von jeder Seite aus erreichbar und zeigt alle wichtigen Kontakte gesammelt an einer Stelle, automatisch zusammengezogen aus Meine Pferde, Andere Tiere und Kinder, plus allgemeine Notfallkontakte. Auf eine Telefonnummer tippen ruft direkt an.",
+      "Echter Fehler behoben: Die kleine Hinweis-Blase oben (für Übergangs-Warnung und Erledigt-Feiern) war durch einen Tippfehler im Code permanent sichtbar, auch leer ohne Text. Jetzt erscheint sie nur noch, wenn wirklich etwas mitzuteilen ist.",
+      "Neu: 🔖 Wichtiges, von jeder Seite aus über den Button oben im Kopfbereich erreichbar. Ein Ort für Links und wichtige Notizen, die man öfter braucht, mit Kategorien und Suche, ähnlich wie bei Milanote. Erreichbar auch direkt beim 💭-Schnell-Erfassen über den neuen Reiter \"Link / Wichtiges\". Die letzten Einträge erscheinen zusätzlich als Vorschau auf der Startseite.",
+      "Echter Fehler behoben: Auf dem Handy hat der violette Schnell-Erfassen-Button (und auch die kleine Hinweis-Blase) sich am Kopfbereich orientiert statt am ganzen Bildschirm, dadurch wirkte er riesig und hat die Symbole oben überdeckt. Ursache war der Frosted-Glas-Effekt des Kopfbereichs, der das ungewollt ausgelöst hat. Jetzt sitzt der Button zuverlässig unten rechts, klein und unauffällig, ohne etwas zu überdecken.",
+      "Der Schnell-Erfassen-Button (💭) ist jetzt dunkel lila statt hell, damit er sich besser vom Hintergrund abhebt."
     ]
   }
 }
