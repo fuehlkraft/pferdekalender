@@ -1,10 +1,11 @@
 {
-  "version": "2.4.0",
-  "info": "Urlaubstage mit Brückentage-Tipps, Glücksmomente vorne, Termine bei Überlappung in eigener Reihe",
+  "version": "2.6.0",
+  "info": "Termine können jetzt direkt wiederholt werden (täglich, wöchentlich, monatlich, jährlich, benutzerdefiniert)",
   "changes": {
     "organisation": [
       "Urlaubstage komplett überarbeitet: eigener Anspruch pro Jahr, ein Log für genommene Urlaubs- und Krankheitstage mit Grund, und automatisch berechnete Brückentage-Tipps für Niedersachsen, jedes Jahr neu berechnet.",
-      "Echter Fehler behoben: Die Smarte Packliste bei Urlaub hat sich beim Hinzufügen eigener Punkte nicht richtig verhalten und wurde beim erneuten Öffnen der Seite manchmal wieder geleert, beides ist jetzt behoben."
+      "Echter Fehler behoben: Die Smarte Packliste bei Urlaub hat sich beim Hinzufügen eigener Punkte nicht richtig verhalten und wurde beim erneuten Öffnen der Seite manchmal wieder geleert, beides ist jetzt behoben.",
+      "Bei den Brückentage-Tipps kannst du jetzt dein Bundesland auswählen (alle 16 sind hinterlegt), die Feiertage und Empfehlungen werden passend dafür berechnet, nicht mehr nur für Niedersachsen."
     ],
     "ueberblick": [
       "Glücksmomente steht jetzt direkt neben Überblick in der Navigation.",
@@ -12,7 +13,8 @@
       "Bei einer bereits ausgefüllten Pferde-Status-Kachel lässt sich jetzt direkt das Datum des letzten Eintrags korrigieren und das Intervall (Zeitfenster) anpassen, statt nur einen neuen Eintrag anzulegen."
     ],
     "kalender": [
-      "Termine, die sich zeitlich überlappen, werden in der Zeitleiste jetzt in eigenen Reihen nebeneinander angezeigt, statt sich zu überdecken."
+      "Termine, die sich zeitlich überlappen, werden in der Zeitleiste jetzt in eigenen Reihen nebeneinander angezeigt, statt sich zu überdecken.",
+      "Beim Termin-Eintragen gibt es jetzt eine Wiederholung direkt im Formular: Einmalig, Täglich, Wöchentlich, Monatlich, Jährlich oder Benutzerdefiniert. Bei Benutzerdefiniert stellst du das Intervall, bestimmte Wochentage und ein Ende (nie, an einem Datum, oder nach X Malen) selbst ein."
     ]
   }
 }
