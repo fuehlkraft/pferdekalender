@@ -290,6 +290,12 @@ canvas#lebensrad-canvas{max-width:220px;width:100%;}
 .bucket-item{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.6);border-radius:8px;padding:8px 10px;}
 .bucket-check{width:18px;height:18px;border-radius:50%;border:2px solid rgba(180,160,220,0.5);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;}
 .bucket-check.done{background:var(--lilac2);border-color:var(--lilac2);}
+@keyframes fkCelebratePop{0%{transform:scale(1);}35%{transform:scale(1.55);}60%{transform:scale(0.92);}100%{transform:scale(1);}}
+.fk-celebrate-pop{animation:fkCelebratePop 0.5s ease;box-shadow:0 0 0 6px rgba(140,200,170,0.35);}
+@keyframes fkSparkleFly{0%{transform:translate(0,0) scale(1) rotate(0deg);opacity:1;}100%{transform:translate(var(--fkdx),var(--fkdy)) scale(0.3) rotate(160deg);opacity:0;}}
+.fk-sparkle{position:fixed;pointer-events:none;font-size:14px;z-index:99990;animation:fkSparkleFly 0.7s ease-out forwards;}
+@keyframes fkToastIn{0%{transform:translate(-50%,-12px);opacity:0;}100%{transform:translate(-50%,0);opacity:1;}}
+.fk-celebrate-toast{animation:fkToastIn 0.3s ease;}
 .bucket-text{flex:1;font-size:12px;color:var(--deep);}
 .bucket-text.done{text-decoration:line-through;color:var(--muted);}
 .bucket-del{background:none;border:none;color:rgba(180,160,220,0.4);cursor:pointer;font-size:12px;}
@@ -3754,6 +3760,7 @@ return html2pdf;
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:7px;flex-shrink:0;">
+        <button id="header-notfall-btn" onclick="openNotfallCard()" title="Notfallkontakte" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.6);border:none;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;touch-action:manipulation;">🚨</button>
         <button id="header-bell-btn" onclick="toggleHeaderBell()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.6);border:none;display:flex;align-items:center;justify-content:center;font-size:14px;position:relative;cursor:pointer;touch-action:manipulation;">
           🔔<span id="header-bell-dot" style="display:none;position:absolute;top:4px;right:5px;width:7px;height:7px;border-radius:50%;background:#e85555;"></span>
         </button>
@@ -3786,6 +3793,18 @@ return html2pdf;
 
     <!-- Übergangs-Warnung: sanfter Hinweis kurz vor einem Termin, verschwindet von selbst -->
     <div id="fk-transition-toast" style="display:none;position:fixed;top:18px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--lilac),var(--rose));color:var(--deep);border-radius:14px;padding:12px 18px;box-shadow:0 8px 24px rgba(74,56,96,0.3);z-index:9975;max-width:90vw;font-family:Arial,sans-serif;font-size:13px;font-weight:600;display:flex;align-items:center;gap:10px;"></div>
+
+    <!-- NOTFALL-KARTE: alle wichtigen Kontakte an einer Stelle, von überall mit einem Tipp erreichbar -->
+    <div id="notfall-card-modal" onclick="if(event.target===this)closeNotfallCard()" style="display:none;position:fixed;inset:0;background:rgba(74,56,96,0.45);z-index:99960;align-items:center;justify-content:center;padding:16px;">
+      <div onclick="event.stopPropagation()" style="background:white;border-radius:16px;width:100%;max-width:440px;max-height:85vh;overflow-y:auto;box-shadow:0 12px 40px rgba(74,56,96,0.3);">
+        <div style="background:linear-gradient(135deg,#e85555,#f0908a);padding:16px 18px;display:flex;align-items:center;gap:10px;border-radius:16px 16px 0 0;position:sticky;top:0;">
+          <span style="font-size:20px;">🚨</span>
+          <div style="color:white;font-weight:700;font-size:16px;flex:1;">Notfallkontakte</div>
+          <button onclick="closeNotfallCard()" style="background:rgba(255,255,255,0.25);border:none;color:white;border-radius:8px;padding:5px 10px;font-size:13px;cursor:pointer;">✕</button>
+        </div>
+        <div id="notfall-card-body" style="padding:16px 18px;"></div>
+      </div>
+    </div>
 
     <!-- Einstellungen Vollbild-Overlay -->
     <div id="settings-overlay" style="display:none;position:fixed;inset:0;background:rgba(74,56,96,0.4);z-index:99950;">
@@ -6525,7 +6544,7 @@ function renderKidPackliste(){
   c.innerHTML='<div class="card">'
     +(items.length===0?'<div style="text-align:center;padding:20px;color:var(--muted);">Noch keine Packliste, z.B. für Sport, Ausflug oder Übernachtung.</div>':
       items.map((it,ii)=>'<div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.6);border-radius:7px;padding:6px 10px;font-size:12px;margin-bottom:6px;">'
-        +'<div onclick="toggleKidPack('+ii+')" class="bucket-check'+(it.done?' done':'')+'" style="cursor:pointer;">'+(it.done?'✓':'')+'</div>'
+        +'<div onclick="toggleKidPack('+ii+',this)" class="bucket-check'+(it.done?' done':'')+'" style="cursor:pointer;">'+(it.done?'✓':'')+'</div>'
         +'<span style="flex:1;color:var(--deep);'+(it.done?'text-decoration:line-through;color:var(--muted)':'')+'">'+it.text+'</span>'
         +'<button class="bucket-del" onclick="delKidPack('+ii+')">✕</button></div>').join(''))
     +'<div class="bucket-add" style="margin-top:8px;"><input type="text" id="kid-pack-inp" placeholder="z.B. Sportzeug, Schwimmsachen, Brotdose..."><button onclick="addKidPack()">+</button></div>'
@@ -6538,9 +6557,11 @@ function addKidPack(){
   kidPackliste[name].push({text:v,done:false});
   document.getElementById('kid-pack-inp').value='';saveKids();renderKidPackliste();
 }
-function toggleKidPack(ii){
+function toggleKidPack(ii,el){
   const idx=parseInt(document.getElementById('kid-pack-sel').value)||0;const name=kids[idx];
-  kidPackliste[name][ii].done=!kidPackliste[name][ii].done;saveKids();renderKidPackliste();
+  const willBeDone=!kidPackliste[name][ii].done;
+  if(willBeDone&&el)fkCelebrate(el);
+  kidPackliste[name][ii].done=willBeDone;saveKids();renderKidPackliste();
 }
 function delKidPack(ii){
   const idx=parseInt(document.getElementById('kid-pack-sel').value)||0;const name=kids[idx];
@@ -7905,10 +7926,12 @@ function renderHabits(){
       const dot=document.createElement('div');dot.className='habit-dot'+(pData.habitDone[key][hi+'-'+d]?' done':'');
       dot.title=d+'. '+MONTHS[currentHabitMonth];
       dot.onclick=(()=>{
-        const _hi=hi,_d=d,_k=key;
+        const _hi=hi,_d=d,_k=key,_dot=dot;
         return()=>{
           if(!pData.habitDone[_k])pData.habitDone[_k]={};
-          pData.habitDone[_k][_hi+'-'+_d]=!pData.habitDone[_k][_hi+'-'+_d];
+          const willBeDone=!pData.habitDone[_k][_hi+'-'+_d];
+          if(willBeDone)fkCelebrate(_dot);
+          pData.habitDone[_k][_hi+'-'+_d]=willBeDone;
           saveAll();renderHabits();
         };
       })();
@@ -9149,6 +9172,25 @@ function saveSettingsDaten(){
 function renderSettingsNotfall(container){
   var s = getFkSettings();
   var kontakte = s.notfallkontakte || [];
+
+  var autoGroups=fkGetAllEmergencyContacts().filter(function(g){return g.label!=='Allgemein';});
+  var autoHtml='';
+  if(autoGroups.length){
+    autoHtml='<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Automatisch aus Meine Pferde, Andere Tiere & Kinder</div>'
+      +autoGroups.map(function(g){
+        return '<div style="margin-bottom:10px;"><div style="font-size:11px;font-weight:700;color:var(--deep);margin-bottom:4px;">'+g.label+'</div>'
+          +g.entries.map(function(k){
+            return '<div style="background:rgba(255,255,255,0.6);border-radius:8px;padding:8px 10px;margin-bottom:5px;font-size:12px;">'
+              +'<strong>'+(k.rolle||'Kontakt')+'</strong>'+(k.name?' · '+k.name:'')
+              +(k.telefon?'<br><span style="color:var(--muted);">📞 '+k.telefon+'</span>':'')
+              +'</div>';
+          }).join('')
+          +'</div>';
+      }).join('')
+      +'<div style="height:1px;background:rgba(180,160,220,0.2);margin:12px 0;"></div>'
+      +'<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Allgemeine Notfallkontakte</div>';
+  }
+
   var rows = kontakte.map(function(k, i){
     return '<div style="background:rgba(255,255,255,0.6);border-radius:10px;padding:12px;margin-bottom:10px;border-left:3px solid var(--rose2);">'
       + '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">'
@@ -9161,7 +9203,7 @@ function renderSettingsNotfall(container){
       + '</div>';
   }).join('');
 
-  container.innerHTML = rows
+  container.innerHTML = autoHtml + rows
     + '<div style="background:rgba(232,228,240,0.4);border-radius:10px;padding:14px;margin-top:6px;">'
     + '<div style="font-size:12px;font-weight:700;color:var(--deep);margin-bottom:10px;">+ Neuen Kontakt hinzufügen</div>'
     + '<select id="notfall-rolle" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:8px 10px;font-size:12px;margin-bottom:8px;background:rgba(255,255,255,0.7);">'
@@ -9196,6 +9238,72 @@ function delNotfallkontakt(i){
   renderSettingsNotfall(document.getElementById('settings-panel-notfall'));
 }
 
+// ── NOTFALL-KARTE: sammelt alle Kontakte (manuell + aus Pferden/Tieren/Kindern) an einer Stelle ──
+function fkGetAllEmergencyContacts(){
+  var groups=[];
+  var s=getFkSettings();
+  var manuell=(s.notfallkontakte||[]).map(function(k){return {rolle:k.rolle||'Kontakt',name:k.name||'',telefon:k.telefon||'',adresse:k.notiz||''};});
+  if(manuell.length) groups.push({label:'Allgemein',icon:'📇',entries:manuell});
+
+  if(typeof horses!=='undefined'){
+    horses.forEach(function(h){
+      var hp=(typeof getHP==='function')?getHP(h):null;
+      if(hp && hp.kontakte && hp.kontakte.length){
+        groups.push({label:'🐴 '+h, icon:'🐴', entries:hp.kontakte.map(function(k){return {rolle:k.rolle||'Kontakt',name:k.name||'',telefon:k.telefon||'',adresse:k.adresse||''};})});
+      }
+    });
+  }
+  if(typeof otherAnimals!=='undefined'){
+    otherAnimals.forEach(function(a){
+      var oap=(typeof getOAP==='function')?getOAP(a):null;
+      if(oap && oap.kontakte && oap.kontakte.length){
+        groups.push({label:'🐾 '+a, icon:'🐾', entries:oap.kontakte.map(function(k){return {rolle:k.rolle||'Kontakt',name:k.name||'',telefon:k.telefon||'',adresse:k.adresse||''};})});
+      }
+    });
+  }
+  if(typeof kids!=='undefined'){
+    kids.forEach(function(k2){
+      var kp=(typeof getKP==='function')?getKP(k2):null;
+      if(kp && kp.kontakte && kp.kontakte.length){
+        groups.push({label:'🧒 '+k2, icon:'🧒', entries:kp.kontakte.map(function(k){return {rolle:k.rolle||'Kontakt',name:k.name||'',telefon:k.telefon||'',adresse:k.adresse||''};})});
+      }
+    });
+  }
+  return groups;
+}
+function fkRenderEmergencyContacts(targetEl, withManageLink){
+  if(!targetEl)return;
+  var groups=fkGetAllEmergencyContacts();
+  if(!groups.length){
+    targetEl.innerHTML='<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">Noch keine Kontakte hinterlegt. Trag sie bei Meine Pferde, Andere Tiere, Kinder oder unten als allgemeinen Notfallkontakt ein, dann erscheinen sie hier gesammelt.</div>';
+    return;
+  }
+  targetEl.innerHTML=groups.map(function(g){
+    return '<div style="margin-bottom:14px;">'
+      +'<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">'+g.label+'</div>'
+      +g.entries.map(function(k){
+        var phoneLink=k.telefon?('<a href="tel:'+k.telefon.replace(/[^0-9+]/g,'')+'" style="color:var(--deep);text-decoration:none;font-weight:700;">📞 '+k.telefon+'</a>'):'';
+        return '<div style="background:rgba(255,255,255,0.6);border-radius:10px;padding:10px 12px;margin-bottom:7px;border-left:3px solid #e85555;">'
+          +'<div style="font-size:12px;font-weight:700;color:var(--deep);">'+(k.rolle||'Kontakt')+(k.name?' · '+k.name:'')+'</div>'
+          +(phoneLink?'<div style="font-size:13px;margin-top:3px;">'+phoneLink+'</div>':'')
+          +(k.adresse?'<div style="font-size:11px;color:var(--muted);margin-top:2px;">'+k.adresse+'</div>':'')
+          +'</div>';
+      }).join('')
+      +'</div>';
+  }).join('')
+  +(withManageLink?'<div style="text-align:center;margin-top:6px;font-size:11px;color:var(--muted);">Weitere Kontakte trägst du direkt bei Meine Pferde, Andere Tiere oder Kinder ein, oder unten als allgemeinen Notfallkontakt.</div>':'');
+}
+function openNotfallCard(){
+  var modal=document.getElementById('notfall-card-modal');
+  if(!modal)return;
+  fkRenderEmergencyContacts(document.getElementById('notfall-card-body'), true);
+  modal.style.display='flex';
+}
+function closeNotfallCard(){
+  var modal=document.getElementById('notfall-card-modal');
+  if(modal)modal.style.display='none';
+}
+
 // ── KALENDERFARBE (nutzt bestehende Funktion) ──
 function renderSettingsDesign(container){
   container.innerHTML = '<div id="settings-design-inner"></div>';
@@ -9206,7 +9314,7 @@ function renderSettingsDesign(container){
 }
 
 // ── BACKUP & UPDATE (nutzt bestehende Funktionen) ──
-const FK_APP_VERSION='2.7.0';
+const FK_APP_VERSION='2.8.0';
 function renderSettingsBackup(container){
   container.innerHTML =
     '<div style="font-size:11px;color:var(--muted);margin-bottom:10px;">Installierte Version: <strong style="color:var(--deep);">'+FK_APP_VERSION+'</strong></div>'
@@ -9322,6 +9430,8 @@ const HELP_CONTENT = [
   ]},
   { section:'Einstellungen & Allgemein', icon:'⚙️', topics:[
     {title:'Schnell festhalten (💭-Button)', text:'Der violette 💭-Button unten rechts ist auf jeder Seite erreichbar. Tippe darauf, um einen Gedanken sofort aufzuschreiben, ohne ihn erst einsortieren zu müssen. Er landet in deiner Inbox ("Schnell erfasst" oben auf der Startseite), du kannst ihn später als To-Do heute übernehmen oder verwerfen.'},
+    {title:'Notfallkontakte (🚨-Button)', text:'Der 🚨-Button oben im Kopfbereich ist von jeder Seite aus erreichbar und zeigt alle wichtigen Kontakte gesammelt an einer Stelle: Kontakte, die du bei Meine Pferde, Andere Tiere oder Kinder eingetragen hast, plus allgemeine Notfallkontakte (unter Einstellungen → Notfallkontakte verwaltbar). Auf eine Telefonnummer tippen ruft direkt an.'},
+    {title:'Erledigtes feiern', text:'Beim Abhaken von Top-Prioritäten, To-Dos, Packlisten-Punkten und Habits gibt es jetzt eine kleine Bestätigung (kurzes Aufblitzen mit Funken), und ab und zu eine Mitteilung wie "5 erledigt heute, stark!". Das lässt sich nicht einzeln abschalten, drängt sich aber auch nicht störend auf.'},
     {title:'Übergangs-Warnung', text:'Unter Einstellungen → Mein Profil lässt sich einstellen, dass du automatisch einen sanften Hinweis bekommst, bevor ein Termin mit Uhrzeit beginnt, z.B. "In 15 Min: Stalldienst". Das funktioniert für jeden Termin mit Uhrzeit, ohne dass du dafür extra eine Erinnerung einstellen musst. Die Vorlaufzeit kannst du selbst wählen, und die Funktion lässt sich auch ganz abschalten.'},
     {title:'Profilbild ändern', text:'Unter Einstellungen → Mein Profil über "Foto wählen" hochladen. Große Handyfotos werden automatisch verkleinert, damit der Speicher nicht überläuft.'},
     {title:'Backup erstellen', text:'Unter Einstellungen → Backup & Update über "Backup speichern" eine Sicherungsdatei herunterladen, über "Backup laden" eine vorhandene Datei wieder einspielen.'},
@@ -10881,7 +10991,7 @@ function renderTodos(){
     items.forEach(function(item,i){
       const div=document.createElement('div');div.className='bucket-item';
       const chk=document.createElement('div');chk.className='bucket-check'+(item.done?' done':'');chk.innerHTML=item.done?'✓':'';
-      (function(_cat,_i){chk.onclick=function(){toggleTodo(_cat,_i);};})(cat,i);
+      (function(_cat,_i){chk.onclick=function(){toggleTodo(_cat,_i,this);};})(cat,i);
       const txt=document.createElement('div');txt.className='bucket-text'+(item.done?' done':'');txt.textContent=item.text;txt.style.flex='1';
       const del=document.createElement('button');del.className='bucket-del';del.textContent='✕';
       (function(_cat,_i){del.onclick=function(){delTodo(_cat,_i);};})(cat,i);
@@ -10890,7 +11000,7 @@ function renderTodos(){
     });
   });
 }
-function toggleTodo(cat,i){oData.todos[cat][i].done=!oData.todos[cat][i].done;saveOrg();renderTodos();}
+function toggleTodo(cat,i,el){var willBeDone=!oData.todos[cat][i].done;if(willBeDone&&el)fkCelebrate(el);oData.todos[cat][i].done=willBeDone;saveOrg();renderTodos();}
 function delTodo(cat,i){oData.todos[cat].splice(i,1);saveOrg();renderTodos();}
 
 // ── VERLEIH ──
@@ -11984,7 +12094,7 @@ function renderTagPrios(dk){
     const div=document.createElement('div');div.className='bucket-item carried-over';
     const check=document.createElement('div');
     check.className='bucket-check carried-over-check';
-    check.onclick=function(){toggleTagPrioFor(co.dk,co.i);};
+    check.onclick=function(){toggleTagPrioFor(co.dk,co.i,this);};
     const badge=document.createElement('span');badge.className='carried-over-badge';badge.textContent=fmt(co.dk);
     const txt=document.createElement('span');txt.className='bucket-text carried-over-text';txt.textContent=co.text;
     const del=document.createElement('button');del.className='bucket-del';del.textContent='✕';
@@ -11997,7 +12107,7 @@ function renderTagPrios(dk){
     const check=document.createElement('div');
     check.className='bucket-check'+(p.done?' done':'');
     check.textContent=p.done?'✓':'';
-    check.onclick=function(){toggleTagPrio(i);};
+    check.onclick=function(){toggleTagPrio(i,this);};
     const txt=document.createElement('input');
     txt.type='text';
     txt.value=p.text;
@@ -12023,9 +12133,69 @@ function addTagPrio(){
   kalData.tagNotes[dk].prios.push({text:v,done:false});
   document.getElementById('tag-prio-inp').value='';saveKal();renderTagPrios(dk);
 }
-function toggleTagPrioFor(dk,i){
+// ── ERLEDIGTES SICHTBAR FEIERN: kleine, befriedigende Rückmeldung beim Abhaken ──
+function fkGetCelebrateCount(){
+  var today=dateKey(new Date());
+  try{
+    var data=JSON.parse(localStorage.getItem('fk_celebrate_count')||'{}');
+    if(data.day!==today)return 0;
+    return data.count||0;
+  }catch(e){ return 0; }
+}
+function fkIncrementCelebrateCount(){
+  var today=dateKey(new Date());
+  var count=fkGetCelebrateCount()+1;
+  try{ localStorage.setItem('fk_celebrate_count', JSON.stringify({day:today, count:count})); }catch(e){}
+  return count;
+}
+function fkSpawnSparkles(el){
+  if(!el || !el.getBoundingClientRect)return;
+  var r=el.getBoundingClientRect();
+  var cx=r.left+r.width/2, cy=r.top+r.height/2;
+  var icons=['✨','⭐','💫','✓'];
+  var n=5+Math.floor(Math.random()*2);
+  for(var i=0;i<n;i++){
+    var s=document.createElement('span');
+    s.className='fk-sparkle';
+    s.textContent=icons[Math.floor(Math.random()*icons.length)];
+    var angle=(Math.PI*2*i/n)+Math.random()*0.5;
+    var dist=34+Math.random()*22;
+    s.style.left=cx+'px'; s.style.top=cy+'px';
+    s.style.setProperty('--fkdx', (Math.cos(angle)*dist)+'px');
+    s.style.setProperty('--fkdy', (Math.sin(angle)*dist-14)+'px');
+    document.body.appendChild(s);
+    (function(node){ setTimeout(function(){ if(node.parentNode)node.parentNode.removeChild(node); }, 750); })(s);
+  }
+}
+function fkShowCelebrateToast(count){
+  var box=document.getElementById('fk-transition-toast');
+  if(!box)return;
+  var msgs={1:'✨ Los geht'+String.fromCharCode(39)+'s! Erstes Häkchen heute.',3:'🌿 3 Dinge heute schon erledigt!',5:'🎉 5 erledigt heute, stark!',10:'🌟 10 erledigt heute, richtig gut!',15:'💜 15 erledigt heute, du machst das großartig!',20:'🏆 20 erledigt heute, das ist beeindruckend!'};
+  if(!msgs[count])return;
+  box.classList.add('fk-celebrate-toast');
+  box.innerHTML='<span style="font-size:16px;">'+msgs[count].slice(0,2)+'</span><span>'+msgs[count].slice(2)+'</span><span onclick="fkHideTransitionToast()" style="cursor:pointer;margin-left:4px;opacity:0.7;">✕</span>';
+  box.style.display='flex';
+  if(box._fkHideTimer)clearTimeout(box._fkHideTimer);
+  box._fkHideTimer=setTimeout(function(){ fkHideTransitionToast(); box.classList.remove('fk-celebrate-toast'); }, 3200);
+}
+function fkCelebrate(el){
+  try{
+    if(el){
+      fkSpawnSparkles(el);
+      el.classList.add('fk-celebrate-pop');
+      setTimeout(function(){ el.classList.remove('fk-celebrate-pop'); }, 520);
+      try{ if(navigator.vibrate) navigator.vibrate(40); }catch(err){}
+    }
+    var count=fkIncrementCelebrateCount();
+    fkShowCelebrateToast(count);
+  }catch(err){}
+}
+
+function toggleTagPrioFor(dk,i,el){
   if(!kalData.tagNotes[dk]||!kalData.tagNotes[dk].prios[i])return;
-  kalData.tagNotes[dk].prios[i].done=!kalData.tagNotes[dk].prios[i].done;saveKal();
+  var willBeDone=!kalData.tagNotes[dk].prios[i].done;
+  if(willBeDone && el)fkCelebrate(el);
+  kalData.tagNotes[dk].prios[i].done=willBeDone;saveKal();
   renderTagPrios(dateKey(kalState.dayDate));
 }
 function delTagPrioFor(dk,i){
@@ -12033,7 +12203,7 @@ function delTagPrioFor(dk,i){
   kalData.tagNotes[dk].prios.splice(i,1);saveKal();
   renderTagPrios(dateKey(kalState.dayDate));
 }
-function toggleTagPrio(i){toggleTagPrioFor(dateKey(kalState.dayDate),i);}
+function toggleTagPrio(i,el){toggleTagPrioFor(dateKey(kalState.dayDate),i,el);}
 function delTagPrio(i){delTagPrioFor(dateKey(kalState.dayDate),i);}
 
 function renderTagTodos(dk){
@@ -12043,7 +12213,7 @@ function renderTagTodos(dk){
     const div=document.createElement('div');div.className='bucket-item carried-over';
     const check=document.createElement('div');
     check.className='bucket-check carried-over-check';
-    check.onclick=function(){toggleTagTodoFor(co.dk,co.i);};
+    check.onclick=function(){toggleTagTodoFor(co.dk,co.i,this);};
     const badge=document.createElement('span');badge.className='carried-over-badge';badge.textContent=fmt(co.dk);
     const txt=document.createElement('span');txt.className='bucket-text carried-over-text';txt.textContent=co.text;
     const del=document.createElement('button');del.className='bucket-del';del.textContent='✕';
@@ -12056,7 +12226,7 @@ function renderTagTodos(dk){
     const check=document.createElement('div');
     check.className='bucket-check'+(t.done?' done':'');
     check.textContent=t.done?'✓':'';
-    check.onclick=function(){toggleTagTodo(i);};
+    check.onclick=function(){toggleTagTodo(i,this);};
     const txt=document.createElement('input');
     txt.type='text';
     txt.value=t.text;
@@ -12079,9 +12249,11 @@ function addTagTodo(){
   const dk=dateKey(kalState.dayDate);kalData.tagNotes[dk].todos.push({text:v,done:false});
   document.getElementById('tag-todo-inp').value='';saveKal();renderTagTodos(dk);
 }
-function toggleTagTodoFor(dk,i){
+function toggleTagTodoFor(dk,i,el){
   if(!kalData.tagNotes[dk]||!kalData.tagNotes[dk].todos[i])return;
-  kalData.tagNotes[dk].todos[i].done=!kalData.tagNotes[dk].todos[i].done;saveKal();
+  var willBeDone=!kalData.tagNotes[dk].todos[i].done;
+  if(willBeDone && el)fkCelebrate(el);
+  kalData.tagNotes[dk].todos[i].done=willBeDone;saveKal();
   renderTagTodos(dateKey(kalState.dayDate));
 }
 function delTagTodoFor(dk,i){
@@ -12089,7 +12261,7 @@ function delTagTodoFor(dk,i){
   kalData.tagNotes[dk].todos.splice(i,1);saveKal();
   renderTagTodos(dateKey(kalState.dayDate));
 }
-function toggleTagTodo(i){toggleTagTodoFor(dateKey(kalState.dayDate),i);}
+function toggleTagTodo(i,el){toggleTagTodoFor(dateKey(kalState.dayDate),i,el);}
 function delTagTodo(i){delTagTodoFor(dateKey(kalState.dayDate),i);}
 
 
@@ -16271,7 +16443,7 @@ function renderPackliste(){
         <span style="float:right;font-size:11px;color:var(--muted);font-weight:400;">${packData[cat.key].filter(i=>i.done).length}/${packData[cat.key].length} ✓</span>
       </div>
       ${packData[cat.key].map((item,ii)=>`<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(216,207,240,0.15);">
-        <div onclick="togglePack(\"${cat.key}\",${ii})" style="width:20px;height:20px;border-radius:5px;border:2px solid rgba(180,160,220,0.4);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;background:${item.done?'var(--lilac2)':'transparent'};color:${item.done?'var(--deep)':'transparent'};font-size:12px;font-weight:700;transition:all 0.2s;">✓</div>
+        <div onclick="togglePack(\"${cat.key}\",${ii},this)" style="width:20px;height:20px;border-radius:5px;border:2px solid rgba(180,160,220,0.4);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;background:${item.done?'var(--lilac2)':'transparent'};color:${item.done?'var(--deep)':'transparent'};font-size:12px;font-weight:700;transition:all 0.2s;">✓</div>
         <span style="flex:1;font-size:12px;color:var(--deep);${item.done?'text-decoration:line-through;color:var(--muted)':''}">${item.text}</span>
         ${!item.fixed?`<button onclick="delPackItem(\"${cat.key}\",${ii})" style="background:none;border:none;color:rgba(180,160,220,0.4);cursor:pointer;font-size:11px;">✕</button>`:''}
       </div>`).join('')}
@@ -16282,7 +16454,7 @@ function renderPackliste(){
     </div>`).join('')}
   </div>`;
 }
-function togglePack(cat,ii){packData[cat][ii].done=!packData[cat][ii].done;savePackData();renderPackliste();}
+function togglePack(cat,ii,el){var willBeDone=!packData[cat][ii].done;if(willBeDone&&el)fkCelebrate(el);packData[cat][ii].done=willBeDone;savePackData();renderPackliste();}
 function addPackItemTurnier(cat){const inp=document.getElementById('pack-new-'+cat);const v=(inp&&inp.value.trim())||'';if(!v)return;packData[cat].push({text:v,done:false,fixed:false});savePackData();inp.value='';renderPackliste();}
 function delPackItem(cat,ii){packData[cat].splice(ii,1);savePackData();renderPackliste();}
 
