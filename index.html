@@ -3884,7 +3884,7 @@ return html2pdf;
       <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-pferde" onclick="switchTab('pferde')">🐴 Pferde<span class="tab-update-dot" id="tab-update-dot-pferde" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>🐴 Pferde</strong><br>Alles rund um Sir Harry, Bo und Tari. Gesundheitsakte, Hufpflege, Fütterung, Impfungen, Kosten und Trainingsnotizen, lückenlos dokumentiert.</div></div>
       <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-andere-tiere" onclick="switchTab('andere-tiere')">🐾 Andere Tiere<span class="tab-update-dot" id="tab-update-dot-andere-tiere" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>🐾 Andere Tiere</strong><br>Für Hund, Katze & Co: eigenes Profil, Gesundheit, Pflege, Fütterung, Training, Verhalten und Allergien, genauso wie bei den Pferden. Kosten und Termine laufen gemeinsam mit den Pferden.</div></div>
       <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-kinder" onclick="switchTab('kinder')">🧒 Kinder<span class="tab-update-dot" id="tab-update-dot-kinder" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>🧒 Kinder</strong><br>Profil, Gesundheit, Schule & Kita, Aktivitäten, Packlisten, Kosten und Meilensteine, alles für deine Kinder an einem Ort.</div></div>
-      <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-persoenlich" onclick="switchTab('persoenlich')">✨ Persönlich<span class="tab-update-dot" id="tab-update-dot-persoenlich" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>✨ Persönlich</strong><br>Habits, Routinen, Reflexion, Vision Board, Fitness, Geburtstage, Lebensrad, Bucket List, Weltkarte und Zeitstrahl.</div></div>
+      <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-persoenlich" onclick="switchTab('persoenlich')">✨ Persönlich<span class="tab-update-dot" id="tab-update-dot-persoenlich" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>✨ Persönlich</strong><br>Wichtiges, Habits, Routinen, Reflexion, Vision Board, Fitness, Geburtstage, Lebensrad, Bucket List, Weltkarte und Zeitstrahl.</div></div>
       <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-organisation" onclick="switchTab('organisation')">📋 Organisation<span class="tab-update-dot" id="tab-update-dot-organisation" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>📋 Organisation</strong><br>Ziele, Braindump, To-Dos, Verleih, Urlaub, Essen, Vorsorge, Wann-zuletzt, Putzplan, Finanzen und Abos.</div></div>
       <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-kalender" onclick="switchTab('kalender')">📆 Kalender<span class="tab-update-dot" id="tab-update-dot-kalender" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>📆 Kalender</strong><br>Monats- und Tagesansicht mit Pferde-Einträgen, Tagesnotizen, Intentionen und Journal. Für Mensch und Pferd gemeinsam.</div></div>
       <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-vorlagen" onclick="switchTab('vorlagen')">📄 Vorlagen<span class="tab-update-dot" id="tab-update-dot-vorlagen" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>📄 Vorlagen</strong><br>38 Vorlagen: Liniert, Kariert, Journal, Cornell, Pomodoro, Dankbarkeit, Zyklus-Tracker und mehr. Alle druckfertig.</div></div>
@@ -4857,6 +4857,7 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
   <div id="section-persoenlich" style="display:none">
     <div class="body">
       <div class="sub-nav" id="sub-nav">
+        <button class="sub-btn" onclick="showPers('wichtiges')">🔖 Wichtiges</button>
         <button class="sub-btn active" onclick="showPers('habit')">🌱 Habits</button>
         <button class="sub-btn" onclick="showPers('routinen')">☀️ Routinen</button>
         <button class="sub-btn" onclick="showPers('vision')">🌈 Vision Board</button>
@@ -4868,6 +4869,35 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
         <button class="sub-btn" onclick="showPers('bucket')">⭐ Bucket List</button>
         <button class="sub-btn" onclick="showPers('welt')">🗺️ Weltkarte</button>
         <button class="sub-btn" onclick="showPers('zeitstrahl')">📅 Zeitstrahl</button>
+      </div>
+
+      <!-- WICHTIGES: Links & Notizen zum Wiederfinden, ähnlich Milanote -->
+      <div id="pers-wichtiges" class="pers-section" style="display:none">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+          <div class="sec-title" style="margin:0;">🔖 Wichtiges</div>
+          <div style="font-size:12px;color:var(--muted);">Links, Notizen & Inspiration, an einem Ort zum Wiederfinden.</div>
+        </div>
+        <div class="card" style="margin-bottom:16px;">
+          <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">+ Neu hinzufügen</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+            <input type="text" id="wb-url" placeholder="Link (https://...) oder leer lassen" style="border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:8px 10px;font-size:12px;font-family:Arial,sans-serif;outline:none;box-sizing:border-box;">
+            <input type="text" id="wb-titel" placeholder="Titel" style="border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:8px 10px;font-size:12px;font-family:Arial,sans-serif;outline:none;box-sizing:border-box;">
+          </div>
+          <textarea id="wb-notiz" placeholder="Notiz (optional) - z.B. warum dir das wichtig ist, oder einfach mehr Text" style="width:100%;min-height:54px;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:8px 10px;font-size:12px;font-family:Arial,sans-serif;outline:none;resize:vertical;box-sizing:border-box;margin-bottom:8px;"></textarea>
+          <div style="display:flex;gap:8px;">
+            <input type="text" id="wb-kategorie" placeholder="Kategorie (z.B. Rezepte, Inspiration, Geschäft...)" style="flex:1;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:8px 10px;font-size:12px;font-family:Arial,sans-serif;outline:none;box-sizing:border-box;">
+            <button onclick="addWichtigesFromBoard()" class="save-btn" style="padding:8px 18px;white-space:nowrap;">+ Speichern</button>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center;">
+          <input type="text" id="wb-suche" oninput="renderWichtigesBoard()" placeholder="🔎 Suchen..." style="flex:1;min-width:140px;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:7px 10px;font-size:12px;font-family:Arial,sans-serif;outline:none;">
+          <select id="wb-kat-filter" onchange="renderWichtigesBoard()" style="border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:7px 8px;font-size:12px;font-family:Arial,sans-serif;background:white;outline:none;">
+            <option value="">Alle Kategorien</option>
+          </select>
+          <button onclick="addWichtigesBoard()" style="background:rgba(216,207,240,0.4);border:1px dashed rgba(180,160,220,0.5);border-radius:8px;padding:7px 14px;font-size:12px;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;white-space:nowrap;">+ Neues Board</button>
+        </div>
+        <div style="font-size:10px;color:var(--muted);margin-bottom:10px;">💡 Karten lassen sich per Ziehen direkt in ein anderes Board verschieben (auch mit dem Finger).</div>
+        <div id="wichtiges-board" style="display:flex;gap:14px;overflow-x:auto;padding-bottom:10px;align-items:flex-start;"></div>
       </div>
 
       <!-- HABIT TRACKER -->
@@ -6837,7 +6867,8 @@ let pData={
   reisen:[],
   achtsamkeit:{startDatum:'',erledigteTage:[]},
   inbox:[],
-  wichtiges:[]
+  wichtiges:[],
+  wichtigesBoards:[]
 };
 
 let currentMediaTab='buch';
@@ -7413,6 +7444,7 @@ function showPers(s){
       if(s==='welt'){try{initWeltkarte();}catch(e){}try{renderReisen();}catch(e){}try{updateWeltkarteFoto();}catch(e){}}
       if(s==='zeitstrahl'){renderZeitstrahl();setTimeout(initLebenskreise,100);}
       if(s==='geburtstage')renderBdays();
+      if(s==='wichtiges')renderWichtigesBoard();
       if(s==='bucket')renderBuckets();
       if(s==='fitness')renderFitnessWeek();
       if(s==='media')renderMedia();
@@ -9204,6 +9236,166 @@ function renderWichtigesList(){
       +'</div></div>';
   }).join('');
 }
+function addWichtigesFromBoard(){
+  var url=document.getElementById('wb-url').value.trim();
+  var titel=document.getElementById('wb-titel').value.trim();
+  var notiz=document.getElementById('wb-notiz').value.trim();
+  var kategorie=document.getElementById('wb-kategorie').value.trim();
+  if(!url && !titel && !notiz)return;
+  if(!pData.wichtiges)pData.wichtiges=[];
+  if(kategorie){ if(!pData.wichtigesBoards)pData.wichtigesBoards=[]; if(pData.wichtigesBoards.indexOf(kategorie)<0)pData.wichtigesBoards.push(kategorie); }
+  pData.wichtiges.push({id:Date.now(), url:url, titel:titel||url||notiz.slice(0,40), notiz:notiz, kategorie:kategorie, datum:new Date().toISOString().split('T')[0]});
+  saveAll();
+  document.getElementById('wb-url').value='';
+  document.getElementById('wb-titel').value='';
+  document.getElementById('wb-notiz').value='';
+  document.getElementById('wb-kategorie').value='';
+  renderWichtigesBoard();
+  try{renderUeberblick();}catch(e){}
+}
+function renderWichtigesBoard(){
+  var board=document.getElementById('wichtiges-board');
+  if(!board)return;
+  if(!pData.wichtigesBoards)pData.wichtigesBoards=[];
+  var allItems=(pData.wichtiges||[]).slice().sort(function(a,b){return b.id-a.id;});
+  var sucheEl=document.getElementById('wb-suche');
+  var katSelEl=document.getElementById('wb-kat-filter');
+  var suche=(sucheEl?sucheEl.value:'').toLowerCase();
+  var katFilter=katSelEl?katSelEl.value:'';
+
+  // Kategorie-Dropdown befüllen (über alle Items, unabhängig vom Filter)
+  var allKats=[...new Set(allItems.map(function(w){return w.kategorie;}).filter(Boolean).concat(pData.wichtigesBoards))];
+  if(katSelEl){
+    var prevVal=katSelEl.value;
+    katSelEl.innerHTML='<option value="">Alle Kategorien</option>'+allKats.map(function(k){return '<option value="'+k+'">'+k+'</option>';}).join('');
+    katSelEl.value=prevVal;
+  }
+
+  var items=allItems;
+  if(suche) items=items.filter(function(w){return (w.titel||'').toLowerCase().indexOf(suche)>=0 || (w.url||'').toLowerCase().indexOf(suche)>=0 || (w.notiz||'').toLowerCase().indexOf(suche)>=0 || (w.kategorie||'').toLowerCase().indexOf(suche)>=0;});
+  if(katFilter) items=items.filter(function(w){return w.kategorie===katFilter;});
+
+  if(!allItems.length && !pData.wichtigesBoards.length){
+    board.innerHTML='<div style="text-align:center;padding:30px;color:var(--muted);font-size:13px;width:100%;">Noch nichts gespeichert. Trag oben etwas ein, ein Link, eine Notiz, oder beides. Über "+ Neues Board" legst du dir gleich eigene Kategorien an.</div>';
+    return;
+  }
+
+  // Boards bestimmen: alle vorkommenden Kategorien + manuell angelegte (auch leere) + Ohne Kategorie zuletzt
+  var groups={};
+  items.forEach(function(w){
+    var k=w.kategorie||'Ohne Kategorie';
+    if(!groups[k])groups[k]=[];
+    groups[k].push(w);
+  });
+  pData.wichtigesBoards.forEach(function(k){ if(!groups[k])groups[k]=[]; });
+  if(!groups['Ohne Kategorie'])groups['Ohne Kategorie']=[];
+  var groupKeys=Object.keys(groups).sort(function(a,b){
+    if(a==='Ohne Kategorie')return 1; if(b==='Ohne Kategorie')return -1; return a.localeCompare(b);
+  });
+
+  board.innerHTML=groupKeys.map(function(gk){
+    return '<div class="wi-board-col" data-kategorie="'+gk.replace(/"/g,'')+'" style="flex-shrink:0;width:230px;background:linear-gradient(135deg,rgba(216,207,240,0.22),rgba(242,200,216,0.12));border-radius:14px;padding:12px;border:2px solid transparent;transition:border-color 0.15s;min-height:80px;">'
+      +'<div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">'
+      +'<div style="font-weight:700;color:var(--deep);font-size:12px;flex:1;word-break:break-word;">'+gk+'</div>'
+      +'<span style="font-size:10px;color:var(--muted);background:rgba(255,255,255,0.5);border-radius:8px;padding:1px 6px;">'+groups[gk].length+'</span>'
+      +(gk!=='Ohne Kategorie'?'<button onclick="delWichtigesBoardCol(\''+gk.replace(/'/g,"\\'")+'\')" style="background:none;border:none;color:rgba(180,160,220,0.5);cursor:pointer;font-size:12px;">✕</button>':'')
+      +'</div>'
+      +'<div class="wi-board-cards" style="display:flex;flex-direction:column;gap:8px;">'
+      +(groups[gk].length?groups[gk].map(function(w){
+          var domain='';
+          try{ if(w.url) domain=new URL(w.url).hostname.replace('www.',''); }catch(e){}
+          return '<div class="wi-card" data-id="'+w.id+'" style="background:rgba(255,255,255,0.85);border-radius:12px;padding:8px 10px 10px;border:1px solid rgba(216,207,240,0.5);position:relative;box-shadow:0 1px 4px rgba(74,56,96,0.06);">'
+            +'<div class="wi-drag-handle" onpointerdown="wiDragStart(event,'+w.id+')" style="cursor:grab;text-align:center;color:rgba(180,160,220,0.6);font-size:10px;line-height:1;margin-bottom:3px;touch-action:none;user-select:none;">⠿⠿⠿</div>'
+            +'<button onclick="delWichtigesFromBoard('+w.id+')" style="position:absolute;top:6px;right:6px;background:none;border:none;color:rgba(180,160,220,0.5);cursor:pointer;font-size:12px;">✕</button>'
+            +(w.url?'<a href="'+w.url.replace(/"/g,'')+'" target="_blank" rel="noopener" style="display:block;color:var(--deep);font-weight:700;font-size:12px;text-decoration:none;word-break:break-word;padding-right:16px;">🔗 '+(w.titel||w.url)+'</a><div style="font-size:9px;color:var(--muted);margin-top:2px;margin-bottom:4px;">'+domain+'</div>'
+              :'<div style="color:var(--deep);font-weight:700;font-size:12px;padding-right:16px;margin-bottom:4px;">📌 '+(w.titel||'')+'</div>')
+            +(w.notiz?'<div style="font-size:11px;color:var(--text);line-height:1.45;white-space:pre-line;">'+w.notiz.replace(/</g,'&lt;')+'</div>':'')
+            +'</div>';
+        }).join(''):'<div style="text-align:center;font-size:10px;color:var(--muted);padding:14px 4px;">Karte hierher ziehen</div>')
+      +'</div></div>';
+  }).join('');
+}
+function addWichtigesBoard(){
+  var name=prompt('Name für das neue Board (Kategorie):');
+  if(!name||!name.trim())return;
+  var n=name.trim();
+  if(!pData.wichtigesBoards)pData.wichtigesBoards=[];
+  if(pData.wichtigesBoards.indexOf(n)<0){
+    pData.wichtigesBoards.push(n);
+    saveAll();
+  }
+  renderWichtigesBoard();
+}
+function delWichtigesBoardCol(kategorie){
+  var hasItems=(pData.wichtiges||[]).some(function(w){return w.kategorie===kategorie;});
+  if(hasItems){ alert('Verschiebe zuerst alle Karten aus diesem Board heraus, bevor du es löschst.'); return; }
+  pData.wichtigesBoards=(pData.wichtigesBoards||[]).filter(function(k){return k!==kategorie;});
+  saveAll();
+  renderWichtigesBoard();
+}
+// ── ZIEHEN & ABLEGEN: funktioniert mit Maus UND Finger über Pointer Events ──
+var _wiDrag=null;
+function wiDragStart(e,id){
+  if(e.button!==undefined && e.button!==0)return;
+  e.preventDefault();
+  var handle=e.currentTarget;
+  var card=handle.closest('.wi-card');
+  if(!card)return;
+  var rect=card.getBoundingClientRect();
+  var ghost=card.cloneNode(true);
+  ghost.style.position='fixed';
+  ghost.style.left=rect.left+'px';
+  ghost.style.top=rect.top+'px';
+  ghost.style.width=rect.width+'px';
+  ghost.style.opacity='0.9';
+  ghost.style.pointerEvents='none';
+  ghost.style.zIndex='99999';
+  ghost.style.boxShadow='0 14px 30px rgba(74,56,96,0.35)';
+  ghost.style.transform='rotate(-2deg) scale(1.04)';
+  document.body.appendChild(ghost);
+  card.style.opacity='0.35';
+  _wiDrag={id:id,ghost:ghost,card:card,offsetX:e.clientX-rect.left,offsetY:e.clientY-rect.top,startX:e.clientX,startY:e.clientY,moved:false};
+  document.addEventListener('pointermove',wiDragMove);
+  document.addEventListener('pointerup',wiDragEnd);
+}
+function wiDragMove(e){
+  if(!_wiDrag)return;
+  var dx=e.clientX-_wiDrag.startX,dy=e.clientY-_wiDrag.startY;
+  if(Math.abs(dx)>4||Math.abs(dy)>4)_wiDrag.moved=true;
+  _wiDrag.ghost.style.left=(e.clientX-_wiDrag.offsetX)+'px';
+  _wiDrag.ghost.style.top=(e.clientY-_wiDrag.offsetY)+'px';
+  document.querySelectorAll('.wi-board-col').forEach(function(col){col.style.borderColor='transparent';});
+  var el=document.elementFromPoint(e.clientX,e.clientY);
+  var col=el?el.closest('.wi-board-col'):null;
+  if(col)col.style.borderColor='var(--lilac2)';
+}
+function wiDragEnd(e){
+  if(!_wiDrag)return;
+  document.removeEventListener('pointermove',wiDragMove);
+  document.removeEventListener('pointerup',wiDragEnd);
+  document.querySelectorAll('.wi-board-col').forEach(function(col){col.style.borderColor='transparent';});
+  var el=document.elementFromPoint(e.clientX,e.clientY);
+  var col=el?el.closest('.wi-board-col'):null;
+  if(col && _wiDrag.moved){
+    var newKat=col.getAttribute('data-kategorie');
+    var item=(pData.wichtiges||[]).find(function(w){return w.id===_wiDrag.id;});
+    if(item){
+      item.kategorie=(newKat==='Ohne Kategorie')?'':newKat;
+      saveAll();
+    }
+  }
+  if(_wiDrag.ghost.parentNode)_wiDrag.ghost.parentNode.removeChild(_wiDrag.ghost);
+  if(_wiDrag.card)_wiDrag.card.style.opacity='1';
+  _wiDrag=null;
+  renderWichtigesBoard();
+  try{renderUeberblick();}catch(err){}
+}
+function delWichtigesFromBoard(id){
+  pData.wichtiges=(pData.wichtiges||[]).filter(function(w){return w.id!==id;});
+  saveAll();
+  renderWichtigesBoard();
+  try{renderUeberblick();}catch(e){}
+}
 function renderInboxCard(){
   var card=document.getElementById('ub-inbox-card');
   if(!card)return;
@@ -9479,7 +9671,7 @@ function renderSettingsDesign(container){
 }
 
 // ── BACKUP & UPDATE (nutzt bestehende Funktionen) ──
-const FK_APP_VERSION='2.9.3';
+const FK_APP_VERSION='3.1.0';
 function renderSettingsBackup(container){
   container.innerHTML =
     '<div style="font-size:11px;color:var(--muted);margin-bottom:10px;">Installierte Version: <strong style="color:var(--deep);">'+FK_APP_VERSION+'</strong></div>'
@@ -9595,7 +9787,7 @@ const HELP_CONTENT = [
   ]},
   { section:'Einstellungen & Allgemein', icon:'⚙️', topics:[
     {title:'Schnell festhalten (💭-Button)', text:'Der violette 💭-Button unten rechts ist auf jeder Seite erreichbar. Tippe darauf, um einen Gedanken sofort aufzuschreiben, ohne ihn erst einsortieren zu müssen. Bei "💭 Notiz" landet er in deiner Inbox ("Schnell erfasst" oben auf der Startseite), du kannst ihn später als To-Do heute übernehmen oder verwerfen. Bei "🔖 Link / Wichtiges" landest du stattdessen dauerhaft unter Wichtiges.'},
-    {title:'Wichtiges (🔖-Button)', text:'Der 🔖-Button oben im Kopfbereich ist von jeder Seite aus erreichbar. Hier sammelst du Links und wichtige Notizen, die du öfter brauchst, statt sie jedes Mal neu zu suchen, ähnlich wie bei Milanote. Mit Kategorien (z.B. Rezepte, Inspiration) und Suche. Ein Link öffnet sich beim Antippen direkt in einem neuen Tab. Die letzten Einträge erscheinen außerdem als kleine Vorschau oben auf der Startseite.'},
+    {title:'Wichtiges (🔖-Button)', text:'Der 🔖-Button oben im Kopfbereich ist von jeder Seite aus erreichbar. Hier sammelst du Links und wichtige Notizen, die du öfter brauchst, statt sie jedes Mal neu zu suchen, ähnlich wie bei Milanote. Mit Kategorien (z.B. Rezepte, Inspiration) und Suche. Ein Link öffnet sich beim Antippen direkt in einem neuen Tab. Die letzten Einträge erscheinen außerdem als kleine Vorschau oben auf der Startseite. Unter Persönlich → Wichtiges (ganz vorne in der Leiste) findest du dieselben Einträge nochmal als richtige Boards nebeneinander, eine Spalte pro Kategorie. Über die kleinen Punkte ⠿⠿⠿ oben an einer Karte kannst du sie direkt in ein anderes Board ziehen, mit Maus oder Finger. Über "+ Neues Board" legst du auch ein leeres Board für später an.'},
     {title:'Notfallkontakte (🚨-Button)', text:'Der 🚨-Button oben im Kopfbereich ist von jeder Seite aus erreichbar und zeigt alle wichtigen Kontakte gesammelt an einer Stelle: Kontakte, die du bei Meine Pferde, Andere Tiere oder Kinder eingetragen hast, plus allgemeine Notfallkontakte (unter Einstellungen → Notfallkontakte verwaltbar). Auf eine Telefonnummer tippen ruft direkt an.'},
     {title:'Erledigtes feiern', text:'Beim Abhaken von Top-Prioritäten, To-Dos, Packlisten-Punkten und Habits gibt es jetzt eine kleine Bestätigung (kurzes Aufblitzen mit Funken), und ab und zu eine Mitteilung wie "5 erledigt heute, stark!". Das lässt sich nicht einzeln abschalten, drängt sich aber auch nicht störend auf.'},
     {title:'Übergangs-Warnung', text:'Unter Einstellungen → Mein Profil lässt sich einstellen, dass du automatisch einen sanften Hinweis bekommst, bevor ein Termin mit Uhrzeit beginnt, z.B. "In 15 Min: Stalldienst". Das funktioniert für jeden Termin mit Uhrzeit, ohne dass du dafür extra eine Erinnerung einstellen musst. Die Vorlaufzeit kannst du selbst wählen, und die Funktion lässt sich auch ganz abschalten.'},
