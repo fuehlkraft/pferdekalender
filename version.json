@@ -1,43 +1,18 @@
 {
-  "version": "2.2.0",
-  "info": "Mehr Kategorien & Erinnerungs-Vorlaufzeiten, echte Benachrichtigungen, sichtbare Versionsnummer",
+  "version": "2.4.0",
+  "info": "Urlaubstage mit Brückentage-Tipps, Glücksmomente vorne, Termine bei Überlappung in eigener Reihe",
   "changes": {
-    "kalender": [
-      "Die Tagesseite ist jetzt die Startansicht im Kalender.",
-      "Termine lassen sich jetzt nachträglich bearbeiten, über das ✏️-Symbol.",
-      "Neu: Wiederkehrende Termine, z.B. 'jeden Montag 17 Uhr: Reitstunde', über den Button bei der Halbjahresübersicht anlegbar. Sie erscheinen danach automatisch jede Woche.",
-      "Erinnerungen können jetzt mit Vorlauf eingestellt werden (1 Std., 3 Std., 1 Tag, 1 Woche oder 2 Wochen vorher) und lassen sich im Popup um 10 Minuten verschieben.",
-      "Die Uhrzeit-Auswahl zeigt jetzt durchgehend die volle 24-Stunden-Zahl.",
-      "Die 40-Tage-Achtsamkeit-Karte ist jetzt kompakter und steht direkt bei den anderen Karten.",
-      "Bei Termin → Kategorie stehen jetzt auch Wurmkur, Osteopathie/Physio und Zahnkontrolle zur Auswahl, nicht mehr nur Tierarzt, Hufschmied und Impfung.",
-      "Erinnerungs-Vorlauf um 15 und 30 Minuten vorher ergänzt, für Termine im Alltag.",
-      "Erinnerungen erscheinen jetzt zusätzlich als echte Benachrichtigung (nach einmaliger Erlaubnis), nicht nur als Fenster im geöffneten Tab."
+    "organisation": [
+      "Urlaubstage komplett überarbeitet: eigener Anspruch pro Jahr, ein Log für genommene Urlaubs- und Krankheitstage mit Grund, und automatisch berechnete Brückentage-Tipps für Niedersachsen, jedes Jahr neu berechnet.",
+      "Echter Fehler behoben: Die Smarte Packliste bei Urlaub hat sich beim Hinzufügen eigener Punkte nicht richtig verhalten und wurde beim erneuten Öffnen der Seite manchmal wieder geleert, beides ist jetzt behoben."
     ],
     "ueberblick": [
-      "Heute im Fokus zeigt jetzt oben eine Zeitleiste für den ganzen Tag, ein Tipp auf einen Termin zeigt alle Details.",
-      "Bei Pferde-Status kannst du über ⚙️ selbst wählen, welche Kacheln angezeigt werden, z.B. auch Allergie, Verhalten oder Training.",
-      "Der Erklärtext beim Pferde-Status ist jetzt über \"mehr erfahren\" einklappbar, und die Bezeichnungen der Kacheln (Tierarzt, Hufschmied usw.) sind jetzt fett und damit besser lesbar."
+      "Glücksmomente steht jetzt direkt neben Überblick in der Navigation.",
+      "Tier-Status ist jetzt standardmäßig eingeklappt (über 'anzeigen' aufklappbar), damit andere Karten besser sichtbar sind.",
+      "Bei einer bereits ausgefüllten Pferde-Status-Kachel lässt sich jetzt direkt das Datum des letzten Eintrags korrigieren und das Intervall (Zeitfenster) anpassen, statt nur einen neuen Eintrag anzulegen."
     ],
-    "pferde": [
-      "Bei Meine Pferde kannst du jetzt beliebig viele Kontakte pro Pferd speichern, jeweils mit Rolle, Name, Adresse und Telefonnummer.",
-      "Bei Kosten kannst du jetzt einzelne Tiere von der Aufteilung ausschließen, falls ein Posten z.B. nur für bestimmte Pferde gilt.",
-      "Die Spalten bei der Gesundheitskontrolle sind jetzt breiter, Einträge wie 'Sommer' werden vollständig angezeigt.",
-      "Pferdefotos lassen sich jetzt zuverlässig wechseln, auch wenn schon ein Foto vorhanden war.",
-      "Bei Allergie & Husten werden die Textfelder (Bekannte Auslöser, Diagnose, Wetter, Staubbelastung etc.) jetzt als kleine Textblöcke dargestellt, damit längere Einträge nicht mehr abgeschnitten werden."
-    ],
-    "organisation": [
-      "Bei Urlaub & Reisen gibt es jetzt einen Speichern-Button mit Bestätigung."
-    ],
-    "allgemein": [
-      "Wenn ein Foto nicht hochgeladen werden kann (z.B. bestimmte iPhone-Fotoformate), bekommst du jetzt eine klare Meldung statt gar keine Rückmeldung.",
-      "Echter Fehler behoben: Beim Wechseln des Titelbilds auf der Startseite hat sich nach der Fotoauswahl manchmal direkt wieder ein zweites Auswahlfenster geöffnet. Ursache war ein doppelt ausgelöster Klick im Hintergrund. Jetzt öffnet sich die Fotoauswahl beim Antippen zuverlässig nur einmal.",
-      "Unter Einstellungen → Backup & Update steht jetzt die installierte Versionsnummer, damit sich leicht prüfen lässt, ob eine neue Version schon wirklich angekommen ist."
-    ],
-    "andere-tiere": [
-      "Neu: Eigener Bereich 'Andere Tiere' für Hund, Katze und alles andere neben den Pferden, mit eigenem Profil (Foto, Tierart, Kontakte) und sechs Modulen: Gesundheit, Pflege, Fütterung, Training, Verhalten, Allergie.",
-      "Tier-Status auf der Startseite, genau wie der Pferde-Status.",
-      "Kosten für andere Tiere lassen sich bei Pferde → Kosten ganz normal mit ankreuzen, sie erscheinen gemeinsam mit den Pferdekosten in der Übersicht.",
-      "Termine im Kalender lassen sich jetzt auch mit einem anderen Tier statt einem Pferd verknüpfen."
+    "kalender": [
+      "Termine, die sich zeitlich überlappen, werden in der Zeitleiste jetzt in eigenen Reihen nebeneinander angezeigt, statt sich zu überdecken."
     ]
   }
 }
