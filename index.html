@@ -3799,9 +3799,10 @@ return html2pdf;
     <div class="header-nav scroll-fade-wrap" id="header-nav-wrap">
     <div class="main-nav" id="main-nav-inner">
       <div class="nav-tooltip-wrap"><button class="main-nav-btn active" id="tab-ueberblick" onclick="switchTab('ueberblick')">Überblick<span class="tab-update-dot" id="tab-update-dot-ueberblick" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>Mein Überblick</strong><br>Deine persönliche Schaltzentrale. Nächste Termine, offene To-Dos, Pferde-Status, Jahresziele und Glücksmomente, alles auf einen Blick.</div></div>
+      <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-glueck" onclick="switchTab('glueck')">❤️ Glücksmomente<span class="tab-update-dot" id="tab-update-dot-glueck" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>❤️ Glücksmomente</strong><br>Halte fest was dich wirklich berührt hat. Mit Foto, Datum und Text. Dein persönliches Archiv der schönen Momente, für schwierige Tage.</div></div>
       <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-pferde" onclick="switchTab('pferde')">🐴 Pferde<span class="tab-update-dot" id="tab-update-dot-pferde" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>🐴 Pferde</strong><br>Alles rund um Sir Harry, Bo und Tari. Gesundheitsakte, Hufpflege, Fütterung, Impfungen, Kosten und Trainingsnotizen, lückenlos dokumentiert.</div></div>
       <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-andere-tiere" onclick="switchTab('andere-tiere')">🐾 Andere Tiere<span class="tab-update-dot" id="tab-update-dot-andere-tiere" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>🐾 Andere Tiere</strong><br>Für Hund, Katze & Co: eigenes Profil, Gesundheit, Pflege, Fütterung, Training, Verhalten und Allergien, genauso wie bei den Pferden. Kosten und Termine laufen gemeinsam mit den Pferden.</div></div>
-      <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-glueck" onclick="switchTab('glueck')">❤️ Glücksmomente<span class="tab-update-dot" id="tab-update-dot-glueck" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>❤️ Glücksmomente</strong><br>Halte fest was dich wirklich berührt hat. Mit Foto, Datum und Text. Dein persönliches Archiv der schönen Momente, für schwierige Tage.</div></div>
+      <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-kinder" onclick="switchTab('kinder')">🧒 Kinder<span class="tab-update-dot" id="tab-update-dot-kinder" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>🧒 Kinder</strong><br>Profil, Gesundheit, Schule & Kita, Aktivitäten, Packlisten, Kosten und Meilensteine, alles für deine Kinder an einem Ort.</div></div>
       <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-persoenlich" onclick="switchTab('persoenlich')">✨ Persönlich<span class="tab-update-dot" id="tab-update-dot-persoenlich" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>✨ Persönlich</strong><br>Habits, Routinen, Reflexion, Vision Board, Fitness, Geburtstage, Lebensrad, Bucket List, Weltkarte und Zeitstrahl.</div></div>
       <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-organisation" onclick="switchTab('organisation')">📋 Organisation<span class="tab-update-dot" id="tab-update-dot-organisation" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>📋 Organisation</strong><br>Ziele, Braindump, To-Dos, Verleih, Urlaub, Essen, Vorsorge, Wann-zuletzt, Putzplan, Finanzen und Abos.</div></div>
       <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-kalender" onclick="switchTab('kalender')">📆 Kalender<span class="tab-update-dot" id="tab-update-dot-kalender" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>📆 Kalender</strong><br>Monats- und Tagesansicht mit Pferde-Einträgen, Tagesnotizen, Intentionen und Journal. Für Mensch und Pferd gemeinsam.</div></div>
@@ -4417,7 +4418,7 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
           <div class="sec-title" style="margin:0;flex:1;">🎒 Packliste Turnier</div>
           <button class="fk-share-btn no-print" onclick="printPackliste()">🖨️ Teilen</button>
-          <button onclick="addPackItem('custom')" class="save-btn" style="padding:6px 14px;margin-left:auto;">+ Eigener Punkt</button>
+          <button onclick="addPackItemTurnier('custom')" class="save-btn" style="padding:6px 14px;margin-left:auto;">+ Eigener Punkt</button>
           <button onclick="resetPackliste()" style="background:rgba(232,228,240,0.5);border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;font-family:Arial,sans-serif;">↺ Zurücksetzen</button>
         </div>
         <!-- Infotext Turnier -->
@@ -4694,6 +4695,80 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
           <select id="oa-module-animal-sel" onchange="renderOAModuleView()" style="border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:7px 12px;font-size:12px;font-family:Arial,sans-serif;background:white;color:var(--deep);outline:none;"></select>
         </div>
         <div id="oa-module-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ KINDER BEREICH ═══ -->
+  <div id="section-kinder" style="display:none">
+    <div class="body">
+      <div class="pk-subnav-inner" id="kid-subnav">
+        <button class="main-nav-btn active" id="kid-tab-overview" onclick="showKidView('overview')">Meine Kinder</button>
+        <button class="main-nav-btn" id="kid-tab-gesundheit" onclick="showKidView('gesundheit')">🩺 Gesundheit</button>
+        <button class="main-nav-btn" id="kid-tab-schule" onclick="showKidView('schule')">🎒 Schule & Kita</button>
+        <button class="main-nav-btn" id="kid-tab-aktivitaeten" onclick="showKidView('aktivitaeten')">⚽ Aktivitäten</button>
+        <button class="main-nav-btn" id="kid-tab-packliste" onclick="showKidView('packliste')">🧳 Packliste</button>
+        <button class="main-nav-btn" id="kid-tab-kosten" onclick="showKidView('kosten')">💰 Kosten</button>
+        <button class="main-nav-btn" id="kid-tab-meilensteine" onclick="showKidView('meilensteine')">💭 Meilensteine</button>
+      </div>
+
+      <div class="card" style="margin-bottom:14px;background:linear-gradient(135deg,rgba(216,207,240,0.15),rgba(200,234,223,0.1));">
+        <div style="font-size:12px;color:var(--text);line-height:1.6;">🧒 Hier hast du alles zu deinen Kindern an einem Ort, Gesundheit, Schule, Aktivitäten, Packlisten und Kosten, getrennt von den Tieren.</div>
+      </div>
+
+      <!-- MEINE KINDER -->
+      <div id="kid-view-overview">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+          <div class="sec-title" style="margin:0">Meine Kinder</div>
+          <button onclick="addKid()" class="save-btn" style="margin-left:auto;padding:6px 16px;">+ Kind hinzufügen</button>
+        </div>
+        <div id="kid-cards"></div>
+      </div>
+
+      <!-- GENERISCHE MODUL-ANSICHT (Gesundheit, Schule, Aktivitäten, Meilensteine) -->
+      <div id="kid-view-module" style="display:none">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+          <div class="sec-title" style="margin:0;flex:1;" id="kid-module-title"></div>
+          <select id="kid-module-sel" onchange="renderKidModuleView()" style="border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:7px 12px;font-size:12px;font-family:Arial,sans-serif;background:white;color:var(--deep);outline:none;"></select>
+        </div>
+        <div id="kid-module-content"></div>
+      </div>
+
+      <!-- PACKLISTE -->
+      <div id="kid-view-packliste" style="display:none">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+          <div class="sec-title" style="margin:0;flex:1;">🧳 Packliste</div>
+          <select id="kid-pack-sel" onchange="renderKidPackliste()" style="border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:7px 12px;font-size:12px;font-family:Arial,sans-serif;background:white;color:var(--deep);outline:none;"></select>
+        </div>
+        <div id="kid-pack-content"></div>
+      </div>
+
+      <!-- KOSTEN -->
+      <div id="kid-view-kosten" style="display:none">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+          <div class="sec-title" style="margin:0">💰 Kosten Kinder</div>
+          <button onclick="openKidKostenModal()" class="save-btn" style="margin-left:auto;padding:6px 16px;">+ Kosten eintragen</button>
+        </div>
+        <div id="kid-kosten-content"></div>
+        <div id="kid-kosten-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:200;align-items:center;justify-content:center;">
+          <div style="background:white;border-radius:16px;padding:24px;width:90%;max-width:420px;box-shadow:0 8px 40px rgba(0,0,0,0.15);">
+            <div style="font-family:Georgia,serif;font-size:20px;font-weight:600;color:var(--deep);margin-bottom:16px;">💰 Kosten eintragen</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+              <div><div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:3px;text-transform:uppercase;">Datum</div>
+                <input type="date" id="kk-datum" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 10px;font-family:Arial,sans-serif;font-size:12px;outline:none;box-sizing:border-box;"></div>
+              <div><div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:3px;text-transform:uppercase;">Kind</div>
+                <select id="kk-kind" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 10px;font-family:Arial,sans-serif;font-size:12px;outline:none;background:white;box-sizing:border-box;"></select></div>
+            </div>
+            <div style="margin-bottom:10px;"><div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:3px;text-transform:uppercase;">Beschreibung</div>
+              <input type="text" id="kk-titel" placeholder="z.B. Kindergartenbeitrag, Schulausflug..." style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 10px;font-family:Arial,sans-serif;font-size:12px;outline:none;box-sizing:border-box;"></div>
+            <div style="margin-bottom:10px;"><div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:3px;text-transform:uppercase;">Betrag (€)</div>
+              <input type="number" id="kk-betrag" placeholder="0.00" step="0.01" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 10px;font-family:Arial,sans-serif;font-size:12px;outline:none;box-sizing:border-box;"></div>
+            <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px;">
+              <button onclick="closeKidKostenModal()" style="background:rgba(232,228,240,0.5);border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:8px 16px;font-size:13px;cursor:pointer;font-family:Arial,sans-serif;color:var(--muted);">Abbrechen</button>
+              <button onclick="saveKidKosten()" class="save-btn" style="padding:8px 20px;">✓ Speichern</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -5393,26 +5468,18 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
               <button onclick="addReise();var _b=event.target;_b.style.background='var(--mint2)';setTimeout(function(){_b.style.background='var(--sky)';},900);" style="background:var(--sky);border:none;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;">+</button>
             </div>
           </div>
-          <div class="card">
-            <div class="card-title"><span class="card-title-dot" style="background:var(--butter)"></span>🌴 Urlaubstage</div>
-            <div style="text-align:center;padding:10px 0;">
-              <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
-                <button onclick="changeUrlaubTotal(-1)" style="background:rgba(232,228,240,0.5);border:none;border-radius:6px;padding:4px 10px;font-size:14px;cursor:pointer;color:var(--deep);">−</button>
-                <div style="font-family:Georgia,serif;font-size:48px;font-weight:600;color:var(--deep)" id="urlaubstage-num">30</div>
-                <button onclick="changeUrlaubTotal(1)" style="background:rgba(232,228,240,0.5);border:none;border-radius:6px;padding:4px 10px;font-size:14px;cursor:pointer;color:var(--deep);">+</button>
-              </div>
-              <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Tage gesamt (klicken zum Ändern)</div>
-              <div style="display:flex;gap:8px;justify-content:center;align-items:center;">
-                <button onclick="changeUrlaub(-1)" style="background:var(--rose);border:none;border-radius:8px;padding:6px 14px;font-size:16px;cursor:pointer;color:var(--deep);">−</button>
-                <div style="font-size:13px;color:var(--muted)">Verbraucht: <strong id="urlaubstage-used" style="color:var(--deep)">0</strong></div>
-                <button onclick="changeUrlaub(1)" style="background:var(--mint);border:none;border-radius:8px;padding:6px 14px;font-size:16px;cursor:pointer;color:var(--deep);">+</button>
-              </div>
-              <div style="margin-top:10px;height:8px;background:rgba(216,207,240,0.3);border-radius:4px;overflow:hidden;">
-                <div id="urlaub-bar" style="height:100%;background:linear-gradient(to right,var(--mint2),var(--lilac2));border-radius:4px;transition:width 0.3s;width:0%"></div>
-              </div>
-              <div style="font-size:11px;color:var(--muted);margin-top:6px;"><span id="urlaubstage-rest">30</span> Tage verbleibend</div>
+        </div>
+        <!-- Urlaubstage: Anspruch, Verbrauch mit Grund, Krankheitstage, Brückentage -->
+        <div class="card" style="margin-bottom:14px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;flex-wrap:wrap;">
+            <div class="card-title" style="margin-bottom:0;"><span class="card-title-dot" style="background:var(--butter)"></span>🌴 Urlaubstage</div>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:6px;">
+              <button onclick="changeUrlaubJahr(-1)" style="background:rgba(232,228,240,0.5);border:none;border-radius:6px;padding:3px 9px;font-size:12px;cursor:pointer;color:var(--deep);">‹</button>
+              <span id="urlaub-jahr-label" style="font-size:13px;font-weight:700;color:var(--deep);min-width:42px;text-align:center;"></span>
+              <button onclick="changeUrlaubJahr(1)" style="background:rgba(232,228,240,0.5);border:none;border-radius:6px;padding:3px 9px;font-size:12px;cursor:pointer;color:var(--deep);">›</button>
             </div>
           </div>
+          <div id="urlaubstage-content"></div>
         </div>
         <!-- Smarte Packliste -->
         <div class="card">
@@ -5450,7 +5517,7 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
           <!-- Eigenes Item hinzufügen -->
           <div style="display:flex;gap:8px;margin-top:8px;">
             <input type="text" id="pack-inp" placeholder="Gegenstand hinzufügen (zur Kategorie 'Ich')..." style="flex:1;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:7px 12px;font-family:Arial,sans-serif;font-size:13px;outline:none;">
-            <button onclick="addPackItem()" class="save-btn" style="padding:7px 14px;">+ Hinzufügen</button>
+            <button onclick="addSmartPackItem()" class="save-btn" style="padding:7px 14px;">+ Hinzufügen</button>
           </div>
           <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:11px;color:var(--muted);">
             <span id="pack-count">0 Gegenstände</span>
@@ -5911,7 +5978,7 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
             <textarea id="tag-zeit-notiz" placeholder="Notiz (z.B. Zoom-Link, Adresse, was mitbringen...)" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 10px;font-size:11px;font-family:Arial,sans-serif;background:rgba(255,255,255,0.7);color:var(--text);outline:none;margin-bottom:6px;min-height:44px;resize:vertical;box-sizing:border-box;"></textarea>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px;">
               <div>
-                <div style="font-size:9px;color:var(--muted);margin-bottom:2px;">Tier (optional)</div>
+                <div style="font-size:9px;color:var(--muted);margin-bottom:2px;">Verknüpfen mit (optional)</div>
                 <select id="tag-zeit-horse" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 6px;font-size:11px;font-family:Arial,sans-serif;background:rgba(255,255,255,0.7);color:var(--text);outline:none;box-sizing:border-box;">
                   <option value="">Kein Tier</option>
                 </select>
@@ -6171,6 +6238,282 @@ const OA_MODULES={
 };
 function getAllAnimalNames(){ return horses.concat(otherAnimals); }
 
+// ── KINDER ──
+// Eigener Bereich für Kinder, nach demselben Grundprinzip wie Andere Tiere, aber mit
+// kindgerechten Modulen statt Tier-Modulen. Bewusst getrennt von Tierkosten/-status gehalten.
+let kids=[];
+let kidProfiles={};
+let kidExtra={gesundheit:{},schule:{},aktivitaeten:{},meilensteine:{}};
+let kidPackliste={};
+let kidKosten=[];
+const KID_MODULES={
+  gesundheit:{label:'🩺 Gesundheit',icon:'🩺',fields:[['Datum','datum','date'],['Anlass (U-Untersuchung, Impfung, Arzt...)','titel','text'],['Befund/Ergebnis','befund','text'],['Nächster Termin','naechster','date']]},
+  schule:{label:'🎒 Schule & Kita',icon:'🎒',fields:[['Datum','datum','date'],['Was steht an?','titel','text']]},
+  aktivitaeten:{label:'⚽ Aktivitäten',icon:'⚽',fields:[['Wochentag','tag','text'],['Aktivität','titel','text'],['Uhrzeit','zeit','time']]},
+  meilensteine:{label:'💭 Meilensteine & Notizen',icon:'💭',fields:[['Datum','datum','date'],['Was ist passiert?','titel','text']]}
+};
+function getKP(name){
+  if(!kidProfiles[name])kidProfiles[name]={name:name,foto:'',geburtsdatum:'',schule:'',klasse:'',besonderheiten:'',kontakte:[]};
+  if(!kidProfiles[name].kontakte)kidProfiles[name].kontakte=[];
+  return kidProfiles[name];
+}
+function saveKids(){
+  try{
+    localStorage.setItem('pk_kids',JSON.stringify(kids));
+    localStorage.setItem('pk_kid_profiles',JSON.stringify(kidProfiles));
+    localStorage.setItem('pk_kid_extra',JSON.stringify(kidExtra));
+    localStorage.setItem('pk_kid_packliste',JSON.stringify(kidPackliste));
+    localStorage.setItem('pk_kid_kosten',JSON.stringify(kidKosten));
+  }catch(e){console.warn('Speichern (Kinder) fehlgeschlagen:',e);}
+}
+function loadKids(){
+  try{const a=JSON.parse(localStorage.getItem('pk_kids'));if(a)kids=a;}catch(e){}
+  try{const p=JSON.parse(localStorage.getItem('pk_kid_profiles'));if(p)kidProfiles=p;}catch(e){}
+  try{const x=JSON.parse(localStorage.getItem('pk_kid_extra'));if(x)kidExtra=Object.assign(kidExtra,x);}catch(e){}
+  try{const pl=JSON.parse(localStorage.getItem('pk_kid_packliste'));if(pl)kidPackliste=pl;}catch(e){}
+  try{const kk=JSON.parse(localStorage.getItem('pk_kid_kosten'));if(kk)kidKosten=kk;}catch(e){}
+}
+
+// ── KINDER: VIEWS & RENDERING ──
+let currentKidModule='gesundheit';
+function showKidView(v){
+  document.querySelectorAll('#kid-subnav .main-nav-btn').forEach(b=>b.classList.remove('active'));
+  ['overview','module','packliste','kosten'].forEach(function(vv){
+    var el=document.getElementById('kid-view-'+vv); if(el) el.style.display='none';
+  });
+  if(v==='overview'){
+    document.getElementById('kid-view-overview').style.display='block';
+    var b=document.getElementById('kid-tab-overview');if(b)b.classList.add('active');
+    renderKidOverview();
+  } else if(v==='packliste'){
+    document.getElementById('kid-view-packliste').style.display='block';
+    var bp=document.getElementById('kid-tab-packliste');if(bp)bp.classList.add('active');
+    fillKidPackSelect();
+    renderKidPackliste();
+  } else if(v==='kosten'){
+    document.getElementById('kid-view-kosten').style.display='block';
+    var bk=document.getElementById('kid-tab-kosten');if(bk)bk.classList.add('active');
+    renderKidKosten();
+  } else {
+    currentKidModule=v;
+    document.getElementById('kid-view-module').style.display='block';
+    var b2=document.getElementById('kid-tab-'+v);if(b2)b2.classList.add('active');
+    document.getElementById('kid-module-title').textContent=(KID_MODULES[v]?KID_MODULES[v].label:v);
+    fillKidModuleSelect();
+    renderKidModuleView();
+  }
+}
+function fillKidModuleSelect(){
+  var sel=document.getElementById('kid-module-sel');
+  if(!sel)return;
+  var prev=sel.value;
+  sel.innerHTML=kids.map(function(k,i){return '<option value="'+i+'">'+k+'</option>';}).join('');
+  if(prev!==''&&parseInt(prev)<kids.length)sel.value=prev;
+}
+function fillKidPackSelect(){
+  var sel=document.getElementById('kid-pack-sel');
+  if(!sel)return;
+  var prev=sel.value;
+  sel.innerHTML=kids.map(function(k,i){return '<option value="'+i+'">'+k+'</option>';}).join('');
+  if(prev!==''&&parseInt(prev)<kids.length)sel.value=prev;
+}
+function renderKidOverview(){
+  const cont=document.getElementById('kid-cards');if(!cont)return;
+  cont.innerHTML='';
+  const inp12='border:none;border-bottom:1px solid rgba(180,160,220,0.2);background:transparent;font-family:"Arial",sans-serif;font-size:12px;color:var(--deep);outline:none;padding:2px 0;width:100%;';
+  if(!kids.length){
+    cont.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted);">Noch keine Kinder angelegt. Über "+ Kind hinzufügen" startest du.</div>';
+    return;
+  }
+  kids.forEach((name,i)=>{
+    const kp=getKP(name);
+    const div=document.createElement('div');div.className='horse-card';div.style.marginBottom='20px';
+    div.innerHTML=`<div style="display:grid;grid-template-columns:90px 1fr;gap:18px;margin-bottom:14px;align-items:start;">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div style="position:relative;width:80px;height:80px;">
+          <div onclick="kidUpload(${i})" style="width:80px;height:80px;border-radius:50%;border:2px solid rgba(180,160,220,0.4);overflow:hidden;cursor:pointer;background:${HORSE_COLORS[i%HORSE_COLORS.length]};display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:var(--deep);">
+            ${kp.foto?`<img src="${kp.foto}" style="width:100%;height:100%;object-fit:cover;">`:`<span>${(kp.name||name)[0]}</span>`}
+          </div>
+        </div>
+        <div onclick="kidUpload(${i})" style="font-size:9px;color:var(--muted);text-align:center;cursor:pointer;">📷 ändern</div>
+      </div>
+      <div>
+        <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:140px;"><div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;">Name</div>
+            <input value="${kp.name||name}" onchange="renameKid(${i},this.value)" style="font-family:Georgia,serif;font-size:20px;font-weight:600;color:var(--deep);border:none;border-bottom:1px solid rgba(180,160,220,0.3);background:transparent;outline:none;width:100%;" placeholder="Name"></div>
+          <button onclick="delKid(${i})" style="background:none;border:none;color:rgba(180,160,220,0.5);cursor:pointer;font-size:14px;align-self:flex-start;margin-top:14px;">✕</button>
+        </div>
+        <div class="horse-fields-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          ${[['Geburtstag','geburtsdatum','date'],['Schule / Kita','schule','text'],['Klasse / Gruppe','klasse','text']].map(([l,k,t])=>`
+          <div><div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;">${l}</div>
+          <input type="${t}" value="${kp[k]||''}" onchange="updateKP(${i},'${k}',this.value)" style="${inp12}"></div>`).join('')}
+        </div>
+        <div style="margin-top:10px;">
+          <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">Besonderheiten / Allergien / Wichtiges</div>
+          <textarea onchange="updateKP(${i},'besonderheiten',this.value)" style="width:100%;border:1px solid rgba(180,160,220,0.2);border-radius:8px;padding:6px 8px;font-family:Arial,sans-serif;font-size:12px;color:var(--text);background:rgba(255,255,255,0.6);outline:none;resize:vertical;min-height:44px;">${kp.besonderheiten||''}</textarea>
+        </div>
+        <div style="margin-top:10px;">
+          <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">📇 Kontakte (Kinderarzt, Lehrer, Notfallkontakt, ...)</div>
+          ${kp.kontakte.map((k,ki)=>`
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 22px;gap:5px;margin-bottom:5px;align-items:center;">
+            <input value="${k.rolle||''}" placeholder="Rolle" onchange="updateKidKontakt(${i},${ki},'rolle',this.value)" style="${inp12}">
+            <input value="${k.name||''}" placeholder="Name" onchange="updateKidKontakt(${i},${ki},'name',this.value)" style="${inp12}">
+            <input value="${k.adresse||''}" placeholder="Adresse" onchange="updateKidKontakt(${i},${ki},'adresse',this.value)" style="${inp12}">
+            <input value="${k.telefon||''}" placeholder="Telefon" onchange="updateKidKontakt(${i},${ki},'telefon',this.value)" style="${inp12}">
+            <button onclick="delKidKontakt(${i},${ki})" style="background:none;border:none;color:rgba(180,160,220,0.5);cursor:pointer;font-size:13px;">✕</button>
+          </div>`).join('')}
+          <button onclick="addKidKontakt(${i})" style="background:rgba(216,207,240,0.3);border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:5px 12px;font-size:11px;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;margin-top:2px;">+ Kontakt hinzufügen</button>
+        </div>
+      </div>
+    </div>`;
+    cont.appendChild(div);
+  });
+}
+function addKid(){
+  const name=prompt('Name des Kindes:');
+  if(!name||!name.trim())return;
+  const n=name.trim();
+  if(kids.includes(n)){alert('Der Name ist schon vergeben.');return;}
+  kids.push(n);getKP(n);saveKids();renderKidOverview();fillTagZeitHorseSelect();
+}
+function delKid(i){
+  if(!confirm('Dieses Kind wirklich aus der App entfernen? Einträge in den Modulen bleiben gespeichert, werden aber nicht mehr angezeigt.'))return;
+  kids.splice(i,1);saveKids();renderKidOverview();
+}
+function renameKid(idx,val){
+  if(!val.trim())return;
+  const old=kids[idx];const kp=getKP(old);kp.name=val;kidProfiles[val]=kp;
+  if(val!==old)delete kidProfiles[old];
+  kids[idx]=val;saveKids();
+}
+function updateKP(idx,key,val){const name=kids[idx];const kp=getKP(name);kp[key]=val;saveKids();}
+function addKidKontakt(idx){const name=kids[idx];const kp=getKP(name);kp.kontakte.push({rolle:'',name:'',adresse:'',telefon:''});saveKids();renderKidOverview();}
+function updateKidKontakt(idx,ki,key,val){const name=kids[idx];const kp=getKP(name);if(kp.kontakte[ki]){kp.kontakte[ki][key]=val;saveKids();}}
+function delKidKontakt(idx,ki){const name=kids[idx];const kp=getKP(name);kp.kontakte.splice(ki,1);saveKids();renderKidOverview();}
+function kidUpload(idx){
+  var old=document.getElementById('kid-up-global');
+  if(old&&old.parentNode)old.parentNode.removeChild(old);
+  var inp=document.createElement('input');
+  inp.type='file';inp.id='kid-up-global';inp.accept='image/*';
+  inp.style.cssText='position:fixed;top:-200px;left:-200px;width:1px;height:1px;';
+  document.body.appendChild(inp);
+  inp.onchange=function(){
+    var f=this.files[0];if(!f)return;
+    compressImage(f,function(compressed){
+      var name=kids[idx];var kp=getKP(name);kp.foto=compressed;
+      if(fkSafeSaveStorage(function(){saveKids();}))renderKidOverview();
+    },400,0.75);
+  };
+  inp.click();
+}
+
+// ── GENERISCHE MODUL-ANSICHT (Gesundheit, Schule, Aktivitäten, Meilensteine) ──
+function renderKidModuleView(){
+  const modKey=currentKidModule;const mod=KID_MODULES[modKey];
+  const c=document.getElementById('kid-module-content');if(!c||!mod)return;
+  if(!kids.length){
+    c.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted);">Lege zuerst unter "Meine Kinder" ein Kind an.</div>';return;
+  }
+  const idx=parseInt(document.getElementById('kid-module-sel').value)||0;
+  const name=kids[idx];
+  if(!kidExtra[modKey])kidExtra[modKey]={};
+  if(!kidExtra[modKey][name])kidExtra[modKey][name]=[];
+  const rows=kidExtra[modKey][name];
+  const cols=mod.fields;
+  c.innerHTML=`<div class="card" style="overflow-x:auto;">
+    <table style="border-collapse:collapse;width:100%;min-width:600px;font-size:11px;">
+      <thead><tr>${cols.map(([l])=>`<th style="padding:7px 8px;text-align:left;font-weight:700;color:var(--deep);border:1px solid rgba(216,207,240,0.3);background:rgba(216,207,240,0.2);white-space:nowrap;">${l}</th>`).join('')}<th style="padding:7px 8px;background:rgba(216,207,240,0.2);border:1px solid rgba(216,207,240,0.3);">Notiz</th><th style="padding:7px 8px;background:rgba(216,207,240,0.2);border:1px solid rgba(216,207,240,0.3);"></th></tr></thead>
+      <tbody>${rows.length===0?`<tr><td colspan="${cols.length+2}" style="text-align:center;padding:20px;color:var(--muted);">Noch keine Einträge, klicke "+ Eintrag"</td></tr>`:
+      rows.map((row,ri)=>`<tr style="background:${ri%2===0?'transparent':'rgba(232,228,240,0.08)'}">
+        ${cols.map(([l,k,t])=>`<td style="padding:3px 4px;border:1px solid rgba(216,207,240,0.2);">
+          <input type="${t}" value="${row[k]||''}" onchange="updateKidEntry('${modKey}','${name}',${ri},'${k}',this.value)" style="width:100%;border:none;outline:none;font-family:Arial,sans-serif;font-size:11px;color:var(--deep);background:transparent;padding:3px 4px;box-sizing:border-box;">
+        </td>`).join('')}
+        <td style="padding:3px 4px;border:1px solid rgba(216,207,240,0.2);"><input value="${row.notiz||''}" onchange="updateKidEntry('${modKey}','${name}',${ri},'notiz',this.value)" style="width:100%;border:none;outline:none;font-family:Arial,sans-serif;font-size:11px;color:var(--deep);background:transparent;padding:3px 4px;box-sizing:border-box;"></td>
+        <td style="padding:3px 4px;border:1px solid rgba(216,207,240,0.2);"><button onclick="delKidEntry('${modKey}','${name}',${ri})" style="background:none;border:none;color:rgba(180,160,220,0.5);cursor:pointer;font-size:12px;">✕</button></td>
+      </tr>`).join('')}
+      </tbody>
+    </table>
+    <button onclick="addKidEntry('${modKey}','${name}')" style="margin-top:10px;background:rgba(216,207,240,0.3);border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:7px 14px;font-size:12px;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;">+ Eintrag</button>
+  </div>`;
+}
+function addKidEntry(modKey,name){
+  if(!kidExtra[modKey])kidExtra[modKey]={};
+  if(!kidExtra[modKey][name])kidExtra[modKey][name]=[];
+  const entry={};(KID_MODULES[modKey].fields||[]).forEach(([l,k])=>{entry[k]='';});entry.notiz='';
+  if(entry.datum!==undefined)entry.datum=new Date().toISOString().split('T')[0];
+  kidExtra[modKey][name].push(entry);saveKids();renderKidModuleView();
+}
+function updateKidEntry(modKey,name,ri,key,val){
+  if(kidExtra[modKey]&&kidExtra[modKey][name]&&kidExtra[modKey][name][ri]){kidExtra[modKey][name][ri][key]=val;saveKids();}
+}
+function delKidEntry(modKey,name,ri){
+  if(kidExtra[modKey]&&kidExtra[modKey][name]){kidExtra[modKey][name].splice(ri,1);saveKids();renderKidModuleView();}
+}
+
+// ── PACKLISTE (Checkliste statt Datums-Log) ──
+function renderKidPackliste(){
+  const c=document.getElementById('kid-pack-content');if(!c)return;
+  if(!kids.length){ c.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted);">Lege zuerst unter "Meine Kinder" ein Kind an.</div>'; return; }
+  const idx=parseInt(document.getElementById('kid-pack-sel').value)||0;
+  const name=kids[idx];
+  if(!kidPackliste[name])kidPackliste[name]=[];
+  const items=kidPackliste[name];
+  c.innerHTML='<div class="card">'
+    +(items.length===0?'<div style="text-align:center;padding:20px;color:var(--muted);">Noch keine Packliste, z.B. für Sport, Ausflug oder Übernachtung.</div>':
+      items.map((it,ii)=>'<div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.6);border-radius:7px;padding:6px 10px;font-size:12px;margin-bottom:6px;">'
+        +'<div onclick="toggleKidPack('+ii+')" class="bucket-check'+(it.done?' done':'')+'" style="cursor:pointer;">'+(it.done?'✓':'')+'</div>'
+        +'<span style="flex:1;color:var(--deep);'+(it.done?'text-decoration:line-through;color:var(--muted)':'')+'">'+it.text+'</span>'
+        +'<button class="bucket-del" onclick="delKidPack('+ii+')">✕</button></div>').join(''))
+    +'<div class="bucket-add" style="margin-top:8px;"><input type="text" id="kid-pack-inp" placeholder="z.B. Sportzeug, Schwimmsachen, Brotdose..."><button onclick="addKidPack()">+</button></div>'
+    +'</div>';
+}
+function addKidPack(){
+  const idx=parseInt(document.getElementById('kid-pack-sel').value)||0;const name=kids[idx];
+  const v=document.getElementById('kid-pack-inp').value.trim();if(!v)return;
+  if(!kidPackliste[name])kidPackliste[name]=[];
+  kidPackliste[name].push({text:v,done:false});
+  document.getElementById('kid-pack-inp').value='';saveKids();renderKidPackliste();
+}
+function toggleKidPack(ii){
+  const idx=parseInt(document.getElementById('kid-pack-sel').value)||0;const name=kids[idx];
+  kidPackliste[name][ii].done=!kidPackliste[name][ii].done;saveKids();renderKidPackliste();
+}
+function delKidPack(ii){
+  const idx=parseInt(document.getElementById('kid-pack-sel').value)||0;const name=kids[idx];
+  kidPackliste[name].splice(ii,1);saveKids();renderKidPackliste();
+}
+
+// ── KOSTEN KINDER (einfache, eigene Liste statt Tier-Kosten-System) ──
+function renderKidKosten(){
+  const c=document.getElementById('kid-kosten-content');if(!c)return;
+  const total=kidKosten.reduce((s,e)=>s+(parseFloat(e.betrag)||0),0);
+  const byKid={};kids.forEach(k=>byKid[k]=0);
+  kidKosten.forEach(e=>{ if(byKid[e.kind]!==undefined) byKid[e.kind]+=parseFloat(e.betrag)||0; });
+  c.innerHTML='<div class="cost-total"><div style="font-size:13px;color:var(--muted);margin-bottom:6px">Gesamtausgaben Kinder '+pkState.year+'</div><div style="font-family:Georgia,serif;font-size:40px;font-weight:600;color:var(--deep)">'+total.toFixed(2)+' €</div></div>'
+    +'<div class="cost-horses">'+kids.map((k,i)=>'<div class="cost-horse" style="background:'+HORSE_COLORS[i%HORSE_COLORS.length]+'"><div style="font-size:12px;color:var(--muted);margin-bottom:5px">'+k+'</div><div style="font-family:Georgia,serif;font-size:24px;font-weight:600;color:var(--deep)">'+(byKid[k]||0).toFixed(2)+' €</div></div>').join('')+'</div>'
+    +(kidKosten.length?'<div class="cost-entries"><div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:0.5px;margin-bottom:12px;text-transform:uppercase">Alle Ausgaben</div>'
+      +kidKosten.slice().sort((a,b)=>b.datum.localeCompare(a.datum)).map(e=>'<div class="cost-row"><div><span style="background:var(--lavgray);border-radius:4px;padding:1px 7px;font-size:10px;color:var(--deep);margin-right:6px">'+(e.kind||'')+'</span>'+e.titel
+        +'<div style="font-size:11px;color:var(--muted)">'+fmt(e.datum)+'</div></div><div style="color:var(--deep);font-weight:700;font-size:14px;white-space:nowrap">'+(parseFloat(e.betrag)||0).toFixed(2)+' €</div></div>').join('')+'</div>'
+    :'<div style="text-align:center;padding:40px;color:var(--muted)">Noch keine Kosteneinträge.</div>');
+}
+function openKidKostenModal(){
+  var sel=document.getElementById('kk-kind');
+  if(sel)sel.innerHTML=kids.map(function(k){return '<option>'+k+'</option>';}).join('');
+  var dm=document.getElementById('kk-datum');if(dm)dm.value=new Date().toISOString().split('T')[0];
+  var m=document.getElementById('kid-kosten-modal');if(m)m.style.display='flex';
+}
+function closeKidKostenModal(){ var m=document.getElementById('kid-kosten-modal');if(m)m.style.display='none'; }
+function saveKidKosten(){
+  var d=document.getElementById('kk-datum').value;
+  var kind=document.getElementById('kk-kind').value;
+  var t=document.getElementById('kk-titel').value.trim();
+  var a=document.getElementById('kk-betrag').value;
+  if(!d||!t||!a||!kind){alert('Bitte Datum, Kind, Beschreibung und Betrag ausfüllen.');return;}
+  kidKosten.push({id:Date.now(),datum:d,kind:kind,titel:t,betrag:a});
+  saveKids();closeKidKostenModal();renderKidKosten();
+  try{renderUeberblick();}catch(e){}
+}
+
 // ── ANDERE TIERE: VIEWS & RENDERING ──
 let currentOAModule='gesundheit';
 function showOAView(v){
@@ -6378,6 +6721,7 @@ function loadAll(){
   try{const h=JSON.parse(localStorage.getItem('pk_horses'));if(h&&h.length)horses=h;}catch(e){}
   try{const pd=JSON.parse(localStorage.getItem('pk_pers'));if(pd)pData=Object.assign(pData,pd);}catch(e){}
   loadOA();
+  loadKids();
   const sp=localStorage.getItem('pk_cover_photo');
   if(sp){
     const i=document.getElementById('cover-photo');i.src=sp;i.classList.add('visible');
@@ -6676,7 +7020,7 @@ function goToCover(){
   document.getElementById('cover').style.display='flex';
   document.getElementById('app').style.display='none';
   // Alle Sections verstecken damit beim nächsten Öffnen sauber gestartet wird
-  ['pferde','andere-tiere','glueck','persoenlich','organisation','kalender','ueberblick','vorlagen'].forEach(s=>{
+  ['pferde','andere-tiere','kinder','glueck','persoenlich','organisation','kalender','ueberblick','vorlagen'].forEach(s=>{
     const el=document.getElementById('section-'+s);if(el)el.style.display='none';
   });
   document.querySelectorAll('#main-nav-inner .main-nav-btn').forEach(b=>b.classList.remove('active'));
@@ -7408,6 +7752,41 @@ function renderCosts(){
     '<div style="text-align:center;padding:40px;color:var(--muted)">Noch keine Kosteneinträge.</div>');
 }
 function toggleCostRow(){document.getElementById('cost-row').style.display=document.getElementById('f-cat').value==='cost'?'block':'none';}
+function openQuickEditLastEntry(cat,horse){
+  const ents=pkEntries.filter(function(x){return (x.horse===horse||x.horse==='Alle')&&x.cat===cat;}).sort(function(a,b){return b.date.localeCompare(a.date);});
+  const last=ents[0];
+  const hp=getHP(horse);
+  const def=PK_STATUS_TILE_DEFS[cat];
+  const box=document.getElementById('pk-quickedit-modal');
+  if(!box)return;
+  box.innerHTML='<div onclick="event.stopPropagation()" style="background:white;border-radius:16px;padding:22px;width:90%;max-width:380px;box-shadow:0 8px 40px rgba(0,0,0,0.15);">'
+    +'<div style="font-family:Georgia,serif;font-size:18px;font-weight:600;color:var(--deep);margin-bottom:4px;">'+(def?def.icon+' '+def.label:cat)+'</div>'
+    +'<div style="font-size:12px;color:var(--muted);margin-bottom:16px;">'+horse+'</div>'
+    +(last?
+      '<div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Letzter Eintrag, Datum korrigieren</div>'
+      +'<input type="date" id="qe-datum" value="'+last.date+'" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:7px 10px;font-family:Arial,sans-serif;font-size:13px;outline:none;box-sizing:border-box;margin-bottom:14px;">'
+      :'<div style="font-size:12px;color:var(--muted);margin-bottom:14px;">Noch kein Eintrag vorhanden.</div>')
+    +'<div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Intervall (Tage), eigenes Zeitfenster</div>'
+    +'<input type="number" id="qe-intervall" value="'+(hp.intervals[cat]||365)+'" min="1" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:7px 10px;font-family:Arial,sans-serif;font-size:13px;outline:none;box-sizing:border-box;margin-bottom:18px;">'
+    +'<div style="display:flex;flex-direction:column;gap:8px;">'
+    +(last?'<button onclick="saveQuickEditLastEntry(\''+cat+'\',\''+horse+'\','+last.id+')" class="save-btn">✓ Datum & Intervall speichern</button>':'')
+    +'<button onclick="closeQuickEditLastEntry();openModal(\''+cat+'\',\''+horse+'\')" style="background:rgba(216,207,240,0.3);border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:8px 14px;font-size:12px;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;">+ Neuen Eintrag anlegen</button>'
+    +'<button onclick="closeQuickEditLastEntry()" style="background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;padding:4px;">Abbrechen</button>'
+    +'</div></div>';
+  box.style.display='flex';
+}
+function saveQuickEditLastEntry(cat,horse,entryId){
+  const e=pkEntries.find(function(x){return x.id===entryId;});
+  const newDate=document.getElementById('qe-datum').value;
+  const newInterval=Math.max(1,parseInt(document.getElementById('qe-intervall').value,10)||365);
+  if(e&&newDate)e.date=newDate;
+  const hp=getHP(horse);
+  hp.intervals[cat]=newInterval;
+  saveAll();saveHP();
+  closeQuickEditLastEntry();
+  try{renderUeberblick();}catch(err){}
+}
+function closeQuickEditLastEntry(){ var box=document.getElementById('pk-quickedit-modal'); if(box)box.style.display='none'; }
 function openModal(cat, horse){
   const td=new Date().toISOString().split('T')[0];
   document.getElementById('f-date').value=pkState.month?pkState.year+'-'+(pkState.month<10?'0':'')+pkState.month+'-'+td.split('-')[2]:td;
@@ -8270,7 +8649,7 @@ function dismissBackupReminder(){
 
 
 function applyTabUpdateDots(changesByTab){
-  var tabs = ['ueberblick','pferde','andere-tiere','glueck','persoenlich','organisation','kalender','vorlagen'];
+  var tabs = ['ueberblick','glueck','pferde','andere-tiere','kinder','persoenlich','organisation','kalender','vorlagen'];
   tabs.forEach(function(tab){
     var dot = document.getElementById('tab-update-dot-' + tab);
     if(!dot) return;
@@ -8294,7 +8673,7 @@ function restoreTabUpdateDots(){
   }catch(e){}
 }
 var TAB_LABELS = {
-  ueberblick:'Überblick', pferde:'Pferde', 'andere-tiere':'Andere Tiere', glueck:'Glücksmomente',
+  ueberblick:'Überblick', pferde:'Pferde', 'andere-tiere':'Andere Tiere', kinder:'Kinder', glueck:'Glücksmomente',
   persoenlich:'Persönlich', organisation:'Organisation', kalender:'Kalender', vorlagen:'Vorlagen'
 };
 function showTabUpdateInfo(tab){
@@ -8689,7 +9068,7 @@ function renderSettingsDesign(container){
 }
 
 // ── BACKUP & UPDATE (nutzt bestehende Funktionen) ──
-const FK_APP_VERSION='2.2.0';
+const FK_APP_VERSION='2.4.0';
 function renderSettingsBackup(container){
   container.innerHTML =
     '<div style="font-size:11px;color:var(--muted);margin-bottom:10px;">Installierte Version: <strong style="color:var(--deep);">'+FK_APP_VERSION+'</strong></div>'
@@ -8716,8 +9095,9 @@ const HELP_CONTENT = [
   { section:'Mein Überblick', icon:'🏠', topics:[
     {title:'Wofür ist die Überblick-Seite?', text:'Deine Schaltzentrale: alles Wichtige aus allen Bereichen auf einen Blick, ohne erst in jeden Tab einzeln zu wechseln.'},
     {title:'Hintergrundbild ändern', text:'Tippe oben rechts auf das ☰-Symbol, dort kannst du ein eigenes Foto hochladen oder wieder entfernen, und die Position per Ziehen anpassen.'},
+    {title:'Nichts vergessen heute', text:'Erscheint ganz oben, sobald es etwas Wichtiges gibt: überfällige Pferde-Termine, bald fällige Gesundheits-Termine bei anderen Tieren oder Kindern, sowie nicht abgehakte Top-Prioritäten und To-Dos von vorherigen Tagen. Ist alles erledigt, bleibt die Karte einfach weg.'},
     {title:'Heute im Fokus', text:'Zeigt deine heutige Intention, Top-Prioritäten und Termine, oben mit einer Zeitleiste für den ganzen Tag (antippen zeigt Details zu einem Termin). Steht noch nichts drin, kommst du über "jetzt ausfüllen" direkt zur Tagesseite. Ist schon etwas eingetragen, bringt dich "weiter bearbeiten" ebenfalls dorthin.'},
-    {title:'Pferde-Status', text:'Zeigt pro Pferd, wann zuletzt was dran war. Über das ⚙️-Symbol wählst du selbst, welche Kacheln angezeigt werden, neben Tierarzt, Hufschmied, Impfung, Wurmkur, Osteopathie/Physio und Zahnkontrolle stehen auch Allergie & Husten, Verhalten, Training, Hufpflege und Fütterung zur Auswahl. Auf eine Kachel tippen öffnet direkt einen neuen Eintrag. Auf den runden Button mit dem Pferdenamen tippen öffnet den Foto-Upload.'},
+    {title:'Pferde-Status', text:'Zeigt pro Pferd, wann zuletzt was dran war. Über das ⚙️-Symbol wählst du selbst, welche Kacheln angezeigt werden, neben Tierarzt, Hufschmied, Impfung, Wurmkur, Osteopathie/Physio und Zahnkontrolle stehen auch Allergie & Husten, Verhalten, Training, Hufpflege und Fütterung zur Auswahl. Auf eine leere Kachel tippen öffnet einen neuen Eintrag. Auf eine bereits ausgefüllte Kachel tippen öffnet ein kleines Fenster, in dem du das Datum des letzten Eintrags korrigieren, das Intervall (Zeitfenster) anpassen, oder einen weiteren neuen Eintrag anlegen kannst. Auf den runden Button mit dem Pferdenamen tippen öffnet den Foto-Upload.'},
     {title:'Offene To-Dos', text:'Zeigt deine unerledigten Aufgaben aus Organisation → To-Dos.'},
     {title:'Nächste 14 Tage', text:'Fasst anstehende Termine aus dem Kalender und wichtige Daten der nächsten zwei Wochen zusammen.'},
     {title:'Jahresziele', text:'Zeigt deine unter Organisation → Ziele eingetragenen Jahresziele.'},
@@ -8747,6 +9127,15 @@ const HELP_CONTENT = [
     {title:'Tier-Status im Überblick', text:'Zeigt auf der Startseite (Mein Überblick) pro Tier, wann zuletzt was dran war, genau wie der Pferde-Status. Ein Tipp auf eine Kachel öffnet direkt einen neuen Eintrag.'},
     {title:'Kosten & Termine gemeinsam mit Pferden', text:'Beim Kosten-Eintragen (Pferde → Kosten) kannst du jedes deiner anderen Tiere genauso ankreuzen wie ein Pferd, die Kosten werden gemeinsam ausgewiesen. Beim Termine-Eintragen im Kalender lässt sich ein Termin ebenso mit einem anderen Tier statt einem Pferd verknüpfen.'},
   ]},
+  { section:'Kinder', icon:'🧒', topics:[
+    {title:'Wofür ist dieser Bereich?', text:'Alles zu deinen Kindern an einem Ort: Gesundheit, Schule & Kita, Aktivitäten, Packlisten, Kosten und Meilensteine, bewusst getrennt von den Tier-Kosten.'},
+    {title:'Meine Kinder', text:'Name, Foto, Geburtstag, Schule/Kita und Klasse pro Kind. Unter "Kontakte" beliebig viele Ansprechpartner mit Rolle, Name, Adresse und Telefonnummer, z.B. Kinderarzt, Lehrer, Notfallkontakt.'},
+    {title:'Gesundheit, Schule & Kita, Aktivitäten, Meilensteine', text:'Vier Module zum Festhalten von Terminen und Notizen pro Kind. Bei Gesundheit gibt es ein Feld "Nächster Termin", das auch in der "Nichts vergessen heute"-Karte im Überblick auftaucht, wenn der Termin näher rückt.'},
+    {title:'Packliste', text:'Eine abhakbare Liste pro Kind, z.B. für Sport, Ausflug oder Übernachtung, statt eines Datums-Logs.'},
+    {title:'Kosten Kinder', text:'Eine eigene, einfache Kostenliste pro Kind, getrennt von der Tier-Kostenübersicht.'},
+    {title:'Kinder-Status im Überblick', text:'Zeigt auf der Startseite pro Kind, wann zuletzt was dran war, genau wie der Pferde-Status und der Tier-Status.'},
+    {title:'Termine mit einem Kind verknüpfen', text:'Im Kalender bei Termine & Zeitplan heißt das Feld jetzt "Verknüpfen mit (optional)" und listet Pferde, andere Tiere und Kinder gemeinsam auf.'},
+  ]},
   { section:'Kalender', icon:'📅', topics:[
     {title:'Tagesseite', text:'Dein zentraler Tagesplaner: Intention, Top-3-Prioritäten, To-Dos, Termine & Zeitplan, Tagebuch und Tagesabschluss mit Stimmung. Über "Tag speichern" unten wird alles gespeichert, der Button wird dabei kurz grün. Offene Prioritäten und To-Dos von gestern bleiben rot markiert sichtbar, bis du sie abhakst.'},
     {title:'Termine eintragen & bearbeiten', text:'Bei Termine & Zeitplan tippst du auf Von oder Bis, um die Uhrzeit über ein Ziffernblatt einzustellen, erst Stunde, dann Minute, mit echter 24-Stunden-Anzeige. Titel und Notiz dazu, fertig. Über das ✏️-Symbol an einem bestehenden Termin kannst du ihn jederzeit nachträglich bearbeiten.'},
@@ -8768,7 +9157,7 @@ const HELP_CONTENT = [
     {title:'Putzplan', text:'Verteilt Hausarbeit auf wiederkehrende Aufgaben, damit nichts vergessen wird und keiner alles allein macht.'},
     {title:'Abos', text:'Liste aller laufenden Abonnements, damit keine stillen Kosten unbemerkt weiterlaufen.'},
     {title:'Verleih', text:'Hält fest, was du an wen verliehen hast, damit nichts in Vergessenheit gerät.'},
-    {title:'Urlaub', text:'Planung für Urlaubsreisen, auch wenn kein Pferd mitkommt.'},
+    {title:'Urlaub & Urlaubstage', text:'Reiseplanung, auch wenn kein Pferd mitkommt. Bei Urlaubstage trägst du deinen jährlichen Anspruch ein und hältst fest, wann und wofür du Urlaub oder Krankheitstage genommen hast, jedes Jahr getrennt zählbar über die Pfeile oben. Darunter erscheinen automatisch berechnete Brückentage-Tipps für Niedersachsen, z.B. "1 Tag nehmen, 4 Tage frei haben", jedes Jahr neu berechnet.'},
     {title:'Vorsorge', text:'Vorsorgetermine für dich selbst, mit Erinnerung im Überblick, wenn ein Termin in den nächsten 90 Tagen anstand.'},
     {title:'Wann zuletzt', text:'Für alles, was man sich merken will, aber leicht vergisst, z.B. wann die Heizung gewartet wurde.'},
   ]},
@@ -10399,11 +10788,146 @@ function addReise(){
   const z=document.getElementById('reise-ziel-inp').value.trim();const d=document.getElementById('reise-datum-inp').value;if(!z)return;
   oData.reisen.push({ziel:z,datum:d,done:false});document.getElementById('reise-ziel-inp').value='';document.getElementById('reise-datum-inp').value='';saveOrg();renderUrlaub();
 }
-function changeUrlaub(d){oData.urlaubstage.used=Math.max(0,Math.min(oData.urlaubstage.total,(oData.urlaubstage.used||0)+d));saveOrg();renderUrlaub();}
-function changeUrlaubTotal(d){oData.urlaubstage.total=Math.max(1,(oData.urlaubstage.total||30)+d);saveOrg();renderUrlaub();}
-function addPackItem(){
-  const v=document.getElementById('pack-inp').value.trim();if(!v)return;
-  oData.packliste.push({text:v,done:false,cat:'Sonstiges'});document.getElementById('pack-inp').value='';saveOrg();renderUrlaub();
+// ── URLAUBSTAGE: Jahres-basiert mit Verbrauchs-Log, Krankheitstagen und Brückentagen ──
+var _urlaubJahr=new Date().getFullYear();
+function getUrlaubJahr(y){
+  if(!pData.urlaub)pData.urlaub={};
+  if(!pData.urlaub[y]){
+    var prevYears=Object.keys(pData.urlaub).map(Number).filter(function(n){return !isNaN(n);}).sort(function(a,b){return b-a;});
+    var defaultAnspruch=prevYears.length?pData.urlaub[prevYears[0]].anspruch:
+      (oData&&oData.urlaubstage&&oData.urlaubstage.total)?oData.urlaubstage.total:30;
+    pData.urlaub[y]={anspruch:defaultAnspruch,eintraege:[]};
+    // Einmalige Übernahme aus dem alten einfachen Zähler, falls vorhanden und noch nichts migriert wurde
+    if(y===new Date().getFullYear() && oData && oData.urlaubstage && (oData.urlaubstage.used||0)>0 && !oData.urlaubstage._migriert){
+      pData.urlaub[y].eintraege.push({id:Date.now(),datum:new Date().toISOString().split('T')[0],tage:oData.urlaubstage.used,grund:'Übernommen aus der alten Zählung',typ:'urlaub'});
+      oData.urlaubstage._migriert=true;
+      saveOrg();
+    }
+  }
+  return pData.urlaub[y];
+}
+function changeUrlaubJahr(d){ _urlaubJahr+=d; renderUrlaubstageContent(); }
+function updateUrlaubAnspruch(val){
+  var u=getUrlaubJahr(_urlaubJahr);
+  u.anspruch=Math.max(1,parseInt(val,10)||30);
+  saveAll();renderUrlaubstageContent();
+}
+function addUrlaubEintrag2(){
+  var u=getUrlaubJahr(_urlaubJahr);
+  var datum=document.getElementById('ue-datum').value;
+  var tage=parseFloat(document.getElementById('ue-tage').value)||1;
+  var grund=document.getElementById('ue-grund').value.trim();
+  var typ=document.getElementById('ue-typ').value;
+  if(!datum){alert('Bitte ein Datum angeben.');return;}
+  u.eintraege.push({id:Date.now(),datum:datum,tage:tage,grund:grund,typ:typ});
+  document.getElementById('ue-grund').value='';
+  saveAll();renderUrlaubstageContent();
+}
+function delUrlaubEintrag2(id){
+  var u=getUrlaubJahr(_urlaubJahr);
+  u.eintraege=u.eintraege.filter(function(e){return e.id!==id;});
+  saveAll();renderUrlaubstageContent();
+}
+// Gesetzliche Feiertage Niedersachsen, frisch für jedes Jahr berechnet (kein fest hinterlegtes Datum)
+function getNiedersachsenFeiertage(year){
+  function easterSunday(y){
+    var a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,
+        f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,
+        i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,
+        m=Math.floor((a+11*h+22*l)/451),
+        month=Math.floor((h+l-7*m+114)/31),
+        day=((h+l-7*m+114)%31)+1;
+    return new Date(y,month-1,day);
+  }
+  function addD(d,n){ var r=new Date(d); r.setDate(r.getDate()+n); return r; }
+  var easter=easterSunday(year);
+  return [
+    {name:'Neujahr',date:new Date(year,0,1)},
+    {name:'Karfreitag',date:addD(easter,-2)},
+    {name:'Ostermontag',date:addD(easter,1)},
+    {name:'Tag der Arbeit',date:new Date(year,4,1)},
+    {name:'Christi Himmelfahrt',date:addD(easter,39)},
+    {name:'Pfingstmontag',date:addD(easter,50)},
+    {name:'Tag der Deutschen Einheit',date:new Date(year,9,3)},
+    {name:'Reformationstag',date:new Date(year,9,31)},
+    {name:'1. Weihnachtstag',date:new Date(year,11,25)},
+    {name:'2. Weihnachtstag',date:new Date(year,11,26)}
+  ].sort(function(a,b){return a.date-b.date;});
+}
+function getBrueckentageEmpfehlungen(year){
+  var fts=getNiedersachsenFeiertage(year);
+  var heute=new Date(); heute.setHours(0,0,0,0);
+  function fmtD(d){return String(d.getDate()).padStart(2,'0')+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+d.getFullYear();}
+  var empf=[];
+  fts.forEach(function(f){
+    if(f.date<heute)return;
+    var wd=f.date.getDay();
+    if(wd===2){
+      var montag=new Date(f.date);montag.setDate(montag.getDate()-1);
+      var samstag=new Date(f.date);samstag.setDate(samstag.getDate()-3);
+      empf.push({anlass:f.name+' ('+fmtD(f.date)+', Dienstag)',nimm:1,frei:4,zeitraum:fmtD(samstag)+' – '+fmtD(f.date),tipp:'Montag, '+fmtD(montag)+', als Urlaubstag nehmen'});
+    }
+    if(wd===4){
+      var freitag=new Date(f.date);freitag.setDate(freitag.getDate()+1);
+      var sonntag=new Date(f.date);sonntag.setDate(sonntag.getDate()+3);
+      empf.push({anlass:f.name+' ('+fmtD(f.date)+', Donnerstag)',nimm:1,frei:4,zeitraum:fmtD(f.date)+' – '+fmtD(sonntag),tipp:'Freitag, '+fmtD(freitag)+', als Urlaubstag nehmen'});
+    }
+  });
+  // Weihnachten & Jahreswechsel als möglicher großer Brücken-Block
+  var rangeStart=new Date(year,11,24), rangeEnd=new Date(year+1,0,1);
+  if(rangeEnd>=heute){
+    var ftsNext=getNiedersachsenFeiertage(year+1);
+    var allFtTimes=fts.concat(ftsNext).map(function(f){return f.date.getTime();});
+    var workdaysNeeded=[];
+    for(var d=new Date(rangeStart); d<=rangeEnd; d.setDate(d.getDate()+1)){
+      var wd2=d.getDay();
+      if(wd2!==0&&wd2!==6&&allFtTimes.indexOf(d.getTime())<0) workdaysNeeded.push(new Date(d));
+    }
+    if(workdaysNeeded.length>0&&workdaysNeeded.length<=6){
+      var totalDaysOff=Math.round((rangeEnd-rangeStart)/86400000)+1;
+      empf.push({anlass:'Weihnachten & Jahreswechsel',nimm:workdaysNeeded.length,frei:totalDaysOff,zeitraum:fmtD(rangeStart)+' – '+fmtD(rangeEnd),tipp:workdaysNeeded.map(fmtD).join(', ')+' als Urlaub nehmen'});
+    }
+  }
+  return empf;
+}
+function renderUrlaubstageContent(){
+  var c=document.getElementById('urlaubstage-content');if(!c)return;
+  var lbl=document.getElementById('urlaub-jahr-label');if(lbl)lbl.textContent=_urlaubJahr;
+  var u=getUrlaubJahr(_urlaubJahr);
+  var verbraucht=u.eintraege.filter(function(e){return e.typ==='urlaub';}).reduce(function(s,e){return s+(parseFloat(e.tage)||0);},0);
+  var krank=u.eintraege.filter(function(e){return e.typ==='krank';}).reduce(function(s,e){return s+(parseFloat(e.tage)||0);},0);
+  var rest=Math.max(0,u.anspruch-verbraucht);
+  var pct=u.anspruch>0?Math.min(100,Math.round(verbraucht/u.anspruch*100)):0;
+  var brueckentage=getBrueckentageEmpfehlungen(_urlaubJahr);
+  c.innerHTML='<div style="display:flex;align-items:center;gap:14px;margin-bottom:10px;flex-wrap:wrap;">'
+    +'<div style="text-align:center;"><div style="font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:2px;">Anspruch</div>'
+      +'<input type="number" value="'+u.anspruch+'" onchange="updateUrlaubAnspruch(this.value)" style="width:60px;text-align:center;font-family:Georgia,serif;font-size:24px;font-weight:600;color:var(--deep);border:none;border-bottom:1px solid rgba(180,160,220,0.3);background:transparent;outline:none;"></div>'
+    +'<div style="text-align:center;"><div style="font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:2px;">Verbraucht</div><div style="font-family:Georgia,serif;font-size:24px;font-weight:600;color:var(--deep);">'+verbraucht+'</div></div>'
+    +'<div style="text-align:center;"><div style="font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:2px;">Verbleibend</div><div style="font-family:Georgia,serif;font-size:24px;font-weight:600;color:var(--mint2);">'+rest+'</div></div>'
+    +'<div style="text-align:center;"><div style="font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:2px;">🤒 Krank</div><div style="font-family:Georgia,serif;font-size:24px;font-weight:600;color:var(--rose2);">'+krank+'</div></div>'
+    +'</div>'
+    +'<div style="height:8px;background:rgba(216,207,240,0.3);border-radius:4px;overflow:hidden;margin-bottom:14px;"><div style="height:100%;background:linear-gradient(to right,var(--mint2),var(--lilac2));border-radius:4px;width:'+pct+'%;"></div></div>'
+    +'<div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Eintrag hinzufügen</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 70px 1fr 90px;gap:6px;margin-bottom:10px;">'
+    +'<input type="date" id="ue-datum" style="border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 8px;font-size:12px;font-family:Arial,sans-serif;outline:none;">'
+    +'<input type="number" id="ue-tage" value="1" min="0.5" step="0.5" title="Anzahl Tage" style="border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 8px;font-size:12px;font-family:Arial,sans-serif;outline:none;">'
+    +'<input type="text" id="ue-grund" placeholder="Grund (z.B. Italien, Kind krank...)" style="border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 8px;font-size:12px;font-family:Arial,sans-serif;outline:none;">'
+    +'<select id="ue-typ" style="border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 4px;font-size:12px;font-family:Arial,sans-serif;background:white;outline:none;"><option value="urlaub">🌴 Urlaub</option><option value="krank">🤒 Krank</option></select>'
+    +'</div>'
+    +'<button onclick="addUrlaubEintrag2()" class="save-btn" style="width:100%;margin-bottom:14px;">+ Eintrag speichern</button>'
+    +(u.eintraege.length?'<div style="margin-bottom:14px;">'+u.eintraege.slice().sort(function(a,b){return b.datum.localeCompare(a.datum);}).map(function(e){
+        return '<div style="display:flex;align-items:center;gap:8px;padding:6px 8px;background:rgba(255,255,255,0.5);border-radius:7px;margin-bottom:5px;font-size:12px;">'
+          +'<span>'+(e.typ==='krank'?'🤒':'🌴')+'</span><span style="color:var(--muted);">'+fmt(e.datum)+'</span>'
+          +'<span style="flex:1;color:var(--deep);">'+(e.grund||(e.typ==='krank'?'Krankheit':'Urlaub'))+'</span>'
+          +'<span style="font-weight:700;color:var(--deep);">'+e.tage+' Tag'+(e.tage!=1?'e':'')+'</span>'
+          +'<button onclick="delUrlaubEintrag2('+e.id+')" style="background:none;border:none;color:rgba(180,160,220,0.5);cursor:pointer;font-size:12px;">✕</button></div>';
+      }).join('')+'</div>':'')
+    +'<div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">🌉 Brückentage-Tipps '+_urlaubJahr+' (Niedersachsen)</div>'
+    +(brueckentage.length?brueckentage.map(function(b){
+        return '<div style="background:rgba(240,232,192,0.3);border-radius:8px;padding:8px 10px;margin-bottom:6px;font-size:12px;">'
+          +'<div style="font-weight:700;color:var(--deep);">'+b.anlass+': '+b.nimm+' Urlaubstag'+(b.nimm!=1?'e':'')+' nehmen → '+b.frei+' Tage frei</div>'
+          +'<div style="color:var(--muted);font-size:11px;">'+b.zeitraum+' · '+b.tipp+'</div></div>';
+      }).join(''):'<div style="font-size:12px;color:var(--muted);text-align:center;padding:10px;">Für den Rest von '+_urlaubJahr+' keine weiteren Brückentage-Termine.</div>');
 }
 function renderUrlaub(){
   // Reisen
@@ -10427,34 +10951,13 @@ function renderUrlaub(){
       rl.appendChild(div);
     });
   }
-  // Urlaubstage
-  const total=oData.urlaubstage.total||30;const used=oData.urlaubstage.used||0;const rest=total-used;
-  const numEl=document.getElementById('urlaubstage-num');if(numEl)numEl.textContent=total;
-  const usedEl=document.getElementById('urlaubstage-used');if(usedEl)usedEl.textContent=used;
-  const restEl=document.getElementById('urlaubstage-rest');if(restEl)restEl.textContent=rest;
-  const barEl=document.getElementById('urlaub-bar');if(barEl)barEl.style.width=Math.min(100,Math.round(used/total*100))+'%';
-  // Packliste
-  const pc=document.getElementById('packliste-items');if(!pc)return;pc.innerHTML='';
-  (oData.packliste||[]).forEach(function(item,i){
-    const div=document.createElement('div');
-    div.style.cssText='display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.6);border-radius:7px;padding:5px 8px;font-size:12px;';
-    const chk=document.createElement('div');
-    chk.className='bucket-check'+(item.done?' done':'');
-    chk.style.cssText='width:14px;height:14px;';
-    chk.innerHTML=item.done?'✓':'';
-    (function(_i){chk.onclick=function(){togglePack(_i);};})(i);
-    const txt=document.createElement('span');txt.style.cssText='flex:1;color:var(--deep);'+(item.done?'text-decoration:line-through;color:var(--muted)':'');
-    txt.textContent=item.text;
-    const del=document.createElement('button');del.className='bucket-del';del.textContent='✕';
-    (function(_i){del.onclick=function(){delPack(_i);};})(i);
-    div.appendChild(chk);div.appendChild(txt);div.appendChild(del);
-    pc.appendChild(div);
-  });
+  // Urlaubstage (neues, jahresbasiertes System)
+  renderUrlaubstageContent();
+  // Smarte Packliste (eigenes Render, NICHT mehr hier mit der alten Liste überschreiben)
+  if(typeof renderOrgPackliste==='function')renderOrgPackliste();
 }
 
 function delReise(i){oData.reisen.splice(i,1);saveOrg();renderUrlaub();}
-function togglePack(i){oData.packliste[i].done=!oData.packliste[i].done;saveOrg();renderUrlaub();}
-function delPack(i){oData.packliste.splice(i,1);saveOrg();renderUrlaub();}
 
 // ── ESSEN ──
 const WOCHENTAGE=['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'];
@@ -11167,10 +11670,11 @@ function fillTagZeitHorseSelect(){
   var sel=document.getElementById('tag-zeit-horse');
   if(!sel)return;
   var prev=sel.value;
-  sel.innerHTML='<option value="">Kein Tier</option>'
-    +horses.map(function(h){return '<option value="'+h+'">'+h+'</option>';}).join('')
-    +(horses.length>1?'<option value="Alle">Alle Pferde</option>':'')
-    +otherAnimals.map(function(a){return '<option value="'+a+'">'+a+'</option>';}).join('');
+  var html='<option value="">Kein Tier/Kind</option>';
+  html+='<optgroup label="Pferde">'+horses.map(function(h){return '<option value="'+h+'">'+h+'</option>';}).join('')+(horses.length>1?'<option value="Alle">Alle Pferde</option>':'')+'</optgroup>';
+  if(typeof otherAnimals!=='undefined' && otherAnimals.length) html+='<optgroup label="Andere Tiere">'+otherAnimals.map(function(a){return '<option value="'+a+'">'+a+'</option>';}).join('')+'</optgroup>';
+  if(typeof kids!=='undefined' && kids.length) html+='<optgroup label="Kinder">'+kids.map(function(k){return '<option value="'+k+'">'+k+'</option>';}).join('')+'</optgroup>';
+  sel.innerHTML=html;
   if(prev)sel.value=prev;
 }
 function renderTag(){
@@ -11405,7 +11909,10 @@ function renderTagZeitplan(dk){
     div.style.cssText='border-radius:10px;padding:8px 10px;background:'+(imminent?'rgba(232,85,85,0.12)':z.blocked?'rgba(184,216,240,0.25)':'rgba(255,255,255,0.5)')+';border-left:3px solid '+(imminent?'#e85555':z.blocked?'var(--sky2)':'var(--lilac2)')+';font-size:12px;';
     var timeLabel=z.time+(z.timeEnd?' – '+z.timeEnd:'');
     const catIco={vet:'🩺',huf:'🔧',vacc:'💉',wurm:'🪱',osteo:'🤲',teeth:'🦷'};
-    const linkBadge=z.linkedEntryId?'<span style="background:rgba(200,234,223,0.6);border-radius:10px;padding:1px 7px;font-size:9px;color:var(--deep);font-weight:700;white-space:nowrap;" title="Verknüpft mit Pferde-Status">'+(catIco[z.cat]||'')+' '+(z.horse==='Alle'?'Alle Pferde':z.horse)+'</span>':'';
+    const isKidLink=typeof kids!=='undefined' && kids.indexOf(z.horse)>=0;
+    const linkBadge=isKidLink
+      ? '<span style="background:rgba(255,224,178,0.6);border-radius:10px;padding:1px 7px;font-size:9px;color:var(--deep);font-weight:700;white-space:nowrap;" title="Verknüpft mit Kind">🧒 '+z.horse+'</span>'
+      : (z.linkedEntryId?'<span style="background:rgba(200,234,223,0.6);border-radius:10px;padding:1px 7px;font-size:9px;color:var(--deep);font-weight:700;white-space:nowrap;" title="Verknüpft mit Pferde-Status">'+(catIco[z.cat]||'')+' '+(z.horse==='Alle'?'Alle Pferde':z.horse)+'</span>':'');
     const reminderBadge=imminent?'<span style="background:#e85555;color:white;border-radius:10px;padding:1px 7px;font-size:9px;font-weight:700;margin-left:4px;white-space:nowrap;" title="Jetzt wird es Zeit!">🔔 Jetzt!</span>':((z.reminder||z.reminderLead)?' 🔔':'');
     div.innerHTML='<div style="display:flex;align-items:center;gap:6px;">'
       +'<span style="color:'+(imminent?'#e85555':z.blocked?'var(--sky2)':'var(--lilac2)')+';font-weight:700;min-width:84px;font-size:11px;">'+timeLabel+(z.blocked?' 🔒':'')+'</span>'
@@ -11449,15 +11956,32 @@ function fkRenderTimelineBar(wrapId, dk){
   var totalSpan=dayEnd-dayStart;
   var isToday=dk===dateKey(new Date());
 
-  var bars='';
-  items.forEach(function(z,idx){
+  // Überlappende Termine bekommen eigene Reihen (Lanes), statt sich optisch zu überdecken
+  var withTimes=items.map(function(z,idx){
     var startMin=Math.max(dayStart, Math.min(dayEnd, toMinutes(z.time)));
     var endMin=z.timeEnd ? Math.max(startMin+15, Math.min(dayEnd, toMinutes(z.timeEnd))) : startMin+30;
-    var leftPct=((startMin-dayStart)/totalSpan*100);
-    var widthPct=Math.max(2,((endMin-startMin)/totalSpan*100));
-    var imminent=isToday && !z.recurring && fkIsTermineImminent(dk,z) && (z.reminder||z.reminderLead);
-    var col=imminent?'#e85555':(z.recurring?'var(--lilac)':(z.blocked?'var(--sky2)':'var(--lilac2)'));
-    bars+='<div onclick="fkShowTimelinePopupFor(\''+wrapId+'\','+idx+')" title="'+z.time+(z.timeEnd?'–'+z.timeEnd:'')+' '+z.text.replace(/"/g,'')+'" style="position:absolute;left:'+leftPct+'%;width:'+widthPct+'%;top:4px;bottom:4px;background:'+col+';border-radius:4px;opacity:0.9;cursor:pointer;"></div>';
+    return {z:z, idx:idx, startMin:startMin, endMin:endMin, lane:0};
+  }).sort(function(a,b){ return a.startMin-b.startMin; });
+  var laneEnds=[];
+  withTimes.forEach(function(item){
+    var placed=false;
+    for(var l=0;l<laneEnds.length;l++){
+      if(laneEnds[l]<=item.startMin){ item.lane=l; laneEnds[l]=item.endMin; placed=true; break; }
+    }
+    if(!placed){ item.lane=laneEnds.length; laneEnds.push(item.endMin); }
+  });
+  var laneCount=Math.max(1,laneEnds.length);
+  var barHeight=Math.max(34, laneCount*22+8);
+  var laneHeight=(barHeight-8)/laneCount;
+
+  var bars='';
+  withTimes.forEach(function(item){
+    var z=item.idx, leftPct=((item.startMin-dayStart)/totalSpan*100), widthPct=Math.max(2,((item.endMin-item.startMin)/totalSpan*100));
+    var zItem=items[item.idx];
+    var imminent=isToday && !zItem.recurring && fkIsTermineImminent(dk,zItem) && (zItem.reminder||zItem.reminderLead);
+    var col=imminent?'#e85555':(zItem.recurring?'var(--lilac)':(zItem.blocked?'var(--sky2)':'var(--lilac2)'));
+    var top=4+item.lane*laneHeight;
+    bars+='<div onclick="fkShowTimelinePopupFor(\''+wrapId+'\','+item.idx+')" title="'+zItem.time+(zItem.timeEnd?'–'+zItem.timeEnd:'')+' '+zItem.text.replace(/"/g,'')+'" style="position:absolute;left:'+leftPct+'%;width:'+widthPct+'%;top:'+top+'px;height:'+(laneHeight-3)+'px;background:'+col+';border-radius:4px;opacity:0.9;cursor:pointer;'+(laneCount>1?'border:1px solid rgba(255,255,255,0.7);':'')+'"></div>';
   });
 
   var marks='';
@@ -11466,7 +11990,7 @@ function fkRenderTimelineBar(wrapId, dk){
     marks+='<div style="position:absolute;left:'+pct+'%;top:0;font-size:8px;color:var(--muted);transform:translateX(-50%);">'+h+'h</div>';
   });
 
-  wrap.innerHTML='<div style="position:relative;height:34px;background:rgba(232,228,240,0.35);border-radius:8px;margin-bottom:14px;cursor:pointer;">'+bars+'</div>'
+  wrap.innerHTML='<div style="position:relative;height:'+barHeight+'px;background:rgba(232,228,240,0.35);border-radius:8px;margin-bottom:14px;cursor:pointer;">'+bars+'</div>'
     +'<div style="position:relative;height:10px;margin-top:-10px;">'+marks+'</div>';
 }
 function fkShowTimelinePopupFor(wrapId, idx){
@@ -11729,7 +12253,7 @@ function addTagZeit(){
         const lk=pkEntries.find(function(pe){return pe.id===entry.linkedEntryId;});
         if(lk){ lk.title=text; lk.notes=notiz; if(zHorse)lk.horse=zHorse; if(zCat)lk.cat=zCat; }
         saveAll();
-      } else if(zHorse && zCat && typeof pkEntries!=='undefined'){
+      } else if(zHorse && zCat && typeof pkEntries!=='undefined' && getAllAnimalNames().indexOf(zHorse)>=0){
         entry.linkedEntryId='pke_'+Date.now()+'_'+Math.floor(Math.random()*10000);
         pkEntries.push({id:entry.linkedEntryId, date:dk, horse:zHorse, cat:zCat, title:text, notes:notiz, amount:null});
         saveAll();
@@ -11743,7 +12267,7 @@ function addTagZeit(){
   if(!editHandled){
     const id='tz_'+Date.now()+'_'+Math.floor(Math.random()*10000);
     let linkedEntryId=null;
-    if(zHorse && zCat && typeof pkEntries!=='undefined'){
+    if(zHorse && zCat && typeof pkEntries!=='undefined' && getAllAnimalNames().indexOf(zHorse)>=0){
       linkedEntryId='pke_'+Date.now()+'_'+Math.floor(Math.random()*10000);
       pkEntries.push({id:linkedEntryId, date:dk, horse:zHorse, cat:zCat, title:text, notes:notiz, amount:null});
     }
@@ -13005,6 +13529,51 @@ const VORLAGE_RENDERERS={
         return '<div class="card" style="margin-top:14px;background:'+(erledigt?'rgba(200,234,223,0.4)':'linear-gradient(135deg,rgba(216,207,240,0.25),rgba(200,234,223,0.15))')+';"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><span style="font-size:18px;">🐴</span><div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">Tag '+(tagIdx+1)+' von 40 · Achtsamkeit</div><div style="font-family:Georgia,serif;font-size:17px;font-weight:600;color:var(--deep);">'+imp.titel+'</div></div>'+(erledigt?'<div style="margin-left:auto;color:var(--mint2);font-weight:700;font-size:13px;">✓ Erledigt</div>':'')+'</div><div style="font-size:12px;color:var(--muted);font-style:italic;line-height:1.6;margin-bottom:'+(erledigt?'0':'10px')+';">'+firstLine+'</div>'+(erledigt?'':'<button onclick="switchTab(\'pferde\');setTimeout(function(){showPkView(\'achtsamkeit\');},150);" style="background:var(--deep);border:none;border-radius:8px;padding:6px 14px;font-size:11px;font-weight:700;color:white;cursor:pointer;font-family:Arial,sans-serif;">→ Zum Tagesimpuls</button>')+'</div>';
       })()}
 
+      <!-- NICHTS VERGESSEN HEUTE: zentrale Sammelstelle für alles Überfällige/Anstehende -->
+      ${(function(){
+        var rows=[];
+        // Überfällige Pferde-Termine (gleiche Logik wie im Pferde-Status)
+        try{
+          var pfUeberfaellig=0;
+          [...new Set(horses)].forEach(function(h){
+            var hp=(typeof getHP==='function')?getHP(h):{intervals:{}};
+            ['vet','huf','vacc','wurm','osteo','teeth'].forEach(function(k){
+              var ents=pkEntries.filter(function(x){return (x.horse===h||x.horse==='Alle')&&x.cat===k;}).sort(function(a,b){return b.date.localeCompare(a.date);});
+              if(ents[0]){
+                var diff=Math.round((new Date()-new Date(ents[0].date))/86400000);
+                var interval=hp.intervals[k]||365;
+                if(diff>interval)pfUeberfaellig++;
+              }
+            });
+          });
+          if(pfUeberfaellig>0) rows.push({icon:'🐴',text:pfUeberfaellig+' Pferde-Termin'+(pfUeberfaellig>1?'e':'')+' über dem Intervall, im Pferde-Status nachsehen',action:"switchTab('pferde')"});
+        }catch(e){}
+        // Bald fällige Gesundheits-Termine bei anderen Tieren und Kindern (Feld "nächster Termin")
+        try{
+          if(typeof fkGetUpcomingHealthReminders==='function'){
+            fkGetUpcomingHealthReminders().forEach(function(r){
+              var when=r.diff<0?'überfällig seit '+Math.abs(r.diff)+'d':r.diff===0?'heute':'in '+r.diff+'d';
+              rows.push({icon:r.icon,text:r.name+': '+(r.titel||'Termin')+' ('+when+')',action:r.icon==='🧒'?"switchTab('kinder')":"switchTab('andere-tiere')"});
+            });
+          }
+        }catch(e){}
+        // Nicht abgehakte Prioritäten/To-Dos von vorherigen Tagen
+        try{
+          var cp=(typeof getCarriedPrios==='function')?getCarriedPrios(todayKey).length:0;
+          var ct=(typeof getCarriedTodos==='function')?getCarriedTodos(todayKey).length:0;
+          if(cp>0) rows.push({icon:'🎯',text:cp+' offene Top-Priorität'+(cp>1?'en':'')+' von vorher, noch nicht abgehakt',action:"goToTagesansicht()"});
+          if(ct>0) rows.push({icon:'📝',text:ct+' offene(s) To-Do von vorher, noch nicht abgehakt',action:"goToTagesansicht()"});
+        }catch(e){}
+        if(!rows.length) return '';
+        return '<div class="card" style="margin-bottom:14px;background:linear-gradient(135deg,rgba(242,200,216,0.25),rgba(240,232,192,0.2));border:1px solid rgba(242,200,216,0.4);">'
+          +'<div class="card-title ub-heading" style="margin-bottom:8px;"><span class="card-title-dot" style="background:#e85555"></span>⚠️ Nichts vergessen heute</div>'
+          +rows.map(function(r){
+            return '<div onclick="'+r.action+'" style="display:flex;align-items:center;gap:8px;padding:7px 4px;cursor:pointer;border-bottom:1px solid rgba(216,207,240,0.2);">'
+              +'<span style="font-size:15px;flex-shrink:0;">'+r.icon+'</span><span style="font-size:12px;color:var(--deep);flex:1;">'+r.text+'</span><span style="color:var(--muted);font-size:11px;">→</span></div>';
+          }).join('')
+          +'</div>';
+      })()}
+
       <!-- HEUTE IM FOKUS -->
       ${(function(){
         var tn=kalData.tagNotes[todayKey]||{};
@@ -13053,11 +13622,12 @@ const VORLAGE_RENDERERS={
                 const d=last[k];
                 if(def.kind==='log'){
                   const interval=hp.intervals[k]||365;
-                  const onclickAttr=`onclick="openModal('${k}','${h}')"`;
-                  if(!d) return `<div ${onclickAttr} style="font-size:12px;text-align:center;background:rgba(232,228,240,0.2);border-radius:6px;padding:5px 4px;cursor:pointer;">${ico}<br><span style="color:var(--deep);font-size:11px;font-weight:700;">${l}</span><br><span style="color:var(--lilac2);font-size:11px;font-weight:700;">+ eintragen</span></div>`;
+                  const onclickAttrEmpty=`onclick="openModal('${k}','${h}')"`;
+                  if(!d) return `<div ${onclickAttrEmpty} style="font-size:12px;text-align:center;background:rgba(232,228,240,0.2);border-radius:6px;padding:5px 4px;cursor:pointer;">${ico}<br><span style="color:var(--deep);font-size:11px;font-weight:700;">${l}</span><br><span style="color:var(--lilac2);font-size:11px;font-weight:700;">+ eintragen</span></div>`;
                   const diff=Math.round((today-new Date(d))/86400000);
                   const col=diff>interval?'rgba(242,200,216,0.5)':diff>interval*0.75?'rgba(240,232,192,0.4)':'rgba(200,234,223,0.4)';
-                  return `<div ${onclickAttr} style="font-size:12px;text-align:center;background:${col};border-radius:6px;padding:5px 4px;cursor:pointer;" title="${l}: ${d} · Intervall: ${interval} Tage · Antippen für neuen Eintrag">${ico}<br><span style="color:var(--deep);font-size:11px;font-weight:700;">${l}</span><br><span style="font-weight:700;color:var(--deep)">vor ${diff}d</span></div>`;
+                  const onclickAttr=`onclick="openQuickEditLastEntry('${k}','${h}')"`;
+                  return `<div ${onclickAttr} style="font-size:12px;text-align:center;background:${col};border-radius:6px;padding:5px 4px;cursor:pointer;" title="${l}: ${d} · Intervall: ${interval} Tage · Antippen zum Bearbeiten">${ico}<br><span style="color:var(--deep);font-size:11px;font-weight:700;">${l}</span><br><span style="font-weight:700;color:var(--deep)">vor ${diff}d</span></div>`;
                 }
                 const nameArg=def.name?`'${def.name}'`:'null';
                 const onclickAttr=`onclick="pkGoToModuleForHorse('${def.view}','${def.sel}',${nameArg},${hIdx})"`;
@@ -13074,10 +13644,40 @@ const VORLAGE_RENDERERS={
 
         </div>
 
+        ${(typeof kids!=='undefined'&&kids.length>0)?`
+        <!-- KINDER-STATUS -->
+        <div class="card" style="margin-bottom:14px;">
+          <div class="card-title ub-heading" style="margin-bottom:4px;"><span class="card-title-dot" style="background:var(--butter)"></span>🧒 Kinder-Status</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5;">Wann war zuletzt was dran. Tippe auf eine Kachel, um direkt etwas festzuhalten.</div>
+          ${kids.map((name,kIdx)=>{
+            const kp=(typeof getKP==='function')?getKP(name):{foto:''};
+            const kCol=HORSE_COLORS[(horses.length+otherAnimals.length+kIdx)%HORSE_COLORS.length];
+            const avatar=(kp&&kp.foto)
+              ?'<div style="width:48px;height:48px;border-radius:50%;overflow:hidden;flex-shrink:0;margin-right:10px;border:2px solid rgba(255,255,255,0.8);"><img src="'+kp.foto+'" style="width:100%;height:100%;object-fit:cover;"></div>'
+              :'<div style="width:48px;height:48px;border-radius:50%;background:'+kCol+';display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:20px;font-weight:700;color:var(--deep);flex-shrink:0;margin-right:10px;border:2px solid rgba(255,255,255,0.8);">'+(kp.name||name)[0].toUpperCase()+'</div>';
+            return `<div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(216,207,240,0.2);">
+              <div style="font-weight:700;font-size:14px;color:var(--deep);margin-bottom:8px;display:flex;align-items:center;">${avatar}${name}</div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;">
+                ${Object.keys(KID_MODULES).map(mk=>{
+                  const def=KID_MODULES[mk];
+                  const rows=(kidExtra[mk]&&kidExtra[mk][name])?kidExtra[mk][name]:[];
+                  const last=rows.length?rows[rows.length-1]:null;
+                  const onclickAttr=`onclick="kidGoToModuleForKid('${mk}',${kIdx})"`;
+                  if(!last||!last.datum) return `<div ${onclickAttr} style="font-size:11px;text-align:center;background:rgba(255,224,178,0.18);border-radius:6px;padding:5px 4px;cursor:pointer;">${def.icon}<br><span style="color:var(--muted);font-size:10px;">${def.label.replace(/^\\S+\\s/,'')}</span><br><span style="color:var(--lilac2);font-size:10px;font-weight:700;">+ eintragen</span></div>`;
+                  const diff=Math.round((new Date()-new Date(last.datum))/86400000);
+                  return `<div ${onclickAttr} style="font-size:11px;text-align:center;background:rgba(255,224,178,0.28);border-radius:6px;padding:5px 4px;cursor:pointer;" title="${last.datum}">${def.icon}<br><span style="color:var(--muted);font-size:10px;">${def.label.replace(/^\\S+\\s/,'')}</span><br><span style="font-weight:700;color:var(--deep);font-size:10px;">vor ${diff}d</span></div>`;
+                }).join('')}
+              </div>
+            </div>`;
+          }).join('')}
+          <button onclick="switchTab('kinder')" style="width:100%;background:transparent;border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:6px;font-size:11px;color:var(--muted);cursor:pointer;font-family:Arial,sans-serif;">→ Zu Kinder</button>
+        </div>`:''}
+
         ${(typeof otherAnimals!=='undefined'&&otherAnimals.length>0)?`
         <!-- TIER-STATUS (Andere Tiere) -->
         <div class="card" style="margin-bottom:14px;">
-          <div class="card-title ub-heading" style="margin-bottom:4px;"><span class="card-title-dot" style="background:var(--rose2)"></span>🐾 Tier-Status</div>
+          <div class="card-title ub-heading" style="margin-bottom:4px;cursor:pointer;" onclick="toggleInfo('ub-tierstatus-body','ub-tierstatus-arrow')"><span class="card-title-dot" style="background:var(--rose2)"></span>🐾 Tier-Status<span style="margin-left:auto;display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted);"><span id="ub-tierstatus-arrow" style="display:inline-block;transition:transform 0.2s;">▾</span> anzeigen</span></div>
+          <div id="ub-tierstatus-body" style="display:none;">
           <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5;">Wann war zuletzt was bei Hund, Katze & Co dran. Tippe auf eine Kachel, um direkt etwas festzuhalten.</div>
           ${otherAnimals.map((name,oaIdx)=>{
             const oap=(typeof getOAP==='function')?getOAP(name):{foto:''};
@@ -13101,6 +13701,7 @@ const VORLAGE_RENDERERS={
             </div>`;
           }).join('')}
           <button onclick="switchTab('andere-tiere')" style="width:100%;background:transparent;border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:6px;font-size:11px;color:var(--muted);cursor:pointer;font-family:Arial,sans-serif;">→ Zu Andere Tiere</button>
+          </div>
         </div>`:''}
 
         <!-- RECHTE SPALTE -->
@@ -13429,7 +14030,7 @@ function toggleChallDay(d){const done=getVD('done')||{};done[d]=!done[d];setVD('
 
 // switchTab um Vorlagen erweitern
 function _switchTabFinal(t){
-  ['pferde','andere-tiere','glueck','persoenlich','organisation','kalender','ueberblick','vorlagen'].forEach(s=>{
+  ['pferde','andere-tiere','kinder','glueck','persoenlich','organisation','kalender','ueberblick','vorlagen'].forEach(s=>{
     const el=document.getElementById('section-'+s);if(el)el.style.display=t===s?'block':'none';
   });
   document.querySelectorAll('#main-nav-inner .main-nav-btn').forEach(b=>b.classList.remove('active'));
@@ -13449,6 +14050,7 @@ function _switchTabFinal(t){
   if(t==='glueck'){loadGlueck();renderGlueckTab();}
   if(t==='ueberblick'){setTimeout(updateUbHeader,100);}
   if(t==='andere-tiere'){try{showOAView('overview');}catch(e){}}
+  if(t==='kinder'){try{showKidView('overview');}catch(e){}}
 }
 switchTab=function(t){ _switchTabFinal(t); try{localStorage.setItem('pk_active_tab',t);}catch(e){} try{showTabUpdateInfo(t);}catch(e){} setTimeout(function(){ try{initScrollFades();}catch(e){} }, 50); };
 
@@ -13977,6 +14579,33 @@ function oaGoToModuleForAnimal(moduleKey,animalIdx){
     var sel=document.getElementById('oa-module-animal-sel');
     if(sel){ sel.value=animalIdx; renderOAModuleView(); }
   },120);
+}
+function kidGoToModuleForKid(moduleKey,kidIdx){
+  switchTab('kinder');
+  setTimeout(function(){
+    showKidView(moduleKey);
+    var sel=document.getElementById('kid-module-sel');
+    if(sel){ sel.value=kidIdx; renderKidModuleView(); }
+  },120);
+}
+function fkGetUpcomingHealthReminders(){
+  var results=[];
+  function scan(extraObj,namesArr,icon){
+    if(!extraObj||!extraObj.gesundheit)return;
+    namesArr.forEach(function(name){
+      var rows=extraObj.gesundheit[name]||[];
+      rows.forEach(function(r){
+        if(r.naechster){
+          var diff=Math.round((new Date(r.naechster)-new Date(new Date().toDateString()))/86400000);
+          if(diff<=7) results.push({name:name,diff:diff,titel:r.titel,icon:icon});
+        }
+      });
+    });
+  }
+  if(typeof oaExtra!=='undefined'&&typeof otherAnimals!=='undefined') scan(oaExtra,otherAnimals,'🐾');
+  if(typeof kidExtra!=='undefined'&&typeof kids!=='undefined') scan(kidExtra,kids,'🧒');
+  results.sort(function(a,b){return a.diff-b.diff;});
+  return results;
 }
 
 function renderUeberblick(){
@@ -15162,7 +15791,7 @@ function togglePackPerson(p){
   }
 }
 
-function addPackItem(){
+function addSmartPackItem(){
   var inp=document.getElementById('pack-inp');
   var v=inp.value.trim();if(!v)return;
   if(!pData.packliste)pData.packliste={items:[]};
@@ -15269,14 +15898,14 @@ function renderPackliste(){
         ${!item.fixed?`<button onclick="delPackItem(\"${cat.key}\",${ii})" style="background:none;border:none;color:rgba(180,160,220,0.4);cursor:pointer;font-size:11px;">✕</button>`:''}
       </div>`).join('')}
       <div style="display:flex;gap:5px;margin-top:8px;">
-        <input id="pack-new-${cat.key}" placeholder="Eigener Punkt..." style="flex:1;border:none;border-bottom:1px solid rgba(180,160,220,0.2);background:transparent;font-family:Arial,sans-serif;font-size:12px;color:var(--deep);outline:none;padding:3px 4px;" onkeydown="if(event.key==='Enter')addPackItem('${cat.key}')">
-        <button onclick="addPackItem(\"${cat.key}\")" style="background:var(--lilac);border:none;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--deep);cursor:pointer;">+</button>
+        <input id="pack-new-${cat.key}" placeholder="Eigener Punkt..." style="flex:1;border:none;border-bottom:1px solid rgba(180,160,220,0.2);background:transparent;font-family:Arial,sans-serif;font-size:12px;color:var(--deep);outline:none;padding:3px 4px;" onkeydown="if(event.key==='Enter')addPackItemTurnier('${cat.key}')">
+        <button onclick="addPackItemTurnier(\"${cat.key}\")" style="background:var(--lilac);border:none;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--deep);cursor:pointer;">+</button>
       </div>
     </div>`).join('')}
   </div>`;
 }
 function togglePack(cat,ii){packData[cat][ii].done=!packData[cat][ii].done;savePackData();renderPackliste();}
-function addPackItem(cat){const inp=document.getElementById('pack-new-'+cat);const v=(inp&&inp.value.trim())||'';if(!v)return;packData[cat].push({text:v,done:false,fixed:false});savePackData();inp.value='';renderPackliste();}
+function addPackItemTurnier(cat){const inp=document.getElementById('pack-new-'+cat);const v=(inp&&inp.value.trim())||'';if(!v)return;packData[cat].push({text:v,done:false,fixed:false});savePackData();inp.value='';renderPackliste();}
 function delPackItem(cat,ii){packData[cat].splice(ii,1);savePackData();renderPackliste();}
 
 // ═══════════════════════════════════════════
@@ -16097,7 +16726,7 @@ setTimeout(()=>{renderUeberblick();renderReflex();renderFitnessWeek();},100);
 
 // ═══ SWIPE NAVIGATION ═══
 (function(){
-  var TABS=['ueberblick','pferde','andere-tiere','glueck','persoenlich','organisation','kalender','vorlagen'];
+  var TABS=['ueberblick','glueck','pferde','andere-tiere','kinder','persoenlich','organisation','kalender','vorlagen'];
   var sx=0,sy=0,dragging=false;
 
   function currentIdx(){
@@ -16393,6 +17022,9 @@ setTimeout(function(){
 
 <!-- PFERDE-STATUS KACHELN EINSTELLEN -->
 <div id="pk-tile-settings" onclick="closePkStatusTileSettings()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:9999;align-items:center;justify-content:center;"></div>
+
+<!-- PFERDE-STATUS: LETZTEN EINTRAG SCHNELL BEARBEITEN -->
+<div id="pk-quickedit-modal" onclick="closeQuickEditLastEntry()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:9999;align-items:center;justify-content:center;"></div>
 
 <!-- WIEDERKEHRENDE ZEITEN VERWALTEN -->
 <div id="recurring-manager" onclick="if(event.target===this)closeRecurringManager()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:9999;align-items:center;justify-content:center;"></div>
