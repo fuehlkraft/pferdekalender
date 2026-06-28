@@ -3760,6 +3760,7 @@ return html2pdf;
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:7px;flex-shrink:0;">
+        <button id="header-wichtiges-btn" onclick="openWichtiges()" title="Wichtiges" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.6);border:none;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;touch-action:manipulation;">🔖</button>
         <button id="header-notfall-btn" onclick="openNotfallCard()" title="Notfallkontakte" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.6);border:none;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;touch-action:manipulation;">🚨</button>
         <button id="header-bell-btn" onclick="toggleHeaderBell()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.6);border:none;display:flex;align-items:center;justify-content:center;font-size:14px;position:relative;cursor:pointer;touch-action:manipulation;">
           🔔<span id="header-bell-dot" style="display:none;position:absolute;top:4px;right:5px;width:7px;height:7px;border-radius:50%;background:#e85555;"></span>
@@ -3777,13 +3778,26 @@ return html2pdf;
       <div id="header-bell-list"></div>
     </div>
 
+  </div>
+
     <!-- Schnell-Erfassen: von überall aus erreichbar, damit kein Gedanke verloren geht -->
-    <button id="quick-capture-btn" onclick="openQuickCapture()" title="Schnell etwas festhalten" style="position:fixed;bottom:22px;right:18px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--lilac),var(--rose));border:none;box-shadow:0 6px 18px rgba(74,56,96,0.35);font-size:26px;color:white;cursor:pointer;z-index:9970;display:flex;align-items:center;justify-content:center;touch-action:manipulation;">💭</button>
+    <button id="quick-capture-btn" onclick="openQuickCapture()" title="Schnell etwas festhalten" style="position:fixed;bottom:22px;right:18px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--deep),#6a5280);border:none;box-shadow:0 6px 18px rgba(74,56,96,0.45);font-size:26px;color:white;cursor:pointer;z-index:9970;display:flex;align-items:center;justify-content:center;touch-action:manipulation;">💭</button>
     <div id="quick-capture-modal" onclick="if(event.target===this)closeQuickCapture()" style="display:none;position:fixed;inset:0;background:rgba(74,56,96,0.4);z-index:9980;align-items:center;justify-content:center;">
       <div onclick="event.stopPropagation()" style="background:white;border-radius:16px;padding:22px;width:90%;max-width:380px;box-shadow:0 12px 40px rgba(74,56,96,0.3);">
-        <div style="font-family:Georgia,serif;font-size:18px;font-weight:600;color:var(--deep);margin-bottom:4px;">💭 Schnell festhalten</div>
-        <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">Kein Filter, keine Kategorie nötig. Landet in deiner Inbox, du kannst es später einsortieren.</div>
-        <textarea id="quick-capture-text" autofocus style="width:100%;min-height:90px;border:1px solid rgba(180,160,220,0.3);border-radius:10px;padding:10px;font-family:Arial,sans-serif;font-size:14px;outline:none;resize:vertical;box-sizing:border-box;" placeholder="Was schwirrt dir gerade durch den Kopf?"></textarea>
+        <div style="display:flex;gap:6px;margin-bottom:14px;">
+          <button id="qc-tab-notiz" onclick="setQuickCaptureType('notiz')" style="flex:1;background:var(--lilac);border:none;border-radius:10px;padding:8px 6px;font-size:12px;font-weight:700;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;">💭 Notiz</button>
+          <button id="qc-tab-link" onclick="setQuickCaptureType('link')" style="flex:1;background:rgba(232,228,240,0.5);border:none;border-radius:10px;padding:8px 6px;font-size:12px;font-weight:700;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;">🔖 Link / Wichtiges</button>
+        </div>
+        <div id="qc-panel-notiz">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">Kein Filter, keine Kategorie nötig. Landet in deiner Inbox, du kannst es später einsortieren.</div>
+          <textarea id="quick-capture-text" autofocus style="width:100%;min-height:90px;border:1px solid rgba(180,160,220,0.3);border-radius:10px;padding:10px;font-family:Arial,sans-serif;font-size:14px;outline:none;resize:vertical;box-sizing:border-box;" placeholder="Was schwirrt dir gerade durch den Kopf?"></textarea>
+        </div>
+        <div id="qc-panel-link" style="display:none;">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">Landet dauerhaft unter 🔖 Wichtiges, zum Wiederfinden statt zum Abhaken.</div>
+          <input type="text" id="qc-link-url" placeholder="Link (https://...) oder leer lassen für reine Notiz" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:10px;padding:9px 10px;font-family:Arial,sans-serif;font-size:13px;outline:none;box-sizing:border-box;margin-bottom:8px;">
+          <input type="text" id="qc-link-titel" placeholder="Titel" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:10px;padding:9px 10px;font-family:Arial,sans-serif;font-size:13px;outline:none;box-sizing:border-box;margin-bottom:8px;">
+          <input type="text" id="qc-link-kategorie" placeholder="Kategorie (optional, z.B. Rezepte, Inspiration, Geschäft...)" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:10px;padding:9px 10px;font-family:Arial,sans-serif;font-size:13px;outline:none;box-sizing:border-box;">
+        </div>
         <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px;">
           <button onclick="closeQuickCapture()" style="background:rgba(232,228,240,0.5);border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:8px 16px;font-size:13px;cursor:pointer;font-family:Arial,sans-serif;color:var(--muted);">Abbrechen</button>
           <button onclick="saveQuickCapture()" class="save-btn" style="padding:8px 20px;">✓ Speichern</button>
@@ -3791,8 +3805,37 @@ return html2pdf;
       </div>
     </div>
 
+    <!-- WICHTIGES: Links & dauerhafte Notizen, an einem Ort zum Wiederfinden -->
+    <div id="wichtiges-modal" onclick="if(event.target===this)closeWichtiges()" style="display:none;position:fixed;inset:0;background:rgba(74,56,96,0.45);z-index:99955;align-items:center;justify-content:center;padding:16px;">
+      <div onclick="event.stopPropagation()" style="background:white;border-radius:16px;width:100%;max-width:460px;max-height:85vh;overflow-y:auto;box-shadow:0 12px 40px rgba(74,56,96,0.3);">
+        <div style="background:linear-gradient(135deg,var(--deep),#6a5280);padding:16px 18px;display:flex;align-items:center;gap:10px;border-radius:16px 16px 0 0;position:sticky;top:0;">
+          <span style="font-size:20px;">🔖</span>
+          <div style="color:white;font-weight:700;font-size:16px;flex:1;">Wichtiges</div>
+          <button onclick="closeWichtiges()" style="background:rgba(255,255,255,0.2);border:none;color:white;border-radius:8px;padding:5px 10px;font-size:13px;cursor:pointer;">✕</button>
+        </div>
+        <div style="padding:14px 18px;">
+          <div style="display:flex;gap:8px;margin-bottom:10px;">
+            <input type="text" id="wichtiges-suche" oninput="renderWichtigesList()" placeholder="🔎 Suchen..." style="flex:1;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:7px 10px;font-size:12px;font-family:Arial,sans-serif;outline:none;">
+            <select id="wichtiges-kat-filter" onchange="renderWichtigesList()" style="border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:7px 8px;font-size:12px;font-family:Arial,sans-serif;background:white;outline:none;">
+              <option value="">Alle Kategorien</option>
+            </select>
+          </div>
+          <div id="wichtiges-list"></div>
+          <div style="border-top:1px solid rgba(216,207,240,0.3);margin-top:14px;padding-top:14px;">
+            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">+ Neu hinzufügen</div>
+            <input type="text" id="wi-url" placeholder="Link (https://...) oder leer lassen" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:8px 10px;font-size:12px;font-family:Arial,sans-serif;outline:none;box-sizing:border-box;margin-bottom:7px;">
+            <input type="text" id="wi-titel" placeholder="Titel" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:8px 10px;font-size:12px;font-family:Arial,sans-serif;outline:none;box-sizing:border-box;margin-bottom:7px;">
+            <div style="display:flex;gap:7px;">
+              <input type="text" id="wi-kategorie" placeholder="Kategorie (optional)" style="flex:1;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:8px 10px;font-size:12px;font-family:Arial,sans-serif;outline:none;box-sizing:border-box;">
+              <button onclick="addWichtiges()" class="save-btn" style="padding:8px 16px;">+ Speichern</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Übergangs-Warnung: sanfter Hinweis kurz vor einem Termin, verschwindet von selbst -->
-    <div id="fk-transition-toast" style="display:none;position:fixed;top:18px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--lilac),var(--rose));color:var(--deep);border-radius:14px;padding:12px 18px;box-shadow:0 8px 24px rgba(74,56,96,0.3);z-index:9975;max-width:90vw;font-family:Arial,sans-serif;font-size:13px;font-weight:600;display:flex;align-items:center;gap:10px;"></div>
+    <div id="fk-transition-toast" style="display:none;position:fixed;top:18px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--lilac),var(--rose));color:var(--deep);border-radius:14px;padding:12px 18px;box-shadow:0 8px 24px rgba(74,56,96,0.3);z-index:9975;max-width:90vw;font-family:Arial,sans-serif;font-size:13px;font-weight:600;align-items:center;gap:10px;"></div>
 
     <!-- NOTFALL-KARTE: alle wichtigen Kontakte an einer Stelle, von überall mit einem Tipp erreichbar -->
     <div id="notfall-card-modal" onclick="if(event.target===this)closeNotfallCard()" style="display:none;position:fixed;inset:0;background:rgba(74,56,96,0.45);z-index:99960;align-items:center;justify-content:center;padding:16px;">
@@ -3956,7 +3999,6 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
 <div id="einstellungen-panel" style="display:none;position:absolute;top:56px;right:16px;background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);border-radius:16px;padding:18px 22px;border:1px solid rgba(255,255,255,0.9);box-shadow:0 8px 32px rgba(180,160,220,0.25);z-index:1000;min-width:300px;">
 </div>
 
-  </div>
 
   <!-- ═══ PFERDE BEREICH ═══ -->
   <div id="section-pferde" style="display:none">
@@ -6794,7 +6836,8 @@ let pData={
   zeitstrahl:[],
   reisen:[],
   achtsamkeit:{startDatum:'',erledigteTage:[]},
-  inbox:[]
+  inbox:[],
+  wichtiges:[]
 };
 
 let currentMediaTab='buch';
@@ -9028,6 +9071,7 @@ function openQuickCapture(){
   var modal=document.getElementById('quick-capture-modal');
   if(!modal)return;
   modal.style.display='flex';
+  setQuickCaptureType('notiz');
   var ta=document.getElementById('quick-capture-text');
   if(ta){
     ta.value='';
@@ -9038,11 +9082,46 @@ function openQuickCapture(){
     };
   }
 }
+var _qcType='notiz';
+function setQuickCaptureType(typ){
+  _qcType=typ;
+  var notizPanel=document.getElementById('qc-panel-notiz');
+  var linkPanel=document.getElementById('qc-panel-link');
+  var tabNotiz=document.getElementById('qc-tab-notiz');
+  var tabLink=document.getElementById('qc-tab-link');
+  if(typ==='link'){
+    if(notizPanel)notizPanel.style.display='none';
+    if(linkPanel)linkPanel.style.display='block';
+    if(tabNotiz){tabNotiz.style.background='rgba(232,228,240,0.5)';}
+    if(tabLink){tabLink.style.background='var(--lilac)';}
+    setTimeout(function(){ var u=document.getElementById('qc-link-url'); if(u)u.focus(); },50);
+  } else {
+    if(notizPanel)notizPanel.style.display='block';
+    if(linkPanel)linkPanel.style.display='none';
+    if(tabNotiz){tabNotiz.style.background='var(--lilac)';}
+    if(tabLink){tabLink.style.background='rgba(232,228,240,0.5)';}
+  }
+}
 function closeQuickCapture(){
   var modal=document.getElementById('quick-capture-modal');
   if(modal)modal.style.display='none';
 }
 function saveQuickCapture(){
+  if(_qcType==='link'){
+    var url=document.getElementById('qc-link-url').value.trim();
+    var titel=document.getElementById('qc-link-titel').value.trim();
+    var kategorie=document.getElementById('qc-link-kategorie').value.trim();
+    if(!url && !titel)return;
+    if(!pData.wichtiges)pData.wichtiges=[];
+    pData.wichtiges.push({id:Date.now(), url:url, titel:titel||url, notiz:'', kategorie:kategorie, datum:new Date().toISOString().split('T')[0]});
+    saveAll();
+    document.getElementById('qc-link-url').value='';
+    document.getElementById('qc-link-titel').value='';
+    document.getElementById('qc-link-kategorie').value='';
+    closeQuickCapture();
+    try{renderUeberblick();}catch(e){}
+    return;
+  }
   var ta=document.getElementById('quick-capture-text');
   var v=ta?ta.value.trim():'';
   if(!v)return;
@@ -9057,6 +9136,73 @@ function saveQuickCapture(){
     setTimeout(function(){btn.style.background=orig;},700);
   }
   try{renderUeberblick();}catch(e){}
+}
+// ── WICHTIGES: Links & dauerhafte Notizen zum Wiederfinden, nicht zum Abhaken ──
+function openWichtiges(){
+  var modal=document.getElementById('wichtiges-modal');
+  if(!modal)return;
+  document.getElementById('wichtiges-suche').value='';
+  renderWichtigesList();
+  modal.style.display='flex';
+}
+function closeWichtiges(){
+  var modal=document.getElementById('wichtiges-modal');
+  if(modal)modal.style.display='none';
+}
+function addWichtiges(){
+  var url=document.getElementById('wi-url').value.trim();
+  var titel=document.getElementById('wi-titel').value.trim();
+  var kategorie=document.getElementById('wi-kategorie').value.trim();
+  if(!url && !titel)return;
+  if(!pData.wichtiges)pData.wichtiges=[];
+  pData.wichtiges.push({id:Date.now(), url:url, titel:titel||url, notiz:'', kategorie:kategorie, datum:new Date().toISOString().split('T')[0]});
+  saveAll();
+  document.getElementById('wi-url').value='';
+  document.getElementById('wi-titel').value='';
+  document.getElementById('wi-kategorie').value='';
+  renderWichtigesList();
+  try{renderUeberblick();}catch(e){}
+}
+function delWichtiges(id){
+  pData.wichtiges=(pData.wichtiges||[]).filter(function(w){return w.id!==id;});
+  saveAll();
+  renderWichtigesList();
+  try{renderUeberblick();}catch(e){}
+}
+function renderWichtigesList(){
+  var list=document.getElementById('wichtiges-list');
+  if(!list)return;
+  var items=(pData.wichtiges||[]).slice().sort(function(a,b){return b.id-a.id;});
+  var suche=(document.getElementById('wichtiges-suche').value||'').toLowerCase();
+  var katFilter=document.getElementById('wichtiges-kat-filter').value;
+
+  // Kategorie-Dropdown befüllen
+  var kats=[...new Set(items.map(function(w){return w.kategorie;}).filter(Boolean))];
+  var katSel=document.getElementById('wichtiges-kat-filter');
+  var prevVal=katSel.value;
+  katSel.innerHTML='<option value="">Alle Kategorien</option>'+kats.map(function(k){return '<option value="'+k+'">'+k+'</option>';}).join('');
+  katSel.value=prevVal;
+
+  if(suche) items=items.filter(function(w){return (w.titel||'').toLowerCase().indexOf(suche)>=0 || (w.url||'').toLowerCase().indexOf(suche)>=0 || (w.kategorie||'').toLowerCase().indexOf(suche)>=0;});
+  if(katFilter) items=items.filter(function(w){return w.kategorie===katFilter;});
+
+  if(!items.length){
+    list.innerHTML='<div style="text-align:center;padding:24px;color:var(--muted);font-size:13px;">Noch nichts gespeichert. Über das 🔖 unten rechts beim Schnell-Erfassen, oder direkt hier über "+ Neu hinzufügen".</div>';
+    return;
+  }
+  list.innerHTML=items.map(function(w){
+    var domain='';
+    try{ if(w.url) domain=new URL(w.url).hostname.replace('www.',''); }catch(e){ domain=w.url; }
+    return '<div style="background:rgba(255,255,255,0.6);border-radius:10px;padding:10px 12px;margin-bottom:8px;border-left:3px solid var(--lilac2);">'
+      +'<div style="display:flex;align-items:flex-start;gap:8px;">'
+      +'<div style="flex:1;min-width:0;">'
+      +(w.url?'<a href="'+w.url.replace(/"/g,'')+'" target="_blank" rel="noopener" style="color:var(--deep);font-weight:700;font-size:13px;text-decoration:none;word-break:break-word;">🔗 '+(w.titel||w.url)+'</a><div style="font-size:10px;color:var(--muted);margin-top:2px;">'+domain+'</div>'
+        :'<div style="color:var(--deep);font-weight:700;font-size:13px;">📌 '+(w.titel||'')+'</div>')
+      +(w.kategorie?'<span style="display:inline-block;margin-top:5px;background:rgba(216,207,240,0.4);border-radius:10px;padding:2px 8px;font-size:10px;color:var(--deep);">'+w.kategorie+'</span>':'')
+      +'</div>'
+      +'<button onclick="delWichtiges('+w.id+')" style="background:none;border:none;color:rgba(180,160,220,0.5);cursor:pointer;font-size:13px;flex-shrink:0;">✕</button>'
+      +'</div></div>';
+  }).join('');
 }
 function renderInboxCard(){
   var card=document.getElementById('ub-inbox-card');
@@ -9073,6 +9219,25 @@ function renderInboxCard(){
       +'<button onclick="delInboxItem('+it.id+')" style="background:none;border:none;color:rgba(180,160,220,0.5);cursor:pointer;font-size:13px;">✕</button>'
       +'</div>';
   }).join('');
+}
+function renderUbWichtigesCard(){
+  var card=document.getElementById('ub-wichtiges-card');
+  if(!card)return;
+  var items=(pData.wichtiges||[]);
+  if(!items.length){ card.style.display='none'; return; }
+  card.style.display='block';
+  var list=document.getElementById('ub-wichtiges-list');
+  if(!list)return;
+  var top=items.slice().sort(function(a,b){return b.id-a.id;}).slice(0,4);
+  list.innerHTML=top.map(function(w){
+    var domain='';
+    try{ if(w.url) domain=new URL(w.url).hostname.replace('www.',''); }catch(e){}
+    return '<div style="display:flex;align-items:center;gap:8px;padding:5px 4px;border-bottom:1px solid rgba(216,207,240,0.15);">'
+      +(w.url?'<a href="'+w.url.replace(/"/g,'')+'" target="_blank" rel="noopener" style="font-size:12px;color:var(--deep);flex:1;text-decoration:none;font-weight:600;">🔗 '+(w.titel||w.url)+(domain?' <span style="color:var(--muted);font-weight:400;">('+domain+')</span>':'')+'</a>'
+        :'<span style="font-size:12px;color:var(--deep);flex:1;">📌 '+(w.titel||'')+'</span>')
+      +'</div>';
+  }).join('')
+  +(items.length>4?'<div style="font-size:10px;color:var(--muted);text-align:center;margin-top:6px;">+'+(items.length-4)+' weitere</div>':'');
 }
 function delInboxItem(id){
   pData.inbox=(pData.inbox||[]).filter(function(it){return it.id!==id;});
@@ -9314,7 +9479,7 @@ function renderSettingsDesign(container){
 }
 
 // ── BACKUP & UPDATE (nutzt bestehende Funktionen) ──
-const FK_APP_VERSION='2.8.0';
+const FK_APP_VERSION='2.9.3';
 function renderSettingsBackup(container){
   container.innerHTML =
     '<div style="font-size:11px;color:var(--muted);margin-bottom:10px;">Installierte Version: <strong style="color:var(--deep);">'+FK_APP_VERSION+'</strong></div>'
@@ -9429,7 +9594,8 @@ const HELP_CONTENT = [
     {title:'Vorlage drucken', text:'Über den Drucken-Button in der jeweiligen Vorlage öffnet sich die Druckansicht deines Browsers.'},
   ]},
   { section:'Einstellungen & Allgemein', icon:'⚙️', topics:[
-    {title:'Schnell festhalten (💭-Button)', text:'Der violette 💭-Button unten rechts ist auf jeder Seite erreichbar. Tippe darauf, um einen Gedanken sofort aufzuschreiben, ohne ihn erst einsortieren zu müssen. Er landet in deiner Inbox ("Schnell erfasst" oben auf der Startseite), du kannst ihn später als To-Do heute übernehmen oder verwerfen.'},
+    {title:'Schnell festhalten (💭-Button)', text:'Der violette 💭-Button unten rechts ist auf jeder Seite erreichbar. Tippe darauf, um einen Gedanken sofort aufzuschreiben, ohne ihn erst einsortieren zu müssen. Bei "💭 Notiz" landet er in deiner Inbox ("Schnell erfasst" oben auf der Startseite), du kannst ihn später als To-Do heute übernehmen oder verwerfen. Bei "🔖 Link / Wichtiges" landest du stattdessen dauerhaft unter Wichtiges.'},
+    {title:'Wichtiges (🔖-Button)', text:'Der 🔖-Button oben im Kopfbereich ist von jeder Seite aus erreichbar. Hier sammelst du Links und wichtige Notizen, die du öfter brauchst, statt sie jedes Mal neu zu suchen, ähnlich wie bei Milanote. Mit Kategorien (z.B. Rezepte, Inspiration) und Suche. Ein Link öffnet sich beim Antippen direkt in einem neuen Tab. Die letzten Einträge erscheinen außerdem als kleine Vorschau oben auf der Startseite.'},
     {title:'Notfallkontakte (🚨-Button)', text:'Der 🚨-Button oben im Kopfbereich ist von jeder Seite aus erreichbar und zeigt alle wichtigen Kontakte gesammelt an einer Stelle: Kontakte, die du bei Meine Pferde, Andere Tiere oder Kinder eingetragen hast, plus allgemeine Notfallkontakte (unter Einstellungen → Notfallkontakte verwaltbar). Auf eine Telefonnummer tippen ruft direkt an.'},
     {title:'Erledigtes feiern', text:'Beim Abhaken von Top-Prioritäten, To-Dos, Packlisten-Punkten und Habits gibt es jetzt eine kleine Bestätigung (kurzes Aufblitzen mit Funken), und ab und zu eine Mitteilung wie "5 erledigt heute, stark!". Das lässt sich nicht einzeln abschalten, drängt sich aber auch nicht störend auf.'},
     {title:'Übergangs-Warnung', text:'Unter Einstellungen → Mein Profil lässt sich einstellen, dass du automatisch einen sanften Hinweis bekommst, bevor ein Termin mit Uhrzeit beginnt, z.B. "In 15 Min: Stalldienst". Das funktioniert für jeden Termin mit Uhrzeit, ohne dass du dafür extra eine Erinnerung einstellen musst. Die Vorlaufzeit kannst du selbst wählen, und die Funktion lässt sich auch ganz abschalten.'},
@@ -14121,6 +14287,11 @@ const VORLAGE_RENDERERS={
         <div id="ub-inbox-list"></div>
       </div>
 
+      <div id="ub-wichtiges-card" class="card" style="display:none;margin-bottom:14px;">
+        <div class="card-title ub-heading" style="margin-bottom:6px;cursor:pointer;" onclick="openWichtiges()"><span class="card-title-dot" style="background:var(--lilac2)"></span>🔖 Wichtiges<span style="margin-left:auto;font-size:10px;color:var(--muted);">alle anzeigen →</span></div>
+        <div id="ub-wichtiges-list"></div>
+      </div>
+
       <!-- HEUTE IM FOKUS -->
       ${(function(){
         var tn=kalData.tagNotes[todayKey]||{};
@@ -14205,6 +14376,35 @@ const VORLAGE_RENDERERS={
       </div>
 
 
+        ${(typeof kids!=='undefined'&&kids.length>0)?`
+        <!-- KINDER-STATUS -->
+        <div class="card" style="margin-bottom:14px;">
+          <div class="card-title ub-heading" style="margin-bottom:4px;"><span class="card-title-dot" style="background:var(--butter)"></span>🧒 Kinder-Status</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5;">Wann war zuletzt was dran. Tippe auf eine Kachel, um direkt etwas festzuhalten.</div>
+          ${kids.map((name,kIdx)=>{
+            const kp=(typeof getKP==='function')?getKP(name):{foto:''};
+            const kCol=HORSE_COLORS[(horses.length+otherAnimals.length+kIdx)%HORSE_COLORS.length];
+            const avatar=(kp&&kp.foto)
+              ?'<div style="width:48px;height:48px;border-radius:50%;overflow:hidden;flex-shrink:0;margin-right:10px;border:2px solid rgba(255,255,255,0.8);"><img src="'+kp.foto+'" style="width:100%;height:100%;object-fit:cover;"></div>'
+              :'<div style="width:48px;height:48px;border-radius:50%;background:'+kCol+';display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:20px;font-weight:700;color:var(--deep);flex-shrink:0;margin-right:10px;border:2px solid rgba(255,255,255,0.8);">'+(kp.name||name)[0].toUpperCase()+'</div>';
+            return `<div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(216,207,240,0.2);">
+              <div style="font-weight:700;font-size:14px;color:var(--deep);margin-bottom:8px;display:flex;align-items:center;">${avatar}${name}</div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;">
+                ${Object.keys(KID_MODULES).map(mk=>{
+                  const def=KID_MODULES[mk];
+                  const rows=(kidExtra[mk]&&kidExtra[mk][name])?kidExtra[mk][name]:[];
+                  const last=rows.length?rows[rows.length-1]:null;
+                  const onclickAttr=`onclick="kidGoToModuleForKid('${mk}',${kIdx})"`;
+                  if(!last||!last.datum) return `<div ${onclickAttr} style="font-size:11px;text-align:center;background:rgba(255,224,178,0.18);border-radius:6px;padding:5px 4px;cursor:pointer;">${def.icon}<br><span style="color:var(--muted);font-size:10px;">${def.label.replace(/^\\S+\\s/,'')}</span><br><span style="color:var(--lilac2);font-size:10px;font-weight:700;">+ eintragen</span></div>`;
+                  const diff=Math.round((new Date()-new Date(last.datum))/86400000);
+                  return `<div ${onclickAttr} style="font-size:11px;text-align:center;background:rgba(255,224,178,0.28);border-radius:6px;padding:5px 4px;cursor:pointer;" title="${last.datum}">${def.icon}<br><span style="color:var(--muted);font-size:10px;">${def.label.replace(/^\\S+\\s/,'')}</span><br><span style="font-weight:700;color:var(--deep);font-size:10px;">vor ${diff}d</span></div>`;
+                }).join('')}
+              </div>
+            </div>`;
+          }).join('')}
+          <button onclick="switchTab('kinder')" style="width:100%;background:transparent;border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:6px;font-size:11px;color:var(--muted);cursor:pointer;font-family:Arial,sans-serif;">→ Zu Kinder</button>
+        </div>`:''}
+
       <!-- PFERDE-STATUS -->
       <div class="card" style="margin-bottom:14px;">
         <div class="card-title ub-heading" style="margin-bottom:4px;display:flex;align-items:center;gap:8px;"><span class="card-title-dot" style="background:var(--mint2)"></span>🐴 Pferde-Status<button onclick="event.stopPropagation();toggleInfo('ub-pferdestatus-info','ub-pferdestatus-arrow')" style="display:flex;align-items:center;gap:4px;background:rgba(232,228,240,0.4);border:none;border-radius:14px;padding:4px 10px;font-size:10px;font-weight:700;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;"><span id="ub-pferdestatus-arrow" style="display:inline-block;transition:transform 0.2s;">▾</span> mehr erfahren</button><button onclick="event.stopPropagation();openPkStatusTileSettings()" title="Kacheln anpassen" style="margin-left:auto;background:rgba(232,228,240,0.4);border:none;border-radius:8px;width:26px;height:26px;font-size:13px;cursor:pointer;">⚙️</button></div>
@@ -14262,34 +14462,6 @@ const VORLAGE_RENDERERS={
 
         </div>
 
-        ${(typeof kids!=='undefined'&&kids.length>0)?`
-        <!-- KINDER-STATUS -->
-        <div class="card" style="margin-bottom:14px;">
-          <div class="card-title ub-heading" style="margin-bottom:4px;"><span class="card-title-dot" style="background:var(--butter)"></span>🧒 Kinder-Status</div>
-          <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5;">Wann war zuletzt was dran. Tippe auf eine Kachel, um direkt etwas festzuhalten.</div>
-          ${kids.map((name,kIdx)=>{
-            const kp=(typeof getKP==='function')?getKP(name):{foto:''};
-            const kCol=HORSE_COLORS[(horses.length+otherAnimals.length+kIdx)%HORSE_COLORS.length];
-            const avatar=(kp&&kp.foto)
-              ?'<div style="width:48px;height:48px;border-radius:50%;overflow:hidden;flex-shrink:0;margin-right:10px;border:2px solid rgba(255,255,255,0.8);"><img src="'+kp.foto+'" style="width:100%;height:100%;object-fit:cover;"></div>'
-              :'<div style="width:48px;height:48px;border-radius:50%;background:'+kCol+';display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:20px;font-weight:700;color:var(--deep);flex-shrink:0;margin-right:10px;border:2px solid rgba(255,255,255,0.8);">'+(kp.name||name)[0].toUpperCase()+'</div>';
-            return `<div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(216,207,240,0.2);">
-              <div style="font-weight:700;font-size:14px;color:var(--deep);margin-bottom:8px;display:flex;align-items:center;">${avatar}${name}</div>
-              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;">
-                ${Object.keys(KID_MODULES).map(mk=>{
-                  const def=KID_MODULES[mk];
-                  const rows=(kidExtra[mk]&&kidExtra[mk][name])?kidExtra[mk][name]:[];
-                  const last=rows.length?rows[rows.length-1]:null;
-                  const onclickAttr=`onclick="kidGoToModuleForKid('${mk}',${kIdx})"`;
-                  if(!last||!last.datum) return `<div ${onclickAttr} style="font-size:11px;text-align:center;background:rgba(255,224,178,0.18);border-radius:6px;padding:5px 4px;cursor:pointer;">${def.icon}<br><span style="color:var(--muted);font-size:10px;">${def.label.replace(/^\\S+\\s/,'')}</span><br><span style="color:var(--lilac2);font-size:10px;font-weight:700;">+ eintragen</span></div>`;
-                  const diff=Math.round((new Date()-new Date(last.datum))/86400000);
-                  return `<div ${onclickAttr} style="font-size:11px;text-align:center;background:rgba(255,224,178,0.28);border-radius:6px;padding:5px 4px;cursor:pointer;" title="${last.datum}">${def.icon}<br><span style="color:var(--muted);font-size:10px;">${def.label.replace(/^\\S+\\s/,'')}</span><br><span style="font-weight:700;color:var(--deep);font-size:10px;">vor ${diff}d</span></div>`;
-                }).join('')}
-              </div>
-            </div>`;
-          }).join('')}
-          <button onclick="switchTab('kinder')" style="width:100%;background:transparent;border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:6px;font-size:11px;color:var(--muted);cursor:pointer;font-family:Arial,sans-serif;">→ Zu Kinder</button>
-        </div>`:''}
 
         ${(typeof otherAnimals!=='undefined'&&otherAnimals.length>0)?`
         <!-- TIER-STATUS (Andere Tiere) -->
@@ -15167,6 +15339,7 @@ function renderUeberblick(){
   currentVorlageId=saved;
   try{ fkRenderTimelineBar('ub-zeitleiste', dateKey(new Date())); }catch(e){}
   try{ renderInboxCard(); }catch(e){}
+  try{ renderUbWichtigesCard(); }catch(e){}
   // Farbthema wird über Einstellungen-Button geändert
 }
 
