@@ -3801,6 +3801,7 @@ return html2pdf;
     <div class="main-nav" id="main-nav-inner">
       <div class="nav-tooltip-wrap"><button class="main-nav-btn active" id="tab-ueberblick" onclick="switchTab('ueberblick')">Überblick<span class="tab-update-dot" id="tab-update-dot-ueberblick" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>Mein Überblick</strong><br>Deine persönliche Schaltzentrale. Nächste Termine, offene To-Dos, Pferde-Status, Jahresziele und Glücksmomente, alles auf einen Blick.</div></div>
       <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-pferde" onclick="switchTab('pferde')">🐴 Pferde<span class="tab-update-dot" id="tab-update-dot-pferde" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>🐴 Pferde</strong><br>Alles rund um Sir Harry, Bo und Tari. Gesundheitsakte, Hufpflege, Fütterung, Impfungen, Kosten und Trainingsnotizen, lückenlos dokumentiert.</div></div>
+      <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-andere-tiere" onclick="switchTab('andere-tiere')">🐾 Andere Tiere<span class="tab-update-dot" id="tab-update-dot-andere-tiere" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>🐾 Andere Tiere</strong><br>Für Hund, Katze & Co: eigenes Profil, Gesundheit, Pflege, Fütterung, Training, Verhalten und Allergien, genauso wie bei den Pferden. Kosten und Termine laufen gemeinsam mit den Pferden.</div></div>
       <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-glueck" onclick="switchTab('glueck')">❤️ Glücksmomente<span class="tab-update-dot" id="tab-update-dot-glueck" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>❤️ Glücksmomente</strong><br>Halte fest was dich wirklich berührt hat. Mit Foto, Datum und Text. Dein persönliches Archiv der schönen Momente, für schwierige Tage.</div></div>
       <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-persoenlich" onclick="switchTab('persoenlich')">✨ Persönlich<span class="tab-update-dot" id="tab-update-dot-persoenlich" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>✨ Persönlich</strong><br>Habits, Routinen, Reflexion, Vision Board, Fitness, Geburtstage, Lebensrad, Bucket List, Weltkarte und Zeitstrahl.</div></div>
       <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-organisation" onclick="switchTab('organisation')">📋 Organisation<span class="tab-update-dot" id="tab-update-dot-organisation" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>📋 Organisation</strong><br>Ziele, Braindump, To-Dos, Verleih, Urlaub, Essen, Vorsorge, Wann-zuletzt, Putzplan, Finanzen und Abos.</div></div>
@@ -4660,6 +4661,44 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
     </div>
   </div>
 
+  <!-- ═══ ANDERE TIERE BEREICH ═══ -->
+  <div id="section-andere-tiere" style="display:none">
+    <div class="body">
+      <div class="pk-subnav-inner" id="oa-subnav">
+        <button class="main-nav-btn active" id="oa-tab-overview" onclick="showOAView('overview')">Meine Tiere</button>
+        <button class="main-nav-btn" id="oa-tab-kosten-link" onclick="switchTab('pferde');showPkView('costs');">💰 Kosten</button>
+        <button class="main-nav-btn" id="oa-tab-gesundheit" onclick="showOAView('gesundheit')">🩺 Gesundheit</button>
+        <button class="main-nav-btn" id="oa-tab-pflege" onclick="showOAView('pflege')">✂️ Pflege</button>
+        <button class="main-nav-btn" id="oa-tab-fuetterung" onclick="showOAView('fuetterung')">🌾 Fütterung</button>
+        <button class="main-nav-btn" id="oa-tab-training" onclick="showOAView('training')">🎯 Training</button>
+        <button class="main-nav-btn" id="oa-tab-verhalten" onclick="showOAView('verhalten')">👁 Verhalten</button>
+        <button class="main-nav-btn" id="oa-tab-allergie" onclick="showOAView('allergie')">🌿 Allergie</button>
+      </div>
+
+      <div class="card" style="margin-bottom:14px;background:linear-gradient(135deg,rgba(216,207,240,0.15),rgba(200,234,223,0.1));">
+        <div style="font-size:12px;color:var(--text);line-height:1.6;">🐾 Hier verwaltest du Hund, Katze & Co genauso wie deine Pferde. Kosten und Termine, die du einem Tier hier zuordnest, erscheinen automatisch auch in der gemeinsamen <strong>Kostenübersicht</strong> und im <strong>Kalender</strong> bei Pferde.</div>
+      </div>
+
+      <!-- MEINE TIERE -->
+      <div id="oa-view-overview">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+          <div class="sec-title" style="margin:0">Meine Tiere</div>
+          <button onclick="addOtherAnimal()" class="save-btn" style="margin-left:auto;padding:6px 16px;">+ Tier hinzufügen</button>
+        </div>
+        <div id="oa-cards"></div>
+      </div>
+
+      <!-- GENERISCHE MODUL-ANSICHT (Gesundheit, Pflege, Fütterung, Training, Verhalten, Allergie) -->
+      <div id="oa-view-module" style="display:none">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+          <div class="sec-title" style="margin:0;flex:1;" id="oa-module-title"></div>
+          <select id="oa-module-animal-sel" onchange="renderOAModuleView()" style="border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:7px 12px;font-size:12px;font-family:Arial,sans-serif;background:white;color:var(--deep);outline:none;"></select>
+        </div>
+        <div id="oa-module-content"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- ═══ PERSÖNLICH BEREICH ═══ -->
   <div id="section-persoenlich" style="display:none">
     <div class="body">
@@ -5352,7 +5391,7 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
             <div style="display:grid;grid-template-columns:1fr auto auto;gap:6px;">
               <input type="text" id="reise-ziel-inp" placeholder="Reiseziel" style="border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:7px 10px;font-size:12px;font-family:Arial,sans-serif;background:rgba(255,255,255,0.7);color:var(--text);outline:none;">
               <input type="date" id="reise-datum-inp" style="border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:7px 8px;font-size:12px;font-family:Arial,sans-serif;background:rgba(255,255,255,0.7);color:var(--text);outline:none;">
-              <button onclick="addReise()" style="background:var(--sky);border:none;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;">+</button>
+              <button onclick="addReise();var _b=event.target;_b.style.background='var(--mint2)';setTimeout(function(){_b.style.background='var(--sky)';},900);" style="background:var(--sky);border:none;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:700;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;">+</button>
             </div>
           </div>
           <div class="card">
@@ -5873,10 +5912,9 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
             <textarea id="tag-zeit-notiz" placeholder="Notiz (z.B. Zoom-Link, Adresse, was mitbringen...)" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 10px;font-size:11px;font-family:Arial,sans-serif;background:rgba(255,255,255,0.7);color:var(--text);outline:none;margin-bottom:6px;min-height:44px;resize:vertical;box-sizing:border-box;"></textarea>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px;">
               <div>
-                <div style="font-size:9px;color:var(--muted);margin-bottom:2px;">Pferd (optional)</div>
+                <div style="font-size:9px;color:var(--muted);margin-bottom:2px;">Tier (optional)</div>
                 <select id="tag-zeit-horse" style="width:100%;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 6px;font-size:11px;font-family:Arial,sans-serif;background:rgba(255,255,255,0.7);color:var(--text);outline:none;box-sizing:border-box;">
-                  <option value="">Kein Pferd</option>
-                  <option>Sir Harry</option><option>Bo</option><option>Tari</option><option value="Alle">Alle Pferde</option>
+                  <option value="">Kein Tier</option>
                 </select>
               </div>
               <div>
@@ -6111,6 +6149,202 @@ let pkState={year:new Date().getFullYear(),month:null,filterHorse:'Alle'};
 let pkEntries=[];
 let horses=[...new Set(['Sir Harry','Bo','Tari'])];
 
+// ── ANDERE TIERE (Katzen, Hunde, Sonstiges) ──
+// Funktioniert nach demselben Prinzip wie horses/horseProfiles/pkExtra, nur für Tiere,
+// die keine Pferde sind. So lassen sich Kosten, Termine und Status-Kacheln gemeinsam
+// mit den Pferden an einer Stelle führen, ohne die bestehende Pferde-Logik anzufassen.
+let otherAnimals=[];
+let otherAnimalProfiles={};
+let oaExtra={gesundheit:{},pflege:{},fuetterung:{},training:{},verhalten:{},allergie:{}};
+const OA_TYPES=[{v:'hund',l:'🐶 Hund'},{v:'katze',l:'🐱 Katze'},{v:'kleintier',l:'🐹 Kleintier'},{v:'vogel',l:'🐦 Vogel'},{v:'sonstige',l:'🐾 Sonstiges'}];
+const OA_MODULES={
+  gesundheit:{label:'🩺 Gesundheit',icon:'🩺',fields:[['Datum','datum','date'],['Anlass','titel','text'],['Befund','befund','text'],['Temp. °C','temp','number'],['Nächster Termin','naechster','date']]},
+  pflege:{label:'✂️ Pflege',icon:'✂️',fields:[['Datum','datum','date'],['Art (Krallen, Fell, Zähne...)','art','text']]},
+  fuetterung:{label:'🌾 Fütterung',icon:'🌾',fields:[['Datum','datum','date'],['Was geändert?','was','text']]},
+  training:{label:'🎯 Training',icon:'🎯',fields:[['Datum','datum','date'],['Was geübt?','was','text']]},
+  verhalten:{label:'👁 Verhalten',icon:'👁',fields:[['Datum','datum','date'],['Situation','situation','text']]},
+  allergie:{label:'🌿 Allergie',icon:'🌿',fields:[['Datum','datum','date'],['Symptome','symptome','text']]}
+};
+function getAllAnimalNames(){ return horses.concat(otherAnimals); }
+
+// ── ANDERE TIERE: VIEWS & RENDERING ──
+let currentOAModule='gesundheit';
+function showOAView(v){
+  document.querySelectorAll('#oa-subnav .main-nav-btn').forEach(b=>b.classList.remove('active'));
+  if(v==='overview'){
+    document.getElementById('oa-view-overview').style.display='block';
+    document.getElementById('oa-view-module').style.display='none';
+    var b=document.getElementById('oa-tab-overview');if(b)b.classList.add('active');
+    renderOAOverview();
+  } else {
+    currentOAModule=v;
+    document.getElementById('oa-view-overview').style.display='none';
+    document.getElementById('oa-view-module').style.display='block';
+    var b2=document.getElementById('oa-tab-'+v);if(b2)b2.classList.add('active');
+    document.getElementById('oa-module-title').textContent=(OA_MODULES[v]?OA_MODULES[v].label:v)+(otherAnimals.length?', ':'');
+    fillOAAnimalSelect();
+    renderOAModuleView();
+  }
+}
+function fillOAAnimalSelect(){
+  var sel=document.getElementById('oa-module-animal-sel');
+  if(!sel)return;
+  var prev=sel.value;
+  sel.innerHTML=otherAnimals.map(function(a,i){return '<option value="'+i+'">'+a+'</option>';}).join('');
+  if(prev!==''&&parseInt(prev)<otherAnimals.length)sel.value=prev;
+}
+function renderOAOverview(){
+  const cont=document.getElementById('oa-cards');if(!cont)return;
+  cont.innerHTML='';
+  const inp12='border:none;border-bottom:1px solid rgba(180,160,220,0.2);background:transparent;font-family:"Arial",sans-serif;font-size:12px;color:var(--deep);outline:none;padding:2px 0;width:100%;';
+  if(!otherAnimals.length){
+    cont.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted);">Noch keine anderen Tiere angelegt. Über "+ Tier hinzufügen" startest du.</div>';
+    return;
+  }
+  otherAnimals.forEach((name,i)=>{
+    const oap=getOAP(name);
+    const div=document.createElement('div');div.className='horse-card';div.style.marginBottom='20px';
+    div.innerHTML=`<div style="display:grid;grid-template-columns:90px 1fr;gap:18px;margin-bottom:14px;align-items:start;">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div style="position:relative;width:80px;height:80px;">
+          <div onclick="oaUpload(${i})" style="width:80px;height:80px;border-radius:50%;border:2px solid rgba(180,160,220,0.4);overflow:hidden;cursor:pointer;background:${HORSE_COLORS[i%HORSE_COLORS.length]};display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:var(--deep);">
+            ${oap.foto?`<img src="${oap.foto}" style="width:100%;height:100%;object-fit:cover;">`:`<span>${(oap.name||name)[0]}</span>`}
+          </div>
+        </div>
+        <div onclick="oaUpload(${i})" style="font-size:9px;color:var(--muted);text-align:center;cursor:pointer;">📷 ändern</div>
+      </div>
+      <div>
+        <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:140px;"><div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;">Name</div>
+            <input value="${oap.name||name}" onchange="renameOA(${i},this.value)" style="font-family:Georgia,serif;font-size:20px;font-weight:600;color:var(--deep);border:none;border-bottom:1px solid rgba(180,160,220,0.3);background:transparent;outline:none;width:100%;" placeholder="Tiername"></div>
+          <div style="width:140px;"><div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;">Tierart</div>
+            <select onchange="updateOAP(${i},'typ',this.value)" style="${inp12}background:transparent;">${OA_TYPES.map(t=>`<option value="${t.v}"${oap.typ===t.v?' selected':''}>${t.l}</option>`).join('')}</select></div>
+          <button onclick="delOtherAnimal(${i})" style="background:none;border:none;color:rgba(180,160,220,0.5);cursor:pointer;font-size:14px;align-self:flex-start;margin-top:14px;">✕</button>
+        </div>
+        <div class="horse-fields-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          ${[['Geburtstag','geburtsdatum','date'],['Rasse','rasse','text'],['Farbe / Abzeichen','farbe','text'],['Chip-Nummer','chip','text'],['Versicherung','versicherung','text']].map(([l,k,t])=>`
+          <div><div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;">${l}</div>
+          <input type="${t}" value="${oap[k]||''}" onchange="updateOAP(${i},'${k}',this.value)" style="${inp12}"></div>`).join('')}
+        </div>
+        <div style="margin-top:10px;">
+          <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">Besonderheiten / Allergien / Dauermedikamente</div>
+          <textarea onchange="updateOAP(${i},'besonderheiten',this.value)" style="width:100%;border:1px solid rgba(180,160,220,0.2);border-radius:8px;padding:6px 8px;font-family:Arial,sans-serif;font-size:12px;color:var(--text);background:rgba(255,255,255,0.6);outline:none;resize:vertical;min-height:44px;">${oap.besonderheiten||''}</textarea>
+        </div>
+        <div style="margin-top:10px;">
+          <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">📇 Kontakte (Tierarzt, Hundefriseur, ...)</div>
+          ${oap.kontakte.map((k,ki)=>`
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 22px;gap:5px;margin-bottom:5px;align-items:center;">
+            <input value="${k.rolle||''}" placeholder="Rolle" onchange="updateOAKontakt(${i},${ki},'rolle',this.value)" style="${inp12}">
+            <input value="${k.name||''}" placeholder="Name" onchange="updateOAKontakt(${i},${ki},'name',this.value)" style="${inp12}">
+            <input value="${k.adresse||''}" placeholder="Adresse" onchange="updateOAKontakt(${i},${ki},'adresse',this.value)" style="${inp12}">
+            <input value="${k.telefon||''}" placeholder="Telefon" onchange="updateOAKontakt(${i},${ki},'telefon',this.value)" style="${inp12}">
+            <button onclick="delOAKontakt(${i},${ki})" style="background:none;border:none;color:rgba(180,160,220,0.5);cursor:pointer;font-size:13px;">✕</button>
+          </div>`).join('')}
+          <button onclick="addOAKontakt(${i})" style="background:rgba(216,207,240,0.3);border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:5px 12px;font-size:11px;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;margin-top:2px;">+ Kontakt hinzufügen</button>
+        </div>
+      </div>
+    </div>`;
+    cont.appendChild(div);
+  });
+}
+function addOtherAnimal(){
+  const name=prompt('Name des Tieres:');
+  if(!name||!name.trim())return;
+  const n=name.trim();
+  if(otherAnimals.includes(n)||horses.includes(n)){alert('Der Name ist schon vergeben.');return;}
+  otherAnimals.push(n);getOAP(n);saveOA();renderOAOverview();fillHorseSelects();
+}
+function delOtherAnimal(i){
+  if(!confirm('Dieses Tier wirklich löschen? Einträge in den Modulen bleiben gespeichert, werden aber nicht mehr angezeigt.'))return;
+  otherAnimals.splice(i,1);saveOA();renderOAOverview();
+}
+function renameOA(idx,val){
+  if(!val.trim())return;
+  const old=otherAnimals[idx];const oap=getOAP(old);oap.name=val;otherAnimalProfiles[val]=oap;
+  if(val!==old)delete otherAnimalProfiles[old];
+  otherAnimals[idx]=val;saveOA();
+}
+function updateOAP(idx,key,val){const name=otherAnimals[idx];const oap=getOAP(name);oap[key]=val;saveOA();}
+function addOAKontakt(idx){const name=otherAnimals[idx];const oap=getOAP(name);oap.kontakte.push({rolle:'',name:'',adresse:'',telefon:''});saveOA();renderOAOverview();}
+function updateOAKontakt(idx,ki,key,val){const name=otherAnimals[idx];const oap=getOAP(name);if(oap.kontakte[ki]){oap.kontakte[ki][key]=val;saveOA();}}
+function delOAKontakt(idx,ki){const name=otherAnimals[idx];const oap=getOAP(name);oap.kontakte.splice(ki,1);saveOA();renderOAOverview();}
+function oaUpload(idx){
+  var old=document.getElementById('oa-up-global');
+  if(old&&old.parentNode)old.parentNode.removeChild(old);
+  var inp=document.createElement('input');
+  inp.type='file';inp.id='oa-up-global';inp.accept='image/*';
+  inp.style.cssText='position:fixed;top:-200px;left:-200px;width:1px;height:1px;';
+  document.body.appendChild(inp);
+  inp.onchange=function(){
+    var f=this.files[0];if(!f)return;
+    compressImage(f,function(compressed){
+      var name=otherAnimals[idx];var oap=getOAP(name);oap.foto=compressed;
+      if(fkSafeSaveStorage(function(){saveOA();}))renderOAOverview();
+    },400,0.75);
+  };
+  inp.click();
+}
+
+// ── GENERISCHE MODUL-ANSICHT (gemeinsam für Gesundheit, Pflege, Fütterung, Training, Verhalten, Allergie) ──
+function renderOAModuleView(){
+  const modKey=currentOAModule;const mod=OA_MODULES[modKey];
+  const c=document.getElementById('oa-module-content');if(!c||!mod)return;
+  if(!otherAnimals.length){
+    c.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted);">Lege zuerst unter "Meine Tiere" ein Tier an.</div>';return;
+  }
+  const idx=parseInt(document.getElementById('oa-module-animal-sel').value)||0;
+  const name=otherAnimals[idx];
+  if(!oaExtra[modKey])oaExtra[modKey]={};
+  if(!oaExtra[modKey][name])oaExtra[modKey][name]=[];
+  const rows=oaExtra[modKey][name];
+  const cols=mod.fields;
+  c.innerHTML=`<div class="card" style="overflow-x:auto;">
+    <table style="border-collapse:collapse;width:100%;min-width:600px;font-size:11px;">
+      <thead><tr>${cols.map(([l])=>`<th style="padding:7px 8px;text-align:left;font-weight:700;color:var(--deep);border:1px solid rgba(216,207,240,0.3);background:rgba(216,207,240,0.2);white-space:nowrap;">${l}</th>`).join('')}<th style="padding:7px 8px;background:rgba(216,207,240,0.2);border:1px solid rgba(216,207,240,0.3);">Notiz</th><th style="padding:7px 8px;background:rgba(216,207,240,0.2);border:1px solid rgba(216,207,240,0.3);"></th></tr></thead>
+      <tbody>${rows.length===0?`<tr><td colspan="${cols.length+2}" style="text-align:center;padding:20px;color:var(--muted);">Noch keine Einträge, klicke "+ Eintrag"</td></tr>`:
+      rows.map((row,ri)=>`<tr style="background:${ri%2===0?'transparent':'rgba(232,228,240,0.08)'}">
+        ${cols.map(([l,k,t])=>`<td style="padding:3px 4px;border:1px solid rgba(216,207,240,0.2);">
+          <input type="${t}" value="${row[k]||''}" onchange="updateOAEntry('${modKey}','${name}',${ri},'${k}',this.value)" style="width:100%;border:none;outline:none;font-family:Arial,sans-serif;font-size:11px;color:var(--deep);background:transparent;padding:3px 4px;box-sizing:border-box;">
+        </td>`).join('')}
+        <td style="padding:3px 4px;border:1px solid rgba(216,207,240,0.2);"><input value="${row.notiz||''}" onchange="updateOAEntry('${modKey}','${name}',${ri},'notiz',this.value)" style="width:100%;border:none;outline:none;font-family:Arial,sans-serif;font-size:11px;color:var(--deep);background:transparent;padding:3px 4px;box-sizing:border-box;"></td>
+        <td style="padding:3px 4px;border:1px solid rgba(216,207,240,0.2);"><button onclick="delOAEntry('${modKey}','${name}',${ri})" style="background:none;border:none;color:rgba(180,160,220,0.5);cursor:pointer;font-size:12px;">✕</button></td>
+      </tr>`).join('')}
+      </tbody>
+    </table>
+    <button onclick="addOAEntry('${modKey}','${name}')" style="margin-top:10px;background:rgba(216,207,240,0.3);border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:7px 14px;font-size:12px;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;">+ Eintrag</button>
+  </div>`;
+}
+function addOAEntry(modKey,name){
+  if(!oaExtra[modKey])oaExtra[modKey]={};
+  if(!oaExtra[modKey][name])oaExtra[modKey][name]=[];
+  const entry={};(OA_MODULES[modKey].fields||[]).forEach(([l,k])=>{entry[k]='';});entry.notiz='';
+  if(entry.datum!==undefined)entry.datum=new Date().toISOString().split('T')[0];
+  oaExtra[modKey][name].push(entry);saveOA();renderOAModuleView();
+}
+function updateOAEntry(modKey,name,ri,key,val){
+  if(oaExtra[modKey]&&oaExtra[modKey][name]&&oaExtra[modKey][name][ri]){oaExtra[modKey][name][ri][key]=val;saveOA();}
+}
+function delOAEntry(modKey,name,ri){
+  if(oaExtra[modKey]&&oaExtra[modKey][name]){oaExtra[modKey][name].splice(ri,1);saveOA();renderOAModuleView();}
+}
+function getOAP(name){
+  if(!otherAnimalProfiles[name])otherAnimalProfiles[name]={name:name,typ:'hund',foto:'',geburtsdatum:'',rasse:'',farbe:'',besonderheiten:'',versicherung:'',chip:'',kontakte:[]};
+  if(!otherAnimalProfiles[name].kontakte)otherAnimalProfiles[name].kontakte=[];
+  return otherAnimalProfiles[name];
+}
+function saveOA(){
+  try{
+    localStorage.setItem('pk_other_animals',JSON.stringify(otherAnimals));
+    localStorage.setItem('pk_other_animal_profiles',JSON.stringify(otherAnimalProfiles));
+    localStorage.setItem('pk_oa_extra',JSON.stringify(oaExtra));
+  }catch(e){console.warn('Speichern (Andere Tiere) fehlgeschlagen:',e);}
+}
+function loadOA(){
+  try{const a=JSON.parse(localStorage.getItem('pk_other_animals'));if(a)otherAnimals=a;}catch(e){}
+  try{const p=JSON.parse(localStorage.getItem('pk_other_animal_profiles'));if(p)otherAnimalProfiles=p;}catch(e){}
+  try{const x=JSON.parse(localStorage.getItem('pk_oa_extra'));if(x)oaExtra=Object.assign(oaExtra,x);}catch(e){}
+}
+
 // Persönlich-Daten
 let pData={
   habits:[],habitDone:{},
@@ -6139,6 +6373,7 @@ function loadAll(){
   try{pkEntries=JSON.parse(localStorage.getItem('pk_entries')||'[]');}catch(e){pkEntries=[];}
   try{const h=JSON.parse(localStorage.getItem('pk_horses'));if(h&&h.length)horses=h;}catch(e){}
   try{const pd=JSON.parse(localStorage.getItem('pk_pers'));if(pd)pData=Object.assign(pData,pd);}catch(e){}
+  loadOA();
   const sp=localStorage.getItem('pk_cover_photo');
   if(sp){
     const i=document.getElementById('cover-photo');i.src=sp;i.classList.add('visible');
@@ -6158,10 +6393,26 @@ function loadAll(){
 function compressImage(file, callback, maxWidth, quality){
   maxWidth = maxWidth || 800;
   quality = quality || 0.7;
+  var settled = false;
+  var watchdog = setTimeout(function(){
+    if(!settled){
+      settled = true;
+      alert('Das Foto konnte nicht verarbeitet werden (Zeitüberschreitung). Bitte versuch es noch einmal oder wähle ein anderes Foto.');
+    }
+  }, 8000);
   var reader = new FileReader();
+  reader.onerror = function(){
+    if(settled)return; settled=true; clearTimeout(watchdog);
+    alert('Das Foto konnte nicht gelesen werden. Bitte versuch es noch einmal oder wähle ein anderes Foto.');
+  };
   reader.onload = function(e){
     var img = new Image();
+    img.onerror = function(){
+      if(settled)return; settled=true; clearTimeout(watchdog);
+      alert('Dieses Bildformat wird hier leider nicht unterstützt (z.B. HEIC von neueren iPhones). Bitte wähle ein JPG oder PNG, oder stelle dein iPhone unter Einstellungen → Kamera → Formate auf "Kompatibilität" um.');
+    };
     img.onload = function(){
+      if(settled)return; settled=true; clearTimeout(watchdog);
       var canvas = document.createElement('canvas');
       var w = img.width;
       var h = img.height;
@@ -6421,7 +6672,7 @@ function goToCover(){
   document.getElementById('cover').style.display='flex';
   document.getElementById('app').style.display='none';
   // Alle Sections verstecken damit beim nächsten Öffnen sauber gestartet wird
-  ['pferde','glueck','persoenlich','organisation','kalender','ueberblick','vorlagen'].forEach(s=>{
+  ['pferde','andere-tiere','glueck','persoenlich','organisation','kalender','ueberblick','vorlagen'].forEach(s=>{
     const el=document.getElementById('section-'+s);if(el)el.style.display='none';
   });
   document.querySelectorAll('#main-nav-inner .main-nav-btn').forEach(b=>b.classList.remove('active'));
@@ -6797,7 +7048,7 @@ function renderMonth(){
     g.innerHTML+='<div class="cal-day'+(hE?' has-event':'')+(iT?' today':'')+'">'+d+'</div>';
   }
   const chips=document.getElementById('horse-chips');
-  chips.innerHTML=['Alle',...horses].map(h=>'<button class="horse-chip'+(pkState.filterHorse===h?' active':'')+'" onclick="setFilter(\''+(h==='Alle'?'Alle':h)+'\')">'+h+'</button>').join('');
+  chips.innerHTML=['Alle',...getAllAnimalNames()].map(h=>'<button class="horse-chip'+(pkState.filterHorse===h?' active':'')+'" onclick="setFilter(\''+(h==='Alle'?'Alle':h)+'\')">'+h+'</button>').join('');
   renderEntries();
 }
 function setFilter(h){pkState.filterHorse=h;renderMonth();}
@@ -6815,7 +7066,7 @@ function renderEntries(){
         '<button class="entry-delete" onclick="deleteEntry('+e.id+')">✕</button>'+
         '<span class="entry-horse">'+horseInfo.label+'</span><strong style="font-size:13px;color:var(--deep)">'+e.title+'</strong>'+
         (e.notes?'<div class="entry-notes">'+e.notes+'</div>':'')+
-        (cat==='cost'&&horseInfo.names.length>1?'<div class="entry-notes">→ '+((parseFloat(e.amount)||0)/horseInfo.names.length).toFixed(2)+' € pro Pferd, durch '+horseInfo.names.length+' Pferde geteilt</div>':'')+
+        (cat==='cost'&&horseInfo.names.length>1?'<div class="entry-notes">→ '+((parseFloat(e.amount)||0)/horseInfo.names.length).toFixed(2)+' € pro Tier, durch '+horseInfo.names.length+' Tiere geteilt</div>':'')+
         (e.amount?'<div class="entry-amount">'+parseFloat(e.amount).toFixed(2)+' €</div>':'')+
         '<div class="entry-date">'+fmt(e.date)+'</div></div>';
       }).join('');
@@ -6825,7 +7076,31 @@ function renderEntries(){
   if(!any)el.innerHTML='<div class="empty-month"><h3>Noch keine Einträge</h3><p style="margin-bottom:16px;font-size:13px">Trage deinen ersten Eintrag für '+MONTHS[pkState.month-1]+' ein.</p><button class="add-main-btn" onclick="openModal()" style="margin:0">+ Ersten Eintrag</button></div>';
 }
 if(!window.horseProfiles)window.horseProfiles={};
-function getHP(h){if(!horseProfiles[h])horseProfiles[h]={name:h,foto:'',geburtsdatum:'',rasse:'',farbe:'',besonderheiten:'',tierarzt:'',hufschmied:'',versicherung:'',chip:'',pass:''};if(!horseProfiles[h].intervals)horseProfiles[h].intervals={vet:365,huf:42,vacc:365,wurm:84,osteo:84,teeth:365};return horseProfiles[h];}
+function getHP(h){
+  if(!horseProfiles[h])horseProfiles[h]={name:h,foto:'',geburtsdatum:'',rasse:'',farbe:'',besonderheiten:'',tierarzt:'',hufschmied:'',versicherung:'',chip:'',pass:''};
+  var hp=horseProfiles[h];
+  if(!hp.intervals)hp.intervals={vet:365,huf:42,vacc:365,wurm:84,osteo:84,teeth:365};
+  if(!hp.kontakte){
+    hp.kontakte=[];
+    // Bisherige einfache Tierarzt-/Hufschmied-Felder als ersten Kontakt übernehmen, nichts geht verloren
+    if(hp.tierarzt)hp.kontakte.push({rolle:'Tierarzt',name:hp.tierarzt,adresse:'',telefon:''});
+    if(hp.hufschmied)hp.kontakte.push({rolle:'Hufschmied',name:hp.hufschmied,adresse:'',telefon:''});
+  }
+  return hp;
+}
+function addHorseKontakt(idx){
+  const h=horses[idx];const hp=getHP(h);
+  hp.kontakte.push({rolle:'',name:'',adresse:'',telefon:''});
+  saveHP();renderOverview();
+}
+function updateHorseKontakt(idx,ki,key,val){
+  const h=horses[idx];const hp=getHP(h);
+  if(hp.kontakte[ki]){hp.kontakte[ki][key]=val;saveHP();}
+}
+function delHorseKontakt(idx,ki){
+  const h=horses[idx];const hp=getHP(h);
+  hp.kontakte.splice(ki,1);saveHP();renderOverview();
+}
 function saveHP(){localStorage.setItem('pk_horse_profiles',JSON.stringify(horseProfiles));}
 function loadHP(){try{const d=JSON.parse(localStorage.getItem('pk_horse_profiles'));if(d)horseProfiles=d;}catch(e){}}
 
@@ -6859,9 +7134,21 @@ function renderOverview(){
           <input value="${hp.name||h}" onchange="renameHorse(${i},this.value)" style="font-family:Georgia,serif;font-size:22px;font-weight:600;color:var(--deep);border:none;border-bottom:1px solid rgba(180,160,220,0.3);background:transparent;outline:none;width:100%;" placeholder="Pferdename">
         </div>
         <div class="horse-fields-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-          ${[['Geburtstag','geburtsdatum','date'],['Rasse','rasse','text'],['Farbe / Abzeichen','farbe','text'],['Chip-Nummer','chip','text'],['Equidenpass-Nr.','pass','text'],['Versicherung','versicherung','text'],['Tierarzt','tierarzt','text'],['Hufschmied','hufschmied','text']].map(([l,k,t])=>`
+          ${[['Geburtstag','geburtsdatum','date'],['Rasse','rasse','text'],['Farbe / Abzeichen','farbe','text'],['Chip-Nummer','chip','text'],['Equidenpass-Nr.','pass','text'],['Versicherung','versicherung','text']].map(([l,k,t])=>`
           <div><div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;">${l}</div>
           <input type="${t}" value="${hp[k]||''}" onchange="updateHP(${i},'${k}',this.value)" style="${inp12}"></div>`).join('')}
+        </div>
+        <div style="margin-top:10px;">
+          <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">📇 Kontakte (Tierarzt, Hufschmied, Stall, Versicherung, ...)</div>
+          ${hp.kontakte.map((k,ki)=>`
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 22px;gap:5px;margin-bottom:5px;align-items:center;">
+            <input value="${k.rolle||''}" placeholder="Rolle" onchange="updateHorseKontakt(${i},${ki},'rolle',this.value)" style="${inp12}">
+            <input value="${k.name||''}" placeholder="Name" onchange="updateHorseKontakt(${i},${ki},'name',this.value)" style="${inp12}">
+            <input value="${k.adresse||''}" placeholder="Adresse" onchange="updateHorseKontakt(${i},${ki},'adresse',this.value)" style="${inp12}">
+            <input value="${k.telefon||''}" placeholder="Telefon" onchange="updateHorseKontakt(${i},${ki},'telefon',this.value)" style="${inp12}">
+            <button onclick="delHorseKontakt(${i},${ki})" style="background:none;border:none;color:rgba(180,160,220,0.5);cursor:pointer;font-size:13px;">✕</button>
+          </div>`).join('')}
+          <button onclick="addHorseKontakt(${i})" style="background:rgba(216,207,240,0.3);border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:5px 12px;font-size:11px;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;margin-top:2px;">+ Kontakt hinzufügen</button>
         </div>
         <div style="margin-top:10px;">
           <div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">Besonderheiten / Allergien / Dauermedikamente</div>
@@ -7035,10 +7322,15 @@ function updateHorseInterval(idx,key,val,divisor){
 function openKostenModal(){
   var grp=document.getElementById('km-horse-group');
   if(grp){
-    grp.innerHTML=horses.map(function(h){
+    var pferdeBoxes=horses.map(function(h){
       return '<label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--deep);cursor:pointer;background:rgba(255,255,255,0.6);border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:5px 10px;">'
         +'<input type="checkbox" value="'+h+'" checked style="accent-color:var(--lilac2);width:14px;height:14px;">'+h+'</label>';
     }).join('');
+    var oaBoxes=otherAnimals.map(function(a){
+      return '<label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--deep);cursor:pointer;background:rgba(255,255,255,0.6);border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:5px 10px;">'
+        +'<input type="checkbox" value="'+a+'" checked style="accent-color:var(--lilac2);width:14px;height:14px;">'+a+'</label>';
+    }).join('');
+    grp.innerHTML=pferdeBoxes+oaBoxes;
   }
   var dm=document.getElementById('km-datum');
   if(dm)dm.value=new Date().toISOString().split('T')[0];
@@ -7054,11 +7346,15 @@ function saveKostenEintrag(){
   var a=document.getElementById('km-betrag').value;
   var subcat=document.getElementById('km-kat').value;
   if(!d||!t||!a){alert('Bitte Datum, Beschreibung und Betrag ausfüllen.');return;}
-  if(!checked.length){alert('Bitte mindestens ein Pferd auswählen.');return;}
-  // Wenn wirklich ALLE aktuell vorhandenen Pferde angehakt sind, bleibt es wie bisher 'Alle' (dynamisch,
-  // bezieht auch künftig neu angelegte Pferde mit ein). Wurde gezielt abgewählt, wird die Auswahl fest gespeichert.
+  if(!checked.length){alert('Bitte mindestens ein Tier auswählen.');return;}
+  // Wenn wirklich ALLE aktuell vorhandenen Pferde angehakt sind (und sonst nichts), bleibt es wie bisher
+  // 'Alle' (dynamisch, bezieht auch künftig neu angelegte Pferde mit ein). Sind wirklich ALLE Tiere jeder
+  // Art angehakt, wird das neue 'AlleTiere' verwendet (bezieht auch künftig neue Tiere jeder Art mit ein).
+  // Wurde gezielt etwas abgewählt, wird die Auswahl fest gespeichert.
+  var allNames=getAllAnimalNames();
   var h, horseList=null;
-  if(checked.length===horses.length){ h='Alle'; }
+  if(checked.length===horses.length && checked.every(function(c){return horses.indexOf(c)>=0;})){ h='Alle'; }
+  else if(checked.length===allNames.length){ h='AlleTiere'; }
   else if(checked.length===1){ h=checked[0]; }
   else { h='Mehrere'; horseList=checked; }
   pkEntries.push({id:Date.now(),date:d,horse:h,horseList:horseList,cat:'cost',subcat:subcat,title:t,notes:'',amount:a});
@@ -7072,11 +7368,12 @@ var KOSTEN_KAT={stall:'🏠 Stallmiete/Pension',feed:'🌾 Futter (Heu, Kraft, E
 function costEntryHorses(e){
   if(e.horseList&&e.horseList.length)return{names:e.horseList.slice(),label:e.horseList.join(', ')};
   if(e.horse==='Alle')return{names:horses.slice(),label:'Alle Pferde'};
+  if(e.horse==='AlleTiere')return{names:getAllAnimalNames(),label:'Alle Tiere'};
   return{names:[e.horse],label:e.horse};
 }
 function renderCosts(){
   const ce=pkEntries.filter(e=>e.cat==='cost'&&e.amount);
-  const byH={};horses.forEach(h=>byH[h]=0);
+  const byH={};getAllAnimalNames().forEach(h=>byH[h]=0);
   ce.forEach(e=>{
     const amt=parseFloat(e.amount)||0;
     const info=costEntryHorses(e);
@@ -7090,7 +7387,7 @@ function renderCosts(){
   const total=ce.reduce((s,e)=>s+(parseFloat(e.amount)||0),0);
   const c=document.getElementById('costs-content');
   c.innerHTML='<div class="cost-total"><div style="font-size:13px;color:var(--muted);margin-bottom:6px">Gesamtausgaben '+pkState.year+'</div><div style="font-family:Georgia,serif;font-size:40px;font-weight:600;color:var(--deep)">'+total.toFixed(2)+' €</div></div>'+
-    '<div class="cost-horses">'+horses.map((h,i)=>'<div class="cost-horse" style="background:'+HORSE_COLORS[i]+'"><div style="font-size:12px;color:var(--muted);margin-bottom:5px">'+h+'</div><div style="font-family:Georgia,serif;font-size:24px;font-weight:600;color:var(--deep)">'+(byH[h]||0).toFixed(2)+' €</div></div>').join('')+'</div>'+
+    '<div class="cost-horses">'+getAllAnimalNames().map((h,i)=>'<div class="cost-horse" style="background:'+HORSE_COLORS[i%HORSE_COLORS.length]+'"><div style="font-size:12px;color:var(--muted);margin-bottom:5px">'+h+'</div><div style="font-family:Georgia,serif;font-size:24px;font-weight:600;color:var(--deep)">'+(byH[h]||0).toFixed(2)+' €</div></div>').join('')+'</div>'+
     (ce.length?'<div class="cost-entries"><div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:0.5px;margin-bottom:12px;text-transform:uppercase">Alle Ausgaben</div>'+
     ce.sort((a,b)=>b.date.localeCompare(a.date)).map(e=>{
       const amt=parseFloat(e.amount)||0;
@@ -7098,7 +7395,7 @@ function renderCosts(){
       const isShared=info.names.length>1;
       const horseLabel=info.label;
       const katLabel=e.subcat&&KOSTEN_KAT[e.subcat]?KOSTEN_KAT[e.subcat]:'';
-      const shareText=isShared?'<div style="font-size:11px;color:var(--muted);margin-top:2px">→ '+(amt/info.names.length).toFixed(2)+' € pro Pferd, durch '+info.names.length+' Pferde geteilt</div>':'';
+      const shareText=isShared?'<div style="font-size:11px;color:var(--muted);margin-top:2px">→ '+(amt/info.names.length).toFixed(2)+' € pro Tier, durch '+info.names.length+' Tiere geteilt</div>':'';
       return '<div class="cost-row"><div><span style="background:var(--lavgray);border-radius:4px;padding:1px 7px;font-size:10px;color:var(--deep);margin-right:6px">'+horseLabel+'</span>'+e.title+
         (katLabel?'<span style="font-size:10px;color:var(--muted);margin-left:6px">'+katLabel+'</span>':'')+
         (e.notes?'<div style="font-size:11px;color:var(--muted)">'+e.notes+'</div>':'')+shareText+
@@ -7969,7 +8266,7 @@ function dismissBackupReminder(){
 
 
 function applyTabUpdateDots(changesByTab){
-  var tabs = ['ueberblick','pferde','glueck','persoenlich','organisation','kalender','vorlagen'];
+  var tabs = ['ueberblick','pferde','andere-tiere','glueck','persoenlich','organisation','kalender','vorlagen'];
   tabs.forEach(function(tab){
     var dot = document.getElementById('tab-update-dot-' + tab);
     if(!dot) return;
@@ -7993,7 +8290,7 @@ function restoreTabUpdateDots(){
   }catch(e){}
 }
 var TAB_LABELS = {
-  ueberblick:'Überblick', pferde:'Pferde', glueck:'Glücksmomente',
+  ueberblick:'Überblick', pferde:'Pferde', 'andere-tiere':'Andere Tiere', glueck:'Glücksmomente',
   persoenlich:'Persönlich', organisation:'Organisation', kalender:'Kalender', vorlagen:'Vorlagen'
 };
 function showTabUpdateInfo(tab){
@@ -8413,8 +8710,8 @@ const HELP_CONTENT = [
   { section:'Mein Überblick', icon:'🏠', topics:[
     {title:'Wofür ist die Überblick-Seite?', text:'Deine Schaltzentrale: alles Wichtige aus allen Bereichen auf einen Blick, ohne erst in jeden Tab einzeln zu wechseln.'},
     {title:'Hintergrundbild ändern', text:'Tippe oben rechts auf das ☰-Symbol, dort kannst du ein eigenes Foto hochladen oder wieder entfernen, und die Position per Ziehen anpassen.'},
-    {title:'Heute im Fokus', text:'Zeigt deine heutige Intention, Top-Prioritäten und Termine. Steht noch nichts drin, kommst du über "jetzt ausfüllen" direkt zur Tagesseite. Ist schon etwas eingetragen, bringt dich "weiter bearbeiten" ebenfalls dorthin.'},
-    {title:'Pferde-Status', text:'Zeigt pro Pferd, wann zuletzt Tierarzt, Hufschmied, Impfung, Wurmkur, Osteopathie/Physio und Zahnkontrolle dran waren. Die Farbe richtet sich nach dem Intervall, das du unter Pferde → Meine Pferde pro Pferd selbst einstellst. Auf eine Kachel tippen öffnet direkt einen neuen Eintrag mit dem richtigen Pferd und der richtigen Kategorie. Auf den runden Button mit dem Pferdenamen tippen öffnet den Foto-Upload.'},
+    {title:'Heute im Fokus', text:'Zeigt deine heutige Intention, Top-Prioritäten und Termine, oben mit einer Zeitleiste für den ganzen Tag (antippen zeigt Details zu einem Termin). Steht noch nichts drin, kommst du über "jetzt ausfüllen" direkt zur Tagesseite. Ist schon etwas eingetragen, bringt dich "weiter bearbeiten" ebenfalls dorthin.'},
+    {title:'Pferde-Status', text:'Zeigt pro Pferd, wann zuletzt was dran war. Über das ⚙️-Symbol wählst du selbst, welche Kacheln angezeigt werden, neben Tierarzt, Hufschmied, Impfung, Wurmkur, Osteopathie/Physio und Zahnkontrolle stehen auch Allergie & Husten, Verhalten, Training, Hufpflege und Fütterung zur Auswahl. Auf eine Kachel tippen öffnet direkt einen neuen Eintrag. Auf den runden Button mit dem Pferdenamen tippen öffnet den Foto-Upload.'},
     {title:'Offene To-Dos', text:'Zeigt deine unerledigten Aufgaben aus Organisation → To-Dos.'},
     {title:'Nächste 14 Tage', text:'Fasst anstehende Termine aus dem Kalender und wichtige Daten der nächsten zwei Wochen zusammen.'},
     {title:'Jahresziele', text:'Zeigt deine unter Organisation → Ziele eingetragenen Jahresziele.'},
@@ -8423,9 +8720,9 @@ const HELP_CONTENT = [
   ]},
   { section:'Pferde', icon:'🐴', topics:[
     {title:'Jahresübersicht', text:'Zeigt deinen Pferdekalender als Jahr mit Monatskacheln. Über "+ Eintrag" trägst du Tierarzt, Hufschmied, Gesundheit, Blutbefund, Impfung, Wurmkur, Osteopathie/Physio, Zahnkontrolle, Kosten oder ein Highlight ein, jeweils mit Pferd, Datum und Titel.'},
-    {title:'Meine Pferde', text:'Hier verwaltest du Name, Foto, Geburtstag, Rasse, Farbe, Chip- und Equidenpass-Nummer, Versicherung sowie Tierarzt- und Hufschmied-Kontakt pro Pferd. Auf das Foto tippen lädt ein neues hoch.'},
+    {title:'Meine Pferde', text:'Hier verwaltest du Name, Foto, Geburtstag, Rasse, Farbe, Chip- und Equidenpass-Nummer und Versicherung pro Pferd. Unter "Kontakte" kannst du beliebig viele Ansprechpartner mit Rolle, Name, Adresse und Telefonnummer hinterlegen, z.B. Tierarzt, Hufschmied, Stall. Auf das Foto tippen lädt ein neues hoch.'},
     {title:'Erinnerungs-Intervalle einstellen', text:'Ganz unten bei jedem Pferd unter Meine Pferde stellst du pro Kategorie (Tierarzt, Hufschmied, Impfung, Wurmkur, Osteopathie/Physio, Zahnkontrolle) ein eigenes Intervall ein, z.B. Hufschmied alle 6 Wochen bei einem beschlagenen Pferd, alle 10 Wochen bei einem Barhufpferd. Davon hängt ab, wann eine Kachel im Pferde-Status grün, gelb oder rosa wird.'},
-    {title:'Kosten erfassen & teilen', text:'Unter Pferde → Kosten trägst du Ausgaben mit Kategorie, Betrag und Pferd ein. Wählst du als Pferd "Alle Pferde", wird der Betrag automatisch gleichmäßig auf alle deine Pferde geteilt, du musst nicht selbst rechnen.'},
+    {title:'Kosten erfassen & teilen', text:'Unter Pferde → Kosten trägst du Ausgaben mit Kategorie, Betrag ein und wählst per Häkchen, für welche Pferde der Betrag gilt. Sind alle Pferde angehakt, wird automatisch gleichmäßig auf alle geteilt, auch auf später neu angelegte Pferde. Hakst du gezielt eins ab, z.B. weil ein Pferd ein bestimmtes Futter nicht bekommen darf, bleibt die Aufteilung auf die gewählten Pferde beschränkt.'},
     {title:'Gesundheitsakte', text:'Führt für jedes Pferd ein ausführliches Protokoll: Impfungen, Wurmkuren, Zahnkontrollen, Osteopathie-Termine, Tierarztbesuche und Dauermedikamente, jeweils mit Datum, Befund und Notiz.'},
     {title:'Hufpflege', text:'Eigener Bereich für alles rund um die Hufe: Beschlag- oder Barhuf-Termine, Beobachtungen, Fotos vom Hufzustand.'},
     {title:'Gesundheitskontrolle', text:'Zum Festhalten von Vitalwerten wie Puls, Atmung, Temperatur und Kapillarfüllzeit, inklusive kurzer Erklärung, wie man die Kapillarfüllzeit überhaupt misst.'},
@@ -8437,11 +8734,19 @@ const HELP_CONTENT = [
     {title:'Pferdeurlaub', text:'Für die Planung, wenn dein Pferd z.B. auf einen Wanderreit-Urlaub oder eine auswärtige Unterbringung geht.'},
     {title:'Achtsamkeit (Tagesimpuls)', text:'Ein 40-Tage-Programm mit täglichen Impulsen rund um achtsame Pferdebegegnung, erscheint automatisch oben im Überblick, solange es aktiv ist.'},
   ]},
+  { section:'Andere Tiere', icon:'🐾', topics:[
+    {title:'Wofür ist dieser Bereich?', text:'Für Hund, Katze und alle anderen Tiere neben den Pferden, mit derselben Funktionstiefe: eigenes Profil, Gesundheit, Pflege, Fütterung, Training, Verhalten und Allergien.'},
+    {title:'Meine Tiere', text:'Name, Tierart, Foto, Geburtstag, Rasse, Farbe, Chip-Nummer und Versicherung pro Tier. Unter "Kontakte" beliebig viele Ansprechpartner mit Rolle, Name, Adresse und Telefonnummer, genau wie bei den Pferden.'},
+    {title:'Gesundheit, Pflege, Fütterung, Training, Verhalten, Allergie', text:'Sechs Module zum Festhalten von Terminen und Beobachtungen pro Tier, jeweils mit Datum, den passenden Feldern und einer Notiz. Über die Auswahl oben rechts wechselst du zwischen deinen Tieren.'},
+    {title:'Tier-Status im Überblick', text:'Zeigt auf der Startseite (Mein Überblick) pro Tier, wann zuletzt was dran war, genau wie der Pferde-Status. Ein Tipp auf eine Kachel öffnet direkt einen neuen Eintrag.'},
+    {title:'Kosten & Termine gemeinsam mit Pferden', text:'Beim Kosten-Eintragen (Pferde → Kosten) kannst du jedes deiner anderen Tiere genauso ankreuzen wie ein Pferd, die Kosten werden gemeinsam ausgewiesen. Beim Termine-Eintragen im Kalender lässt sich ein Termin ebenso mit einem anderen Tier statt einem Pferd verknüpfen.'},
+  ]},
   { section:'Kalender', icon:'📅', topics:[
-    {title:'Tagesseite', text:'Dein zentraler Tagesplaner: Intention, Top-3-Prioritäten, To-Dos, Termine & Zeitplan, Tagebuch und Tagesabschluss mit Stimmung. Über "Tag speichern" unten wird alles gespeichert, der Button wird dabei kurz grün.'},
-    {title:'Termine eintragen', text:'Bei Termine & Zeitplan tippst du auf Von oder Bis, um die Uhrzeit über ein Ziffernblatt einzustellen, erst Stunde, dann Minute. Titel und Notiz dazu, fertig. Der Button wechselt von "+ Termin" zu "Speichern" in Grün, sobald du etwas eintippst.'},
+    {title:'Tagesseite', text:'Dein zentraler Tagesplaner: Intention, Top-3-Prioritäten, To-Dos, Termine & Zeitplan, Tagebuch und Tagesabschluss mit Stimmung. Über "Tag speichern" unten wird alles gespeichert, der Button wird dabei kurz grün. Offene Prioritäten und To-Dos von gestern bleiben rot markiert sichtbar, bis du sie abhakst.'},
+    {title:'Termine eintragen & bearbeiten', text:'Bei Termine & Zeitplan tippst du auf Von oder Bis, um die Uhrzeit über ein Ziffernblatt einzustellen, erst Stunde, dann Minute, mit echter 24-Stunden-Anzeige. Titel und Notiz dazu, fertig. Über das ✏️-Symbol an einem bestehenden Termin kannst du ihn jederzeit nachträglich bearbeiten.'},
     {title:'Termin mit Pferd verknüpfen', text:'Beim Eintragen eines Termins kannst du optional ein Pferd und eine Kategorie (Tierarzt, Hufschmied, Impfung, Wurmkur, Osteopathie/Physio, Zahnkontrolle) auswählen. Ist beides ausgewählt, taucht der Termin automatisch auch im Pferde-Status im Überblick auf.'},
-    {title:'Zeit blockieren & Erinnerung', text:'"Zeit blockieren" markiert den Termin optisch als reservierte Zeit in der Tagesleiste. "Erinnerung" lässt zur eingetragenen Uhrzeit ein Popup mit Titel und Notiz aufspringen, das funktioniert nur, solange der Kalender bei dir geöffnet ist, da es keinen Server im Hintergrund gibt.'},
+    {title:'Zeit blockieren & Erinnerung', text:'"Zeit blockieren" markiert den Termin optisch als reservierte Zeit in der Tagesleiste. Bei "Erinnerung" wählst du, wie viel Vorlauf du brauchst (zur Startzeit, 1 Std., 3 Std., 1 Tag, 1 Woche oder 2 Wochen vorher), dann erscheint ein Popup mit Titel und Notiz, inklusive "Erinnere mich noch mal" zum Verschieben um 10 Minuten. Kurz vor dem Termin wird die 🔔-Markierung rot. Das funktioniert nur, solange der Kalender bei dir geöffnet ist, da es keinen Server im Hintergrund gibt.'},
+    {title:'Wiederkehrende Zeiten', text:'Über den Button bei der Halbjahresübersicht legst du feste Wochentermine an, z.B. "jeden Montag 17 Uhr: Reitstunde". Sie erscheinen danach automatisch jede Woche auf der Tagesseite, ohne dass du sie neu eintragen musst.'},
     {title:'Top-3-Prioritäten & To-Dos', text:'Beide Listen lassen sich nachträglich bearbeiten, einfach in die Zeile tippen und den Text ändern. Häkchen setzen mit Tippen auf den Kreis links, löschen über das Kreuz rechts.'},
     {title:'Wochenzeitplan', text:'Zeigt deine Woche als Stunden-Raster, in jede Zelle kannst du kurz eintragen, was zu der Zeit geplant ist.'},
     {title:'Woche Horizontal & Journal-Woche', text:'Zwei weitere Wochenansichten: einmal als durchgehende Zeitleiste, einmal als Journal mit Platz für Notizen pro Tag.'},
@@ -10852,8 +11157,19 @@ function deleteRecurring(id){
   try{renderUeberblick();}catch(e){}
 }
 
+function fillTagZeitHorseSelect(){
+  var sel=document.getElementById('tag-zeit-horse');
+  if(!sel)return;
+  var prev=sel.value;
+  sel.innerHTML='<option value="">Kein Tier</option>'
+    +horses.map(function(h){return '<option value="'+h+'">'+h+'</option>';}).join('')
+    +(horses.length>1?'<option value="Alle">Alle Pferde</option>':'')
+    +otherAnimals.map(function(a){return '<option value="'+a+'">'+a+'</option>';}).join('');
+  if(prev)sel.value=prev;
+}
 function renderTag(){
   if(typeof fkZeitEditId!=='undefined'&&fkZeitEditId)cancelTagZeitEdit();
+  fillTagZeitHorseSelect();
   const dk=dateKey(kalState.dayDate);
   document.getElementById('kal-day-title').textContent=fmtLong(kalState.dayDate);
   document.getElementById('kal-day-picker').value=dk;
@@ -12734,6 +13050,35 @@ const VORLAGE_RENDERERS={
 
         </div>
 
+        ${(typeof otherAnimals!=='undefined'&&otherAnimals.length>0)?`
+        <!-- TIER-STATUS (Andere Tiere) -->
+        <div class="card" style="margin-bottom:14px;">
+          <div class="card-title ub-heading" style="margin-bottom:4px;"><span class="card-title-dot" style="background:var(--rose2)"></span>🐾 Tier-Status</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5;">Wann war zuletzt was bei Hund, Katze & Co dran. Tippe auf eine Kachel, um direkt etwas festzuhalten.</div>
+          ${otherAnimals.map((name,oaIdx)=>{
+            const oap=(typeof getOAP==='function')?getOAP(name):{foto:''};
+            const oaCol=HORSE_COLORS[(horses.length+oaIdx)%HORSE_COLORS.length];
+            const avatar=(oap&&oap.foto)
+              ?'<div style="width:48px;height:48px;border-radius:50%;overflow:hidden;flex-shrink:0;margin-right:10px;border:2px solid rgba(255,255,255,0.8);"><img src="'+oap.foto+'" style="width:100%;height:100%;object-fit:cover;"></div>'
+              :'<div style="width:48px;height:48px;border-radius:50%;background:'+oaCol+';display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:20px;font-weight:700;color:var(--deep);flex-shrink:0;margin-right:10px;border:2px solid rgba(255,255,255,0.8);">'+(oap.name||name)[0].toUpperCase()+'</div>';
+            return `<div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(216,207,240,0.2);">
+              <div style="font-weight:700;font-size:14px;color:var(--deep);margin-bottom:8px;display:flex;align-items:center;">${avatar}${name}</div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;">
+                ${Object.keys(OA_MODULES).map(mk=>{
+                  const def=OA_MODULES[mk];
+                  const rows=(oaExtra[mk]&&oaExtra[mk][name])?oaExtra[mk][name]:[];
+                  const last=rows.length?rows[rows.length-1]:null;
+                  const onclickAttr=`onclick="oaGoToModuleForAnimal('${mk}',${oaIdx})"`;
+                  if(!last||!last.datum) return `<div ${onclickAttr} style="font-size:11px;text-align:center;background:rgba(216,207,240,0.15);border-radius:6px;padding:5px 4px;cursor:pointer;">${def.icon}<br><span style="color:var(--muted);font-size:10px;">${def.label.replace(/^\\S+\\s/,'')}</span><br><span style="color:var(--lilac2);font-size:10px;font-weight:700;">+ eintragen</span></div>`;
+                  const diff=Math.round((new Date()-new Date(last.datum))/86400000);
+                  return `<div ${onclickAttr} style="font-size:11px;text-align:center;background:rgba(216,207,240,0.22);border-radius:6px;padding:5px 4px;cursor:pointer;" title="${last.datum}">${def.icon}<br><span style="color:var(--muted);font-size:10px;">${def.label.replace(/^\\S+\\s/,'')}</span><br><span style="font-weight:700;color:var(--deep);font-size:10px;">vor ${diff}d</span></div>`;
+                }).join('')}
+              </div>
+            </div>`;
+          }).join('')}
+          <button onclick="switchTab('andere-tiere')" style="width:100%;background:transparent;border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:6px;font-size:11px;color:var(--muted);cursor:pointer;font-family:Arial,sans-serif;">→ Zu Andere Tiere</button>
+        </div>`:''}
+
         <!-- RECHTE SPALTE -->
         <div style="display:flex;flex-direction:column;gap:12px;">
 
@@ -13060,7 +13405,7 @@ function toggleChallDay(d){const done=getVD('done')||{};done[d]=!done[d];setVD('
 
 // switchTab um Vorlagen erweitern
 function _switchTabFinal(t){
-  ['pferde','glueck','persoenlich','organisation','kalender','ueberblick','vorlagen'].forEach(s=>{
+  ['pferde','andere-tiere','glueck','persoenlich','organisation','kalender','ueberblick','vorlagen'].forEach(s=>{
     const el=document.getElementById('section-'+s);if(el)el.style.display=t===s?'block':'none';
   });
   document.querySelectorAll('#main-nav-inner .main-nav-btn').forEach(b=>b.classList.remove('active'));
@@ -13079,6 +13424,7 @@ function _switchTabFinal(t){
   if(t==='ueberblick')renderUeberblick();
   if(t==='glueck'){loadGlueck();renderGlueckTab();}
   if(t==='ueberblick'){setTimeout(updateUbHeader,100);}
+  if(t==='andere-tiere'){try{showOAView('overview');}catch(e){}}
 }
 switchTab=function(t){ _switchTabFinal(t); try{localStorage.setItem('pk_active_tab',t);}catch(e){} try{showTabUpdateInfo(t);}catch(e){} setTimeout(function(){ try{initScrollFades();}catch(e){} }, 50); };
 
@@ -13600,6 +13946,14 @@ function pkGoToModuleForHorse(view,sel,nameId,horseIdx){
     showPkView(view);
   },120);
 }
+function oaGoToModuleForAnimal(moduleKey,animalIdx){
+  switchTab('andere-tiere');
+  setTimeout(function(){
+    showOAView(moduleKey);
+    var sel=document.getElementById('oa-module-animal-sel');
+    if(sel){ sel.value=animalIdx; renderOAModuleView(); }
+  },120);
+}
 
 function renderUeberblick(){
   const body=document.getElementById('ueberblick-body');
@@ -13998,14 +14352,14 @@ function renderKontrolle(){
   const rows=pkExtra.gk[h];
   const c=document.getElementById('gk-content');
   const SAISONS=[{v:'',l:','},{v:'fruehling',l:'🌱 Frühjahr'},{v:'sommer',l:'☀️ Sommer'},{v:'herbst',l:'🍂 Herbst'},{v:'winter',l:'❄️ Winter'}];
-  const cols=[['Saison','saison','select','110px'],['Datum','datum','date','100px'],['Uhrzeit','uhrzeit','time','80px'],['Temp. °C','temp','number','75px'],['Puls /min','puls','number','75px'],['Atmung /min','atmung','number','80px'],['Schleimhäute','schleim','text','110px'],['Kapillarzeit','kapillar','text','90px'],['Gewicht kg','gewicht','number','80px'],['Bemerkung','bemerkung','text','1fr']];
+  const cols=[['Saison','saison','select','130px'],['Datum','datum','date','100px'],['Uhrzeit','uhrzeit','time','80px'],['Temp. °C','temp','number','75px'],['Puls /min','puls','number','75px'],['Atmung /min','atmung','number','80px'],['Schleimhäute','schleim','text','110px'],['Kapillarzeit','kapillar','text','90px'],['Gewicht kg','gewicht','number','80px'],['Bemerkung','bemerkung','text','1fr']];
   c.innerHTML=`<div class="card" style="overflow-x:auto;">
     <table style="border-collapse:collapse;width:100%;min-width:800px;font-size:11px;">
-      <thead><tr>${cols.map(([l])=>`<th style="padding:7px 8px;text-align:left;font-weight:700;color:var(--deep);border:1px solid rgba(216,207,240,0.3);background:rgba(216,207,240,0.2);white-space:nowrap;">${l}</th>`).join('')}<th style="padding:7px 8px;background:rgba(216,207,240,0.2);border:1px solid rgba(216,207,240,0.3);"></th></tr></thead>
+      <thead><tr>${cols.map(([l,,,w])=>`<th style="padding:7px 8px;text-align:left;font-weight:700;color:var(--deep);border:1px solid rgba(216,207,240,0.3);background:rgba(216,207,240,0.2);white-space:nowrap;width:${w};min-width:${w};">${l}</th>`).join('')}<th style="padding:7px 8px;background:rgba(216,207,240,0.2);border:1px solid rgba(216,207,240,0.3);"></th></tr></thead>
       <tbody>${rows.length===0?`<tr><td colspan="${cols.length+1}" style="text-align:center;padding:20px;color:var(--muted);">Noch keine Messungen, klicke "+ Messung"</td></tr>`:
       rows.map((row,ii)=>`<tr style="background:${ii%2===0?'transparent':'rgba(232,228,240,0.08)'}">
-        ${cols.map(([l,k,t,w])=>`<td style="padding:3px 4px;border:1px solid rgba(216,207,240,0.2);">
-          ${t==='select'?`<select onchange="updateGK('${h}',${ii},'${k}',this.value)" style="width:100%;border:none;outline:none;font-family:Arial,sans-serif;font-size:11px;color:var(--deep);background:transparent;padding:2px 2px;">${SAISONS.map(s=>`<option value="${s.v}"${row[k]===s.v?' selected':''}>${s.l}</option>`).join('')}</select>`:`<input type="${t}" value="${row[k]||''}" onchange="updateGK('${h}',${ii},'${k}',this.value)" style="width:100%;border:none;outline:none;font-family:Arial,sans-serif;font-size:11px;color:var(--deep);background:transparent;padding:3px 4px;">`}
+        ${cols.map(([l,k,t,w])=>`<td style="padding:3px 4px;border:1px solid rgba(216,207,240,0.2);width:${w};min-width:${w};">
+          ${t==='select'?`<select onchange="updateGK('${h}',${ii},'${k}',this.value)" style="width:100%;border:none;outline:none;font-family:Arial,sans-serif;font-size:11px;color:var(--deep);background:transparent;padding:2px 2px;">${SAISONS.map(s=>`<option value="${s.v}"${row[k]===s.v?' selected':''}>${s.l}</option>`).join('')}</select>`:`<input type="${t}" value="${row[k]||''}" onchange="updateGK('${h}',${ii},'${k}',this.value)" style="width:100%;border:none;outline:none;font-family:Arial,sans-serif;font-size:11px;color:var(--deep);background:transparent;padding:3px 4px;box-sizing:border-box;">`}
         </td>`).join('')}
         <td style="padding:3px 4px;border:1px solid rgba(216,207,240,0.2);"><button onclick="delGK(\"${h}\",${ii})" style="background:none;border:none;color:rgba(180,160,220,0.5);cursor:pointer;font-size:12px;">✕</button></td>
       </tr>`).join('')}
@@ -15090,6 +15444,7 @@ function renderPferdeUrlaub(){
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(216,207,240,0.3);">
       <div style="font-size:24px;">✈️</div>
       <input value="${u.titel||''}" onchange="updateUrl(${ui},'titel',this.value)" style="font-family:Georgia,serif;font-size:20px;font-weight:600;color:var(--deep);border:none;border-bottom:1px solid rgba(180,160,220,0.3);background:transparent;outline:none;flex:1;" placeholder="Urlaubsname / Ziel...">
+      <button onclick="savePKE();fkFlashSaveButton(event.target,1500);" class="save-btn" style="padding:5px 14px;font-size:11px;">💾 Speichern</button>
       <button onclick="printUrlaub(${ui})" class="fk-share-btn no-print" style="padding:5px 12px;font-size:11px;">🖨️ Teilen</button>
       <button onclick="delUrl(${ui})" style="background:none;border:none;color:rgba(180,160,220,0.4);cursor:pointer;font-size:14px;">✕</button>
     </div>
@@ -15718,7 +16073,7 @@ setTimeout(()=>{renderUeberblick();renderReflex();renderFitnessWeek();},100);
 
 // ═══ SWIPE NAVIGATION ═══
 (function(){
-  var TABS=['ueberblick','pferde','glueck','persoenlich','organisation','kalender','vorlagen'];
+  var TABS=['ueberblick','pferde','andere-tiere','glueck','persoenlich','organisation','kalender','vorlagen'];
   var sx=0,sy=0,dragging=false;
 
   function currentIdx(){
