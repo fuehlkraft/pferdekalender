@@ -1,6 +1,6 @@
 {
-  "version": "2.9.3",
-  "info": "Schnell-Erfassen-Button jetzt dunkel lila für bessere Sichtbarkeit",
+  "version": "3.1.0",
+  "info": "Wichtiges: echte Boards mit Ziehen-und-Ablegen (Maus und Finger)",
   "changes": {
     "organisation": [
       "Urlaubstage komplett überarbeitet: eigener Anspruch pro Jahr, ein Log für genommene Urlaubs- und Krankheitstage mit Grund, und automatisch berechnete Brückentage-Tipps für Niedersachsen, jedes Jahr neu berechnet.",
@@ -26,7 +26,9 @@
       "Echter Fehler behoben: Die kleine Hinweis-Blase oben (für Übergangs-Warnung und Erledigt-Feiern) war durch einen Tippfehler im Code permanent sichtbar, auch leer ohne Text. Jetzt erscheint sie nur noch, wenn wirklich etwas mitzuteilen ist.",
       "Neu: 🔖 Wichtiges, von jeder Seite aus über den Button oben im Kopfbereich erreichbar. Ein Ort für Links und wichtige Notizen, die man öfter braucht, mit Kategorien und Suche, ähnlich wie bei Milanote. Erreichbar auch direkt beim 💭-Schnell-Erfassen über den neuen Reiter \"Link / Wichtiges\". Die letzten Einträge erscheinen zusätzlich als Vorschau auf der Startseite.",
       "Echter Fehler behoben: Auf dem Handy hat der violette Schnell-Erfassen-Button (und auch die kleine Hinweis-Blase) sich am Kopfbereich orientiert statt am ganzen Bildschirm, dadurch wirkte er riesig und hat die Symbole oben überdeckt. Ursache war der Frosted-Glas-Effekt des Kopfbereichs, der das ungewollt ausgelöst hat. Jetzt sitzt der Button zuverlässig unten rechts, klein und unauffällig, ohne etwas zu überdecken.",
-      "Der Schnell-Erfassen-Button (💭) ist jetzt dunkel lila statt hell, damit er sich besser vom Hintergrund abhebt."
+      "Der Schnell-Erfassen-Button (💭) ist jetzt dunkel lila statt hell, damit er sich besser vom Hintergrund abhebt.",
+      "Neu: Unter Persönlich → Wichtiges (ganz vorne in der Leiste) gibt es jetzt eine größere Tafel-Ansicht für deine gespeicherten Links und Notizen, gruppiert nach Kategorie, mit Platz für ausführlichere Notizen zu jedem Eintrag, ähnlich wie bei Milanote. Die Daten sind dieselben wie beim 🔖-Button oben, beide Ansichten zeigen also immer denselben Stand.",
+      "Neu: Unter Persönlich → Wichtiges stehen die Kategorien jetzt als richtige Boards nebeneinander, wie bei Milanote. Über die kleinen Punkte ⠿⠿⠿ oben an einer Karte lässt sie sich direkt mit Maus oder Finger in ein anderes Board ziehen. Über \"+ Neues Board\" kannst du auch ein leeres Board für später anlegen."
     ]
   }
 }
