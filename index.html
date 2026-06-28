@@ -9115,7 +9115,7 @@ function renderSettingsDesign(container){
 }
 
 // ── BACKUP & UPDATE (nutzt bestehende Funktionen) ──
-const FK_APP_VERSION='2.6.0';
+const FK_APP_VERSION='2.6.1';
 function renderSettingsBackup(container){
   container.innerHTML =
     '<div style="font-size:11px;color:var(--muted);margin-bottom:10px;">Installierte Version: <strong style="color:var(--deep);">'+FK_APP_VERSION+'</strong></div>'
@@ -13808,6 +13808,77 @@ const VORLAGE_RENDERERS={
         return header+timelineBlock+'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;"><div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Intention</div><div style="font-size:12px;color:var(--deep);font-style:italic;">'+(tn.intention||',')+'</div></div><div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Top Prioritäten</div>'+(prios||'<div style=\"font-size:12px;color:var(--muted);\">,</div>')+'</div><div><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Termine heute</div>'+(termine||'<div style=\"font-size:12px;color:var(--muted);\">Keine Termine</div>')+'</div></div><div style="text-align:right;margin-top:10px;"><span onclick="goToTagesansicht()" style="color:var(--lilac2);cursor:pointer;text-decoration:underline;font-size:12px;font-weight:700;">weiter bearbeiten →</span></div></div>';
       })()}
 
+        <!-- RECHTE SPALTE -->
+        <div style="display:flex;flex-direction:column;gap:12px;">
+
+          <!-- OFFENE TO-DOS -->
+          <div class="card">
+        <div class="card-title ub-heading" style="margin-bottom:10px;"><span class="card-title-dot" style="background:var(--rose2)"></span>✅ Offene To-Dos</div>
+        ${offeneTodos.length===0?'<div style="font-size:12px;color:var(--muted);text-align:center;padding:10px;">Keine offenen To-Dos 🎉</div>':
+        offeneTodos.slice(0,8).map(t=>`<div style="display:flex;align-items:center;gap:7px;padding:4px 0;border-bottom:1px solid rgba(216,207,240,0.15);font-size:12px;color:var(--deep);">
+          <div style="width:7px;height:7px;border-radius:50%;background:${t.k==='dringend'?'var(--rose2)':t.k==='wichtig'?'var(--lilac2)':t.k==='pferde'?'var(--mint2)':'rgba(180,160,220,0.4)'};flex-shrink:0;"></div>
+          <span style="flex:1;">${t.text}</span>
+          <span style="font-size:9px;color:var(--muted);background:rgba(232,228,240,0.3);border-radius:4px;padding:1px 5px;">${t.k}</span>
+        </div>`).join('')}
+        ${offeneTodos.length>8?`<div style="font-size:11px;color:var(--muted);text-align:center;margin-top:6px;">+${offeneTodos.length-8} weitere</div>`:''}
+        <button onclick="switchTab('organisation')" style="width:100%;background:transparent;border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:6px;font-size:11px;color:var(--muted);cursor:pointer;font-family:Arial,sans-serif;margin-top:8px;">→ Zur Organisation</button>
+          </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:14px;">
+
+          <!-- NÄCHSTE 14 TAGE -->
+          <div class="card">
+            <div class="card-title ub-heading" style="margin-bottom:12px;"><span class="card-title-dot" style="background:var(--lilac2)"></span>📆 Nächste 14 Tage</div>
+            ${groupedArr.length===0?'<div style="text-align:center;padding:16px;color:var(--muted);font-size:12px;">Keine Einträge in den nächsten 14 Tagen</div>':
+            groupedArr.map(g=>`<div style="margin-bottom:10px;">
+              <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:5px;${g.i===0?'color:var(--lilac2);':g.i===1?'color:var(--deep);':''}">${g.label}</div>
+                ${g.items.map(item=>`<div style="display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:8px;margin-bottom:3px;background:${catColor[item.cat]||'rgba(232,228,240,0.2)'};border-left:3px solid ${catBorder[item.cat]||'var(--muted)'};">
+                  <span style="font-size:14px;">${item.icon}</span>
+                  <span style="font-size:12px;color:var(--deep);flex:1;">${item.text}</span>
+                </div>`).join('')}
+              </div>`).join('')}
+            <button onclick="switchTab('kalender')" style="width:100%;background:transparent;border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:6px;font-size:11px;color:var(--muted);cursor:pointer;font-family:Arial,sans-serif;margin-top:4px;">→ Zum Kalender</button>
+          </div>
+
+
+
+          <!-- JAHRESZIELE -->
+          <div class="card">
+            <div class="card-title ub-heading" style="margin-bottom:10px;"><span class="card-title-dot" style="background:var(--butter,#f0e8c0)"></span>🌟 Jahresziele ${today.getFullYear()}</div>
+            ${jahresziele.length===0?'<div style="font-size:12px;color:var(--muted);text-align:center;padding:10px;">Noch keine Jahresziele eingetragen</div>':
+            jahresziele.map(z=>`<div style="display:flex;align-items:center;gap:7px;padding:4px 0;border-bottom:1px solid rgba(216,207,240,0.15);font-size:12px;color:var(--deep);">
+              <div style="width:7px;height:7px;border-radius:50%;background:${z.done?'var(--mint2)':'rgba(240,232,192,0.8)'};flex-shrink:0;"></div>
+              <span style="${z.done?'text-decoration:line-through;color:var(--muted)':''}">${z.text}</span>
+              ${z.done?'<span style="font-size:10px;color:var(--mint2);margin-left:auto;">✓</span>':''}
+            </div>`).join('')}
+            <button onclick="switchTab('organisation');setTimeout(function(){showOrg('ziele');},100)" style="width:100%;background:transparent;border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:6px;font-size:11px;color:var(--muted);cursor:pointer;font-family:Arial,sans-serif;margin-top:8px;">→ Zu den Zielen</button>
+          </div>
+
+          <!-- GEBURTSTAGE & VORSORGE -->
+          <div class="card">
+            <div class="card-title ub-heading" style="margin-bottom:10px;"><span class="card-title-dot" style="background:var(--sky2,#8ab8d8)"></span>🎂 Bald fällig</div>
+            ${geburtstage.length===0&&vorsorge.length===0?'<div style="font-size:12px;color:var(--muted);text-align:center;padding:10px;">Keine Einträge in den nächsten 60 Tagen</div>':''}
+            ${geburtstage.map(g=>{
+              const col = g.diff===0?'rgba(242,200,216,0.5)':g.diff<=7?'rgba(240,232,192,0.4)':'rgba(232,228,240,0.2)';
+              return`<div style="display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:8px;margin-bottom:4px;background:${col};">
+                <span style="font-size:14px;">🎂</span>
+                <div style="flex:1;"><div style="font-size:12px;font-weight:700;color:var(--deep);">${g.name}</div><div style="font-size:10px;color:var(--muted);">${g.date}</div></div>
+                <div style="font-size:11px;font-weight:700;color:var(--deep);">${g.diff===0?'Heute!':g.diff===1?'Morgen':g.diff+'d'}</div>
+              </div>`;}).join('')}
+            ${vorsorge.map(v=>{
+              const col = v.diff<0?'rgba(242,200,216,0.5)':v.diff<=14?'rgba(240,232,192,0.4)':'rgba(232,228,240,0.2)';
+              return`<div style="display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:8px;margin-bottom:4px;background:${col};">
+                <span style="font-size:14px;">🏥</span>
+                <div style="flex:1;"><div style="font-size:12px;font-weight:700;color:var(--deep);">${v.name}</div><div style="font-size:10px;color:var(--muted);">${v.date}</div></div>
+                <div style="font-size:11px;font-weight:700;color:${v.diff<0?'#c0392b':'var(--deep)'};">${v.diff<0?'Überfällig!':v.diff+'d'}</div>
+              </div>`;}).join('')}
+            <button onclick="switchTab('persoenlich');setTimeout(function(){showPers('geburtstage');},100)" style="width:100%;background:transparent;border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:6px;font-size:11px;color:var(--muted);cursor:pointer;font-family:Arial,sans-serif;margin-top:8px;">→ Zu Geburtstage & Vorsorge</button>
+          </div>
+
+        </div>
+      </div>
+
+
       <!-- PFERDE-STATUS -->
       <div class="card" style="margin-bottom:14px;">
         <div class="card-title ub-heading" style="margin-bottom:4px;display:flex;align-items:center;gap:8px;"><span class="card-title-dot" style="background:var(--mint2)"></span>🐴 Pferde-Status<button onclick="event.stopPropagation();toggleInfo('ub-pferdestatus-info','ub-pferdestatus-arrow')" style="display:flex;align-items:center;gap:4px;background:rgba(232,228,240,0.4);border:none;border-radius:14px;padding:4px 10px;font-size:10px;font-weight:700;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;"><span id="ub-pferdestatus-arrow" style="display:inline-block;transition:transform 0.2s;">▾</span> mehr erfahren</button><button onclick="event.stopPropagation();openPkStatusTileSettings()" title="Kacheln anpassen" style="margin-left:auto;background:rgba(232,228,240,0.4);border:none;border-radius:8px;width:26px;height:26px;font-size:13px;cursor:pointer;">⚙️</button></div>
@@ -13925,75 +13996,6 @@ const VORLAGE_RENDERERS={
           </div>
         </div>`:''}
 
-        <!-- RECHTE SPALTE -->
-        <div style="display:flex;flex-direction:column;gap:12px;">
-
-          <!-- OFFENE TO-DOS -->
-          <div class="card">
-        <div class="card-title ub-heading" style="margin-bottom:10px;"><span class="card-title-dot" style="background:var(--rose2)"></span>✅ Offene To-Dos</div>
-        ${offeneTodos.length===0?'<div style="font-size:12px;color:var(--muted);text-align:center;padding:10px;">Keine offenen To-Dos 🎉</div>':
-        offeneTodos.slice(0,8).map(t=>`<div style="display:flex;align-items:center;gap:7px;padding:4px 0;border-bottom:1px solid rgba(216,207,240,0.15);font-size:12px;color:var(--deep);">
-          <div style="width:7px;height:7px;border-radius:50%;background:${t.k==='dringend'?'var(--rose2)':t.k==='wichtig'?'var(--lilac2)':t.k==='pferde'?'var(--mint2)':'rgba(180,160,220,0.4)'};flex-shrink:0;"></div>
-          <span style="flex:1;">${t.text}</span>
-          <span style="font-size:9px;color:var(--muted);background:rgba(232,228,240,0.3);border-radius:4px;padding:1px 5px;">${t.k}</span>
-        </div>`).join('')}
-        ${offeneTodos.length>8?`<div style="font-size:11px;color:var(--muted);text-align:center;margin-top:6px;">+${offeneTodos.length-8} weitere</div>`:''}
-        <button onclick="switchTab('organisation')" style="width:100%;background:transparent;border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:6px;font-size:11px;color:var(--muted);cursor:pointer;font-family:Arial,sans-serif;margin-top:8px;">→ Zur Organisation</button>
-          </div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:14px;">
-
-          <!-- NÄCHSTE 14 TAGE -->
-          <div class="card">
-            <div class="card-title ub-heading" style="margin-bottom:12px;"><span class="card-title-dot" style="background:var(--lilac2)"></span>📆 Nächste 14 Tage</div>
-            ${groupedArr.length===0?'<div style="text-align:center;padding:16px;color:var(--muted);font-size:12px;">Keine Einträge in den nächsten 14 Tagen</div>':
-            groupedArr.map(g=>`<div style="margin-bottom:10px;">
-              <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:5px;${g.i===0?'color:var(--lilac2);':g.i===1?'color:var(--deep);':''}">${g.label}</div>
-                ${g.items.map(item=>`<div style="display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:8px;margin-bottom:3px;background:${catColor[item.cat]||'rgba(232,228,240,0.2)'};border-left:3px solid ${catBorder[item.cat]||'var(--muted)'};">
-                  <span style="font-size:14px;">${item.icon}</span>
-                  <span style="font-size:12px;color:var(--deep);flex:1;">${item.text}</span>
-                </div>`).join('')}
-              </div>`).join('')}
-            <button onclick="switchTab('kalender')" style="width:100%;background:transparent;border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:6px;font-size:11px;color:var(--muted);cursor:pointer;font-family:Arial,sans-serif;margin-top:4px;">→ Zum Kalender</button>
-          </div>
-
-
-
-          <!-- JAHRESZIELE -->
-          <div class="card">
-            <div class="card-title ub-heading" style="margin-bottom:10px;"><span class="card-title-dot" style="background:var(--butter,#f0e8c0)"></span>🌟 Jahresziele ${today.getFullYear()}</div>
-            ${jahresziele.length===0?'<div style="font-size:12px;color:var(--muted);text-align:center;padding:10px;">Noch keine Jahresziele eingetragen</div>':
-            jahresziele.map(z=>`<div style="display:flex;align-items:center;gap:7px;padding:4px 0;border-bottom:1px solid rgba(216,207,240,0.15);font-size:12px;color:var(--deep);">
-              <div style="width:7px;height:7px;border-radius:50%;background:${z.done?'var(--mint2)':'rgba(240,232,192,0.8)'};flex-shrink:0;"></div>
-              <span style="${z.done?'text-decoration:line-through;color:var(--muted)':''}">${z.text}</span>
-              ${z.done?'<span style="font-size:10px;color:var(--mint2);margin-left:auto;">✓</span>':''}
-            </div>`).join('')}
-            <button onclick="switchTab('organisation');setTimeout(function(){showOrg('ziele');},100)" style="width:100%;background:transparent;border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:6px;font-size:11px;color:var(--muted);cursor:pointer;font-family:Arial,sans-serif;margin-top:8px;">→ Zu den Zielen</button>
-          </div>
-
-          <!-- GEBURTSTAGE & VORSORGE -->
-          <div class="card">
-            <div class="card-title ub-heading" style="margin-bottom:10px;"><span class="card-title-dot" style="background:var(--sky2,#8ab8d8)"></span>🎂 Bald fällig</div>
-            ${geburtstage.length===0&&vorsorge.length===0?'<div style="font-size:12px;color:var(--muted);text-align:center;padding:10px;">Keine Einträge in den nächsten 60 Tagen</div>':''}
-            ${geburtstage.map(g=>{
-              const col = g.diff===0?'rgba(242,200,216,0.5)':g.diff<=7?'rgba(240,232,192,0.4)':'rgba(232,228,240,0.2)';
-              return`<div style="display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:8px;margin-bottom:4px;background:${col};">
-                <span style="font-size:14px;">🎂</span>
-                <div style="flex:1;"><div style="font-size:12px;font-weight:700;color:var(--deep);">${g.name}</div><div style="font-size:10px;color:var(--muted);">${g.date}</div></div>
-                <div style="font-size:11px;font-weight:700;color:var(--deep);">${g.diff===0?'Heute!':g.diff===1?'Morgen':g.diff+'d'}</div>
-              </div>`;}).join('')}
-            ${vorsorge.map(v=>{
-              const col = v.diff<0?'rgba(242,200,216,0.5)':v.diff<=14?'rgba(240,232,192,0.4)':'rgba(232,228,240,0.2)';
-              return`<div style="display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:8px;margin-bottom:4px;background:${col};">
-                <span style="font-size:14px;">🏥</span>
-                <div style="flex:1;"><div style="font-size:12px;font-weight:700;color:var(--deep);">${v.name}</div><div style="font-size:10px;color:var(--muted);">${v.date}</div></div>
-                <div style="font-size:11px;font-weight:700;color:${v.diff<0?'#c0392b':'var(--deep)'};">${v.diff<0?'Überfällig!':v.diff+'d'}</div>
-              </div>`;}).join('')}
-            <button onclick="switchTab('persoenlich');setTimeout(function(){showPers('geburtstage');},100)" style="width:100%;background:transparent;border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:6px;font-size:11px;color:var(--muted);cursor:pointer;font-family:Arial,sans-serif;margin-top:8px;">→ Zu Geburtstage & Vorsorge</button>
-          </div>
-
-        </div>
-      </div>
       ${renderStundenplanHeute(today)}
 
 
