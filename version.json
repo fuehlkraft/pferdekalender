@@ -1,6 +1,6 @@
 {
-  "version": "2.6.1",
-  "info": "Reihenfolge auf der Startseite angepasst",
+  "version": "2.7.0",
+  "info": "Schnell-Erfassen-Button überall, plus sanfte Übergangs-Warnung vor Terminen",
   "changes": {
     "organisation": [
       "Urlaubstage komplett überarbeitet: eigener Anspruch pro Jahr, ein Log für genommene Urlaubs- und Krankheitstage mit Grund, und automatisch berechnete Brückentage-Tipps für Niedersachsen, jedes Jahr neu berechnet.",
@@ -16,6 +16,10 @@
     "kalender": [
       "Termine, die sich zeitlich überlappen, werden in der Zeitleiste jetzt in eigenen Reihen nebeneinander angezeigt, statt sich zu überdecken.",
       "Beim Termin-Eintragen gibt es jetzt eine Wiederholung direkt im Formular: Einmalig, Täglich, Wöchentlich, Monatlich, Jährlich oder Benutzerdefiniert. Bei Benutzerdefiniert stellst du das Intervall, bestimmte Wochentage und ein Ende (nie, an einem Datum, oder nach X Malen) selbst ein."
+    ],
+    "allgemein": [
+      "Neu: Der 💭-Button unten rechts ist auf jeder Seite erreichbar, damit kein Gedanke verloren geht. Was du dort festhältst, landet in der Inbox auf der Startseite (\"Schnell erfasst\") und kann später als To-Do übernommen oder verworfen werden.",
+      "Neu: Übergangs-Warnung – ein sanfter Hinweis, bevor ein Termin mit Uhrzeit beginnt (z.B. \"In 15 Min: Stalldienst\"), automatisch für jeden Termin, ohne dass dafür extra eine Erinnerung eingestellt werden muss. Einstellbar (Vorlaufzeit, an/aus) unter Einstellungen → Mein Profil."
     ]
   }
 }
