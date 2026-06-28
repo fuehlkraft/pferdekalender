@@ -1,33 +1,36 @@
 {
-  "version": "1.9.4",
-  "info": "Termin-Hinzufügen-Bug behoben, Speicher-Absicherung für Startseiten-Foto, komplette App getestet",
+  "version": "2.1.0",
+  "info": "Neuer Bereich: Andere Tiere (Hund, Katze & Co), gemeinsam mit Pferden in Kosten & Kalender",
   "changes": {
     "kalender": [
-      "Kalender öffnet jetzt zuerst die Tagesseite (vorher Halbjahr); Halbjahr steht in der Leiste direkt danach.",
-      "Neu: 🔁 Wiederkehrende Zeiten – über den Button bei der Halbjahresübersicht lassen sich feste Wochentermine (z.B. 'jeden Montag 17 Uhr: Reitstunde') anlegen. Sie erscheinen automatisch jede Woche auf der Tagesseite und in der Zeitleiste, ohne dass man sie neu eintragen muss.",
-      "Termine im Tages-Zeitplan lassen sich jetzt über ein ✏️-Symbol bearbeiten, statt sie löschen und neu anlegen zu müssen.",
-      "Uhrzeit-Kreis zeigt jetzt durchgehend die echte 24-Stunden-Zahl (z.B. 14 statt 2 + 'nachmittags'), damit eindeutig ist, welche Tageshälfte gerade eingestellt ist.",
-      "Erinnerungsfunktion erweitert: statt nur an/aus kann jetzt eine Vorlaufzeit gewählt werden (zur Startzeit, 1 Std., 3 Std., 1 Tag, 1 Woche, 2 Wochen vorher). Im Erinnerungs-Popup gibt es jetzt zusätzlich '⏰ Erinnere mich in 10 Min noch mal'. Kurz vor dem eigentlichen Termin (letzte 15 Minuten) wird die 🔔-Markierung in der Tagesseite rot mit 'Jetzt!'.",
-      "Die '40 Tage Achtsamkeit'-Karte zeigt jetzt nur noch eine kurze Vorschau des Tagesimpulses statt des ganzen Textes, mit 'mehr lesen →' für den vollen Text in einem eigenen, schließbaren Fenster.",
-      "Die '40 Tage Achtsamkeit'-Karte steht jetzt direkt unter 'To-Do heute' in der linken Spalte, zusammen mit den anderen Karten, statt als eigener breiter Balken unterhalb der ganzen Seite.",
-      "Echter Fehler behoben: Die 40-Tage-Achtsamkeit-Karte wurde nur sichtbar, wenn man über einen Tag im Kalender-Raster dorthin gesprungen ist, nicht aber beim normalen Öffnen der Tagesseite über den Reiter oben. Sie erscheint jetzt in jedem Fall zuverlässig.",
-      "Echter Fehler behoben: Wenn man einen Termin zum Bearbeiten geöffnet hat (✏️) und danach den Tag wechselte ohne erst auf 'Bearbeiten abbrechen' zu tippen, ist beim nächsten Versuch, einen neuen Termin hinzuzufügen, gar nichts passiert. Das ist jetzt behoben: der Bearbeitungsmodus wird beim Tageswechsel automatisch beendet, und selbst falls doch mal etwas hängen bleibt, wird die Eingabe trotzdem als neuer Termin gespeichert statt verworfen zu werden."
+      "Die Tagesseite ist jetzt die Startansicht im Kalender.",
+      "Termine lassen sich jetzt nachträglich bearbeiten, über das ✏️-Symbol.",
+      "Neu: Wiederkehrende Termine, z.B. 'jeden Montag 17 Uhr: Reitstunde', über den Button bei der Halbjahresübersicht anlegbar. Sie erscheinen danach automatisch jede Woche.",
+      "Erinnerungen können jetzt mit Vorlauf eingestellt werden (1 Std., 3 Std., 1 Tag, 1 Woche oder 2 Wochen vorher) und lassen sich im Popup um 10 Minuten verschieben.",
+      "Die Uhrzeit-Auswahl zeigt jetzt durchgehend die volle 24-Stunden-Zahl.",
+      "Die 40-Tage-Achtsamkeit-Karte ist jetzt kompakter und steht direkt bei den anderen Karten."
     ],
     "ueberblick": [
-      "Heute im Fokus zeigt jetzt oben eine antippbare Zeitleiste für den ganzen Tag (inkl. wiederkehrender Termine); ein Tipp auf einen Block öffnet ein Pop-up mit allen Details (Zeit, Titel, Notiz)."
+      "Heute im Fokus zeigt jetzt oben eine Zeitleiste für den ganzen Tag, ein Tipp auf einen Termin zeigt alle Details.",
+      "Bei Pferde-Status kannst du über ⚙️ selbst wählen, welche Kacheln angezeigt werden, z.B. auch Allergie, Verhalten oder Training."
     ],
     "pferde": [
-      "Echter Fehler behoben: War bei einem Pferd schon ein Foto vorhanden, hat ein Tipp auf das Bild nur die Vergrößerung geöffnet statt den Foto-Wechsel, weil das Klick-Ereignis verschluckt wurde (gleiches Problem wie zuvor beim Titelbild). Ein Tipp auf das Foto öffnet jetzt zuverlässig den Foto-Wechsel; ein kleines 🔍-Symbol unten am Foto öffnet weiterhin die Vergrößerung.",
-      "Pferde-Status in Mein Überblick: Einträge, die direkt aus den Status-Kacheln (Tierarzt, Hufschmied usw.) gespeichert wurden, erscheinen jetzt sofort aktualisiert in Mein Überblick, ohne dass man erst den Tab wechseln muss.",
-      "Schriftgrößen im Pferde-Status (Mein Überblick) deutlich vergrößert, u.a. bei den Bezeichnungen wie 'Tierarzt'.",
-      "Neu: Über das ⚙️-Symbol bei 'Pferde-Status' in Mein Überblick lässt sich jetzt frei einstellen, welche Kacheln dort angezeigt werden, neben den bisherigen sechs (Tierarzt, Hufschmied, Impfung, Wurmkur, Osteopathie, Zahnkontrolle) stehen jetzt auch Allergie & Husten, Verhalten, Training, Hufpflege (Detail) und Fütterung (Änderungen) zur Auswahl. Ein Tipp auf eine Modul-Kachel führt direkt zum passenden Bereich für das jeweilige Pferd."
+      "Bei Meine Pferde kannst du jetzt beliebig viele Kontakte pro Pferd speichern, jeweils mit Rolle, Name, Adresse und Telefonnummer.",
+      "Bei Kosten kannst du jetzt einzelne Tiere von der Aufteilung ausschließen, falls ein Posten z.B. nur für bestimmte Pferde gilt.",
+      "Die Spalten bei der Gesundheitskontrolle sind jetzt breiter, Einträge wie 'Sommer' werden vollständig angezeigt.",
+      "Pferdefotos lassen sich jetzt zuverlässig wechseln, auch wenn schon ein Foto vorhanden war."
     ],
-    "kosten": [
-      "Neu: Beim Eintragen von Kosten kann jetzt frei ausgewählt werden, für welche Pferde der Eintrag gilt (Checkboxen statt Einzelauswahl). Sind alle aktuellen Pferde angehakt, verhält es sich wie bisher (automatische Aufteilung auf alle, auch künftig neu angelegte Pferde). Wird gezielt ein Pferd abgewählt, bleibt die Aufteilung fest auf die ausgewählten Pferde beschränkt, auch wenn später ein neues Pferd dazukommt."
+    "organisation": [
+      "Bei Urlaub & Reisen gibt es jetzt einen Speichern-Button mit Bestätigung."
     ],
     "allgemein": [
-      "Echter Fehler behoben: Beim Hochladen des Hintergrundbilds auf der Startseite (Mein Überblick) fehlte eine Speicher-Absicherung. War der Browser-Speicher voll, ist das Foto einfach kommentarlos nicht übernommen worden. Jetzt erscheint in diesem Fall eine klare Meldung, genau wie bei anderen Fotos in der App.",
-      "Die komplette App wurde durchgetestet (alle Hauptbereiche, Kalender-Unteransichten, Pferde-Module, Kosten, Erinnerungen, Übersicht) – dabei wurden keine weiteren Fehler gefunden."
+      "Wenn ein Foto nicht hochgeladen werden kann (z.B. bestimmte iPhone-Fotoformate), bekommst du jetzt eine klare Meldung statt gar keine Rückmeldung."
+    ],
+    "andere-tiere": [
+      "Neu: Eigener Bereich 'Andere Tiere' für Hund, Katze und alles andere neben den Pferden, mit eigenem Profil (Foto, Tierart, Kontakte) und sechs Modulen: Gesundheit, Pflege, Fütterung, Training, Verhalten, Allergie.",
+      "Tier-Status auf der Startseite, genau wie der Pferde-Status.",
+      "Kosten für andere Tiere lassen sich bei Pferde → Kosten ganz normal mit ankreuzen, sie erscheinen gemeinsam mit den Pferdekosten in der Übersicht.",
+      "Termine im Kalender lassen sich jetzt auch mit einem anderen Tier statt einem Pferd verknüpfen."
     ]
   }
 }
