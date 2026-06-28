@@ -3678,7 +3678,6 @@ return html2pdf;
 
     <!-- FOTO-RAHMEN -->
     <div class="photo-frame" id="photo-frame-el"
-      onclick="if(!window._photoDragging)document.getElementById('photo-input').click()"
       ontouchstart="coverDragStart(event)"
       ontouchmove="coverDragMove(event)"
       ontouchend="coverDragEnd(event)"
@@ -5924,6 +5923,9 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
                   <option value="vet">🩺 Tierarzt</option>
                   <option value="huf">🔧 Hufschmied</option>
                   <option value="vacc">💉 Impfung</option>
+                  <option value="wurm">🪱 Wurmkur</option>
+                  <option value="osteo">🤲 Osteopathie/Physio</option>
+                  <option value="teeth">🦷 Zahnkontrolle</option>
                 </select>
               </div>
             </div>
@@ -5937,6 +5939,8 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
                 <select id="tag-zeit-reminder-lead" style="border:1px solid rgba(180,160,220,0.3);border-radius:6px;padding:3px 6px;font-size:11px;font-family:Arial,sans-serif;background:rgba(255,255,255,0.8);color:var(--deep);outline:none;">
                   <option value="">Keine</option>
                   <option value="0">Zur Startzeit</option>
+                  <option value="15m">15 Minuten vorher</option>
+                  <option value="30m">30 Minuten vorher</option>
                   <option value="1h">1 Stunde vorher</option>
                   <option value="3h">3 Stunden vorher</option>
                   <option value="1d">1 Tag vorher</option>
@@ -8685,9 +8689,11 @@ function renderSettingsDesign(container){
 }
 
 // ── BACKUP & UPDATE (nutzt bestehende Funktionen) ──
+const FK_APP_VERSION='2.2.0';
 function renderSettingsBackup(container){
   container.innerHTML =
-    '<button onclick="document.getElementById(\'import-file-hdr\').click()" style="display:block;width:100%;text-align:left;background:rgba(232,228,240,0.4);border:none;padding:13px 14px;font-size:13px;color:var(--deep);cursor:pointer;border-radius:10px;margin-bottom:8px;">⬆ Backup laden</button>'
+    '<div style="font-size:11px;color:var(--muted);margin-bottom:10px;">Installierte Version: <strong style="color:var(--deep);">'+FK_APP_VERSION+'</strong></div>'
+    + '<button onclick="document.getElementById(\'import-file-hdr\').click()" style="display:block;width:100%;text-align:left;background:rgba(232,228,240,0.4);border:none;padding:13px 14px;font-size:13px;color:var(--deep);cursor:pointer;border-radius:10px;margin-bottom:8px;">⬆ Backup laden</button>'
     + '<button onclick="exportData()" style="display:block;width:100%;text-align:left;background:rgba(232,228,240,0.4);border:none;padding:13px 14px;font-size:13px;color:var(--deep);cursor:pointer;border-radius:10px;margin-bottom:8px;">⬇ Backup speichern</button>'
     + '<div style="height:1px;background:rgba(180,160,220,0.2);margin:10px 0;"></div>'
     + '<button id="update-check-btn-settings" onclick="requestUpdateCheck()" style="display:block;width:100%;text-align:left;background:rgba(232,228,240,0.4);border:none;padding:13px 14px;font-size:13px;color:var(--deep);cursor:pointer;border-radius:10px;">🔄 Update prüfen</button>'
@@ -11398,7 +11404,7 @@ function renderTagZeitplan(dk){
     const imminent=fkIsTermineImminent(dk,z) && (z.reminder||z.reminderLead);
     div.style.cssText='border-radius:10px;padding:8px 10px;background:'+(imminent?'rgba(232,85,85,0.12)':z.blocked?'rgba(184,216,240,0.25)':'rgba(255,255,255,0.5)')+';border-left:3px solid '+(imminent?'#e85555':z.blocked?'var(--sky2)':'var(--lilac2)')+';font-size:12px;';
     var timeLabel=z.time+(z.timeEnd?' – '+z.timeEnd:'');
-    const catIco={vet:'🩺',huf:'🔧',vacc:'💉'};
+    const catIco={vet:'🩺',huf:'🔧',vacc:'💉',wurm:'🪱',osteo:'🤲',teeth:'🦷'};
     const linkBadge=z.linkedEntryId?'<span style="background:rgba(200,234,223,0.6);border-radius:10px;padding:1px 7px;font-size:9px;color:var(--deep);font-weight:700;white-space:nowrap;" title="Verknüpft mit Pferde-Status">'+(catIco[z.cat]||'')+' '+(z.horse==='Alle'?'Alle Pferde':z.horse)+'</span>':'';
     const reminderBadge=imminent?'<span style="background:#e85555;color:white;border-radius:10px;padding:1px 7px;font-size:9px;font-weight:700;margin-left:4px;white-space:nowrap;" title="Jetzt wird es Zeit!">🔔 Jetzt!</span>':((z.reminder||z.reminderLead)?' 🔔':'');
     div.innerHTML='<div style="display:flex;align-items:center;gap:6px;">'
@@ -11603,7 +11609,15 @@ try{ var _sr=JSON.parse(localStorage.getItem('fk_shown_reminders')||'null'); if(
 var _fkSnoozed = {};
 try{ var _snz=JSON.parse(localStorage.getItem('fk_snoozed_reminders')||'null'); if(_snz) _fkSnoozed=_snz; }catch(e){}
 var _fkCurrentReminderEntry = null;
-var FK_REMINDER_LEAD_MS = {'0':0,'1h':3600000,'3h':3*3600000,'1d':86400000,'1w':7*86400000,'2w':14*86400000};
+var FK_REMINDER_LEAD_MS = {'0':0,'15m':15*60000,'30m':30*60000,'1h':3600000,'3h':3*3600000,'1d':86400000,'1w':7*86400000,'2w':14*86400000};
+function fkRequestNotificationPermission(){
+  try{
+    if(!('Notification' in window)) return;
+    if(Notification.permission==='default'){
+      Notification.requestPermission();
+    }
+  }catch(err){}
+}
 function fkShowReminderPopup(e){
   _fkCurrentReminderEntry = e;
   var pop=document.getElementById('fk-reminder-popup');
@@ -11615,6 +11629,15 @@ function fkShowReminderPopup(e){
   if(e.notiz){ notizEl.textContent=e.notiz; notizEl.style.display='block'; } else { notizEl.style.display='none'; }
   pop.style.display='flex';
   try{ if(navigator.vibrate) navigator.vibrate([150,80,150]); }catch(err){}
+  // Zusätzlich eine echte Benachrichtigung anzeigen (falls erlaubt), damit sie auch sichtbar ist,
+  // wenn die Seite gerade nicht im Vordergrund ist. Funktioniert nur, solange die App/der Tab
+  // noch läuft (im Hintergrund), nicht wenn sie ganz geschlossen ist, dafür gibt es hier keinen Server.
+  try{
+    if('Notification' in window && Notification.permission==='granted'){
+      var n=new Notification('🔔 '+e.text, {body:e.time+(e.timeEnd?' – '+e.timeEnd:'')+(e.notiz?'\n'+e.notiz:''), tag:'fk-reminder-'+e.id});
+      n.onclick=function(){ try{window.focus();}catch(err){} };
+    }
+  }catch(err){}
 }
 function fkSnoozeReminder(){
   if(_fkCurrentReminderEntry){
@@ -11685,6 +11708,7 @@ function addTagZeit(){
   const notiz=document.getElementById('tag-zeit-notiz').value.trim();
   const blocked=document.getElementById('tag-zeit-blocked').checked;
   const reminderLead=document.getElementById('tag-zeit-reminder-lead').value;
+  if(reminderLead)fkRequestNotificationPermission();
   const zHorse=document.getElementById('tag-zeit-horse').value;
   const zCat=document.getElementById('tag-zeit-cat').value;
   if(!text)return;
@@ -12996,8 +13020,8 @@ const VORLAGE_RENDERERS={
 
       <!-- PFERDE-STATUS -->
       <div class="card" style="margin-bottom:14px;">
-        <div class="card-title ub-heading" style="margin-bottom:4px;display:flex;align-items:center;gap:8px;"><span class="card-title-dot" style="background:var(--mint2)"></span>🐴 Pferde-Status<button onclick="event.stopPropagation();openPkStatusTileSettings()" title="Kacheln anpassen" style="margin-left:auto;background:rgba(232,228,240,0.4);border:none;border-radius:8px;width:26px;height:26px;font-size:13px;cursor:pointer;">⚙️</button></div>
-        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5;">Wann war zuletzt was dran. Bei den klassischen Kategorien gemessen am eingestellten Intervall (Meine Pferde), bei den Modul-Kacheln einfach das Datum des letzten Eintrags. Tippe auf eine Kachel, um direkt etwas festzuhalten. Über ⚙️ kannst du wählen, welche Kacheln hier erscheinen.</div>
+        <div class="card-title ub-heading" style="margin-bottom:4px;display:flex;align-items:center;gap:8px;"><span class="card-title-dot" style="background:var(--mint2)"></span>🐴 Pferde-Status<button onclick="event.stopPropagation();toggleInfo('ub-pferdestatus-info','ub-pferdestatus-arrow')" style="display:flex;align-items:center;gap:4px;background:rgba(232,228,240,0.4);border:none;border-radius:14px;padding:4px 10px;font-size:10px;font-weight:700;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;"><span id="ub-pferdestatus-arrow" style="display:inline-block;transition:transform 0.2s;">▾</span> mehr erfahren</button><button onclick="event.stopPropagation();openPkStatusTileSettings()" title="Kacheln anpassen" style="margin-left:auto;background:rgba(232,228,240,0.4);border:none;border-radius:8px;width:26px;height:26px;font-size:13px;cursor:pointer;">⚙️</button></div>
+        <div id="ub-pferdestatus-info" style="display:none;font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5;">Wann war zuletzt was dran. Bei den klassischen Kategorien gemessen am eingestellten Intervall (Meine Pferde), bei den Modul-Kacheln einfach das Datum des letzten Eintrags. Tippe auf eine Kachel, um direkt etwas festzuhalten. Über ⚙️ kannst du wählen, welche Kacheln hier erscheinen.</div>
         ${(function(){
           let ueberfaellig=0, gesamt=0;
           Object.entries(pferdeStatus).forEach(([h,last])=>{
@@ -13030,16 +13054,16 @@ const VORLAGE_RENDERERS={
                 if(def.kind==='log'){
                   const interval=hp.intervals[k]||365;
                   const onclickAttr=`onclick="openModal('${k}','${h}')"`;
-                  if(!d) return `<div ${onclickAttr} style="font-size:12px;text-align:center;background:rgba(232,228,240,0.2);border-radius:6px;padding:5px 4px;cursor:pointer;">${ico}<br><span style="color:var(--muted);font-size:11px;">${l}</span><br><span style="color:var(--lilac2);font-size:11px;font-weight:700;">+ eintragen</span></div>`;
+                  if(!d) return `<div ${onclickAttr} style="font-size:12px;text-align:center;background:rgba(232,228,240,0.2);border-radius:6px;padding:5px 4px;cursor:pointer;">${ico}<br><span style="color:var(--deep);font-size:11px;font-weight:700;">${l}</span><br><span style="color:var(--lilac2);font-size:11px;font-weight:700;">+ eintragen</span></div>`;
                   const diff=Math.round((today-new Date(d))/86400000);
                   const col=diff>interval?'rgba(242,200,216,0.5)':diff>interval*0.75?'rgba(240,232,192,0.4)':'rgba(200,234,223,0.4)';
-                  return `<div ${onclickAttr} style="font-size:12px;text-align:center;background:${col};border-radius:6px;padding:5px 4px;cursor:pointer;" title="${l}: ${d} · Intervall: ${interval} Tage · Antippen für neuen Eintrag">${ico}<br><span style="color:var(--muted);font-size:11px;">${l}</span><br><span style="font-weight:700;color:var(--deep)">vor ${diff}d</span></div>`;
+                  return `<div ${onclickAttr} style="font-size:12px;text-align:center;background:${col};border-radius:6px;padding:5px 4px;cursor:pointer;" title="${l}: ${d} · Intervall: ${interval} Tage · Antippen für neuen Eintrag">${ico}<br><span style="color:var(--deep);font-size:11px;font-weight:700;">${l}</span><br><span style="font-weight:700;color:var(--deep)">vor ${diff}d</span></div>`;
                 }
                 const nameArg=def.name?`'${def.name}'`:'null';
                 const onclickAttr=`onclick="pkGoToModuleForHorse('${def.view}','${def.sel}',${nameArg},${hIdx})"`;
-                if(!d) return `<div ${onclickAttr} style="font-size:12px;text-align:center;background:rgba(216,207,240,0.15);border-radius:6px;padding:5px 4px;cursor:pointer;">${ico}<br><span style="color:var(--muted);font-size:11px;">${l}</span><br><span style="color:var(--lilac2);font-size:11px;font-weight:700;">öffnen →</span></div>`;
+                if(!d) return `<div ${onclickAttr} style="font-size:12px;text-align:center;background:rgba(216,207,240,0.15);border-radius:6px;padding:5px 4px;cursor:pointer;">${ico}<br><span style="color:var(--deep);font-size:11px;font-weight:700;">${l}</span><br><span style="color:var(--lilac2);font-size:11px;font-weight:700;">öffnen →</span></div>`;
                 const diff=Math.round((today-new Date(d))/86400000);
-                return `<div ${onclickAttr} style="font-size:12px;text-align:center;background:rgba(216,207,240,0.22);border-radius:6px;padding:5px 4px;cursor:pointer;" title="${l}: ${d} · Antippen zum Öffnen">${ico}<br><span style="color:var(--muted);font-size:11px;">${l}</span><br><span style="font-weight:700;color:var(--deep)">vor ${diff}d</span></div>`;
+                return `<div ${onclickAttr} style="font-size:12px;text-align:center;background:rgba(216,207,240,0.22);border-radius:6px;padding:5px 4px;cursor:pointer;" title="${l}: ${d} · Antippen zum Öffnen">${ico}<br><span style="color:var(--deep);font-size:11px;font-weight:700;">${l}</span><br><span style="font-weight:700;color:var(--deep)">vor ${diff}d</span></div>`;
               }).join('')}
             </div>
           </div>`;
@@ -15281,7 +15305,7 @@ function renderAllergie(){
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
       ${[['Bekannte Auslöser','ausloser'],['Bekannte Allergene','bekannte'],['Diagnose','diagnose'],['Konsultierter Tierarzt','tierarzt'],['Blutbild / Tests gemacht','blutbild'],['Dauertherapie / Behandlung','therapie']].map(([l,k])=>`
       <div><div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:3px;">${l}</div>
-        <input value="${ad.grundinfo[k]||''}" onchange="updateAllGrund('${h}','${k}',this.value)" style="${inp}" placeholder="${l}...">
+        <textarea onchange="updateAllGrund('${h}','${k}',this.value)" style="${ta}min-height:42px;" placeholder="${l}...">${ad.grundinfo[k]||''}</textarea>
       </div>`).join('')}
     </div>
   </div>
@@ -15320,7 +15344,7 @@ function renderAllergie(){
           ${['keine','schwach','mittel','stark','sehr stark'].map(s=>`<option${e.staerke===s?' selected':''}>${s}</option>`).join('')}
         </select>
       </div>
-      <div><div style="font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:2px;">Wetter / Temperatur</div><input value="${e.wetter||''}" onchange="updateAll('${h}',${ii},'wetter',this.value)" style="${inp}" placeholder="z.B. sonnig, 22°C"></div>
+      <div><div style="font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:2px;">Wetter / Temperatur</div><textarea onchange="updateAll('${h}',${ii},'wetter',this.value)" style="${ta}min-height:36px;" placeholder="z.B. sonnig, 22°C">${e.wetter||''}</textarea></div>
       <div><div style="font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:2px;">Pollenflug</div>
         <select onchange="updateAll('${h}',${ii},'pollen',this.value)" style="border:1px solid rgba(180,160,220,0.3);border-radius:6px;padding:3px 6px;font-size:11px;background:white;color:var(--deep);outline:none;font-family:Arial,sans-serif;width:100%;">
           ${[',','keiner','gering','mittel','hoch','sehr hoch'].map(s=>`<option${e.pollen===s?' selected':''}>${s}</option>`).join('')}
@@ -15330,7 +15354,7 @@ function renderAllergie(){
     </div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px;">
       ${[['Staubbelastung','staub'],['Heu (Qualität / bewässert?)','heu'],['Weide / Pflanzen','weide']].map(([l,k])=>`
-      <div><div style="font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:2px;">${l}</div><input value="${e[k]||''}" onchange="updateAll('${h}',${ii},'${k}',this.value)" style="${inp}" placeholder="${l}..."></div>`).join('')}
+      <div><div style="font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:2px;">${l}</div><textarea onchange="updateAll('${h}',${ii},'${k}',this.value)" style="${ta}min-height:36px;" placeholder="${l}...">${e[k]||''}</textarea></div>`).join('')}
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
       <div><div style="font-size:9px;color:var(--muted);text-transform:uppercase;margin-bottom:2px;">Symptome / Husten (wie?)</div>
