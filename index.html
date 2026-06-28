@@ -297,6 +297,8 @@ canvas#lebensrad-canvas{max-width:220px;width:100%;}
 .bucket-add{display:flex;gap:6px;}
 .bucket-add input{flex:1;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:7px 10px;font-size:12px;font-family:Arial,sans-serif;background:rgba(255,255,255,0.7);color:var(--text);outline:none;}
 .bucket-add button{background:var(--butter);border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;}
+.cr-wd-btn{border:1px solid rgba(180,160,220,0.4);background:white;border-radius:6px;padding:4px 8px;font-size:10px;cursor:pointer;color:var(--deep);font-family:Arial,sans-serif;}
+.cr-wd-btn.active{background:var(--lilac2);color:white;border-color:var(--lilac2);font-weight:700;}
 .bucket-item.carried-over{background:rgba(220,70,70,0.08);border:1px solid rgba(220,70,70,0.25);}
 .bucket-check.carried-over-check{border-color:rgba(220,70,70,0.6);cursor:pointer;}
 .carried-over-badge{font-size:9px;font-weight:700;color:#c0392b;background:rgba(220,70,70,0.12);border-radius:5px;padding:2px 5px;white-space:nowrap;flex-shrink:0;}
@@ -5996,6 +5998,51 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
                 </select>
               </div>
             </div>
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:6px;">
+              <label style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);">
+                🔁 Wiederholung
+                <select id="tag-zeit-wiederholung" onchange="toggleCustomRecurrence()" style="border:1px solid rgba(180,160,220,0.3);border-radius:6px;padding:3px 6px;font-size:11px;font-family:Arial,sans-serif;background:rgba(255,255,255,0.8);color:var(--deep);outline:none;">
+                  <option value="einmalig">Einmalig</option>
+                  <option value="taeglich">Täglich</option>
+                  <option value="woechentlich">Wöchentlich</option>
+                  <option value="monatlich">Monatlich</option>
+                  <option value="jaehrlich">Jährlich</option>
+                  <option value="custom">Benutzerdefiniert...</option>
+                </select>
+              </label>
+            </div>
+            <div id="tag-zeit-custom-recurrence" style="display:none;background:rgba(216,207,240,0.15);border-radius:8px;padding:10px;margin-bottom:6px;">
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px;font-size:11px;color:var(--deep);">
+                Wiederhole alle
+                <input type="number" id="cr-intervall" value="1" min="1" style="width:50px;border:1px solid rgba(180,160,220,0.3);border-radius:6px;padding:4px 6px;font-size:11px;font-family:Arial,sans-serif;outline:none;">
+                <select id="cr-einheit" onchange="toggleCustomWeekdays()" style="border:1px solid rgba(180,160,220,0.3);border-radius:6px;padding:4px 6px;font-size:11px;font-family:Arial,sans-serif;background:white;color:var(--deep);outline:none;">
+                  <option value="tage">Tag(e)</option>
+                  <option value="wochen">Woche(n)</option>
+                  <option value="monate">Monat(e)</option>
+                  <option value="jahre">Jahr(e)</option>
+                </select>
+              </div>
+              <div id="cr-weekdays-row" style="display:none;margin-bottom:8px;">
+                <div style="font-size:10px;color:var(--muted);margin-bottom:4px;">An diesen Wochentagen:</div>
+                <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                  <button type="button" onclick="this.classList.toggle('active')" data-wd="0" class="cr-wd-btn">Mo</button>
+                  <button type="button" onclick="this.classList.toggle('active')" data-wd="1" class="cr-wd-btn">Di</button>
+                  <button type="button" onclick="this.classList.toggle('active')" data-wd="2" class="cr-wd-btn">Mi</button>
+                  <button type="button" onclick="this.classList.toggle('active')" data-wd="3" class="cr-wd-btn">Do</button>
+                  <button type="button" onclick="this.classList.toggle('active')" data-wd="4" class="cr-wd-btn">Fr</button>
+                  <button type="button" onclick="this.classList.toggle('active')" data-wd="5" class="cr-wd-btn">Sa</button>
+                  <button type="button" onclick="this.classList.toggle('active')" data-wd="6" class="cr-wd-btn">So</button>
+                </div>
+              </div>
+              <div style="font-size:10px;color:var(--muted);margin-bottom:4px;">Endet</div>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:11px;color:var(--deep);">
+                <label style="display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="radio" name="cr-ende" value="nie" checked onchange="updateCrEndeState()">Nie</label>
+                <label style="display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="radio" name="cr-ende" value="am" onchange="updateCrEndeState()">Am</label>
+                <input type="date" id="cr-ende-datum" disabled style="border:1px solid rgba(180,160,220,0.3);border-radius:6px;padding:3px 6px;font-size:11px;font-family:Arial,sans-serif;outline:none;">
+                <label style="display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="radio" name="cr-ende" value="nach" onchange="updateCrEndeState()">Nach</label>
+                <input type="number" id="cr-ende-anzahl" value="10" min="1" disabled style="width:50px;border:1px solid rgba(180,160,220,0.3);border-radius:6px;padding:3px 6px;font-size:11px;font-family:Arial,sans-serif;outline:none;"> Mal
+              </div>
+            </div>
             <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
               <label style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);cursor:pointer;">
                 <input type="checkbox" id="tag-zeit-blocked" style="accent-color:var(--sky2);width:14px;height:14px;">
@@ -9068,7 +9115,7 @@ function renderSettingsDesign(container){
 }
 
 // ── BACKUP & UPDATE (nutzt bestehende Funktionen) ──
-const FK_APP_VERSION='2.4.0';
+const FK_APP_VERSION='2.6.0';
 function renderSettingsBackup(container){
   container.innerHTML =
     '<div style="font-size:11px;color:var(--muted);margin-bottom:10px;">Installierte Version: <strong style="color:var(--deep);">'+FK_APP_VERSION+'</strong></div>'
@@ -9141,7 +9188,7 @@ const HELP_CONTENT = [
     {title:'Termine eintragen & bearbeiten', text:'Bei Termine & Zeitplan tippst du auf Von oder Bis, um die Uhrzeit über ein Ziffernblatt einzustellen, erst Stunde, dann Minute, mit echter 24-Stunden-Anzeige. Titel und Notiz dazu, fertig. Über das ✏️-Symbol an einem bestehenden Termin kannst du ihn jederzeit nachträglich bearbeiten.'},
     {title:'Termin mit Pferd verknüpfen', text:'Beim Eintragen eines Termins kannst du optional ein Pferd und eine Kategorie (Tierarzt, Hufschmied, Impfung, Wurmkur, Osteopathie/Physio, Zahnkontrolle) auswählen. Ist beides ausgewählt, taucht der Termin automatisch auch im Pferde-Status im Überblick auf.'},
     {title:'Zeit blockieren & Erinnerung', text:'"Zeit blockieren" markiert den Termin optisch als reservierte Zeit in der Tagesleiste. Bei "Erinnerung" wählst du, wie viel Vorlauf du brauchst (zur Startzeit, 1 Std., 3 Std., 1 Tag, 1 Woche oder 2 Wochen vorher), dann erscheint ein Popup mit Titel und Notiz, inklusive "Erinnere mich noch mal" zum Verschieben um 10 Minuten. Kurz vor dem Termin wird die 🔔-Markierung rot. Das funktioniert nur, solange der Kalender bei dir geöffnet ist, da es keinen Server im Hintergrund gibt.'},
-    {title:'Wiederkehrende Zeiten', text:'Über den Button bei der Halbjahresübersicht legst du feste Wochentermine an, z.B. "jeden Montag 17 Uhr: Reitstunde". Sie erscheinen danach automatisch jede Woche auf der Tagesseite, ohne dass du sie neu eintragen musst.'},
+    {title:'Wiederkehrende Zeiten', text:'Beim Termin-Eintragen auf der Tagesseite wählst du bei "🔁 Wiederholung" zwischen Einmalig, Täglich, Wöchentlich, Monatlich, Jährlich oder Benutzerdefiniert. Bei Benutzerdefiniert stellst du selbst ein, alle wie viele Tage/Wochen/Monate/Jahre, an welchen Wochentagen, und wann es endet (nie, an einem Datum, oder nach einer bestimmten Anzahl Wiederholungen). Über den Button bei der Halbjahresübersicht siehst und verwaltest du alle wiederkehrenden Termine an einer Stelle.'},
     {title:'Top-3-Prioritäten & To-Dos', text:'Beide Listen lassen sich nachträglich bearbeiten, einfach in die Zeile tippen und den Text ändern. Häkchen setzen mit Tippen auf den Kreis links, löschen über das Kreuz rechts.'},
     {title:'Wochenzeitplan', text:'Zeigt deine Woche als Stunden-Raster, in jede Zelle kannst du kurz eintragen, was zu der Zeit geplant ist.'},
     {title:'Woche Horizontal & Journal-Woche', text:'Zwei weitere Wochenansichten: einmal als durchgehende Zeitleiste, einmal als Journal mit Platz für Notizen pro Tag.'},
@@ -9157,7 +9204,7 @@ const HELP_CONTENT = [
     {title:'Putzplan', text:'Verteilt Hausarbeit auf wiederkehrende Aufgaben, damit nichts vergessen wird und keiner alles allein macht.'},
     {title:'Abos', text:'Liste aller laufenden Abonnements, damit keine stillen Kosten unbemerkt weiterlaufen.'},
     {title:'Verleih', text:'Hält fest, was du an wen verliehen hast, damit nichts in Vergessenheit gerät.'},
-    {title:'Urlaub & Urlaubstage', text:'Reiseplanung, auch wenn kein Pferd mitkommt. Bei Urlaubstage trägst du deinen jährlichen Anspruch ein und hältst fest, wann und wofür du Urlaub oder Krankheitstage genommen hast, jedes Jahr getrennt zählbar über die Pfeile oben. Darunter erscheinen automatisch berechnete Brückentage-Tipps für Niedersachsen, z.B. "1 Tag nehmen, 4 Tage frei haben", jedes Jahr neu berechnet.'},
+    {title:'Urlaub & Urlaubstage', text:'Reiseplanung, auch wenn kein Pferd mitkommt. Bei Urlaubstage trägst du deinen jährlichen Anspruch ein und hältst fest, wann und wofür du Urlaub oder Krankheitstage genommen hast, jedes Jahr getrennt zählbar über die Pfeile oben. Darunter erscheinen automatisch berechnete Brückentage-Tipps, z.B. "1 Tag nehmen, 4 Tage frei haben", jedes Jahr neu berechnet. Über die Auswahl direkt daneben stellst du dein Bundesland ein, die Feiertage werden dafür passend berechnet.'},
     {title:'Vorsorge', text:'Vorsorgetermine für dich selbst, mit Erinnerung im Überblick, wenn ein Termin in den nächsten 90 Tagen anstand.'},
     {title:'Wann zuletzt', text:'Für alles, was man sich merken will, aber leicht vergisst, z.B. wann die Heizung gewartet wurde.'},
   ]},
@@ -10829,7 +10876,26 @@ function delUrlaubEintrag2(id){
   saveAll();renderUrlaubstageContent();
 }
 // Gesetzliche Feiertage Niedersachsen, frisch für jedes Jahr berechnet (kein fest hinterlegtes Datum)
-function getNiedersachsenFeiertage(year){
+const BUNDESLAENDER=[
+  {v:'BW',l:'Baden-Württemberg'},{v:'BY',l:'Bayern'},{v:'BE',l:'Berlin'},{v:'BB',l:'Brandenburg'},
+  {v:'HB',l:'Bremen'},{v:'HH',l:'Hamburg'},{v:'HE',l:'Hessen'},{v:'MV',l:'Mecklenburg-Vorpommern'},
+  {v:'NI',l:'Niedersachsen'},{v:'NW',l:'Nordrhein-Westfalen'},{v:'RP',l:'Rheinland-Pfalz'},{v:'SL',l:'Saarland'},
+  {v:'SN',l:'Sachsen'},{v:'ST',l:'Sachsen-Anhalt'},{v:'SH',l:'Schleswig-Holstein'},{v:'TH',l:'Thüringen'}
+];
+function getUrlaubBundesland(){
+  try{ return localStorage.getItem('pk_urlaub_bundesland')||'NI'; }catch(e){ return 'NI'; }
+}
+function setUrlaubBundesland(bl){
+  try{ localStorage.setItem('pk_urlaub_bundesland',bl); }catch(e){}
+  renderUrlaubstageContent();
+}
+function bussUndBettag(year){
+  for(var day=22; day>=16; day--){
+    var d=new Date(year,10,day);
+    if(d.getDay()===3) return d;
+  }
+}
+function getFeiertage(year, bundesland){
   function easterSunday(y){
     var a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,
         f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,
@@ -10841,7 +10907,8 @@ function getNiedersachsenFeiertage(year){
   }
   function addD(d,n){ var r=new Date(d); r.setDate(r.getDate()+n); return r; }
   var easter=easterSunday(year);
-  return [
+  var bl=bundesland||'NI';
+  var fts=[
     {name:'Neujahr',date:new Date(year,0,1)},
     {name:'Karfreitag',date:addD(easter,-2)},
     {name:'Ostermontag',date:addD(easter,1)},
@@ -10849,13 +10916,23 @@ function getNiedersachsenFeiertage(year){
     {name:'Christi Himmelfahrt',date:addD(easter,39)},
     {name:'Pfingstmontag',date:addD(easter,50)},
     {name:'Tag der Deutschen Einheit',date:new Date(year,9,3)},
-    {name:'Reformationstag',date:new Date(year,9,31)},
     {name:'1. Weihnachtstag',date:new Date(year,11,25)},
     {name:'2. Weihnachtstag',date:new Date(year,11,26)}
-  ].sort(function(a,b){return a.date-b.date;});
+  ];
+  if(['BW','BY','ST'].indexOf(bl)>=0) fts.push({name:'Heilige Drei Könige',date:new Date(year,0,6)});
+  if(bl==='BB'){ fts.push({name:'Ostersonntag',date:easter}); fts.push({name:'Pfingstsonntag',date:addD(easter,49)}); }
+  if(bl==='BE'||bl==='MV') fts.push({name:'Internationaler Frauentag',date:new Date(year,2,8)});
+  if(['BW','BY','HE','NW','RP','SL'].indexOf(bl)>=0) fts.push({name:'Fronleichnam',date:addD(easter,60)});
+  if(bl==='BY'||bl==='SL') fts.push({name:'Mariä Himmelfahrt',date:new Date(year,7,15)});
+  if(['BB','HB','HH','MV','NI','SN','ST','SH','TH'].indexOf(bl)>=0) fts.push({name:'Reformationstag',date:new Date(year,9,31)});
+  if(['BW','BY','NW','RP','SL'].indexOf(bl)>=0) fts.push({name:'Allerheiligen',date:new Date(year,10,1)});
+  if(bl==='SN') fts.push({name:'Buß- und Bettag',date:bussUndBettag(year)});
+  if(bl==='TH') fts.push({name:'Weltkindertag',date:new Date(year,8,20)});
+  return fts.sort(function(a,b){return a.date-b.date;});
 }
 function getBrueckentageEmpfehlungen(year){
-  var fts=getNiedersachsenFeiertage(year);
+  var bl=getUrlaubBundesland();
+  var fts=getFeiertage(year,bl);
   var heute=new Date(); heute.setHours(0,0,0,0);
   function fmtD(d){return String(d.getDate()).padStart(2,'0')+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+d.getFullYear();}
   var empf=[];
@@ -10876,7 +10953,7 @@ function getBrueckentageEmpfehlungen(year){
   // Weihnachten & Jahreswechsel als möglicher großer Brücken-Block
   var rangeStart=new Date(year,11,24), rangeEnd=new Date(year+1,0,1);
   if(rangeEnd>=heute){
-    var ftsNext=getNiedersachsenFeiertage(year+1);
+    var ftsNext=getFeiertage(year+1,bl);
     var allFtTimes=fts.concat(ftsNext).map(function(f){return f.date.getTime();});
     var workdaysNeeded=[];
     for(var d=new Date(rangeStart); d<=rangeEnd; d.setDate(d.getDate()+1)){
@@ -10922,7 +10999,10 @@ function renderUrlaubstageContent(){
           +'<span style="font-weight:700;color:var(--deep);">'+e.tage+' Tag'+(e.tage!=1?'e':'')+'</span>'
           +'<button onclick="delUrlaubEintrag2('+e.id+')" style="background:none;border:none;color:rgba(180,160,220,0.5);cursor:pointer;font-size:12px;">✕</button></div>';
       }).join('')+'</div>':'')
-    +'<div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">🌉 Brückentage-Tipps '+_urlaubJahr+' (Niedersachsen)</div>'
+    +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;"><div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;">🌉 Brückentage-Tipps '+_urlaubJahr+'</div>'
+    +'<select onchange="setUrlaubBundesland(this.value)" style="border:1px solid rgba(180,160,220,0.3);border-radius:6px;padding:3px 6px;font-size:11px;font-family:Arial,sans-serif;background:white;color:var(--deep);outline:none;">'
+    +BUNDESLAENDER.map(function(b){return '<option value="'+b.v+'"'+(b.v===getUrlaubBundesland()?' selected':'')+'>'+b.l+'</option>';}).join('')
+    +'</select></div>'
     +(brueckentage.length?brueckentage.map(function(b){
         return '<div style="background:rgba(240,232,192,0.3);border-radius:8px;padding:8px 10px;margin-bottom:6px;font-size:12px;">'
           +'<div style="font-weight:700;color:var(--deep);">'+b.anlass+': '+b.nimm+' Urlaubstag'+(b.nimm!=1?'e':'')+' nehmen → '+b.frei+' Tage frei</div>'
@@ -11609,9 +11689,94 @@ function updateTagFoto(dk){
 // weekday: 0=Montag ... 6=Sonntag, passend zu WOCHENTAGE_KURZ/-LANG
 const WOCHENTAGE_RECUR=['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'];
 function getRecurringRules(){ if(!kalData.recurring)kalData.recurring=[]; return kalData.recurring; }
+function fkMondayOf(d){ var r=new Date(d); var wd=(r.getDay()+6)%7; r.setDate(r.getDate()-wd); r.setHours(0,0,0,0); return r; }
+// Prüft, ob eine Regel (alt: einfaches weekday-Format, oder neu: typ-basiert mit Intervall/Endebedingung) an einem Datum greift
+function fkRuleMatchesDate(rule, date){
+  var d=new Date(date.getFullYear(),date.getMonth(),date.getDate());
+  // Alte, einfache Regeln (nur weekday, kein typ): wie bisher, unbegrenzt jede Woche
+  if(!rule.typ){
+    return rule.weekday!==undefined && (d.getDay()+6)%7===rule.weekday;
+  }
+  if(!rule.startDatum) return false;
+  var sp=rule.startDatum.split('-');
+  var start=new Date(parseInt(sp[0],10),parseInt(sp[1],10)-1,parseInt(sp[2],10));
+  if(d<start) return false;
+  // Ende-Bedingung "am Datum"
+  if(rule.ende&&rule.ende.typ==='am'&&rule.ende.datum&&dateKey(d)>rule.ende.datum) return false;
+
+  var matches=false;
+  if(rule.typ==='taeglich'){
+    var diffT=Math.round((d-start)/86400000);
+    matches=diffT>=0;
+  } else if(rule.typ==='woechentlich'){
+    matches=d.getDay()===start.getDay();
+  } else if(rule.typ==='monatlich'){
+    matches=d.getDate()===start.getDate();
+  } else if(rule.typ==='jaehrlich'){
+    matches=d.getDate()===start.getDate()&&d.getMonth()===start.getMonth();
+  } else if(rule.typ==='custom'){
+    var intervall=Math.max(1,rule.intervall||1);
+    if(rule.einheit==='tage'){
+      var diffD=Math.round((d-start)/86400000);
+      matches=diffD>=0&&diffD%intervall===0;
+    } else if(rule.einheit==='wochen'){
+      if(rule.wochentage&&rule.wochentage.length){
+        if(rule.wochentage.indexOf((d.getDay()+6)%7)<0) return false;
+        var weeksDiff=Math.round((fkMondayOf(d)-fkMondayOf(start))/(7*86400000));
+        matches=weeksDiff>=0&&weeksDiff%intervall===0;
+      } else {
+        var diffD2=Math.round((d-start)/86400000);
+        matches=diffD2>=0&&diffD2%(7*intervall)===0;
+      }
+    } else if(rule.einheit==='monate'){
+      if(d.getDate()!==start.getDate())return false;
+      var monthsDiff=(d.getFullYear()-start.getFullYear())*12+(d.getMonth()-start.getMonth());
+      matches=monthsDiff>=0&&monthsDiff%intervall===0;
+    } else if(rule.einheit==='jahre'){
+      if(d.getDate()!==start.getDate()||d.getMonth()!==start.getMonth())return false;
+      var yearsDiff=d.getFullYear()-start.getFullYear();
+      matches=yearsDiff>=0&&yearsDiff%intervall===0;
+    }
+  }
+  if(!matches) return false;
+  // Ende-Bedingung "nach N Malen": Vorkommen von start bis d zählen (mit Sicherheitsgrenze)
+  if(rule.ende&&rule.ende.typ==='nach'&&rule.ende.anzahl){
+    var count=0, cur=new Date(start), guard=0;
+    while(cur<=d&&guard<4000){
+      if(fkRuleMatchesDate(Object.assign({},rule,{ende:null}),cur))count++;
+      cur.setDate(cur.getDate()+1);
+      guard++;
+    }
+    if(count>rule.ende.anzahl) return false;
+  }
+  return true;
+}
+function fkDescribeRule(rule){
+  if(!rule.typ){
+    return 'Jeden '+WOCHENTAGE_RECUR[rule.weekday]+(rule.time?' um '+rule.time:'');
+  }
+  var basis;
+  if(rule.typ==='taeglich') basis='Täglich';
+  else if(rule.typ==='woechentlich') basis='Wöchentlich';
+  else if(rule.typ==='monatlich') basis='Monatlich';
+  else if(rule.typ==='jaehrlich') basis='Jährlich';
+  else if(rule.typ==='custom'){
+    var einheitLabel={tage:'Tag(e)',wochen:'Woche(n)',monate:'Monat(e)',jahre:'Jahr(e)'}[rule.einheit]||rule.einheit;
+    basis='Alle '+(rule.intervall||1)+' '+einheitLabel;
+    if(rule.einheit==='wochen'&&rule.wochentage&&rule.wochentage.length){
+      basis+=' ('+rule.wochentage.map(function(w){return WOCHENTAGE_RECUR[w].slice(0,2);}).join(', ')+')';
+    }
+  }
+  var ab=' · ab '+fmt(rule.startDatum);
+  var ende='';
+  if(rule.ende){
+    if(rule.ende.typ==='am'&&rule.ende.datum) ende=' · bis '+fmt(rule.ende.datum);
+    if(rule.ende.typ==='nach'&&rule.ende.anzahl) ende=' · '+rule.ende.anzahl+'x';
+  }
+  return basis+(rule.time?' um '+rule.time:'')+ab+ende;
+}
 function getRecurringForDate(dateObj){
-  var wd=(dateObj.getDay()+6)%7;
-  return getRecurringRules().filter(function(r){return r.weekday===wd;}).sort(function(a,b){return (a.time||'').localeCompare(b.time||'');});
+  return getRecurringRules().filter(function(r){return fkRuleMatchesDate(r,dateObj);}).sort(function(a,b){return (a.time||'').localeCompare(b.time||'');});
 }
 function openRecurringManager(){
   var box=document.getElementById('recurring-manager');
@@ -11623,21 +11788,20 @@ function closeRecurringManager(){ var box=document.getElementById('recurring-man
 function renderRecurringManager(){
   var box=document.getElementById('recurring-manager');
   if(!box)return;
-  var rules=getRecurringRules().slice().sort(function(a,b){ return a.weekday-b.weekday || (a.time||'').localeCompare(b.time||''); });
+  var rules=getRecurringRules().slice().sort(function(a,b){ return String(a.id).localeCompare(String(b.id)); });
   box.innerHTML='<div onclick="event.stopPropagation()" style="background:white;border-radius:14px;padding:20px;width:92%;max-width:460px;max-height:85vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,0.18);">'
     +'<div style="font-family:Georgia,serif;font-size:18px;font-weight:600;color:var(--deep);margin-bottom:6px;">🔁 Wiederkehrende Zeiten</div>'
-    +'<div style="font-size:11px;color:var(--muted);margin-bottom:14px;">Diese Zeiten erscheinen automatisch jede Woche am gewählten Tag in der Tagesseite, auch bei der Halbjahresübersicht musst du sie nicht jedes Mal neu eintragen.</div>'
+    +'<div style="font-size:11px;color:var(--muted);margin-bottom:14px;">Diese Zeiten erscheinen automatisch in der Tagesseite, du musst sie nicht jedes Mal neu eintragen. Neue wiederkehrende Termine legst du direkt beim Termin-Eintragen über "Wiederholung" an.</div>'
     +'<div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px;">'
     +(rules.length?rules.map(function(r){
       return '<div style="display:flex;align-items:center;gap:8px;background:rgba(216,207,240,0.15);border-radius:8px;padding:6px 10px;">'
-        +'<span style="font-size:11px;font-weight:700;color:var(--lilac2);min-width:64px;">'+WOCHENTAGE_RECUR[r.weekday].slice(0,2)+' '+(r.time||'--:--')+'</span>'
-        +'<span style="flex:1;font-size:12px;color:var(--deep);">'+r.text+'</span>'
+        +'<span style="flex:1;font-size:12px;color:var(--deep);"><strong>'+r.text+'</strong><br><span style="font-size:10px;color:var(--muted);">'+fkDescribeRule(r)+'</span></span>'
         +'<button onclick="deleteRecurring(\''+r.id+'\')" style="background:none;border:none;color:rgba(180,160,220,0.5);cursor:pointer;font-size:13px;">✕</button>'
         +'</div>';
     }).join(''):'<div style="text-align:center;padding:10px;color:var(--muted);font-size:12px;">Noch keine wiederkehrenden Zeiten</div>')
     +'</div>'
     +'<div style="border-top:1px solid rgba(216,207,240,0.3);padding-top:12px;">'
-    +'<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Neue wiederkehrende Zeit</div>'
+    +'<div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:6px;">Schnell: Neue einfache Wochenzeit</div>'
     +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">'
     +'<select id="rec-weekday" style="border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 8px;font-size:12px;font-family:Arial,sans-serif;background:white;">'+WOCHENTAGE_RECUR.map(function(w,i){return '<option value="'+i+'">'+w+'</option>';}).join('')+'</select>'
     +'<input type="time" id="rec-time" style="border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:6px 8px;font-size:12px;font-family:Arial,sans-serif;">'
@@ -12235,6 +12399,8 @@ function addTagZeit(){
   if(reminderLead)fkRequestNotificationPermission();
   const zHorse=document.getElementById('tag-zeit-horse').value;
   const zCat=document.getElementById('tag-zeit-cat').value;
+  const wiederholungEl=document.getElementById('tag-zeit-wiederholung');
+  const wiederholung=wiederholungEl?wiederholungEl.value:'einmalig';
   if(!text)return;
   const dk=dateKey(kalState.dayDate);
   if(!kalData.tagNotes[dk])kalData.tagNotes[dk]={intention:'',prios:[],todos:[],zeitplan:[],journal:'',abschluss:'',mood:''};
@@ -12265,14 +12431,32 @@ function addTagZeit(){
     var ceEl=document.getElementById('tag-zeit-cancel-edit'); if(ceEl)ceEl.style.display='none';
   }
   if(!editHandled){
-    const id='tz_'+Date.now()+'_'+Math.floor(Math.random()*10000);
-    let linkedEntryId=null;
-    if(zHorse && zCat && typeof pkEntries!=='undefined' && getAllAnimalNames().indexOf(zHorse)>=0){
-      linkedEntryId='pke_'+Date.now()+'_'+Math.floor(Math.random()*10000);
-      pkEntries.push({id:linkedEntryId, date:dk, horse:zHorse, cat:zCat, title:text, notes:notiz, amount:null});
+    if(wiederholung && wiederholung!=='einmalig'){
+      // Wiederkehrende Regel anlegen, statt nur einen einzelnen Termin zu speichern
+      const rule={id:'rec_'+Date.now()+'_'+Math.floor(Math.random()*10000), typ:wiederholung, startDatum:dk, time:time||'', timeEnd:timeEnd||'', text:text, notiz:notiz};
+      if(wiederholung==='custom'){
+        rule.intervall=Math.max(1,parseInt(document.getElementById('cr-intervall').value,10)||1);
+        rule.einheit=document.getElementById('cr-einheit').value;
+        if(rule.einheit==='wochen'){
+          var checkedWd=Array.from(document.querySelectorAll('.cr-wd-btn.active')).map(function(b){return parseInt(b.getAttribute('data-wd'),10);});
+          if(checkedWd.length) rule.wochentage=checkedWd;
+        }
+        var endeTypEl=document.querySelector('input[name="cr-ende"]:checked');
+        var endeTyp=endeTypEl?endeTypEl.value:'nie';
+        if(endeTyp==='am'){ rule.ende={typ:'am',datum:document.getElementById('cr-ende-datum').value}; }
+        else if(endeTyp==='nach'){ rule.ende={typ:'nach',anzahl:parseInt(document.getElementById('cr-ende-anzahl').value,10)||10}; }
+      }
+      getRecurringRules().push(rule);
+    } else {
+      const id='tz_'+Date.now()+'_'+Math.floor(Math.random()*10000);
+      let linkedEntryId=null;
+      if(zHorse && zCat && typeof pkEntries!=='undefined' && getAllAnimalNames().indexOf(zHorse)>=0){
+        linkedEntryId='pke_'+Date.now()+'_'+Math.floor(Math.random()*10000);
+        pkEntries.push({id:linkedEntryId, date:dk, horse:zHorse, cat:zCat, title:text, notes:notiz, amount:null});
+      }
+      kalData.tagNotes[dk].zeitplan.push({id:id, time:time||'--:--', timeEnd:timeEnd||'', text:text, notiz:notiz, blocked:blocked, reminder:!!reminderLead, reminderLead:reminderLead, horse:zHorse||'', cat:zCat||'', linkedEntryId:linkedEntryId});
+      if(linkedEntryId) saveAll();
     }
-    kalData.tagNotes[dk].zeitplan.push({id:id, time:time||'--:--', timeEnd:timeEnd||'', text:text, notiz:notiz, blocked:blocked, reminder:!!reminderLead, reminderLead:reminderLead, horse:zHorse||'', cat:zCat||'', linkedEntryId:linkedEntryId});
-    if(linkedEntryId) saveAll();
   }
   document.getElementById('tag-zeit-inp').value='';
   document.getElementById('tag-zeit-notiz').value='';
@@ -12280,12 +12464,45 @@ function addTagZeit(){
   document.getElementById('tag-zeit-reminder-lead').value='';
   document.getElementById('tag-zeit-horse').value='';
   document.getElementById('tag-zeit-cat').value='';
+  if(wiederholungEl)wiederholungEl.value='einmalig';
+  resetCustomRecurrenceForm();
   fkZeitVon='';fkZeitBis='';
   document.getElementById('tag-zeit-von-chip').textContent='--:--';
   document.getElementById('tag-zeit-bis-chip').textContent='--:--';
   updateTagZeitBtn();
   saveKal();renderTagZeitplan(dk);
   try{renderUeberblick();}catch(e){}
+}
+function toggleCustomRecurrence(){
+  var sel=document.getElementById('tag-zeit-wiederholung');
+  var panel=document.getElementById('tag-zeit-custom-recurrence');
+  if(!sel||!panel)return;
+  panel.style.display=sel.value==='custom'?'block':'none';
+}
+function toggleCustomWeekdays(){
+  var einheit=document.getElementById('cr-einheit');
+  var row=document.getElementById('cr-weekdays-row');
+  if(!einheit||!row)return;
+  row.style.display=einheit.value==='wochen'?'block':'none';
+}
+function updateCrEndeState(){
+  var endeTypEl=document.querySelector('input[name="cr-ende"]:checked');
+  var typ=endeTypEl?endeTypEl.value:'nie';
+  var datumEl=document.getElementById('cr-ende-datum');
+  var anzahlEl=document.getElementById('cr-ende-anzahl');
+  if(datumEl)datumEl.disabled=(typ!=='am');
+  if(anzahlEl)anzahlEl.disabled=(typ!=='nach');
+}
+function resetCustomRecurrenceForm(){
+  var panel=document.getElementById('tag-zeit-custom-recurrence');
+  if(panel)panel.style.display='none';
+  var intervallEl=document.getElementById('cr-intervall');if(intervallEl)intervallEl.value='1';
+  var einheitEl=document.getElementById('cr-einheit');if(einheitEl)einheitEl.value='tage';
+  var weekdaysRow=document.getElementById('cr-weekdays-row');if(weekdaysRow)weekdaysRow.style.display='none';
+  document.querySelectorAll('.cr-wd-btn.active').forEach(function(b){b.classList.remove('active');});
+  var nieRadio=document.querySelector('input[name="cr-ende"][value="nie"]');if(nieRadio)nieRadio.checked=true;
+  var endeDatumEl=document.getElementById('cr-ende-datum');if(endeDatumEl){endeDatumEl.value='';endeDatumEl.disabled=true;}
+  var endeAnzahlEl=document.getElementById('cr-ende-anzahl');if(endeAnzahlEl){endeAnzahlEl.value='10';endeAnzahlEl.disabled=true;}
 }
 function editTagZeit(i){
   const dk=dateKey(kalState.dayDate);
@@ -12302,6 +12519,8 @@ function editTagZeit(i){
   document.getElementById('tag-zeit-reminder-lead').value=entry.reminderLead||(entry.reminder?'0':'');
   document.getElementById('tag-zeit-horse').value=entry.horse||'';
   document.getElementById('tag-zeit-cat').value=entry.cat||'';
+  var wEl=document.getElementById('tag-zeit-wiederholung'); if(wEl)wEl.value='einmalig';
+  resetCustomRecurrenceForm();
   var ceEl=document.getElementById('tag-zeit-cancel-edit'); if(ceEl)ceEl.style.display='inline';
   updateTagZeitBtn();
   var inp=document.getElementById('tag-zeit-inp');
@@ -12315,6 +12534,8 @@ function cancelTagZeitEdit(){
   document.getElementById('tag-zeit-reminder-lead').value='';
   document.getElementById('tag-zeit-horse').value='';
   document.getElementById('tag-zeit-cat').value='';
+  var wEl2=document.getElementById('tag-zeit-wiederholung'); if(wEl2)wEl2.value='einmalig';
+  resetCustomRecurrenceForm();
   fkZeitVon='';fkZeitBis='';
   document.getElementById('tag-zeit-von-chip').textContent='--:--';
   document.getElementById('tag-zeit-bis-chip').textContent='--:--';
