@@ -3770,6 +3770,23 @@ return html2pdf;
       <div id="header-bell-list"></div>
     </div>
 
+    <!-- Schnell-Erfassen: von überall aus erreichbar, damit kein Gedanke verloren geht -->
+    <button id="quick-capture-btn" onclick="openQuickCapture()" title="Schnell etwas festhalten" style="position:fixed;bottom:22px;right:18px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--lilac),var(--rose));border:none;box-shadow:0 6px 18px rgba(74,56,96,0.35);font-size:26px;color:white;cursor:pointer;z-index:9970;display:flex;align-items:center;justify-content:center;touch-action:manipulation;">💭</button>
+    <div id="quick-capture-modal" onclick="if(event.target===this)closeQuickCapture()" style="display:none;position:fixed;inset:0;background:rgba(74,56,96,0.4);z-index:9980;align-items:center;justify-content:center;">
+      <div onclick="event.stopPropagation()" style="background:white;border-radius:16px;padding:22px;width:90%;max-width:380px;box-shadow:0 12px 40px rgba(74,56,96,0.3);">
+        <div style="font-family:Georgia,serif;font-size:18px;font-weight:600;color:var(--deep);margin-bottom:4px;">💭 Schnell festhalten</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">Kein Filter, keine Kategorie nötig. Landet in deiner Inbox, du kannst es später einsortieren.</div>
+        <textarea id="quick-capture-text" autofocus style="width:100%;min-height:90px;border:1px solid rgba(180,160,220,0.3);border-radius:10px;padding:10px;font-family:Arial,sans-serif;font-size:14px;outline:none;resize:vertical;box-sizing:border-box;" placeholder="Was schwirrt dir gerade durch den Kopf?"></textarea>
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px;">
+          <button onclick="closeQuickCapture()" style="background:rgba(232,228,240,0.5);border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:8px 16px;font-size:13px;cursor:pointer;font-family:Arial,sans-serif;color:var(--muted);">Abbrechen</button>
+          <button onclick="saveQuickCapture()" class="save-btn" style="padding:8px 20px;">✓ Speichern</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Übergangs-Warnung: sanfter Hinweis kurz vor einem Termin, verschwindet von selbst -->
+    <div id="fk-transition-toast" style="display:none;position:fixed;top:18px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--lilac),var(--rose));color:var(--deep);border-radius:14px;padding:12px 18px;box-shadow:0 8px 24px rgba(74,56,96,0.3);z-index:9975;max-width:90vw;font-family:Arial,sans-serif;font-size:13px;font-weight:600;display:flex;align-items:center;gap:10px;"></div>
+
     <!-- Einstellungen Vollbild-Overlay -->
     <div id="settings-overlay" style="display:none;position:fixed;inset:0;background:rgba(74,56,96,0.4);z-index:99950;">
       <div style="background:white;max-width:480px;margin:0 auto;height:100%;display:flex;flex-direction:column;box-shadow:0 0 40px rgba(0,0,0,0.2);">
@@ -6755,7 +6772,8 @@ let pData={
   visitedCountries:[],
   zeitstrahl:[],
   reisen:[],
-  achtsamkeit:{startDatum:'',erledigteTage:[]}
+  achtsamkeit:{startDatum:'',erledigteTage:[]},
+  inbox:[]
 };
 
 let currentMediaTab='buch';
@@ -8946,6 +8964,11 @@ function renderSettingsProfil(container){
     +   '<div style="font-size:11px;color:var(--muted);margin-bottom:4px;">Über mich (optional)</div>'
     +   '<textarea id="settings-about-input" placeholder="Ein paar Worte über dich und deine Pferde..." style="width:100%;min-height:70px;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:9px 10px;font-size:13px;font-family:Arial,sans-serif;background:rgba(255,255,255,0.7);color:var(--text);outline:none;box-sizing:border-box;resize:vertical;">'+(s.about||'')+'</textarea>'
     + '</div>'
+    + '<div style="background:rgba(232,228,240,0.4);border-radius:10px;padding:12px 14px;margin-bottom:14px;">'
+    +   '<label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--deep);font-weight:600;margin-bottom:8px;"><input type="checkbox" id="settings-uebergang-aktiv" '+(s.uebergangswarnung&&s.uebergangswarnung.aktiv===false?'':'checked')+' onchange="saveUebergangswarnung()" style="width:16px;height:16px;accent-color:var(--lilac2);">🔔 Übergangs-Warnung vor Terminen</label>'
+    +   '<div style="font-size:11px;color:var(--muted);margin-bottom:8px;">Erinnert dich sanft, bevor ein Termin mit Uhrzeit beginnt, auch ohne dass du dafür extra eine Erinnerung einstellen musst.</div>'
+    +   '<label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--deep);">Wie viele Minuten vorher: <input type="number" id="settings-uebergang-minuten" value="'+(s.uebergangswarnung&&s.uebergangswarnung.minuten?s.uebergangswarnung.minuten:15)+'" min="1" max="120" onchange="saveUebergangswarnung()" style="width:60px;border:1px solid rgba(180,160,220,0.3);border-radius:6px;padding:5px 8px;font-size:12px;font-family:Arial,sans-serif;outline:none;"></label>'
+    + '</div>'
     + '<button onclick="saveSettingsProfil()" style="width:100%;background:var(--deep);color:white;border:none;border-radius:10px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;">Speichern</button>'
     + '<div id="settings-profil-saved" style="display:none;text-align:center;color:var(--mint2);font-size:12px;margin-top:8px;">✓ Gespeichert</div>';
 }
@@ -8976,6 +8999,74 @@ function fkFlashSaveButton(btn, ms){
     btn.style.borderColor = origBorder;
   }, ms);
 }
+
+// ── SCHNELL-ERFASSEN: von überall aus erreichbar, landet ungefiltert in der Inbox ──
+function openQuickCapture(){
+  var modal=document.getElementById('quick-capture-modal');
+  if(!modal)return;
+  modal.style.display='flex';
+  var ta=document.getElementById('quick-capture-text');
+  if(ta){
+    ta.value='';
+    setTimeout(function(){ ta.focus(); },50);
+    ta.onkeydown=function(e){
+      if(e.key==='Enter' && (e.metaKey||e.ctrlKey)){ saveQuickCapture(); }
+      if(e.key==='Escape'){ closeQuickCapture(); }
+    };
+  }
+}
+function closeQuickCapture(){
+  var modal=document.getElementById('quick-capture-modal');
+  if(modal)modal.style.display='none';
+}
+function saveQuickCapture(){
+  var ta=document.getElementById('quick-capture-text');
+  var v=ta?ta.value.trim():'';
+  if(!v)return;
+  if(!pData.inbox)pData.inbox=[];
+  pData.inbox.push({id:Date.now(), text:v, datum:new Date().toISOString().split('T')[0]});
+  saveAll();
+  closeQuickCapture();
+  var btn=document.getElementById('quick-capture-btn');
+  if(btn){
+    var orig=btn.style.background;
+    btn.style.background='var(--mint2)';
+    setTimeout(function(){btn.style.background=orig;},700);
+  }
+  try{renderUeberblick();}catch(e){}
+}
+function renderInboxCard(){
+  var card=document.getElementById('ub-inbox-card');
+  if(!card)return;
+  var items=(pData.inbox||[]);
+  if(!items.length){ card.style.display='none'; return; }
+  card.style.display='block';
+  var list=document.getElementById('ub-inbox-list');
+  if(!list)return;
+  list.innerHTML=items.slice().sort(function(a,b){return b.id-a.id;}).map(function(it){
+    return '<div style="display:flex;align-items:flex-start;gap:8px;padding:7px 4px;border-bottom:1px solid rgba(216,207,240,0.2);">'
+      +'<span style="font-size:12px;color:var(--deep);flex:1;">'+it.text.replace(/</g,'&lt;')+'</span>'
+      +'<button onclick="inboxToTodo('+it.id+')" title="Als To-Do heute übernehmen" style="background:rgba(200,234,223,0.5);border:none;border-radius:6px;padding:3px 8px;font-size:10px;color:var(--deep);cursor:pointer;white-space:nowrap;">→ To-Do</button>'
+      +'<button onclick="delInboxItem('+it.id+')" style="background:none;border:none;color:rgba(180,160,220,0.5);cursor:pointer;font-size:13px;">✕</button>'
+      +'</div>';
+  }).join('');
+}
+function delInboxItem(id){
+  pData.inbox=(pData.inbox||[]).filter(function(it){return it.id!==id;});
+  saveAll();
+  renderInboxCard();
+}
+function inboxToTodo(id){
+  var item=(pData.inbox||[]).find(function(it){return it.id===id;});
+  if(!item)return;
+  var dk=dateKey(new Date());
+  if(!kalData.tagNotes[dk])kalData.tagNotes[dk]={intention:'',prios:[],todos:[],zeitplan:[],journal:'',abschluss:'',mood:''};
+  if(!kalData.tagNotes[dk].todos)kalData.tagNotes[dk].todos=[];
+  kalData.tagNotes[dk].todos.push({text:item.text,done:false});
+  saveKal();
+  delInboxItem(id);
+}
+
 function handleProfileFotoUpload(input){
   var file = input.files[0];
   if(!file) return;
@@ -9115,7 +9206,7 @@ function renderSettingsDesign(container){
 }
 
 // ── BACKUP & UPDATE (nutzt bestehende Funktionen) ──
-const FK_APP_VERSION='2.6.1';
+const FK_APP_VERSION='2.7.0';
 function renderSettingsBackup(container){
   container.innerHTML =
     '<div style="font-size:11px;color:var(--muted);margin-bottom:10px;">Installierte Version: <strong style="color:var(--deep);">'+FK_APP_VERSION+'</strong></div>'
@@ -9143,6 +9234,7 @@ const HELP_CONTENT = [
     {title:'Wofür ist die Überblick-Seite?', text:'Deine Schaltzentrale: alles Wichtige aus allen Bereichen auf einen Blick, ohne erst in jeden Tab einzeln zu wechseln.'},
     {title:'Hintergrundbild ändern', text:'Tippe oben rechts auf das ☰-Symbol, dort kannst du ein eigenes Foto hochladen oder wieder entfernen, und die Position per Ziehen anpassen.'},
     {title:'Nichts vergessen heute', text:'Erscheint ganz oben, sobald es etwas Wichtiges gibt: überfällige Pferde-Termine, bald fällige Gesundheits-Termine bei anderen Tieren oder Kindern, sowie nicht abgehakte Top-Prioritäten und To-Dos von vorherigen Tagen. Ist alles erledigt, bleibt die Karte einfach weg.'},
+    {title:'Schnell erfasst (Inbox)', text:'Zeigt alles, was du über den 💭-Button schnell festgehalten hast und noch nicht einsortiert ist. Erscheint nur, wenn etwas drinsteht.'},
     {title:'Heute im Fokus', text:'Zeigt deine heutige Intention, Top-Prioritäten und Termine, oben mit einer Zeitleiste für den ganzen Tag (antippen zeigt Details zu einem Termin). Steht noch nichts drin, kommst du über "jetzt ausfüllen" direkt zur Tagesseite. Ist schon etwas eingetragen, bringt dich "weiter bearbeiten" ebenfalls dorthin.'},
     {title:'Pferde-Status', text:'Zeigt pro Pferd, wann zuletzt was dran war. Über das ⚙️-Symbol wählst du selbst, welche Kacheln angezeigt werden, neben Tierarzt, Hufschmied, Impfung, Wurmkur, Osteopathie/Physio und Zahnkontrolle stehen auch Allergie & Husten, Verhalten, Training, Hufpflege und Fütterung zur Auswahl. Auf eine leere Kachel tippen öffnet einen neuen Eintrag. Auf eine bereits ausgefüllte Kachel tippen öffnet ein kleines Fenster, in dem du das Datum des letzten Eintrags korrigieren, das Intervall (Zeitfenster) anpassen, oder einen weiteren neuen Eintrag anlegen kannst. Auf den runden Button mit dem Pferdenamen tippen öffnet den Foto-Upload.'},
     {title:'Offene To-Dos', text:'Zeigt deine unerledigten Aufgaben aus Organisation → To-Dos.'},
@@ -9229,6 +9321,8 @@ const HELP_CONTENT = [
     {title:'Vorlage drucken', text:'Über den Drucken-Button in der jeweiligen Vorlage öffnet sich die Druckansicht deines Browsers.'},
   ]},
   { section:'Einstellungen & Allgemein', icon:'⚙️', topics:[
+    {title:'Schnell festhalten (💭-Button)', text:'Der violette 💭-Button unten rechts ist auf jeder Seite erreichbar. Tippe darauf, um einen Gedanken sofort aufzuschreiben, ohne ihn erst einsortieren zu müssen. Er landet in deiner Inbox ("Schnell erfasst" oben auf der Startseite), du kannst ihn später als To-Do heute übernehmen oder verwerfen.'},
+    {title:'Übergangs-Warnung', text:'Unter Einstellungen → Mein Profil lässt sich einstellen, dass du automatisch einen sanften Hinweis bekommst, bevor ein Termin mit Uhrzeit beginnt, z.B. "In 15 Min: Stalldienst". Das funktioniert für jeden Termin mit Uhrzeit, ohne dass du dafür extra eine Erinnerung einstellen musst. Die Vorlaufzeit kannst du selbst wählen, und die Funktion lässt sich auch ganz abschalten.'},
     {title:'Profilbild ändern', text:'Unter Einstellungen → Mein Profil über "Foto wählen" hochladen. Große Handyfotos werden automatisch verkleinert, damit der Speicher nicht überläuft.'},
     {title:'Backup erstellen', text:'Unter Einstellungen → Backup & Update über "Backup speichern" eine Sicherungsdatei herunterladen, über "Backup laden" eine vorhandene Datei wieder einspielen.'},
     {title:'Update prüfen', text:'Über "Update prüfen" wird einmalig (nur nach deiner Zustimmung) nachgesehen, ob eine neuere Version der App verfügbar ist.'},
@@ -12380,6 +12474,59 @@ function fkCheckReminders(){
 setInterval(fkCheckReminders, 30000);
 setTimeout(fkCheckReminders, 3000);
 
+// ── ÜBERGANGS-WARNUNG: sanfter Hinweis X Minuten vor jedem Termin mit Uhrzeit, automatisch, ohne dass man dafür extra eine Erinnerung einstellen muss ──
+function saveUebergangswarnung(){
+  var aktivEl=document.getElementById('settings-uebergang-aktiv');
+  var minutenEl=document.getElementById('settings-uebergang-minuten');
+  saveFkSettings({uebergangswarnung:{
+    aktiv: aktivEl?aktivEl.checked:true,
+    minuten: minutenEl?Math.max(1,parseInt(minutenEl.value,10)||15):15
+  }});
+}
+var _fkShownTransitions={day:'',ids:{}};
+function fkShowTransitionToast(text, minuten){
+  var box=document.getElementById('fk-transition-toast');
+  if(!box)return;
+  box.innerHTML='<span style="font-size:16px;">⏳</span><span>In '+minuten+' Min: '+text.replace(/</g,'&lt;')+'</span><span onclick="fkHideTransitionToast()" style="cursor:pointer;margin-left:4px;opacity:0.7;">✕</span>';
+  box.style.display='flex';
+  try{ if(navigator.vibrate) navigator.vibrate(80); }catch(err){}
+  if(box._fkHideTimer)clearTimeout(box._fkHideTimer);
+  box._fkHideTimer=setTimeout(fkHideTransitionToast, 7000);
+}
+function fkHideTransitionToast(){
+  var box=document.getElementById('fk-transition-toast');
+  if(box)box.style.display='none';
+}
+function fkCheckTransitionWarnings(){
+  try{
+    var s=getFkSettings();
+    var uw=s.uebergangswarnung;
+    if(uw && uw.aktiv===false) return;
+    var minuten=(uw && uw.minuten)?uw.minuten:15;
+    if(typeof kalData==='undefined' || !kalData.tagNotes || typeof fkGetEffectiveZeitplan!=='function') return;
+    var now=new Date();
+    var todayKey=dateKey(now);
+    if(_fkShownTransitions.day!==todayKey){ _fkShownTransitions={day:todayKey, ids:{}}; }
+    var items=fkGetEffectiveZeitplan(todayKey);
+    for(var i=0;i<items.length;i++){
+      var e=items[i];
+      if(!e.time || e.time==='--:--') continue;
+      var key=(e.id||e.text)+'_'+e.time;
+      if(_fkShownTransitions.ids[key]) continue;
+      var parts=e.time.split(':');
+      var startDate=new Date(now.getFullYear(),now.getMonth(),now.getDate(),parseInt(parts[0],10)||0,parseInt(parts[1],10)||0,0);
+      var diffMin=(startDate.getTime()-now.getTime())/60000;
+      if(diffMin<=minuten && diffMin>minuten-1.5){
+        _fkShownTransitions.ids[key]=true;
+        fkShowTransitionToast(e.text, minuten);
+        return;
+      }
+    }
+  }catch(err){}
+}
+setInterval(fkCheckTransitionWarnings, 30000);
+setTimeout(fkCheckTransitionWarnings, 3500);
+
 var fkZeitEditId = null;
 function updateTagZeitBtn(){
   var btn = document.getElementById('tag-zeit-add-btn');
@@ -13795,6 +13942,13 @@ const VORLAGE_RENDERERS={
           +'</div>';
       })()}
 
+      <!-- SCHNELL ERFASST / INBOX -->
+      <div id="ub-inbox-card" class="card" style="display:none;margin-bottom:14px;background:linear-gradient(135deg,rgba(216,207,240,0.2),rgba(184,216,240,0.15));">
+        <div class="card-title ub-heading" style="margin-bottom:6px;"><span class="card-title-dot" style="background:var(--lilac2)"></span>💭 Schnell erfasst</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">Noch nicht einsortiert. Übernehmen oder verwerfen, wenn du Zeit hast.</div>
+        <div id="ub-inbox-list"></div>
+      </div>
+
       <!-- HEUTE IM FOKUS -->
       ${(function(){
         var tn=kalData.tagNotes[todayKey]||{};
@@ -14840,6 +14994,7 @@ function renderUeberblick(){
   VORLAGE_RENDERERS.ueberblick(body);
   currentVorlageId=saved;
   try{ fkRenderTimelineBar('ub-zeitleiste', dateKey(new Date())); }catch(e){}
+  try{ renderInboxCard(); }catch(e){}
   // Farbthema wird über Einstellungen-Button geändert
 }
 
