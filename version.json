@@ -1,6 +1,6 @@
 {
-  "version": "2.6.0",
-  "info": "Termine können jetzt direkt wiederholt werden (täglich, wöchentlich, monatlich, jährlich, benutzerdefiniert)",
+  "version": "2.6.1",
+  "info": "Reihenfolge auf der Startseite angepasst",
   "changes": {
     "organisation": [
       "Urlaubstage komplett überarbeitet: eigener Anspruch pro Jahr, ein Log für genommene Urlaubs- und Krankheitstage mit Grund, und automatisch berechnete Brückentage-Tipps für Niedersachsen, jedes Jahr neu berechnet.",
@@ -10,7 +10,8 @@
     "ueberblick": [
       "Glücksmomente steht jetzt direkt neben Überblick in der Navigation.",
       "Tier-Status ist jetzt standardmäßig eingeklappt (über 'anzeigen' aufklappbar), damit andere Karten besser sichtbar sind.",
-      "Bei einer bereits ausgefüllten Pferde-Status-Kachel lässt sich jetzt direkt das Datum des letzten Eintrags korrigieren und das Intervall (Zeitfenster) anpassen, statt nur einen neuen Eintrag anzulegen."
+      "Bei einer bereits ausgefüllten Pferde-Status-Kachel lässt sich jetzt direkt das Datum des letzten Eintrags korrigieren und das Intervall (Zeitfenster) anpassen, statt nur einen neuen Eintrag anzulegen.",
+      "Reihenfolge auf der Startseite angepasst: Direkt unter Heute im Fokus kommen jetzt Offene To-Dos, Nächste 14 Tage, Jahresziele und Bald fällig, darunter dann Pferde-Status, Kinder-Status und Tier-Status."
     ],
     "kalender": [
       "Termine, die sich zeitlich überlappen, werden in der Zeitleiste jetzt in eigenen Reihen nebeneinander angezeigt, statt sich zu überdecken.",
