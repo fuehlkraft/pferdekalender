@@ -1,6 +1,6 @@
 {
-  "version": "3.10.0",
-  "info": "Logo auf der Startseite zugeschnitten, große Lücke behoben",
+  "version": "3.10.1",
+  "info": "Schnell-Erfassen-Button bleibt am PC nah am Inhalt",
   "changes": {
     "organisation": [
       "Urlaubstage komplett überarbeitet: eigener Anspruch pro Jahr, ein Log für genommene Urlaubs- und Krankheitstage mit Grund, und automatisch berechnete Brückentage-Tipps für Niedersachsen, jedes Jahr neu berechnet.",
@@ -42,7 +42,8 @@
       "Fehler behoben: Beim erneuten Öffnen der App (z.B. nach Pull-to-Refresh) wurde die Startseite nur kurz angezeigt und automatisch übersprungen. Jetzt bleibt die Startseite immer stehen, bis bewusst auf \"Meinen Kalender öffnen\" getippt wird.",
       "Die Startseite skaliert jetzt besser auf Tablets, vorher blieb sie auf Handy-Größe begrenzt. Logo und Foto-Kreis sind außerdem größer.",
       "Neu: Unter Organisation → Gesprächsnotizen lässt sich festhalten, mit wem worüber gesprochen wurde, mit Datum, Thema, Notiztext und optionalem Folgetermin. Allgemein nutzbar für jedes Gespräch, mit Suche.",
-      "Ursache der großen Lücke zwischen Logo und Spruch auf der Startseite gefunden und behoben: Die Logo-Bilddatei hatte sehr viel unsichtbaren leeren Rand eingebaut (fast 30% reine Leerfläche unterhalb des Logos), der mit der letzten Vergrößerung mitgewachsen ist. Das Bild ist jetzt passend zugeschnitten, Logo, Titel und Foto rutschen dadurch automatisch näher zusammen."
+      "Ursache der großen Lücke zwischen Logo und Spruch auf der Startseite gefunden und behoben: Die Logo-Bilddatei hatte sehr viel unsichtbaren leeren Rand eingebaut (fast 30% reine Leerfläche unterhalb des Logos), der mit der letzten Vergrößerung mitgewachsen ist. Das Bild ist jetzt passend zugeschnitten, Logo, Titel und Foto rutschen dadurch automatisch näher zusammen.",
+      "Der 💭-Button schwebte auf sehr breiten Computer-Bildschirmen weit am rechten Bildschirmrand, losgelöst vom eigentlichen Inhalt. Jetzt bleibt er auch dort nah an der Inhaltsspalte."
     ],
     "kinder": [
       "Bei Gesundheit gibt es jetzt über \"mehr erfahren\" einen Überblick zu den U-Untersuchungen, dem Impfkalender und worauf man zusätzlich achten kann.",
