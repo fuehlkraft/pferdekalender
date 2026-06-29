@@ -3779,7 +3779,7 @@ return html2pdf;
   </div>
 
     <!-- Schnell-Erfassen: von überall aus erreichbar, damit kein Gedanke verloren geht -->
-    <button id="quick-capture-btn" onclick="openQuickCapture()" title="Schnell etwas festhalten" style="position:fixed;bottom:22px;right:18px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--deep),#6a5280);border:none;box-shadow:0 6px 18px rgba(74,56,96,0.45);font-size:26px;color:white;cursor:pointer;z-index:9970;display:flex;align-items:center;justify-content:center;touch-action:manipulation;">💭</button>
+    <button id="quick-capture-btn" onclick="openQuickCapture()" title="Schnell etwas festhalten" style="position:fixed;bottom:22px;right:max(18px,calc((100vw - 1200px) / 2 + 18px));width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--deep),#6a5280);border:none;box-shadow:0 6px 18px rgba(74,56,96,0.45);font-size:26px;color:white;cursor:pointer;z-index:9970;display:flex;align-items:center;justify-content:center;touch-action:manipulation;">💭</button>
     <div id="quick-capture-modal" onclick="if(event.target===this)closeQuickCapture()" style="display:none;position:fixed;inset:0;background:rgba(74,56,96,0.4);z-index:9980;align-items:center;justify-content:center;">
       <div onclick="event.stopPropagation()" style="background:white;border-radius:16px;padding:22px;width:90%;max-width:380px;box-shadow:0 12px 40px rgba(74,56,96,0.3);">
         <div style="display:flex;gap:6px;margin-bottom:14px;">
@@ -10097,7 +10097,7 @@ function renderSettingsDesign(container){
 }
 
 // ── BACKUP & UPDATE (nutzt bestehende Funktionen) ──
-const FK_APP_VERSION='3.10.0';
+const FK_APP_VERSION='3.10.1';
 function renderSettingsBackup(container){
   container.innerHTML =
     '<div style="font-size:11px;color:var(--muted);margin-bottom:10px;">Installierte Version: <strong style="color:var(--deep);">'+FK_APP_VERSION+'</strong></div>'
