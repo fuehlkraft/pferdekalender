@@ -1,6 +1,6 @@
 {
-  "version": "3.6.0",
-  "info": "Kopfbereich aufgeräumt, Logo auf der Startseite größer",
+  "version": "3.10.0",
+  "info": "Logo auf der Startseite zugeschnitten, große Lücke behoben",
   "changes": {
     "organisation": [
       "Urlaubstage komplett überarbeitet: eigener Anspruch pro Jahr, ein Log für genommene Urlaubs- und Krankheitstage mit Grund, und automatisch berechnete Brückentage-Tipps für Niedersachsen, jedes Jahr neu berechnet.",
@@ -19,6 +19,7 @@
       "Beim Termin-Eintragen gibt es jetzt eine Wiederholung direkt im Formular: Einmalig, Täglich, Wöchentlich, Monatlich, Jährlich oder Benutzerdefiniert. Bei Benutzerdefiniert stellst du das Intervall, bestimmte Wochentage und ein Ende (nie, an einem Datum, oder nach X Malen) selbst ein."
     ],
     "allgemein": [
+      "Wichtiger Fehler behoben: Das Backup hat bisher nur einen kleinen Teil der Daten gesichert (u.a. fehlten Kalender, Kinder inklusive Fotos, Andere Tiere, Einstellungen komplett). Jetzt wird wirklich alles gesichert und beim Einspielen vollständig wiederhergestellt.",
       "Neu: Der 💭-Button unten rechts ist auf jeder Seite erreichbar, damit kein Gedanke verloren geht. Was du dort festhältst, landet in der Inbox auf der Startseite (\"Schnell erfasst\") und kann später als To-Do übernommen oder verworfen werden.",
       "Neu: Übergangs-Warnung – ein sanfter Hinweis, bevor ein Termin mit Uhrzeit beginnt (z.B. \"In 15 Min: Stalldienst\"), automatisch für jeden Termin, ohne dass dafür extra eine Erinnerung eingestellt werden muss. Einstellbar (Vorlaufzeit, an/aus) unter Einstellungen → Mein Profil.",
       "Neu: Beim Abhaken von Top-Prioritäten, To-Dos, Packlisten-Punkten und Habits gibt es jetzt eine kleine, befriedigende Bestätigung (kurzes Aufblitzen mit Funken), und ab und zu eine motivierende Mitteilung wie \"5 erledigt heute, stark!\".",
@@ -36,7 +37,12 @@
       "Unter Einstellungen → Backup & Update steht jetzt klar erklärt, wo Daten gespeichert werden (lokal auf dem Gerät, nicht im Internet) und wie man sie z.B. über einen Google-Drive-Ordner auf ein anderes Gerät übertragen kann.",
       "Die 🔖- und ⚙️-Symbole oben im Kopfbereich wurden entfernt. Wichtiges erreichst du jetzt über den 💭-Button oder Persönlich → Wichtiges, Einstellungen über das Profilbild oben rechts (wie bisher schon möglich).",
       "Mehr Abstand zwischen der Navigationsleiste und den Inhalten darunter.",
-      "Das Fühlkraft-Logo auf der Startseite ist jetzt größer."
+      "Das Fühlkraft-Logo auf der Startseite ist jetzt größer.",
+      "Beim Backup speichern lässt sich am Computer (Chrome/Edge) jetzt der Speicherort selbst auswählen, dort wird automatisch der \"Speichern als\"-Dialog angezeigt.",
+      "Fehler behoben: Beim erneuten Öffnen der App (z.B. nach Pull-to-Refresh) wurde die Startseite nur kurz angezeigt und automatisch übersprungen. Jetzt bleibt die Startseite immer stehen, bis bewusst auf \"Meinen Kalender öffnen\" getippt wird.",
+      "Die Startseite skaliert jetzt besser auf Tablets, vorher blieb sie auf Handy-Größe begrenzt. Logo und Foto-Kreis sind außerdem größer.",
+      "Neu: Unter Organisation → Gesprächsnotizen lässt sich festhalten, mit wem worüber gesprochen wurde, mit Datum, Thema, Notiztext und optionalem Folgetermin. Allgemein nutzbar für jedes Gespräch, mit Suche.",
+      "Ursache der großen Lücke zwischen Logo und Spruch auf der Startseite gefunden und behoben: Die Logo-Bilddatei hatte sehr viel unsichtbaren leeren Rand eingebaut (fast 30% reine Leerfläche unterhalb des Logos), der mit der letzten Vergrößerung mitgewachsen ist. Das Bild ist jetzt passend zugeschnitten, Logo, Titel und Foto rutschen dadurch automatisch näher zusammen."
     ],
     "kinder": [
       "Bei Gesundheit gibt es jetzt über \"mehr erfahren\" einen Überblick zu den U-Untersuchungen, dem Impfkalender und worauf man zusätzlich achten kann.",
@@ -45,7 +51,10 @@
       "Bei Kosten gibt es jetzt über \"mehr erfahren\" eine Übersicht zu den häufigsten Kostenarten für Kinder, Kindergeld und ein paar Spartipps.",
       "Meilensteine komplett neu gestaltet: ein eigenes, warmes Design mit Zeitstrahl statt Tabelle, mit Infobox zur Erklärung und einem Festhalten-Formular wie in einem Erinnerungsbuch.",
       "Bei Meilensteinen lässt sich zu jedem Moment jetzt auch ein Foto hinzufügen.",
-      "Die Einführungs-Karte oben bei Kinder wurde entfernt."
+      "Die Einführungs-Karte oben bei Kinder wurde entfernt.",
+      "Neu: Bei jedem Kind unter Meine Kinder lässt sich einzeln einstellen, ob es auf der Startseite erscheinen soll. Dieselbe Einstellung steht auch unter Einstellungen → Mein Profil, beide Stellen sind immer synchron.",
+      "Neu: Bei jedem Kind lässt sich eine eigene Farbe für den Meilensteine-Zeitstrahl wählen (Rosa, Blau, Grün, Lila, Orange, Türkis).",
+      "Neu: Beim Stundenplan gibt es jetzt pro Wochentag eine kleine Packliste (z.B. Deutschbuch bei Deutsch), eigene Punkte lassen sich ergänzen und abhaken."
     ]
   }
 }
