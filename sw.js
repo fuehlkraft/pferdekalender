@@ -24,7 +24,7 @@
 //    das verhindert das versehentliche, unangekündigte Update.
 // ════════════════════════════════════════════════════════════════
 
-const SW_VERSION = '3.10.1';
+const SW_VERSION = '3.11.0';
 const CACHE_NAME = 'fuehlkraft-kalender-' + SW_VERSION;
 
 // Die wichtigsten Dateien, die direkt beim Installieren vorbereitet werden.
