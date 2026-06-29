@@ -87,7 +87,7 @@ body{background:var(--grad);font-family:Arial,sans-serif;color:var(--text);min-h
 .cover-deco{display:flex;align-items:center;gap:12px;margin-bottom:24px;width:200px;}
 .cover-deco-line{flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(180,160,220,0.5),transparent);}
 .cover-deco-dot{width:5px;height:5px;border-radius:50%;background:var(--lilac2);}
-.cover-logo-mark{width:clamp(80px,20vw,130px);margin-bottom:clamp(14px,3vh,28px);}
+.cover-logo-mark{width:clamp(110px,28vw,180px);margin-bottom:clamp(14px,3vh,28px);}
 .cover-slogan{font-family:Georgia,serif;font-style:italic;font-size:19px;color:var(--deep);text-align:center;line-height:1.6;opacity:0.8;margin-bottom:clamp(6px,1.5vh,14px);padding:0 20px;}
 .cover-slogan-sub{font-size:11px;letter-spacing:2px;color:var(--muted);text-align:center;margin-bottom:clamp(18px,4vh,36px);text-transform:uppercase;}
 .cover-btn{background:linear-gradient(135deg,var(--lilac),var(--rose));border:none;border-radius:50px;padding:13px 40px;font-family:Arial,sans-serif;font-size:14px;font-weight:700;color:var(--deep);cursor:pointer;box-shadow:0 6px 24px rgba(180,160,220,0.35);transition:all 0.3s;letter-spacing:0.5px;}
@@ -100,8 +100,8 @@ body{background:var(--grad);font-family:Arial,sans-serif;color:var(--text);min-h
 /* ── APP ── */
 #app{display:none;}
 .header{background:rgba(255,255,255,0.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:8px 24px 0;display:flex;flex-direction:column;align-items:center;border-bottom:1px solid rgba(255,255,255,0.7);position:sticky;top:0;z-index:50;box-shadow:0 2px 20px rgba(180,160,220,0.12);overflow:visible;width:100%;box-sizing:border-box;}
-.header-top{display:flex;align-items:center;justify-content:center;width:100%;padding-bottom:6px;}
-.header-nav{display:flex;align-items:center;justify-content:center;width:100%;padding:0 24px 8px;box-sizing:border-box;overflow-x:auto;scrollbar-width:none;}
+.header-top{display:flex;align-items:center;justify-content:center;width:100%;padding-bottom:12px;}
+.header-nav{display:flex;align-items:center;justify-content:center;width:100%;padding:8px 24px 14px;box-sizing:border-box;overflow-x:auto;scrollbar-width:none;background:rgba(255,255,255,0.4);}
 .header-nav::-webkit-scrollbar{display:none;}
 @media(max-width:640px){
   .header-nav{justify-content:flex-start;padding-left:4px;}
@@ -3760,13 +3760,11 @@ return html2pdf;
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:7px;flex-shrink:0;">
-        <button id="header-wichtiges-btn" onclick="openWichtiges()" title="Wichtiges" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.6);border:none;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;touch-action:manipulation;">🔖</button>
         <button id="header-notfall-btn" onclick="openNotfallCard()" title="Notfallkontakte" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.6);border:none;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;touch-action:manipulation;">🚨</button>
         <button id="header-bell-btn" onclick="toggleHeaderBell()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.6);border:none;display:flex;align-items:center;justify-content:center;font-size:14px;position:relative;cursor:pointer;touch-action:manipulation;">
           🔔<span id="header-bell-dot" style="display:none;position:absolute;top:4px;right:5px;width:7px;height:7px;border-radius:50%;background:#e85555;"></span>
         </button>
-        <button id="header-settings-btn" onclick="openSettings()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.6);border:none;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;touch-action:manipulation;">⚙️</button>
-        <button id="header-profile-btn" onclick="openSettings()" style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--lilac),var(--rose));border:2px solid white;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--deep);font-weight:700;cursor:pointer;overflow:hidden;touch-action:manipulation;flex-shrink:0;">
+        <button id="header-profile-btn" onclick="openSettings()" title="Einstellungen" style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--lilac),var(--rose));border:2px solid white;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--deep);font-weight:700;cursor:pointer;overflow:hidden;touch-action:manipulation;flex-shrink:0;">
           <span id="header-profile-initials">🐴</span>
           <img id="header-profile-img" style="display:none;width:100%;height:100%;object-fit:cover;" alt="">
         </button>
@@ -4607,7 +4605,7 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
             <strong style="color:var(--deep);">✅ Was wirklich hilft, Maßnahmen im Überblick</strong>
             <div style="background:rgba(200,234,223,0.2);border-radius:8px;padding:10px 14px;margin:6px 0;font-size:12px;">
               💧 <strong>Heu einweichen oder dämpfen</strong>, reduziert Staub um bis zu 90%<br>
-              🌬️ <strong>Offenstall oder viel Auslauf</strong>, frische Luft ist die beste Medizin<br>
+              🌬️ <strong>Offenstall oder viel Auslauf</strong>, frische Luft tut den Atemwegen gut<br>
               🪣 <strong>Stallhygiene</strong>, täglich Misten, staubfreie Einstreu (Späne statt Stroh)<br>
               🌿 <strong>Kräuter & Inhalation</strong>, Thymian, Eukalyptus, Salzinhalation<br>
               💊 <strong>Medikamente</strong>, nur nach Tierarztdiagnose: Bronchodilatoren, Kortison bei Bedarf<br>
@@ -4786,14 +4784,11 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
         <button class="main-nav-btn active" id="kid-tab-overview" onclick="showKidView('overview')">Meine Kinder</button>
         <button class="main-nav-btn" id="kid-tab-gesundheit" onclick="showKidView('gesundheit')">🩺 Gesundheit</button>
         <button class="main-nav-btn" id="kid-tab-schule" onclick="showKidView('schule')">🎒 Schule & Kita</button>
+        <button class="main-nav-btn" id="kid-tab-stundenplan" onclick="showKidView('stundenplan')">📅 Stundenplan</button>
         <button class="main-nav-btn" id="kid-tab-aktivitaeten" onclick="showKidView('aktivitaeten')">⚽ Aktivitäten</button>
         <button class="main-nav-btn" id="kid-tab-packliste" onclick="showKidView('packliste')">🧳 Packliste</button>
         <button class="main-nav-btn" id="kid-tab-kosten" onclick="showKidView('kosten')">💰 Kosten</button>
         <button class="main-nav-btn" id="kid-tab-meilensteine" onclick="showKidView('meilensteine')">💭 Meilensteine</button>
-      </div>
-
-      <div class="card" style="margin-bottom:14px;background:linear-gradient(135deg,rgba(216,207,240,0.15),rgba(200,234,223,0.1));">
-        <div style="font-size:12px;color:var(--text);line-height:1.6;">🧒 Hier hast du alles zu deinen Kindern an einem Ort, Gesundheit, Schule, Aktivitäten, Packlisten und Kosten, getrennt von den Tieren.</div>
       </div>
 
       <!-- MEINE KINDER -->
@@ -4812,6 +4807,15 @@ id="fk-time-picker-modal" style="display:none;position:fixed;inset:0;z-index:995
           <select id="kid-module-sel" onchange="renderKidModuleView()" style="border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:7px 12px;font-size:12px;font-family:Arial,sans-serif;background:white;color:var(--deep);outline:none;"></select>
         </div>
         <div id="kid-module-content"></div>
+      </div>
+
+      <!-- STUNDENPLAN -->
+      <div id="kid-view-stundenplan" style="display:none">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+          <div class="sec-title" style="margin:0;flex:1;">📅 Stundenplan</div>
+          <select id="kid-stunden-sel" onchange="renderKidStundenplan()" style="border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:7px 12px;font-size:12px;font-family:Arial,sans-serif;background:white;color:var(--deep);outline:none;"></select>
+        </div>
+        <div id="kid-stundenplan-content"></div>
       </div>
 
       <!-- PACKLISTE -->
@@ -6401,6 +6405,7 @@ let kidProfiles={};
 let kidExtra={gesundheit:{},schule:{},aktivitaeten:{},meilensteine:{}};
 let kidPackliste={};
 let kidKosten=[];
+let kidStundenplan={};
 const KID_MODULES={
   gesundheit:{label:'🩺 Gesundheit',icon:'🩺',fields:[['Datum','datum','date'],['Anlass (U-Untersuchung, Impfung, Arzt...)','titel','text'],['Befund/Ergebnis','befund','text'],['Nächster Termin','naechster','date']]},
   schule:{label:'🎒 Schule & Kita',icon:'🎒',fields:[['Datum','datum','date'],['Was steht an?','titel','text']]},
@@ -6419,6 +6424,7 @@ function saveKids(){
     localStorage.setItem('pk_kid_extra',JSON.stringify(kidExtra));
     localStorage.setItem('pk_kid_packliste',JSON.stringify(kidPackliste));
     localStorage.setItem('pk_kid_kosten',JSON.stringify(kidKosten));
+    localStorage.setItem('pk_kid_stundenplan',JSON.stringify(kidStundenplan));
   }catch(e){console.warn('Speichern (Kinder) fehlgeschlagen:',e);}
 }
 function loadKids(){
@@ -6427,13 +6433,14 @@ function loadKids(){
   try{const x=JSON.parse(localStorage.getItem('pk_kid_extra'));if(x)kidExtra=Object.assign(kidExtra,x);}catch(e){}
   try{const pl=JSON.parse(localStorage.getItem('pk_kid_packliste'));if(pl)kidPackliste=pl;}catch(e){}
   try{const kk=JSON.parse(localStorage.getItem('pk_kid_kosten'));if(kk)kidKosten=kk;}catch(e){}
+  try{const sp=JSON.parse(localStorage.getItem('pk_kid_stundenplan'));if(sp)kidStundenplan=sp;}catch(e){}
 }
 
 // ── KINDER: VIEWS & RENDERING ──
 let currentKidModule='gesundheit';
 function showKidView(v){
   document.querySelectorAll('#kid-subnav .main-nav-btn').forEach(b=>b.classList.remove('active'));
-  ['overview','module','packliste','kosten'].forEach(function(vv){
+  ['overview','module','packliste','kosten','stundenplan'].forEach(function(vv){
     var el=document.getElementById('kid-view-'+vv); if(el) el.style.display='none';
   });
   if(v==='overview'){
@@ -6449,6 +6456,11 @@ function showKidView(v){
     document.getElementById('kid-view-kosten').style.display='block';
     var bk=document.getElementById('kid-tab-kosten');if(bk)bk.classList.add('active');
     renderKidKosten();
+  } else if(v==='stundenplan'){
+    document.getElementById('kid-view-stundenplan').style.display='block';
+    var bs=document.getElementById('kid-tab-stundenplan');if(bs)bs.classList.add('active');
+    fillKidStundenSelect();
+    renderKidStundenplan();
   } else {
     currentKidModule=v;
     document.getElementById('kid-view-module').style.display='block';
@@ -6464,6 +6476,53 @@ function fillKidModuleSelect(){
   var prev=sel.value;
   sel.innerHTML=kids.map(function(k,i){return '<option value="'+i+'">'+k+'</option>';}).join('');
   if(prev!==''&&parseInt(prev)<kids.length)sel.value=prev;
+}
+function fillKidStundenSelect(){
+  var sel=document.getElementById('kid-stunden-sel');
+  if(!sel)return;
+  var prev=sel.value;
+  sel.innerHTML=kids.map(function(k,i){return '<option value="'+i+'">'+k+'</option>';}).join('');
+  if(prev!==''&&parseInt(prev)<kids.length)sel.value=prev;
+}
+const STUNDENPLAN_TAGE=[['mo','Mo'],['di','Di'],['mi','Mi'],['do','Do'],['fr','Fr']];
+function renderKidStundenplan(){
+  var c=document.getElementById('kid-stundenplan-content');if(!c)return;
+  if(!kids.length){ c.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted);">Lege zuerst unter "Meine Kinder" ein Kind an.</div>'; return; }
+  var idx=parseInt(document.getElementById('kid-stunden-sel').value)||0;
+  var name=kids[idx];
+  if(!kidStundenplan[name])kidStundenplan[name]=[];
+  var rows=kidStundenplan[name];
+  c.innerHTML='<div class="card" style="overflow-x:auto;">'
+    +'<table style="border-collapse:collapse;width:100%;min-width:480px;font-size:12px;">'
+    +'<thead><tr>'
+    +'<th style="padding:7px 8px;text-align:left;font-weight:700;color:var(--deep);border:1px solid rgba(216,207,240,0.3);background:rgba(216,207,240,0.2);white-space:nowrap;width:90px;">Zeit</th>'
+    +STUNDENPLAN_TAGE.map(function(t){return '<th style="padding:7px 8px;text-align:left;font-weight:700;color:var(--deep);border:1px solid rgba(216,207,240,0.3);background:rgba(216,207,240,0.2);">'+t[1]+'</th>';}).join('')
+    +'<th style="padding:7px 8px;background:rgba(216,207,240,0.2);border:1px solid rgba(216,207,240,0.3);"></th>'
+    +'</tr></thead><tbody>'
+    +(rows.length===0?'<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--muted);">Noch keine Zeilen, klicke "+ Stunde hinzufügen"</td></tr>':
+      rows.map(function(row,ri){
+        return '<tr style="background:'+(ri%2===0?'transparent':'rgba(232,228,240,0.08)')+'">'
+          +'<td style="padding:3px 4px;border:1px solid rgba(216,207,240,0.2);"><input value="'+(row.zeit||'')+'" placeholder="z.B. 8:00–8:45" onchange="updateKidStunde(\''+name+'\','+ri+',\'zeit\',this.value)" style="width:100%;border:none;outline:none;font-family:Arial,sans-serif;font-size:11px;color:var(--deep);background:transparent;padding:3px 4px;box-sizing:border-box;"></td>'
+          +STUNDENPLAN_TAGE.map(function(t){
+            return '<td style="padding:3px 4px;border:1px solid rgba(216,207,240,0.2);"><input value="'+(row[t[0]]||'')+'" placeholder="Fach" onchange="updateKidStunde(\''+name+'\','+ri+',\''+t[0]+'\',this.value)" style="width:100%;border:none;outline:none;font-family:Arial,sans-serif;font-size:11px;color:var(--deep);background:transparent;padding:3px 4px;box-sizing:border-box;"></td>';
+          }).join('')
+          +'<td style="padding:3px 4px;border:1px solid rgba(216,207,240,0.2);"><button onclick="delKidStunde(\''+name+'\','+ri+')" style="background:none;border:none;color:rgba(180,160,220,0.5);cursor:pointer;font-size:12px;">✕</button></td>'
+          +'</tr>';
+      }).join(''))
+    +'</tbody></table>'
+    +'<button onclick="addKidStunde(\''+name+'\')" style="margin-top:10px;background:rgba(216,207,240,0.3);border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:7px 14px;font-size:12px;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;">+ Stunde hinzufügen</button>'
+    +'</div>';
+}
+function addKidStunde(name){
+  if(!kidStundenplan[name])kidStundenplan[name]=[];
+  kidStundenplan[name].push({zeit:'',mo:'',di:'',mi:'',do:'',fr:''});
+  saveKids();renderKidStundenplan();
+}
+function updateKidStunde(name,ri,key,val){
+  if(kidStundenplan[name]&&kidStundenplan[name][ri]){kidStundenplan[name][ri][key]=val;saveKids();}
+}
+function delKidStunde(name,ri){
+  if(kidStundenplan[name]){kidStundenplan[name].splice(ri,1);saveKids();renderKidStundenplan();}
 }
 function fillKidPackSelect(){
   var sel=document.getElementById('kid-pack-sel');
@@ -6575,7 +6634,46 @@ function renderKidModuleView(){
   if(!kidExtra[modKey][name])kidExtra[modKey][name]=[];
   const rows=kidExtra[modKey][name];
   const cols=mod.fields;
-  c.innerHTML=`<div class="card" style="overflow-x:auto;">
+  if(modKey==='meilensteine'){
+    renderKidMeilensteine(name);
+    return;
+  }
+  const infoBox=modKey==='gesundheit'?`<div class="card" style="margin-bottom:14px;background:linear-gradient(135deg,rgba(200,234,223,0.2),rgba(216,207,240,0.1));">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;"><div style="font-family:Georgia,serif;font-size:15px;font-weight:600;color:var(--deep);">🩺 Kindergesundheit, worauf du achten solltest</div><button onclick="toggleInfo('kidgesund-info','kidgesund-arrow')" style="display:flex;align-items:center;gap:6px;background:var(--lilac);border:none;border-radius:20px;padding:6px 16px;font-size:12px;font-weight:700;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;white-space:nowrap;flex-shrink:0;"><span id="kidgesund-arrow">▼</span> mehr erfahren</button></div>
+    <div id="kidgesund-info" style="display:none;margin-top:12px;font-size:13px;color:var(--text);line-height:1.8;">
+
+      Die U-Untersuchungen und der Impfkalender geben eine gute Grundstruktur, trotzdem bleibt dein eigenes Gefühl als Elternteil der wichtigste Kompass. Hier dokumentierst du, was wann war, damit nichts verloren geht und du beim nächsten Termin nicht alles aus dem Kopf wissen musst.<br><br>
+
+      <strong style="color:var(--deep);">📋 Die U-Untersuchungen im Überblick</strong>
+      <div style="background:rgba(200,234,223,0.25);border-radius:8px;padding:10px 14px;margin:6px 0;font-size:12px;">
+        🍼 <strong>U1–U3</strong>, direkt nach der Geburt bis zur 4.–5. Lebenswoche, Grundcheck und erste Entwicklung<br>
+        👶 <strong>U4–U6</strong>, 3.–10. Lebensmonat, Motorik, Hören, Sehen, erste Impfungen<br>
+        🧒 <strong>U7–U7a</strong>, 1.–3. Lebensjahr, Sprache, Verhalten, Zahnentwicklung<br>
+        🎒 <strong>U8–U9</strong>, 4.–6. Lebensjahr, Schulreife, Seh- und Hörtest<br>
+        🧑 <strong>J1–J2</strong>, 12.–17. Lebensjahr, Pubertät, Haltung, psychische Entwicklung
+      </div>
+
+      <strong style="color:var(--deep);">💉 Impfungen</strong><br>
+      Die STIKO (Ständige Impfkommission) veröffentlicht den aktuellen Impfkalender, dein Kinderarzt richtet sich danach. Halte hier fest, welche Impfung wann gemacht wurde und wann die nächste fällig ist, das Gelbe Impfheft bleibt trotzdem das offizielle Dokument.<br><br>
+
+      <strong style="color:var(--deep);">🚩 Worauf du zusätzlich achten kannst</strong>
+      <div style="background:rgba(242,200,216,0.2);border-radius:8px;padding:10px 14px;margin:6px 0;font-size:12px;">
+        🌡️ <strong>Fieber bei Babys unter 3 Monaten</strong>, hier lieber früh als spät zum Arzt<br>
+        😴 <strong>Veränderungen bei Schlaf, Appetit oder Verhalten</strong>, die länger anhalten<br>
+        📏 <strong>Wachstum & Gewicht</strong>, größere Sprünge oder Stillstand über mehrere Untersuchungen<br>
+        👂 <strong>Sprache, Hören, Sehen</strong>, auffällig späte oder fehlende Entwicklungsschritte<br>
+        🦷 <strong>Zähne</strong>, Durchbruch, erste Karies, Zahnarztbesuch ab dem ersten Zahn sinnvoll
+      </div>
+
+      Ein Hinweis aus eigener Erfahrung: Es ist völlig normal, sich als Elternteil unsicher zu fühlen, ob etwas "schlimm" ist oder nicht. Im Zweifel lieber einmal zu oft beim Kinderarzt nachfragen, als zu zögern.
+
+      <div style="background:rgba(242,200,216,0.15);border:1px solid rgba(242,200,216,0.3);border-radius:10px;padding:10px 14px;margin-top:12px;font-size:11px;color:var(--muted);line-height:1.6;">
+        ⚠️ <strong style="color:var(--deep);">Wichtiger Hinweis:</strong> Alle Informationen hier dienen ausschließlich zur persönlichen Orientierung und Dokumentation. Sie ersetzen keine ärztliche Diagnose oder Behandlung und stellen kein Heilversprechen dar. Bitte besprich alle gesundheitlichen Fragen zu deinem Kind immer mit einer Kinderärztin oder einem Kinderarzt.
+      </div>
+
+    </div>
+  </div>`:'';
+  c.innerHTML=infoBox+`<div class="card" style="overflow-x:auto;">
     <table style="border-collapse:collapse;width:100%;min-width:600px;font-size:11px;">
       <thead><tr>${cols.map(([l])=>`<th style="padding:7px 8px;text-align:left;font-weight:700;color:var(--deep);border:1px solid rgba(216,207,240,0.3);background:rgba(216,207,240,0.2);white-space:nowrap;">${l}</th>`).join('')}<th style="padding:7px 8px;background:rgba(216,207,240,0.2);border:1px solid rgba(216,207,240,0.3);">Notiz</th><th style="padding:7px 8px;background:rgba(216,207,240,0.2);border:1px solid rgba(216,207,240,0.3);"></th></tr></thead>
       <tbody>${rows.length===0?`<tr><td colspan="${cols.length+2}" style="text-align:center;padding:20px;color:var(--muted);">Noch keine Einträge, klicke "+ Eintrag"</td></tr>`:
@@ -6590,6 +6688,100 @@ function renderKidModuleView(){
     </table>
     <button onclick="addKidEntry('${modKey}','${name}')" style="margin-top:10px;background:rgba(216,207,240,0.3);border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:7px 14px;font-size:12px;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;">+ Eintrag</button>
   </div>`;
+}
+function renderKidMeilensteine(name){
+  const c=document.getElementById('kid-module-content');if(!c)return;
+  if(!kidExtra.meilensteine)kidExtra.meilensteine={};
+  if(!kidExtra.meilensteine[name])kidExtra.meilensteine[name]=[];
+  const rows=kidExtra.meilensteine[name];
+  const todayStr=new Date().toISOString().split('T')[0];
+
+  const infoBox=`<div class="card" style="margin-bottom:16px;background:linear-gradient(135deg,rgba(242,200,216,0.28),rgba(216,207,240,0.15));border:1px solid rgba(242,200,216,0.35);">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;"><div style="font-family:Georgia,serif;font-size:16px;font-weight:600;color:var(--deep);">💭 Meilensteine & Notizen, dein kleines Erinnerungsbuch</div><button onclick="toggleInfo('kidmeilen-info','kidmeilen-arrow')" style="display:flex;align-items:center;gap:6px;background:white;border:none;border-radius:20px;padding:6px 16px;font-size:12px;font-weight:700;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;white-space:nowrap;flex-shrink:0;box-shadow:0 1px 4px rgba(74,56,96,0.1);"><span id="kidmeilen-arrow">▼</span> mehr erfahren</button></div>
+    <div id="kidmeilen-info" style="display:none;margin-top:12px;font-size:13px;color:var(--text);line-height:1.85;font-style:italic;">
+      Hier hältst du die Dinge fest, die nicht "erledigt" werden, sondern einfach passieren, losgelöst von Terminen. Die ersten Schritte, das erste Wort, der erste Schultag, ein lustiger Satz, ein besonderer Moment beim Ausflug.<br><br>
+      Kein Datum-Zwang, keine Kategorie, einfach Datum und was passiert ist. Nutze es wie ein digitales Babybuch oder Erinnerungstagebuch, ganz ohne Druck, etwas "richtig" einzutragen. Jeder Moment, der dir wichtig ist, ist richtig genug.
+    </div>
+  </div>`;
+
+  const addForm=`<div style="background:rgba(255,255,255,0.7);border-radius:18px;padding:16px 18px;margin-bottom:24px;box-shadow:0 2px 14px rgba(74,56,96,0.07);">
+    <div style="font-family:Georgia,serif;font-size:13px;color:var(--muted);margin-bottom:10px;">✨ Einen Moment festhalten</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;">
+      <input type="date" id="meilen-datum" value="${todayStr}" style="border:1px solid rgba(216,207,240,0.5);border-radius:10px;padding:8px 12px;font-family:Arial,sans-serif;font-size:12px;color:var(--deep);outline:none;background:rgba(255,255,255,0.8);">
+      <input type="text" id="meilen-titel" placeholder="Was ist passiert?" style="flex:1;min-width:160px;border:1px solid rgba(216,207,240,0.5);border-radius:10px;padding:8px 12px;font-family:Georgia,serif;font-size:13px;color:var(--deep);outline:none;background:rgba(255,255,255,0.8);">
+    </div>
+    <textarea id="meilen-notiz" placeholder="Mehr dazu erzählen (optional)..." style="width:100%;min-height:50px;border:1px solid rgba(216,207,240,0.5);border-radius:10px;padding:8px 12px;font-family:Arial,sans-serif;font-size:12px;color:var(--text);outline:none;background:rgba(255,255,255,0.8);resize:vertical;box-sizing:border-box;margin-bottom:10px;"></textarea>
+    <button onclick="addKidMeilenstein('${name}')" style="background:linear-gradient(135deg,var(--rose2),var(--lilac2));border:none;border-radius:20px;padding:9px 22px;font-size:13px;font-weight:700;color:white;cursor:pointer;font-family:Arial,sans-serif;box-shadow:0 3px 10px rgba(212,140,160,0.35);">💭 Festhalten</button>
+  </div>`;
+
+  var timeline;
+  if(!rows.length){
+    timeline='<div style="text-align:center;padding:40px 20px;color:var(--muted);">'
+      +'<div style="font-size:32px;margin-bottom:10px;">🤍</div>'
+      +'<div style="font-family:Georgia,serif;font-size:15px;color:var(--deep);margin-bottom:4px;">Hier ist noch Platz für eure Geschichte.</div>'
+      +'<div style="font-size:12px;">Der erste Moment kommt bestimmt schon bald.</div>'
+      +'</div>';
+  } else {
+    var sorted=rows.map(function(r,i){return {r:r,i:i};}).sort(function(a,b){return (b.r.datum||'').localeCompare(a.r.datum||'');});
+    timeline='<div style="position:relative;padding-left:4px;">'
+      +'<div style="position:absolute;left:38px;top:6px;bottom:6px;width:2px;background:linear-gradient(to bottom,rgba(242,200,216,0.6),rgba(216,207,240,0.5));"></div>'
+      +sorted.map(function(g){
+        var row=g.r, ri=g.i;
+        var d=row.datum?new Date(row.datum+'T00:00:00'):null;
+        var dayStr=d?String(d.getDate()):'–';
+        var monStr=d?MONTHS[d.getMonth()].slice(0,3)+' '+d.getFullYear():'';
+        return '<div style="display:flex;gap:14px;margin-bottom:18px;position:relative;">'
+          +'<div style="flex-shrink:0;width:76px;text-align:right;padding-top:10px;position:relative;">'
+          +'<div style="font-family:Georgia,serif;font-size:18px;font-weight:700;color:var(--rose2);line-height:1;">'+dayStr+'</div>'
+          +'<div style="font-size:10px;color:var(--muted);">'+monStr+'</div>'
+          +'<div style="position:absolute;right:-9px;top:14px;width:9px;height:9px;border-radius:50%;background:var(--rose2);border:2px solid white;box-shadow:0 0 0 3px rgba(242,200,216,0.3);"></div>'
+          +'</div>'
+          +'<div style="flex:1;background:rgba(255,255,255,0.75);border-radius:16px;padding:14px 18px;box-shadow:0 2px 12px rgba(74,56,96,0.07);position:relative;">'
+          +'<button onclick="delKidEntry(\'meilensteine\',\''+name+'\','+ri+')" style="position:absolute;top:10px;right:10px;background:none;border:none;color:rgba(180,160,220,0.4);cursor:pointer;font-size:12px;">✕</button>'
+          +'<input value="'+(row.titel||'').replace(/"/g,'&quot;')+'" onchange="updateKidEntry(\'meilensteine\',\''+name+'\','+ri+',\'titel\',this.value)" placeholder="Was ist passiert?" style="width:100%;border:none;outline:none;background:transparent;font-family:Georgia,serif;font-size:15px;font-weight:600;color:var(--deep);padding-right:20px;box-sizing:border-box;margin-bottom:2px;">'
+          +'<input type="date" value="'+(row.datum||'')+'" onchange="updateKidEntry(\'meilensteine\',\''+name+'\','+ri+',\'datum\',this.value)" style="border:none;outline:none;background:transparent;font-family:Arial,sans-serif;font-size:10px;color:var(--muted);margin-bottom:8px;padding:0;">'
+          +(row.foto
+            ?'<img src="'+row.foto+'" onclick="uploadMeilensteinFoto(\''+name+'\','+ri+')" title="Foto ändern" style="width:100%;max-height:220px;object-fit:cover;border-radius:12px;margin-bottom:10px;cursor:pointer;display:block;">'
+            :'<button onclick="uploadMeilensteinFoto(\''+name+'\','+ri+')" style="background:rgba(216,207,240,0.25);border:1px dashed rgba(180,160,220,0.4);border-radius:10px;padding:6px 14px;font-size:11px;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;margin-bottom:10px;">📷 Foto hinzufügen</button>')
+          +'<textarea onchange="updateKidEntry(\'meilensteine\',\''+name+'\','+ri+',\'notiz\',this.value)" placeholder="Mehr dazu..." style="width:100%;border:none;outline:none;background:transparent;font-family:Arial,sans-serif;font-size:12px;color:var(--text);font-style:italic;resize:none;min-height:20px;box-sizing:border-box;">'+(row.notiz||'')+'</textarea>'
+          +'</div></div>';
+      }).join('')
+      +'</div>';
+  }
+
+  c.innerHTML=infoBox+addForm+timeline;
+}
+function addKidMeilenstein(name){
+  if(!kidExtra.meilensteine)kidExtra.meilensteine={};
+  if(!kidExtra.meilensteine[name])kidExtra.meilensteine[name]=[];
+  var datum=document.getElementById('meilen-datum').value||new Date().toISOString().split('T')[0];
+  var titel=document.getElementById('meilen-titel').value.trim();
+  var notiz=document.getElementById('meilen-notiz').value.trim();
+  if(!titel&&!notiz)return;
+  kidExtra.meilensteine[name].push({datum:datum,titel:titel,notiz:notiz});
+  saveKids();
+  document.getElementById('meilen-titel').value='';
+  document.getElementById('meilen-notiz').value='';
+  renderKidMeilensteine(name);
+  try{ fkCelebrate(document.querySelector('#kid-module-content button')); }catch(e){}
+}
+function uploadMeilensteinFoto(name,ri){
+  var old=document.getElementById('meilen-up-global');
+  if(old&&old.parentNode)old.parentNode.removeChild(old);
+  var inp=document.createElement('input');
+  inp.type='file';inp.id='meilen-up-global';inp.accept='image/*';
+  inp.style.cssText='position:fixed;top:-200px;left:-200px;width:1px;height:1px;';
+  document.body.appendChild(inp);
+  inp.onchange=function(){
+    var f=this.files[0];if(!f)return;
+    compressImage(f,function(compressed){
+      if(kidExtra.meilensteine&&kidExtra.meilensteine[name]&&kidExtra.meilensteine[name][ri]){
+        kidExtra.meilensteine[name][ri].foto=compressed;
+        if(fkSafeSaveStorage(function(){saveKids();}))renderKidMeilensteine(name);
+      }
+    },700,0.75);
+  };
+  inp.click();
 }
 function addKidEntry(modKey,name){
   if(!kidExtra[modKey])kidExtra[modKey]={};
@@ -6606,39 +6798,112 @@ function delKidEntry(modKey,name,ri){
 }
 
 // ── PACKLISTE (Checkliste statt Datums-Log) ──
+var KID_PACK_DEFAULT=[
+  // DOKUMENTE
+  {k:'k_ausweis',l:'🪪 Kinderausweis / Reisepass',cat:'📄 Dokumente',done:false},
+  {k:'k_krankenkasse',l:'💳 Krankenkassenkarte',cat:'📄 Dokumente',done:false},
+  {k:'k_impfausweis',l:'💉 Impfausweis',cat:'📄 Dokumente',done:false},
+  {k:'k_notfallzettel',l:'📋 Notfallzettel mit Kontakten',cat:'📄 Dokumente',done:false},
+  // KLEIDUNG
+  {k:'k_unter',l:'🩲 Unterwäsche (ausreichend)',cat:'👕 Kleidung',done:false},
+  {k:'k_socken',l:'🧦 Socken (ausreichend)',cat:'👕 Kleidung',done:false},
+  {k:'k_shirts',l:'👕 T-Shirts / Pullover',cat:'👕 Kleidung',done:false},
+  {k:'k_schlafanzug',l:'🌙 Schlafanzug',cat:'👕 Kleidung',done:false},
+  {k:'k_regenjacke',l:'🧥 Regenjacke / warme Jacke',cat:'👕 Kleidung',done:false},
+  {k:'k_schuhe',l:'👟 Festes Schuhwerk',cat:'👕 Kleidung',done:false},
+  {k:'k_badesachen',l:'🩱 Badesachen (falls nötig)',cat:'👕 Kleidung',done:false},
+  // PFLEGE & GESUNDHEIT
+  {k:'k_zahnbuerste',l:'🪥 Zahnbürste & Zahnpasta',cat:'🧴 Pflege & Gesundheit',done:false},
+  {k:'k_medis',l:'💊 Medikamente (falls nötig)',cat:'🧴 Pflege & Gesundheit',done:false},
+  {k:'k_pflaster',l:'🩹 Pflaster / kleines Erste-Hilfe-Set',cat:'🧴 Pflege & Gesundheit',done:false},
+  {k:'k_sonnencreme',l:'🧴 Sonnencreme',cat:'🧴 Pflege & Gesundheit',done:false},
+  {k:'k_kuscheltier',l:'🧸 Kuscheltier / Schmusetuch',cat:'🧴 Pflege & Gesundheit',done:false},
+  // SCHULE & AKTIVITÄT
+  {k:'k_sportzeug',l:'⚽ Sportzeug',cat:'🎒 Schule & Aktivität',done:false},
+  {k:'k_hausaufgaben',l:'📓 Hausaufgaben / Schulsachen',cat:'🎒 Schule & Aktivität',done:false},
+  {k:'k_trinkflasche',l:'🥤 Trinkflasche',cat:'🎒 Schule & Aktivität',done:false},
+  {k:'k_pausenbrot',l:'🥪 Pausenbrot / Snack',cat:'🎒 Schule & Aktivität',done:false},
+  // SONSTIGES
+  {k:'k_buch',l:'📖 Buch / Spiel für die Fahrt',cat:'🎈 Sonstiges',done:false},
+  {k:'k_handy',l:'📱 Handy & Ladekabel (falls vorhanden)',cat:'🎈 Sonstiges',done:false},
+  {k:'k_taschengeld',l:'💶 Taschengeld',cat:'🎈 Sonstiges',done:false},
+];
+function getKidPackliste(name){
+  if(!kidPackliste[name]){
+    kidPackliste[name]=JSON.parse(JSON.stringify(KID_PACK_DEFAULT));
+    return kidPackliste[name];
+  }
+  if(kidPackliste[name].length&&!kidPackliste[name][0].cat){
+    // Alte, einfache Liste (nur text/done) in das neue Format mit Kategorien übernehmen
+    var migrated=kidPackliste[name].filter(function(it){return it&&it.text;}).map(function(it,idx){
+      return {k:'migriert_'+idx+'_'+Date.now(),l:it.text,cat:'🎈 Sonstiges',done:!!it.done};
+    });
+    kidPackliste[name]=JSON.parse(JSON.stringify(KID_PACK_DEFAULT)).concat(migrated);
+  }
+  return kidPackliste[name];
+}
 function renderKidPackliste(){
   const c=document.getElementById('kid-pack-content');if(!c)return;
   if(!kids.length){ c.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted);">Lege zuerst unter "Meine Kinder" ein Kind an.</div>'; return; }
   const idx=parseInt(document.getElementById('kid-pack-sel').value)||0;
   const name=kids[idx];
-  if(!kidPackliste[name])kidPackliste[name]=[];
-  const items=kidPackliste[name];
-  c.innerHTML='<div class="card">'
-    +(items.length===0?'<div style="text-align:center;padding:20px;color:var(--muted);">Noch keine Packliste, z.B. für Sport, Ausflug oder Übernachtung.</div>':
-      items.map((it,ii)=>'<div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.6);border-radius:7px;padding:6px 10px;font-size:12px;margin-bottom:6px;">'
-        +'<div onclick="toggleKidPack('+ii+',this)" class="bucket-check'+(it.done?' done':'')+'" style="cursor:pointer;">'+(it.done?'✓':'')+'</div>'
-        +'<span style="flex:1;color:var(--deep);'+(it.done?'text-decoration:line-through;color:var(--muted)':'')+'">'+it.text+'</span>'
-        +'<button class="bucket-del" onclick="delKidPack('+ii+')">✕</button></div>').join(''))
-    +'<div class="bucket-add" style="margin-top:8px;"><input type="text" id="kid-pack-inp" placeholder="z.B. Sportzeug, Schwimmsachen, Brotdose..."><button onclick="addKidPack()">+</button></div>'
+  const items=getKidPackliste(name);
+  var cats={};
+  items.forEach(function(item,i){ if(!cats[item.cat])cats[item.cat]=[]; cats[item.cat].push({item:item,i:i}); });
+  var total=items.length;
+  var done=items.filter(function(p){return p.done;}).length;
+  var html='<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">'
+    +'<span style="font-size:12px;color:var(--muted);">'+done+' von '+total+' eingepackt</span>'
+    +'<div style="height:6px;flex:1;margin:0 10px;background:rgba(216,207,240,0.3);border-radius:3px;overflow:hidden;">'
+    +'<div style="height:100%;width:'+(total?Math.round(done/total*100):0)+'%;background:var(--lilac2);border-radius:3px;transition:width 0.3s;"></div>'
+    +'</div>'
+    +'<button onclick="resetKidPack(\''+name+'\')" style="background:none;border:1px solid rgba(180,160,220,0.3);border-radius:8px;padding:3px 10px;font-size:10px;cursor:pointer;color:var(--muted);">↺ Reset</button>'
     +'</div>';
+  Object.keys(cats).forEach(function(cat){
+    html+='<div style="margin-bottom:10px;">'
+      +'<div style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">'+cat+'</div>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">';
+    cats[cat].forEach(function(g){
+      var item=g.item; var i=g.i;
+      html+='<div class="kid-pack-item" data-name="'+name+'" data-i="'+i+'" style="display:flex;align-items:center;gap:6px;padding:5px 7px;border-radius:7px;background:'+(item.done?'rgba(200,234,223,0.4)':'rgba(255,255,255,0.5)')+';cursor:pointer;">'
+        +'<div style="width:16px;height:16px;border-radius:4px;border:1.5px solid rgba(180,160,220,0.4);flex-shrink:0;background:'+(item.done?'var(--lilac2)':'transparent')+';display:flex;align-items:center;justify-content:center;font-size:10px;color:white;">'+(item.done?'✓':'')+'</div>'
+        +'<span style="font-size:11px;color:var(--deep);'+(item.done?'text-decoration:line-through;opacity:0.5;':'')+'">'+item.l+'</span>'
+        +'</div>';
+    });
+    html+='</div>'
+      +'<div style="margin-top:4px;display:flex;gap:4px;">'
+      +'<input id="kidpack-add-'+name.replace(/[^a-zA-Z0-9]/g,'_')+'-'+cat.replace(/[^a-zA-Z0-9]/g,'_')+'" placeholder="Eigenes hinzufügen..." style="flex:1;border:1px solid rgba(180,160,220,0.2);border-radius:6px;padding:4px 8px;font-size:11px;outline:none;">'
+      +'<button onclick="addKidPackItem(\''+name+'\',\''+cat+'\')" style="background:var(--lilac);border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;">+</button>'
+      +'</div>'
+      +'</div>';
+  });
+  c.innerHTML=html+'</div>';
 }
-function addKidPack(){
-  const idx=parseInt(document.getElementById('kid-pack-sel').value)||0;const name=kids[idx];
-  const v=document.getElementById('kid-pack-inp').value.trim();if(!v)return;
-  if(!kidPackliste[name])kidPackliste[name]=[];
-  kidPackliste[name].push({text:v,done:false});
-  document.getElementById('kid-pack-inp').value='';saveKids();renderKidPackliste();
+function addKidPackItem(name,cat){
+  var inp=document.getElementById('kidpack-add-'+name.replace(/[^a-zA-Z0-9]/g,'_')+'-'+cat.replace(/[^a-zA-Z0-9]/g,'_'));
+  if(!inp||!inp.value.trim())return;
+  getKidPackliste(name).push({k:'custom_'+Date.now(),l:inp.value.trim(),cat:cat,done:false});
+  saveKids();renderKidPackliste();
 }
-function toggleKidPack(ii,el){
-  const idx=parseInt(document.getElementById('kid-pack-sel').value)||0;const name=kids[idx];
-  const willBeDone=!kidPackliste[name][ii].done;
+function toggleKidPack(name,i,el){
+  var items=getKidPackliste(name);
+  if(!items[i])return;
+  const willBeDone=!items[i].done;
   if(willBeDone&&el)fkCelebrate(el);
-  kidPackliste[name][ii].done=willBeDone;saveKids();renderKidPackliste();
+  items[i].done=willBeDone;saveKids();renderKidPackliste();
 }
-function delKidPack(ii){
-  const idx=parseInt(document.getElementById('kid-pack-sel').value)||0;const name=kids[idx];
-  kidPackliste[name].splice(ii,1);saveKids();renderKidPackliste();
+function resetKidPack(name){
+  if(!confirm('Alle Häkchen für '+name+' zurücksetzen?'))return;
+  getKidPackliste(name).forEach(function(p){p.done=false;});
+  saveKids();renderKidPackliste();
 }
+document.addEventListener('click',function(e){
+  var item=e.target.closest('.kid-pack-item');
+  if(!item)return;
+  var name=item.getAttribute('data-name');
+  var i=parseInt(item.getAttribute('data-i'));
+  if(name&&!isNaN(i))toggleKidPack(name,i,item);
+});
 
 // ── KOSTEN KINDER (einfache, eigene Liste statt Tier-Kosten-System) ──
 function renderKidKosten(){
@@ -6646,7 +6911,37 @@ function renderKidKosten(){
   const total=kidKosten.reduce((s,e)=>s+(parseFloat(e.betrag)||0),0);
   const byKid={};kids.forEach(k=>byKid[k]=0);
   kidKosten.forEach(e=>{ if(byKid[e.kind]!==undefined) byKid[e.kind]+=parseFloat(e.betrag)||0; });
-  c.innerHTML='<div class="cost-total"><div style="font-size:13px;color:var(--muted);margin-bottom:6px">Gesamtausgaben Kinder '+pkState.year+'</div><div style="font-family:Georgia,serif;font-size:40px;font-weight:600;color:var(--deep)">'+total.toFixed(2)+' €</div></div>'
+  const infoBox=`<div class="card" style="margin-bottom:14px;background:linear-gradient(135deg,rgba(240,232,192,0.25),rgba(216,207,240,0.1));">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;"><div style="font-family:Georgia,serif;font-size:15px;font-weight:600;color:var(--deep);">💰 Was Kinder wirklich kosten, ein Überblick</div><button onclick="toggleInfo('kidkosten-info','kidkosten-arrow')" style="display:flex;align-items:center;gap:6px;background:var(--lilac);border:none;border-radius:20px;padding:6px 16px;font-size:12px;font-weight:700;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;white-space:nowrap;flex-shrink:0;"><span id="kidkosten-arrow">▼</span> mehr erfahren</button></div>
+    <div id="kidkosten-info" style="display:none;margin-top:12px;font-size:13px;color:var(--text);line-height:1.8;">
+
+      Die Kosten für ein Kind ändern sich stark mit dem Alter, ein Kleinkind kostet anders als ein Teenager. Wer früh dokumentiert, sieht Muster und kann besser planen, statt am Monatsende überrascht zu sein.<br><br>
+
+      <strong style="color:var(--deep);">📦 Die häufigsten Kostenarten</strong>
+      <div style="background:rgba(240,232,192,0.3);border-radius:8px;padding:10px 14px;margin:6px 0;font-size:12px;">
+        🍼 <strong>Grundbedarf</strong>, Essen, Kleidung (wächst schnell heraus!), Hygieneartikel<br>
+        🎒 <strong>Kita, Schule & Betreuung</strong>, Beiträge, Material, Ausflüge, Klassenfahrten<br>
+        ⚽ <strong>Freizeit & Hobbys</strong>, Vereinsbeiträge, Kurse, Ausrüstung<br>
+        🩺 <strong>Gesundheit</strong>, Zuzahlungen, Brille, Zahnspange, Vorsorge<br>
+        🎁 <strong>Unregelmäßige Ausgaben</strong>, Geburtstage, Konfirmation/Kommunion, größere Anschaffungen
+      </div>
+
+      <strong style="color:var(--deep);">🏛️ Staatliche Unterstützung nicht vergessen</strong><br>
+      Kindergeld erhält grundsätzlich jede Familie, je nach Einkommen kommen ggf. Kinderzuschlag oder Leistungen aus dem Bildungs- und Teilhabepaket dazu (z.B. für Vereinsbeiträge, Nachhilfe, Klassenfahrten). Es lohnt sich, das bei der Familienkasse oder dem Jobcenter zu erfragen, die genauen Beträge und Regeln ändern sich gelegentlich.<br><br>
+
+      <strong style="color:var(--deep);">💡 Ein paar Spartipps</strong>
+      <div style="background:rgba(200,234,223,0.25);border-radius:8px;padding:10px 14px;margin:6px 0;font-size:12px;">
+        👕 <strong>Second Hand & Kleidertausch</strong>, Kinder wachsen schnell aus allem heraus<br>
+        🧸 <strong>Spielzeug-Flohmärkte & Tauschbörsen</strong>, statt immer neu zu kaufen<br>
+        💶 <strong>Früh ansparen</strong>, kleine regelmäßige Beträge für später zurücklegen (z.B. Führerschein, Ausbildung)<br>
+        🗓️ <strong>Rücklagen für saisonale Ausgaben</strong>, Klassenfahrten oder Feste kommen oft auf einmal
+      </div>
+
+      Diese Kosten-Übersicht hier ersetzt keine Finanzberatung, sie hilft dir aber, den Überblick zu behalten und nichts zu vergessen.
+
+    </div>
+  </div>`;
+  c.innerHTML=infoBox+'<div class="cost-total"><div style="font-size:13px;color:var(--muted);margin-bottom:6px">Gesamtausgaben Kinder '+pkState.year+'</div><div style="font-family:Georgia,serif;font-size:40px;font-weight:600;color:var(--deep)">'+total.toFixed(2)+' €</div></div>'
     +'<div class="cost-horses">'+kids.map((k,i)=>'<div class="cost-horse" style="background:'+HORSE_COLORS[i%HORSE_COLORS.length]+'"><div style="font-size:12px;color:var(--muted);margin-bottom:5px">'+k+'</div><div style="font-family:Georgia,serif;font-size:24px;font-weight:600;color:var(--deep)">'+(byKid[k]||0).toFixed(2)+' €</div></div>').join('')+'</div>'
     +(kidKosten.length?'<div class="cost-entries"><div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:0.5px;margin-bottom:12px;text-transform:uppercase">Alle Ausgaben</div>'
       +kidKosten.slice().sort((a,b)=>b.datum.localeCompare(a.datum)).map(e=>'<div class="cost-row"><div><span style="background:var(--lavgray);border-radius:4px;padding:1px 7px;font-size:10px;color:var(--deep);margin-right:6px">'+(e.kind||'')+'</span>'+e.titel
@@ -7172,6 +7467,7 @@ function startApp(){
   try{ restoreTabUpdateDots(); }catch(e){}
   // Glocken-Punkt initial setzen (rein lokal, keine Verbindung)
   try{ refreshHeaderBell(); }catch(e){}
+  try{ applyKinderSichtbarkeit(); }catch(e){}
   // Profilbild im Header mit den gespeicherten Einstellungen synchronisieren
   try{ updateHeaderProfileDisplay(); }catch(e){}
   setTimeout(function(){ try{initScrollFades();}catch(e){} }, 200);
@@ -9067,6 +9363,10 @@ function renderSettingsProfil(container){
     +   '<div style="font-size:11px;color:var(--muted);margin-bottom:8px;">Erinnert dich sanft, bevor ein Termin mit Uhrzeit beginnt, auch ohne dass du dafür extra eine Erinnerung einstellen musst.</div>'
     +   '<label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--deep);">Wie viele Minuten vorher: <input type="number" id="settings-uebergang-minuten" value="'+(s.uebergangswarnung&&s.uebergangswarnung.minuten?s.uebergangswarnung.minuten:15)+'" min="1" max="120" onchange="saveUebergangswarnung()" style="width:60px;border:1px solid rgba(180,160,220,0.3);border-radius:6px;padding:5px 8px;font-size:12px;font-family:Arial,sans-serif;outline:none;"></label>'
     + '</div>'
+    + '<div style="background:rgba(232,228,240,0.4);border-radius:10px;padding:12px 14px;margin-bottom:14px;">'
+    +   '<label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--deep);font-weight:600;margin-bottom:4px;"><input type="checkbox" id="settings-kinder-aktiv" '+(s.kinderBereichAktiv===false?'':'checked')+' onchange="saveKinderSichtbarkeit()" style="width:16px;height:16px;accent-color:var(--lilac2);">🧒 Kinder-Bereich anzeigen</label>'
+    +   '<div style="font-size:11px;color:var(--muted);">Falls du keine Kinder hast (oder dies für eine Kundin ohne Kinder einrichtest), kannst du den Bereich Kinder und die zugehörige Karte im Überblick hier ausblenden. Deine Daten bleiben dabei erhalten, falls du es später wieder einschaltest.</div>'
+    + '</div>'
     + '<button onclick="saveSettingsProfil()" style="width:100%;background:var(--deep);color:white;border:none;border-radius:10px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;">Speichern</button>'
     + '<div id="settings-profil-saved" style="display:none;text-align:center;color:var(--mint2);font-size:12px;margin-top:8px;">✓ Gespeichert</div>';
 }
@@ -9671,10 +9971,14 @@ function renderSettingsDesign(container){
 }
 
 // ── BACKUP & UPDATE (nutzt bestehende Funktionen) ──
-const FK_APP_VERSION='3.1.0';
+const FK_APP_VERSION='3.6.0';
 function renderSettingsBackup(container){
   container.innerHTML =
     '<div style="font-size:11px;color:var(--muted);margin-bottom:10px;">Installierte Version: <strong style="color:var(--deep);">'+FK_APP_VERSION+'</strong></div>'
+    + '<div style="background:rgba(216,207,240,0.2);border-radius:10px;padding:12px 14px;margin-bottom:14px;">'
+    +   '<div style="font-size:12px;font-weight:700;color:var(--deep);margin-bottom:6px;">📍 Wo werden meine Daten gespeichert?</div>'
+    +   '<div style="font-size:11px;color:var(--text);line-height:1.6;">Alles wird direkt auf diesem Gerät gespeichert, in diesem Browser, nicht irgendwo im Internet. Das heißt: Handy, Tablet und PC haben jeweils einen eigenen Stand, nichts gleicht sich automatisch ab. Über "⬇ Backup speichern" lädst du eine Sicherungsdatei herunter, die du z.B. in einen Google-Drive-Ordner legen und auf einem anderen Gerät über "⬆ Backup laden" wieder einspielen kannst.</div>'
+    + '</div>'
     + '<button onclick="document.getElementById(\'import-file-hdr\').click()" style="display:block;width:100%;text-align:left;background:rgba(232,228,240,0.4);border:none;padding:13px 14px;font-size:13px;color:var(--deep);cursor:pointer;border-radius:10px;margin-bottom:8px;">⬆ Backup laden</button>'
     + '<button onclick="exportData()" style="display:block;width:100%;text-align:left;background:rgba(232,228,240,0.4);border:none;padding:13px 14px;font-size:13px;color:var(--deep);cursor:pointer;border-radius:10px;margin-bottom:8px;">⬇ Backup speichern</button>'
     + '<div style="height:1px;background:rgba(180,160,220,0.2);margin:10px 0;"></div>'
@@ -9734,9 +10038,11 @@ const HELP_CONTENT = [
   { section:'Kinder', icon:'🧒', topics:[
     {title:'Wofür ist dieser Bereich?', text:'Alles zu deinen Kindern an einem Ort: Gesundheit, Schule & Kita, Aktivitäten, Packlisten, Kosten und Meilensteine, bewusst getrennt von den Tier-Kosten.'},
     {title:'Meine Kinder', text:'Name, Foto, Geburtstag, Schule/Kita und Klasse pro Kind. Unter "Kontakte" beliebig viele Ansprechpartner mit Rolle, Name, Adresse und Telefonnummer, z.B. Kinderarzt, Lehrer, Notfallkontakt.'},
-    {title:'Gesundheit, Schule & Kita, Aktivitäten, Meilensteine', text:'Vier Module zum Festhalten von Terminen und Notizen pro Kind. Bei Gesundheit gibt es ein Feld "Nächster Termin", das auch in der "Nichts vergessen heute"-Karte im Überblick auftaucht, wenn der Termin näher rückt.'},
-    {title:'Packliste', text:'Eine abhakbare Liste pro Kind, z.B. für Sport, Ausflug oder Übernachtung, statt eines Datums-Logs.'},
-    {title:'Kosten Kinder', text:'Eine eigene, einfache Kostenliste pro Kind, getrennt von der Tier-Kostenübersicht.'},
+    {title:'Gesundheit, Schule & Kita, Aktivitäten, Meilensteine', text:'Vier Module zum Festhalten von Terminen und Notizen pro Kind. Bei Gesundheit gibt es ein Feld "Nächster Termin", das auch in der "Nichts vergessen heute"-Karte im Überblick auftaucht, wenn der Termin näher rückt. Oben bei Gesundheit findest du außerdem über "mehr erfahren" einen Überblick zu den U-Untersuchungen, Impfungen und worauf du achten kannst. Meilensteine ist eigens gestaltet, als kleines Erinnerungsbuch mit Zeitstrahl statt Tabelle, für die Momente, die nicht "erledigt" werden, sondern einfach passieren. Über "📷 Foto hinzufügen" lässt sich zu jedem Moment auch ein Bild speichern.'},
+    {title:'Kinder-Bereich ausblenden', text:'Unter Einstellungen → Mein Profil lässt sich der Bereich Kinder (Reiter und die Karte im Überblick) komplett ausblenden, falls keine Kinder vorhanden sind oder die App für jemand anderen ohne Kinder eingerichtet wird. Vorhandene Daten bleiben dabei erhalten und lassen sich später jederzeit wieder einschalten.'},
+    {title:'Stundenplan', text:'Eine Wochentafel (Mo–Fr) pro Kind, in die du die Fächer pro Zeit eintragen kannst. Über "+ Stunde hinzufügen" fügst du weitere Zeilen hinzu.'},
+    {title:'Packliste', text:'Eine vorausgefüllte Packliste pro Kind, nach Kategorien (Dokumente, Kleidung, Pflege & Gesundheit, Schule & Aktivität, Sonstiges), genau wie beim Pferdeurlaub. Antippen hakt ab, eigene Punkte lassen sich pro Kategorie ergänzen, über "↺ Reset" setzt du alle Häkchen zurück.'},
+    {title:'Kosten Kinder', text:'Eine eigene, einfache Kostenliste pro Kind, getrennt von der Tier-Kostenübersicht. Über "mehr erfahren" gibt es eine Übersicht zu den häufigsten Kostenarten, staatlicher Unterstützung wie Kindergeld, und ein paar Spartipps.'},
     {title:'Kinder-Status im Überblick', text:'Zeigt auf der Startseite pro Kind, wann zuletzt was dran war, genau wie der Pferde-Status und der Tier-Status.'},
     {title:'Termine mit einem Kind verknüpfen', text:'Im Kalender bei Termine & Zeitplan heißt das Feld jetzt "Verknüpfen mit (optional)" und listet Pferde, andere Tiere und Kinder gemeinsam auf.'},
   ]},
@@ -9787,12 +10093,12 @@ const HELP_CONTENT = [
   ]},
   { section:'Einstellungen & Allgemein', icon:'⚙️', topics:[
     {title:'Schnell festhalten (💭-Button)', text:'Der violette 💭-Button unten rechts ist auf jeder Seite erreichbar. Tippe darauf, um einen Gedanken sofort aufzuschreiben, ohne ihn erst einsortieren zu müssen. Bei "💭 Notiz" landet er in deiner Inbox ("Schnell erfasst" oben auf der Startseite), du kannst ihn später als To-Do heute übernehmen oder verwerfen. Bei "🔖 Link / Wichtiges" landest du stattdessen dauerhaft unter Wichtiges.'},
-    {title:'Wichtiges (🔖-Button)', text:'Der 🔖-Button oben im Kopfbereich ist von jeder Seite aus erreichbar. Hier sammelst du Links und wichtige Notizen, die du öfter brauchst, statt sie jedes Mal neu zu suchen, ähnlich wie bei Milanote. Mit Kategorien (z.B. Rezepte, Inspiration) und Suche. Ein Link öffnet sich beim Antippen direkt in einem neuen Tab. Die letzten Einträge erscheinen außerdem als kleine Vorschau oben auf der Startseite. Unter Persönlich → Wichtiges (ganz vorne in der Leiste) findest du dieselben Einträge nochmal als richtige Boards nebeneinander, eine Spalte pro Kategorie. Über die kleinen Punkte ⠿⠿⠿ oben an einer Karte kannst du sie direkt in ein anderes Board ziehen, mit Maus oder Finger. Über "+ Neues Board" legst du auch ein leeres Board für später an.'},
+    {title:'Wichtiges', text:'Über den 💭-Button (unten rechts auf jeder Seite) kannst du unter "🔖 Link / Wichtiges" Links und wichtige Notizen speichern, die du öfter brauchst, ähnlich wie bei Milanote. Zum Durchstöbern und Verwalten gehst du zu Persönlich → Wichtiges (ganz vorne in der Leiste), dort stehen die Einträge als richtige Boards nebeneinander, eine Spalte pro Kategorie, mit Suche. Über die kleinen Punkte ⠿⠿⠿ oben an einer Karte kannst du sie direkt in ein anderes Board ziehen, mit Maus oder Finger. Über "+ Neues Board" legst du auch ein leeres Board für später an.'},
     {title:'Notfallkontakte (🚨-Button)', text:'Der 🚨-Button oben im Kopfbereich ist von jeder Seite aus erreichbar und zeigt alle wichtigen Kontakte gesammelt an einer Stelle: Kontakte, die du bei Meine Pferde, Andere Tiere oder Kinder eingetragen hast, plus allgemeine Notfallkontakte (unter Einstellungen → Notfallkontakte verwaltbar). Auf eine Telefonnummer tippen ruft direkt an.'},
     {title:'Erledigtes feiern', text:'Beim Abhaken von Top-Prioritäten, To-Dos, Packlisten-Punkten und Habits gibt es jetzt eine kleine Bestätigung (kurzes Aufblitzen mit Funken), und ab und zu eine Mitteilung wie "5 erledigt heute, stark!". Das lässt sich nicht einzeln abschalten, drängt sich aber auch nicht störend auf.'},
     {title:'Übergangs-Warnung', text:'Unter Einstellungen → Mein Profil lässt sich einstellen, dass du automatisch einen sanften Hinweis bekommst, bevor ein Termin mit Uhrzeit beginnt, z.B. "In 15 Min: Stalldienst". Das funktioniert für jeden Termin mit Uhrzeit, ohne dass du dafür extra eine Erinnerung einstellen musst. Die Vorlaufzeit kannst du selbst wählen, und die Funktion lässt sich auch ganz abschalten.'},
     {title:'Profilbild ändern', text:'Unter Einstellungen → Mein Profil über "Foto wählen" hochladen. Große Handyfotos werden automatisch verkleinert, damit der Speicher nicht überläuft.'},
-    {title:'Backup erstellen', text:'Unter Einstellungen → Backup & Update über "Backup speichern" eine Sicherungsdatei herunterladen, über "Backup laden" eine vorhandene Datei wieder einspielen.'},
+    {title:'Backup erstellen', text:'Unter Einstellungen → Backup & Update steht oben erklärt, wo deine Daten gespeichert werden (lokal auf diesem Gerät, nicht im Internet). Über "Backup speichern" lädst du eine Sicherungsdatei herunter, über "Backup laden" eine vorhandene Datei wieder einspielen, z.B. um sie auf ein anderes Gerät zu übertragen.'},
     {title:'Update prüfen', text:'Über "Update prüfen" wird einmalig (nur nach deiner Zustimmung) nachgesehen, ob eine neuere Version der App verfügbar ist.'},
     {title:'App installieren', text:'Über das Chrome-Menü (drei Punkte) → "Zum Startbildschirm hinzufügen" lässt sich die App wie eine normale App auf dem Handy installieren.'},
     {title:'Datenschutz', text:'Alle Daten bleiben ausschließlich auf deinem Gerät gespeichert, es gibt keinen Server, der mitliest, außer du nutzt aktiv "Update prüfen", das einzig zu fuehlkraft.github.io verbindet.'},
@@ -13013,6 +13319,25 @@ function saveUebergangswarnung(){
     minuten: minutenEl?Math.max(1,parseInt(minutenEl.value,10)||15):15
   }});
 }
+function saveKinderSichtbarkeit(){
+  var el=document.getElementById('settings-kinder-aktiv');
+  saveFkSettings({kinderBereichAktiv: el?el.checked:true});
+  applyKinderSichtbarkeit();
+}
+function applyKinderSichtbarkeit(){
+  var aktiv=getFkSettings().kinderBereichAktiv!==false;
+  var tab=document.getElementById('tab-kinder');
+  if(tab){
+    var wrap=tab.closest('.nav-tooltip-wrap');
+    var target=wrap||tab;
+    target.style.display=aktiv?'':'none';
+  }
+  if(!aktiv){
+    var sec=document.getElementById('section-kinder');
+    if(sec&&sec.style.display!=='none'){ switchTab('ueberblick'); }
+  }
+  try{ renderUeberblick(); }catch(e){}
+}
 var _fkShownTransitions={day:'',ids:{}};
 function fkShowTransitionToast(text, minuten){
   var box=document.getElementById('fk-transition-toast');
@@ -14568,7 +14893,7 @@ const VORLAGE_RENDERERS={
       </div>
 
 
-        ${(typeof kids!=='undefined'&&kids.length>0)?`
+        ${(typeof kids!=='undefined'&&kids.length>0&&getFkSettings().kinderBereichAktiv!==false)?`
         <!-- KINDER-STATUS -->
         <div class="card" style="margin-bottom:14px;">
           <div class="card-title ub-heading" style="margin-bottom:4px;"><span class="card-title-dot" style="background:var(--butter)"></span>🧒 Kinder-Status</div>
