@@ -1,6 +1,6 @@
 {
-  "version": "3.10.1",
-  "info": "Schnell-Erfassen-Button bleibt am PC nah am Inhalt",
+  "version": "3.11.0",
+  "info": "Neu: Sprachnotizen bei Schnell-Erfassen und Meilensteine",
   "changes": {
     "organisation": [
       "Urlaubstage komplett überarbeitet: eigener Anspruch pro Jahr, ein Log für genommene Urlaubs- und Krankheitstage mit Grund, und automatisch berechnete Brückentage-Tipps für Niedersachsen, jedes Jahr neu berechnet.",
@@ -43,7 +43,9 @@
       "Die Startseite skaliert jetzt besser auf Tablets, vorher blieb sie auf Handy-Größe begrenzt. Logo und Foto-Kreis sind außerdem größer.",
       "Neu: Unter Organisation → Gesprächsnotizen lässt sich festhalten, mit wem worüber gesprochen wurde, mit Datum, Thema, Notiztext und optionalem Folgetermin. Allgemein nutzbar für jedes Gespräch, mit Suche.",
       "Ursache der großen Lücke zwischen Logo und Spruch auf der Startseite gefunden und behoben: Die Logo-Bilddatei hatte sehr viel unsichtbaren leeren Rand eingebaut (fast 30% reine Leerfläche unterhalb des Logos), der mit der letzten Vergrößerung mitgewachsen ist. Das Bild ist jetzt passend zugeschnitten, Logo, Titel und Foto rutschen dadurch automatisch näher zusammen.",
-      "Der 💭-Button schwebte auf sehr breiten Computer-Bildschirmen weit am rechten Bildschirmrand, losgelöst vom eigentlichen Inhalt. Jetzt bleibt er auch dort nah an der Inhaltsspalte."
+      "Der 💭-Button schwebte auf sehr breiten Computer-Bildschirmen weit am rechten Bildschirmrand, losgelöst vom eigentlichen Inhalt. Jetzt bleibt er auch dort nah an der Inhaltsspalte.",
+      "Neu: Sprachnotizen! Beim 💭-Button (Schnell-Erfassen) gibt es jetzt einen Tab \"🎙️ Sprachnotiz\", einfach drauflos sprechen (max. 2 Minuten), landet zum Abhören in der Inbox auf Mein Überblick.",
+      "Hinweis: Sprachnotizen brauchen mehr Speicherplatz als Text oder Fotos. Die App warnt, falls der Gerätespeicher dafür nicht mehr ausreicht, statt Daten zu verlieren."
     ],
     "kinder": [
       "Bei Gesundheit gibt es jetzt über \"mehr erfahren\" einen Überblick zu den U-Untersuchungen, dem Impfkalender und worauf man zusätzlich achten kann.",
@@ -55,7 +57,8 @@
       "Die Einführungs-Karte oben bei Kinder wurde entfernt.",
       "Neu: Bei jedem Kind unter Meine Kinder lässt sich einzeln einstellen, ob es auf der Startseite erscheinen soll. Dieselbe Einstellung steht auch unter Einstellungen → Mein Profil, beide Stellen sind immer synchron.",
       "Neu: Bei jedem Kind lässt sich eine eigene Farbe für den Meilensteine-Zeitstrahl wählen (Rosa, Blau, Grün, Lila, Orange, Türkis).",
-      "Neu: Beim Stundenplan gibt es jetzt pro Wochentag eine kleine Packliste (z.B. Deutschbuch bei Deutsch), eigene Punkte lassen sich ergänzen und abhaken."
+      "Neu: Beim Stundenplan gibt es jetzt pro Wochentag eine kleine Packliste (z.B. Deutschbuch bei Deutsch), eigene Punkte lassen sich ergänzen und abhaken.",
+      "Neu: Bei Meilensteine lässt sich zu jedem Moment auch eine Sprachnotiz aufnehmen, z.B. um das erste Wort in der eigenen Stimme festzuhalten."
     ]
   }
 }
