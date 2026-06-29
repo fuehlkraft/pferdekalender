@@ -1,6 +1,6 @@
 {
-  "version": "3.1.0",
-  "info": "Wichtiges: echte Boards mit Ziehen-und-Ablegen (Maus und Finger)",
+  "version": "3.6.0",
+  "info": "Kopfbereich aufgeräumt, Logo auf der Startseite größer",
   "changes": {
     "organisation": [
       "Urlaubstage komplett überarbeitet: eigener Anspruch pro Jahr, ein Log für genommene Urlaubs- und Krankheitstage mit Grund, und automatisch berechnete Brückentage-Tipps für Niedersachsen, jedes Jahr neu berechnet.",
@@ -28,7 +28,24 @@
       "Echter Fehler behoben: Auf dem Handy hat der violette Schnell-Erfassen-Button (und auch die kleine Hinweis-Blase) sich am Kopfbereich orientiert statt am ganzen Bildschirm, dadurch wirkte er riesig und hat die Symbole oben überdeckt. Ursache war der Frosted-Glas-Effekt des Kopfbereichs, der das ungewollt ausgelöst hat. Jetzt sitzt der Button zuverlässig unten rechts, klein und unauffällig, ohne etwas zu überdecken.",
       "Der Schnell-Erfassen-Button (💭) ist jetzt dunkel lila statt hell, damit er sich besser vom Hintergrund abhebt.",
       "Neu: Unter Persönlich → Wichtiges (ganz vorne in der Leiste) gibt es jetzt eine größere Tafel-Ansicht für deine gespeicherten Links und Notizen, gruppiert nach Kategorie, mit Platz für ausführlichere Notizen zu jedem Eintrag, ähnlich wie bei Milanote. Die Daten sind dieselben wie beim 🔖-Button oben, beide Ansichten zeigen also immer denselben Stand.",
-      "Neu: Unter Persönlich → Wichtiges stehen die Kategorien jetzt als richtige Boards nebeneinander, wie bei Milanote. Über die kleinen Punkte ⠿⠿⠿ oben an einer Karte lässt sie sich direkt mit Maus oder Finger in ein anderes Board ziehen. Über \"+ Neues Board\" kannst du auch ein leeres Board für später anlegen."
+      "Neu: Unter Persönlich → Wichtiges stehen die Kategorien jetzt als richtige Boards nebeneinander, wie bei Milanote. Über die kleinen Punkte ⠿⠿⠿ oben an einer Karte lässt sie sich direkt mit Maus oder Finger in ein anderes Board ziehen. Über \"+ Neues Board\" kannst du auch ein leeres Board für später anlegen.",
+      "Mehr Abstand zwischen den Symbolen oben und der Navigationsleiste darunter, war zu eng beieinander.",
+      "Die Navigationsleiste (Überblick, Glücksmomente, usw.) hat jetzt einen eigenen, leicht sichtbaren Hintergrund, damit sie nicht blass oder verschwommen wirkt.",
+      "Neu: Unter Einstellungen → Mein Profil lässt sich der Kinder-Bereich komplett ausblenden, falls keine Kinder vorhanden sind (z.B. bei einer Kundin ohne Kinder). Daten bleiben dabei erhalten.",
+      "Rechtlicher Hinweis (kein Heilversprechen) bei der Kindergesundheit-Infobox ergänzt, sowie eine Formulierung beim Allergie-Husten-Kalender abgeschwächt. Alle anderen Gesundheits-Infoboxen wurden geprüft und hatten den Hinweis bereits.",
+      "Unter Einstellungen → Backup & Update steht jetzt klar erklärt, wo Daten gespeichert werden (lokal auf dem Gerät, nicht im Internet) und wie man sie z.B. über einen Google-Drive-Ordner auf ein anderes Gerät übertragen kann.",
+      "Die 🔖- und ⚙️-Symbole oben im Kopfbereich wurden entfernt. Wichtiges erreichst du jetzt über den 💭-Button oder Persönlich → Wichtiges, Einstellungen über das Profilbild oben rechts (wie bisher schon möglich).",
+      "Mehr Abstand zwischen der Navigationsleiste und den Inhalten darunter.",
+      "Das Fühlkraft-Logo auf der Startseite ist jetzt größer."
+    ],
+    "kinder": [
+      "Bei Gesundheit gibt es jetzt über \"mehr erfahren\" einen Überblick zu den U-Untersuchungen, dem Impfkalender und worauf man zusätzlich achten kann.",
+      "Neu: Stundenplan, eine Wochentafel pro Kind zum Eintragen der Fächer.",
+      "Packliste komplett überarbeitet: vorausgefüllt mit Kategorien (Dokumente, Kleidung, Pflege & Gesundheit, Schule & Aktivität, Sonstiges), genau wie beim Pferdeurlaub, mit Fortschrittsbalken und Reset-Button.",
+      "Bei Kosten gibt es jetzt über \"mehr erfahren\" eine Übersicht zu den häufigsten Kostenarten für Kinder, Kindergeld und ein paar Spartipps.",
+      "Meilensteine komplett neu gestaltet: ein eigenes, warmes Design mit Zeitstrahl statt Tabelle, mit Infobox zur Erklärung und einem Festhalten-Formular wie in einem Erinnerungsbuch.",
+      "Bei Meilensteinen lässt sich zu jedem Moment jetzt auch ein Foto hinzufügen.",
+      "Die Einführungs-Karte oben bei Kinder wurde entfernt."
     ]
   }
 }
