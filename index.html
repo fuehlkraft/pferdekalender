@@ -3784,11 +3784,24 @@ return html2pdf;
       <div onclick="event.stopPropagation()" style="background:white;border-radius:16px;padding:22px;width:90%;max-width:380px;box-shadow:0 12px 40px rgba(74,56,96,0.3);">
         <div style="display:flex;gap:6px;margin-bottom:14px;">
           <button id="qc-tab-notiz" onclick="setQuickCaptureType('notiz')" style="flex:1;background:var(--lilac);border:none;border-radius:10px;padding:8px 6px;font-size:12px;font-weight:700;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;">💭 Notiz</button>
+          <button id="qc-tab-voice" onclick="setQuickCaptureType('voice')" style="flex:1;background:rgba(232,228,240,0.5);border:none;border-radius:10px;padding:8px 6px;font-size:12px;font-weight:700;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;">🎙️ Sprachnotiz</button>
           <button id="qc-tab-link" onclick="setQuickCaptureType('link')" style="flex:1;background:rgba(232,228,240,0.5);border:none;border-radius:10px;padding:8px 6px;font-size:12px;font-weight:700;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;">🔖 Link / Wichtiges</button>
         </div>
         <div id="qc-panel-notiz">
           <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">Kein Filter, keine Kategorie nötig. Landet in deiner Inbox, du kannst es später einsortieren.</div>
           <textarea id="quick-capture-text" autofocus style="width:100%;min-height:90px;border:1px solid rgba(180,160,220,0.3);border-radius:10px;padding:10px;font-family:Arial,sans-serif;font-size:14px;outline:none;resize:vertical;box-sizing:border-box;" placeholder="Was schwirrt dir gerade durch den Kopf?"></textarea>
+        </div>
+        <div id="qc-panel-voice" style="display:none;">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">Sprich einfach los, landet wie eine Notiz in deiner Inbox. Maximal 2 Minuten pro Aufnahme.</div>
+          <div style="text-align:center;padding:14px 0;">
+            <button id="qcvoice-record-btn" onclick="toggleVoiceRecording('qcvoice')" style="width:64px;height:64px;border-radius:50%;background:var(--rose2);border:none;font-size:26px;color:white;cursor:pointer;box-shadow:0 4px 14px rgba(212,140,160,0.4);">🎙️</button>
+            <div id="qcvoice-timer" style="margin-top:10px;font-family:Georgia,serif;font-size:17px;color:var(--deep);">00:00</div>
+            <div id="qcvoice-status" style="font-size:11px;color:var(--muted);margin-top:2px;">Antippen zum Aufnehmen</div>
+          </div>
+          <div id="qcvoice-preview" style="display:none;margin-top:4px;">
+            <audio id="qcvoice-audio" controls style="width:100%;"></audio>
+            <button onclick="discardVoiceRecording('qcvoice')" style="margin-top:8px;width:100%;background:none;border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:6px 14px;font-size:11px;color:var(--muted);cursor:pointer;font-family:Arial,sans-serif;">↺ Neu aufnehmen</button>
+          </div>
         </div>
         <div id="qc-panel-link" style="display:none;">
           <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">Landet dauerhaft unter 🔖 Wichtiges, zum Wiederfinden statt zum Abhaken.</div>
@@ -6834,6 +6847,15 @@ function renderKidMeilensteine(name){
       <input type="text" id="meilen-titel" placeholder="Was ist passiert?" style="flex:1;min-width:160px;border:1px solid rgba(216,207,240,0.5);border-radius:10px;padding:8px 12px;font-family:Georgia,serif;font-size:13px;color:var(--deep);outline:none;background:rgba(255,255,255,0.8);">
     </div>
     <textarea id="meilen-notiz" placeholder="Mehr dazu erzählen (optional)..." style="width:100%;min-height:50px;border:1px solid rgba(216,207,240,0.5);border-radius:10px;padding:8px 12px;font-family:Arial,sans-serif;font-size:12px;color:var(--text);outline:none;background:rgba(255,255,255,0.8);resize:vertical;box-sizing:border-box;margin-bottom:10px;"></textarea>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
+      <button id="meilenvoice-record-btn" type="button" onclick="toggleVoiceRecording('meilenvoice')" style="width:40px;height:40px;border-radius:50%;background:${farbe.color};border:none;font-size:17px;color:white;cursor:pointer;flex-shrink:0;">🎙️</button>
+      <span id="meilenvoice-timer" style="font-family:Georgia,serif;font-size:13px;color:var(--deep);">00:00</span>
+      <span id="meilenvoice-status" style="font-size:11px;color:var(--muted);">oder als Sprachnotiz festhalten (max. 2 Min.)</span>
+    </div>
+    <div id="meilenvoice-preview" style="display:none;margin-bottom:10px;">
+      <audio id="meilenvoice-audio" controls style="width:100%;"></audio>
+      <button type="button" onclick="discardVoiceRecording('meilenvoice')" style="margin-top:6px;background:none;border:1px dashed rgba(180,160,220,0.4);border-radius:8px;padding:5px 12px;font-size:11px;color:var(--muted);cursor:pointer;font-family:Arial,sans-serif;">↺ Neu aufnehmen</button>
+    </div>
     <button onclick="addKidMeilenstein('${name}')" style="background:${farbe.color};border:none;border-radius:20px;padding:9px 22px;font-size:13px;font-weight:700;color:white;cursor:pointer;font-family:Arial,sans-serif;box-shadow:0 3px 10px rgba(74,56,96,0.25);">💭 Festhalten</button>
   </div>`;
 
@@ -6866,6 +6888,7 @@ function renderKidMeilensteine(name){
           +(row.foto
             ?'<img src="'+row.foto+'" onclick="uploadMeilensteinFoto(\''+name+'\','+ri+')" title="Foto ändern" style="width:100%;max-height:220px;object-fit:cover;border-radius:12px;margin-bottom:10px;cursor:pointer;display:block;">'
             :'<button onclick="uploadMeilensteinFoto(\''+name+'\','+ri+')" style="background:rgba(216,207,240,0.25);border:1px dashed rgba(180,160,220,0.4);border-radius:10px;padding:6px 14px;font-size:11px;color:var(--deep);cursor:pointer;font-family:Arial,sans-serif;margin-bottom:10px;">📷 Foto hinzufügen</button>')
+          +(row.audio?'<audio controls src="'+row.audio+'" style="width:100%;height:32px;margin-bottom:10px;display:block;"></audio>':'')
           +'<textarea onchange="updateKidEntry(\'meilensteine\',\''+name+'\','+ri+',\'notiz\',this.value)" placeholder="Mehr dazu..." style="width:100%;border:none;outline:none;background:transparent;font-family:Arial,sans-serif;font-size:12px;color:var(--text);font-style:italic;resize:none;min-height:20px;box-sizing:border-box;">'+(row.notiz||'')+'</textarea>'
           +'</div></div>';
       }).join('')
@@ -6880,11 +6903,19 @@ function addKidMeilenstein(name){
   var datum=document.getElementById('meilen-datum').value||new Date().toISOString().split('T')[0];
   var titel=document.getElementById('meilen-titel').value.trim();
   var notiz=document.getElementById('meilen-notiz').value.trim();
-  if(!titel&&!notiz)return;
-  kidExtra.meilensteine[name].push({datum:datum,titel:titel,notiz:notiz});
-  saveKids();
+  var audio=fkGetVoiceRecording('meilenvoice');
+  if(!titel&&!notiz&&!audio)return;
+  var entry={datum:datum,titel:titel||(audio?'🎙️ Sprachnotiz':''),notiz:notiz};
+  if(audio)entry.audio=audio;
+  kidExtra.meilensteine[name].push(entry);
+  if(!fkSafeSaveStorage(function(){saveKids();})){
+    kidExtra.meilensteine[name].pop();
+    alert('Konnte nicht gespeichert werden, der Speicher auf diesem Gerät ist voll. Bitte mache zuerst ein Backup und lösche dann ältere Fotos/Sprachnotizen.');
+    return;
+  }
   document.getElementById('meilen-titel').value='';
   document.getElementById('meilen-notiz').value='';
+  discardVoiceRecording('meilenvoice');
   renderKidMeilensteine(name);
   try{ fkCelebrate(document.querySelector('#kid-module-content button')); }catch(e){}
 }
@@ -9525,6 +9556,101 @@ function fkFlashSaveButton(btn, ms){
 }
 
 // ── SCHNELL-ERFASSEN: von überall aus erreichbar, landet ungefiltert in der Inbox ──
+// ── SPRACHNOTIZEN: gemeinsame Aufnahme-Engine, von mehreren Stellen aus nutzbar ──
+// (Schnell-Erfassen, Meilensteine, ...). ctx ist ein eindeutiger Präfix pro Einsatzort,
+// z.B. 'qcvoice', passend zu den HTML-Element-IDs '<ctx>-record-btn', '<ctx>-timer', usw.
+var _voiceRecorders={};
+var VOICE_MAX_SECONDS=120;
+function fkVoiceEls(ctx){
+  return {
+    btn:document.getElementById(ctx+'-record-btn'),
+    timer:document.getElementById(ctx+'-timer'),
+    status:document.getElementById(ctx+'-status'),
+    preview:document.getElementById(ctx+'-preview'),
+    audio:document.getElementById(ctx+'-audio')
+  };
+}
+function fkFormatVoiceTime(sec){
+  var m=Math.floor(sec/60), s=Math.floor(sec%60);
+  return (m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+}
+async function toggleVoiceRecording(ctx){
+  var state=_voiceRecorders[ctx];
+  if(state && state.recording){
+    state.mediaRecorder.stop();
+    return;
+  }
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || typeof MediaRecorder==='undefined'){
+    alert('Sprachnotizen werden von diesem Browser leider nicht unterstützt.');
+    return;
+  }
+  var els=fkVoiceEls(ctx);
+  try{
+    var stream=await navigator.mediaDevices.getUserMedia({audio:true});
+    var mimeType='';
+    ['audio/webm','audio/mp4','audio/ogg'].forEach(function(mt){ if(!mimeType && MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(mt)) mimeType=mt; });
+    var mediaRecorder=mimeType?new MediaRecorder(stream,{mimeType:mimeType}):new MediaRecorder(stream);
+    var chunks=[];
+    mediaRecorder.ondataavailable=function(e){ if(e.data && e.data.size>0) chunks.push(e.data); };
+    mediaRecorder.onstop=function(){
+      stream.getTracks().forEach(function(t){ t.stop(); });
+      clearInterval(_voiceRecorders[ctx].timerInterval);
+      var wasCancelled=_voiceRecorders[ctx].cancelled;
+      if(wasCancelled){ delete _voiceRecorders[ctx]; return; }
+      var blob=new Blob(chunks,{type:mediaRecorder.mimeType||mimeType||'audio/webm'});
+      var reader=new FileReader();
+      reader.onload=function(){
+        if(!_voiceRecorders[ctx])return;
+        _voiceRecorders[ctx].audioBase64=reader.result;
+        _voiceRecorders[ctx].recording=false;
+        var elsNow=fkVoiceEls(ctx);
+        if(elsNow.audio){ elsNow.audio.src=reader.result; }
+        if(elsNow.preview){ elsNow.preview.style.display='block'; }
+        if(elsNow.btn){ elsNow.btn.style.display='none'; }
+        if(elsNow.status){ elsNow.status.textContent='Aufnahme fertig, anhören oder speichern.'; }
+      };
+      reader.readAsDataURL(blob);
+    };
+    _voiceRecorders[ctx]={recording:true,mediaRecorder:mediaRecorder,startTime:Date.now(),audioBase64:null,cancelled:false};
+    mediaRecorder.start();
+    if(els.btn){ els.btn.style.background='#c0392b'; els.btn.textContent='⏹️'; }
+    if(els.status){ els.status.textContent='Aufnahme läuft... antippen zum Beenden'; }
+    if(els.preview){ els.preview.style.display='none'; }
+    _voiceRecorders[ctx].timerInterval=setInterval(function(){
+      if(!_voiceRecorders[ctx])return;
+      var elapsed=(Date.now()-_voiceRecorders[ctx].startTime)/1000;
+      var elsNow=fkVoiceEls(ctx);
+      if(elsNow.timer)elsNow.timer.textContent=fkFormatVoiceTime(elapsed);
+      if(elapsed>=VOICE_MAX_SECONDS){
+        _voiceRecorders[ctx].mediaRecorder.stop();
+      }
+    },250);
+  }catch(err){
+    alert('Zugriff aufs Mikrofon nicht möglich. Bitte erlaube den Mikrofon-Zugriff für diese Seite in deinem Browser.');
+  }
+}
+function discardVoiceRecording(ctx){
+  if(_voiceRecorders[ctx]) delete _voiceRecorders[ctx];
+  var els=fkVoiceEls(ctx);
+  if(els.preview)els.preview.style.display='none';
+  if(els.btn){ els.btn.style.display='inline-flex'; els.btn.style.background='var(--rose2)'; els.btn.textContent='🎙️'; }
+  if(els.timer)els.timer.textContent='00:00';
+  if(els.status)els.status.textContent='Antippen zum Aufnehmen';
+  if(els.audio)els.audio.removeAttribute('src');
+}
+function cancelActiveRecording(ctx){
+  var state=_voiceRecorders[ctx];
+  if(state && state.recording){
+    state.cancelled=true;
+    state.mediaRecorder.stop();
+  }
+  discardVoiceRecording(ctx);
+}
+function fkGetVoiceRecording(ctx){
+  var state=_voiceRecorders[ctx];
+  return (state && state.audioBase64) ? state.audioBase64 : null;
+}
+
 function openQuickCapture(){
   var modal=document.getElementById('quick-capture-modal');
   if(!modal)return;
@@ -9543,26 +9669,24 @@ function openQuickCapture(){
 var _qcType='notiz';
 function setQuickCaptureType(typ){
   _qcType=typ;
-  var notizPanel=document.getElementById('qc-panel-notiz');
-  var linkPanel=document.getElementById('qc-panel-link');
-  var tabNotiz=document.getElementById('qc-tab-notiz');
-  var tabLink=document.getElementById('qc-tab-link');
+  var panels={notiz:document.getElementById('qc-panel-notiz'),voice:document.getElementById('qc-panel-voice'),link:document.getElementById('qc-panel-link')};
+  var tabs={notiz:document.getElementById('qc-tab-notiz'),voice:document.getElementById('qc-tab-voice'),link:document.getElementById('qc-tab-link')};
+  Object.keys(panels).forEach(function(k){
+    if(panels[k])panels[k].style.display=(k===typ)?'block':'none';
+    if(tabs[k])tabs[k].style.background=(k===typ)?'var(--lilac)':'rgba(232,228,240,0.5)';
+  });
   if(typ==='link'){
-    if(notizPanel)notizPanel.style.display='none';
-    if(linkPanel)linkPanel.style.display='block';
-    if(tabNotiz){tabNotiz.style.background='rgba(232,228,240,0.5)';}
-    if(tabLink){tabLink.style.background='var(--lilac)';}
     setTimeout(function(){ var u=document.getElementById('qc-link-url'); if(u)u.focus(); },50);
-  } else {
-    if(notizPanel)notizPanel.style.display='block';
-    if(linkPanel)linkPanel.style.display='none';
-    if(tabNotiz){tabNotiz.style.background='var(--lilac)';}
-    if(tabLink){tabLink.style.background='rgba(232,228,240,0.5)';}
+  }
+  if(typ!=='voice'){
+    // Beim Verlassen des Sprachnotiz-Tabs eine laufende Aufnahme sauber abbrechen
+    try{ cancelActiveRecording('qcvoice'); }catch(e){}
   }
 }
 function closeQuickCapture(){
   var modal=document.getElementById('quick-capture-modal');
   if(modal)modal.style.display='none';
+  try{ cancelActiveRecording('qcvoice'); }catch(e){}
 }
 function saveQuickCapture(){
   if(_qcType==='link'){
@@ -9578,6 +9702,23 @@ function saveQuickCapture(){
     document.getElementById('qc-link-kategorie').value='';
     closeQuickCapture();
     try{renderUeberblick();}catch(e){}
+    return;
+  }
+  if(_qcType==='voice'){
+    var audio=fkGetVoiceRecording('qcvoice');
+    if(!audio){ alert('Bitte erst eine Sprachnotiz aufnehmen.'); return; }
+    if(!pData.inbox)pData.inbox=[];
+    var entry={id:Date.now(), text:'🎙️ Sprachnotiz vom '+fmt(new Date().toISOString().split('T')[0]), audio:audio, datum:new Date().toISOString().split('T')[0]};
+    pData.inbox.push(entry);
+    if(!fkSafeSaveStorage(function(){saveAll();})){
+      pData.inbox.pop();
+      alert('Die Sprachnotiz konnte nicht gespeichert werden, der Speicher auf diesem Gerät ist voll. Bitte mache zuerst ein Backup und lösche dann ältere Fotos/Notizen.');
+      return;
+    }
+    discardVoiceRecording('qcvoice');
+    closeQuickCapture();
+    try{renderUeberblick();}catch(e){}
+    try{ fkCelebrate(document.getElementById('quick-capture-btn')); }catch(e){}
     return;
   }
   var ta=document.getElementById('quick-capture-text');
@@ -9831,10 +9972,13 @@ function renderInboxCard(){
   var list=document.getElementById('ub-inbox-list');
   if(!list)return;
   list.innerHTML=items.slice().sort(function(a,b){return b.id-a.id;}).map(function(it){
-    return '<div style="display:flex;align-items:flex-start;gap:8px;padding:7px 4px;border-bottom:1px solid rgba(216,207,240,0.2);">'
+    return '<div style="display:flex;flex-direction:column;gap:5px;padding:7px 4px;border-bottom:1px solid rgba(216,207,240,0.2);">'
+      +'<div style="display:flex;align-items:flex-start;gap:8px;">'
       +'<span style="font-size:12px;color:var(--deep);flex:1;">'+it.text.replace(/</g,'&lt;')+'</span>'
-      +'<button onclick="inboxToTodo('+it.id+')" title="Als To-Do heute übernehmen" style="background:rgba(200,234,223,0.5);border:none;border-radius:6px;padding:3px 8px;font-size:10px;color:var(--deep);cursor:pointer;white-space:nowrap;">→ To-Do</button>'
+      +(it.audio?'':'<button onclick="inboxToTodo('+it.id+')" title="Als To-Do heute übernehmen" style="background:rgba(200,234,223,0.5);border:none;border-radius:6px;padding:3px 8px;font-size:10px;color:var(--deep);cursor:pointer;white-space:nowrap;">→ To-Do</button>')
       +'<button onclick="delInboxItem('+it.id+')" style="background:none;border:none;color:rgba(180,160,220,0.5);cursor:pointer;font-size:13px;">✕</button>'
+      +'</div>'
+      +(it.audio?'<audio controls src="'+it.audio+'" style="width:100%;height:32px;"></audio>':'')
       +'</div>';
   }).join('');
 }
@@ -10097,7 +10241,7 @@ function renderSettingsDesign(container){
 }
 
 // ── BACKUP & UPDATE (nutzt bestehende Funktionen) ──
-const FK_APP_VERSION='3.10.1';
+const FK_APP_VERSION='3.11.0';
 function renderSettingsBackup(container){
   container.innerHTML =
     '<div style="font-size:11px;color:var(--muted);margin-bottom:10px;">Installierte Version: <strong style="color:var(--deep);">'+FK_APP_VERSION+'</strong></div>'
@@ -10164,7 +10308,7 @@ const HELP_CONTENT = [
   { section:'Kinder', icon:'🧒', topics:[
     {title:'Wofür ist dieser Bereich?', text:'Alles zu deinen Kindern an einem Ort: Gesundheit, Schule & Kita, Aktivitäten, Packlisten, Kosten und Meilensteine, bewusst getrennt von den Tier-Kosten.'},
     {title:'Meine Kinder', text:'Name, Foto, Geburtstag, Schule/Kita und Klasse pro Kind. Unter "Kontakte" beliebig viele Ansprechpartner mit Rolle, Name, Adresse und Telefonnummer, z.B. Kinderarzt, Lehrer, Notfallkontakt.'},
-    {title:'Gesundheit, Schule & Kita, Aktivitäten, Meilensteine', text:'Vier Module zum Festhalten von Terminen und Notizen pro Kind. Bei Gesundheit gibt es ein Feld "Nächster Termin", das auch in der "Nichts vergessen heute"-Karte im Überblick auftaucht, wenn der Termin näher rückt. Oben bei Gesundheit findest du außerdem über "mehr erfahren" einen Überblick zu den U-Untersuchungen, Impfungen und worauf du achten kannst. Meilensteine ist eigens gestaltet, als kleines Erinnerungsbuch mit Zeitstrahl statt Tabelle, für die Momente, die nicht "erledigt" werden, sondern einfach passieren. Über "📷 Foto hinzufügen" lässt sich zu jedem Moment auch ein Bild speichern.'},
+    {title:'Gesundheit, Schule & Kita, Aktivitäten, Meilensteine', text:'Vier Module zum Festhalten von Terminen und Notizen pro Kind. Bei Gesundheit gibt es ein Feld "Nächster Termin", das auch in der "Nichts vergessen heute"-Karte im Überblick auftaucht, wenn der Termin näher rückt. Oben bei Gesundheit findest du außerdem über "mehr erfahren" einen Überblick zu den U-Untersuchungen, Impfungen und worauf du achten kannst. Meilensteine ist eigens gestaltet, als kleines Erinnerungsbuch mit Zeitstrahl statt Tabelle, für die Momente, die nicht "erledigt" werden, sondern einfach passieren. Über "📷 Foto hinzufügen" lässt sich zu jedem Moment auch ein Bild speichern, über das 🎙️-Symbol auch eine Sprachnotiz (bis 2 Minuten), z.B. um das erste Wort in der eigenen Stimme festzuhalten.'},
     {title:'Kinder-Bereich ausblenden', text:'Unter Einstellungen → Mein Profil lässt sich der Bereich Kinder (Reiter und die Karte im Überblick) komplett ausblenden, falls keine Kinder vorhanden sind oder die App für jemand anderen ohne Kinder eingerichtet wird. Vorhandene Daten bleiben dabei erhalten und lassen sich später jederzeit wieder einschalten.'},
     {title:'Auf der Startseite zeigen / nicht zeigen', text:'Bei jedem Kind unter Meine Kinder lässt sich einzeln einstellen, ob es auf der Startseite (Kinder-Status) erscheinen soll. Dieselbe Einstellung findest du auch unter Einstellungen → Mein Profil, beide Stellen sind immer synchron, du kannst also bequem die nehmen, die dir gerade lieber ist.'},
     {title:'Farbe für Meilensteine', text:'Bei jedem Kind unter Meine Kinder lässt sich eine eigene Farbe für den Meilensteine-Zeitstrahl auswählen (Rosa, Blau, Grün, Lila, Orange, Türkis), ganz wie es passt.'},
@@ -10222,6 +10366,7 @@ const HELP_CONTENT = [
   ]},
   { section:'Einstellungen & Allgemein', icon:'⚙️', topics:[
     {title:'Schnell festhalten (💭-Button)', text:'Der violette 💭-Button unten rechts ist auf jeder Seite erreichbar. Tippe darauf, um einen Gedanken sofort aufzuschreiben, ohne ihn erst einsortieren zu müssen. Bei "💭 Notiz" landet er in deiner Inbox ("Schnell erfasst" oben auf der Startseite), du kannst ihn später als To-Do heute übernehmen oder verwerfen. Bei "🔖 Link / Wichtiges" landest du stattdessen dauerhaft unter Wichtiges.'},
+    {title:'Schnell-Erfassen (💭-Button)', text:'Der 💭-Button unten rechts ist von jeder Seite aus erreichbar, für den Moment, in dem ein Gedanke sonst verloren geht. Drei Möglichkeiten: 💭 Notiz (Text), 🎙️ Sprachnotiz (bis zu 2 Minuten, einfach drauflos sprechen) oder 🔖 Link/Wichtiges. Notizen und Sprachnotizen landen in der Inbox auf Mein Überblick, von dort aus per "→ To-Do" übernehmen oder einfach abhören und löschen.'},
     {title:'Wichtiges', text:'Über den 💭-Button (unten rechts auf jeder Seite) kannst du unter "🔖 Link / Wichtiges" Links und wichtige Notizen speichern, die du öfter brauchst, ähnlich wie bei Milanote. Zum Durchstöbern und Verwalten gehst du zu Persönlich → Wichtiges (ganz vorne in der Leiste), dort stehen die Einträge als richtige Boards nebeneinander, eine Spalte pro Kategorie, mit Suche. Über die kleinen Punkte ⠿⠿⠿ oben an einer Karte kannst du sie direkt in ein anderes Board ziehen, mit Maus oder Finger. Über "+ Neues Board" legst du auch ein leeres Board für später an.'},
     {title:'Notfallkontakte (🚨-Button)', text:'Der 🚨-Button oben im Kopfbereich ist von jeder Seite aus erreichbar und zeigt alle wichtigen Kontakte gesammelt an einer Stelle: Kontakte, die du bei Meine Pferde, Andere Tiere oder Kinder eingetragen hast, plus allgemeine Notfallkontakte (unter Einstellungen → Notfallkontakte verwaltbar). Auf eine Telefonnummer tippen ruft direkt an.'},
     {title:'Erledigtes feiern', text:'Beim Abhaken von Top-Prioritäten, To-Dos, Packlisten-Punkten und Habits gibt es jetzt eine kleine Bestätigung (kurzes Aufblitzen mit Funken), und ab und zu eine Mitteilung wie "5 erledigt heute, stark!". Das lässt sich nicht einzeln abschalten, drängt sich aber auch nicht störend auf.'},
