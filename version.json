@@ -1,6 +1,6 @@
 {
-  "version": "3.24.0",
-  "info": "Mehr Platz auf PC-Bildschirmen, alter versteckter Nav-Konflikt entfernt",
+  "version": "3.25.0",
+  "info": "Scroll-Pfeile auf dem Handy ausgeblendet, Update-Prüfung zuverlässiger",
   "changes": {
     "organisation": [
       "Urlaubstage komplett überarbeitet: eigener Anspruch pro Jahr, ein Log für genommene Urlaubs- und Krankheitstage mit Grund, und automatisch berechnete Brückentage-Tipps für Niedersachsen, jedes Jahr neu berechnet.",
@@ -21,6 +21,7 @@
       "Beim Termin-Eintragen gibt es jetzt eine Wiederholung direkt im Formular: Einmalig, Täglich, Wöchentlich, Monatlich, Jährlich oder Benutzerdefiniert. Bei Benutzerdefiniert stellst du das Intervall, bestimmte Wochentage und ein Ende (nie, an einem Datum, oder nach X Malen) selbst ein."
     ],
     "allgemein": [
+      "Die Scroll-Pfeile an der Reiter-Leiste (nur für PC mit Maus gedacht) waren auch auf dem Handy sichtbar und sahen dort fehl am Platz aus. Sind jetzt nur noch auf größeren Bildschirmen zu sehen, auf dem Handy wischt man ohnehin ganz natürlich mit dem Finger.",
       "Inhalt und Reiter-Leiste sind auf großen Bildschirmen jetzt breiter (1500px statt 1200px), dadurch passen am PC meist alle Reiter ohne Scrollen hinein. Die Scroll-Pfeile bleiben als Reserve, falls später noch mehr Reiter dazukommen oder das Fenster schmaler ist.",
       "Auf dem PC mit Maus gab es bisher keinen sichtbaren Hinweis, dass und wie man die Reiter-Leiste weiterscrollen kann, wenn nicht alle Reiter gleichzeitig hineinpassen. Jetzt erscheinen kleine klickbare Pfeile ‹ › an den Rändern, sobald es wirklich mehr zu sehen gibt, zum Antippen/Anklicken.",
       "Wichtiger Fehler behoben: Die Reiter-Leiste oben ließ sich gar nicht mehr scrollen, sodass Reiter nach Finanzen (z.B. Vorlagen) nicht mehr erreichbar waren. Ursache: zwei ineinander verschachtelte, beide scrollbare Bereiche haben sich gegenseitig blockiert. Jetzt gibt es nur noch einen zuständigen Bereich, scrollt wieder zuverlässig.",
@@ -75,7 +76,9 @@
       "Bei Finanzen: Überschrift und Untertitel lagen zu eng übereinander, jetzt mit normalem Abstand.",
       "Der neue Scroll-Pfeil bei der Reiter-Leiste schwebte im Außenabstand, sichtbar getrennt von den Reitern selbst. Sitzt jetzt direkt an der Leiste, ohne Lücke.",
       "Auf sehr breiten Bildschirmen spannte sich die Reiter-Leiste über die volle Fensterbreite, während der Inhalt darunter bei 1200px zentriert blieb, dadurch landete der Scroll-Pfeil weit rechts vom eigentlichen Inhalt entfernt. Die Leiste richtet sich jetzt an derselben Breite aus wie der Inhalt darunter.",
-      "Dabei eine ältere, versteckte Regel gefunden und entfernt, die speziell auf Desktop-Bildschirmen (≥1024px) die Reiter-Leiste anders ausgerichtet hat als überall sonst und vermutlich die eigentliche Ursache vieler der Reiter-Leisten-Probleme der letzten Tage war."
+      "Dabei eine ältere, versteckte Regel gefunden und entfernt, die speziell auf Desktop-Bildschirmen (≥1024px) die Reiter-Leiste anders ausgerichtet hat als überall sonst und vermutlich die eigentliche Ursache vieler der Reiter-Leisten-Probleme der letzten Tage war.",
+      "Der Abstand der Reiter-Leiste zum linken Bildschirmrand war kleiner als der des Inhalts darunter (24px statt 32px), dadurch saß \"Überblick\" sichtbar weiter links als die Karten und Unterleisten darunter. Jetzt beide gleich, 32px.",
+      "Fehler behoben: Die Update-Prüfung (Einstellungen → Backup & Update) konnte gelegentlich fälschlich \"nicht möglich\" melden, weil der Service Worker diese Anfrage versehentlich mit abgefangen hat. Läuft jetzt immer direkt zum Server durch, am Service Worker vorbei."
     ],
     "kinder": [
       "Bei Gesundheit gibt es jetzt über \"mehr erfahren\" einen Überblick zu den U-Untersuchungen, dem Impfkalender und worauf man zusätzlich achten kann.",
@@ -93,69 +96,6 @@
     "pferde": [
       "Neu: Eine eigene Bucket List bei Pferde, für Erlebnisse und Träume rund ums Leben mit Pferd, mit Erklärtext warum das sinnvoll ist (wie bei Persönlich).",
       "Achtsamkeit komplett umgebaut: Statt einer langen Seite gibt es jetzt eine Übersicht mit zwei Themen-Kacheln (🐴 40 Tage Achtsamkeit, 🌸 Achtsamkeits-Übungen), jede öffnet ihre eigene Unterseite. So bleibt es übersichtlich, auch wenn später mehr Themen dazukommen. Die 40 Tages-Kästchen sind außerdem deutlich kompakter."
-    ]
-  }
-}{
-  "version": "3.11.0",
-  "info": "Neu: Sprachnotizen bei Schnell-Erfassen und Meilensteine",
-  "changes": {
-    "organisation": [
-      "Urlaubstage komplett überarbeitet: eigener Anspruch pro Jahr, ein Log für genommene Urlaubs- und Krankheitstage mit Grund, und automatisch berechnete Brückentage-Tipps für Niedersachsen, jedes Jahr neu berechnet.",
-      "Echter Fehler behoben: Die Smarte Packliste bei Urlaub hat sich beim Hinzufügen eigener Punkte nicht richtig verhalten und wurde beim erneuten Öffnen der Seite manchmal wieder geleert, beides ist jetzt behoben.",
-      "Bei den Brückentage-Tipps kannst du jetzt dein Bundesland auswählen (alle 16 sind hinterlegt), die Feiertage und Empfehlungen werden passend dafür berechnet, nicht mehr nur für Niedersachsen."
-    ],
-    "ueberblick": [
-      "Glücksmomente steht jetzt direkt neben Überblick in der Navigation.",
-      "Tier-Status ist jetzt standardmäßig eingeklappt (über 'anzeigen' aufklappbar), damit andere Karten besser sichtbar sind.",
-      "Bei einer bereits ausgefüllten Pferde-Status-Kachel lässt sich jetzt direkt das Datum des letzten Eintrags korrigieren und das Intervall (Zeitfenster) anpassen, statt nur einen neuen Eintrag anzulegen.",
-      "Reihenfolge auf der Startseite angepasst: Direkt unter Heute im Fokus kommen jetzt Offene To-Dos, Nächste 14 Tage, Jahresziele und Bald fällig, darunter dann Pferde-Status, Kinder-Status und Tier-Status.",
-      "Kinder-Status steht auf der Startseite jetzt oberhalb von Pferde-Status."
-    ],
-    "kalender": [
-      "Termine, die sich zeitlich überlappen, werden in der Zeitleiste jetzt in eigenen Reihen nebeneinander angezeigt, statt sich zu überdecken.",
-      "Beim Termin-Eintragen gibt es jetzt eine Wiederholung direkt im Formular: Einmalig, Täglich, Wöchentlich, Monatlich, Jährlich oder Benutzerdefiniert. Bei Benutzerdefiniert stellst du das Intervall, bestimmte Wochentage und ein Ende (nie, an einem Datum, oder nach X Malen) selbst ein."
-    ],
-    "allgemein": [
-      "Wichtiger Fehler behoben: Das Backup hat bisher nur einen kleinen Teil der Daten gesichert (u.a. fehlten Kalender, Kinder inklusive Fotos, Andere Tiere, Einstellungen komplett). Jetzt wird wirklich alles gesichert und beim Einspielen vollständig wiederhergestellt.",
-      "Neu: Der 💭-Button unten rechts ist auf jeder Seite erreichbar, damit kein Gedanke verloren geht. Was du dort festhältst, landet in der Inbox auf der Startseite (\"Schnell erfasst\") und kann später als To-Do übernommen oder verworfen werden.",
-      "Neu: Übergangs-Warnung – ein sanfter Hinweis, bevor ein Termin mit Uhrzeit beginnt (z.B. \"In 15 Min: Stalldienst\"), automatisch für jeden Termin, ohne dass dafür extra eine Erinnerung eingestellt werden muss. Einstellbar (Vorlaufzeit, an/aus) unter Einstellungen → Mein Profil.",
-      "Neu: Beim Abhaken von Top-Prioritäten, To-Dos, Packlisten-Punkten und Habits gibt es jetzt eine kleine, befriedigende Bestätigung (kurzes Aufblitzen mit Funken), und ab und zu eine motivierende Mitteilung wie \"5 erledigt heute, stark!\".",
-      "Neu: Der 🚨-Button oben im Kopfbereich ist von jeder Seite aus erreichbar und zeigt alle wichtigen Kontakte gesammelt an einer Stelle, automatisch zusammengezogen aus Meine Pferde, Andere Tiere und Kinder, plus allgemeine Notfallkontakte. Auf eine Telefonnummer tippen ruft direkt an.",
-      "Echter Fehler behoben: Die kleine Hinweis-Blase oben (für Übergangs-Warnung und Erledigt-Feiern) war durch einen Tippfehler im Code permanent sichtbar, auch leer ohne Text. Jetzt erscheint sie nur noch, wenn wirklich etwas mitzuteilen ist.",
-      "Neu: 🔖 Wichtiges, von jeder Seite aus über den Button oben im Kopfbereich erreichbar. Ein Ort für Links und wichtige Notizen, die man öfter braucht, mit Kategorien und Suche, ähnlich wie bei Milanote. Erreichbar auch direkt beim 💭-Schnell-Erfassen über den neuen Reiter \"Link / Wichtiges\". Die letzten Einträge erscheinen zusätzlich als Vorschau auf der Startseite.",
-      "Echter Fehler behoben: Auf dem Handy hat der violette Schnell-Erfassen-Button (und auch die kleine Hinweis-Blase) sich am Kopfbereich orientiert statt am ganzen Bildschirm, dadurch wirkte er riesig und hat die Symbole oben überdeckt. Ursache war der Frosted-Glas-Effekt des Kopfbereichs, der das ungewollt ausgelöst hat. Jetzt sitzt der Button zuverlässig unten rechts, klein und unauffällig, ohne etwas zu überdecken.",
-      "Der Schnell-Erfassen-Button (💭) ist jetzt dunkel lila statt hell, damit er sich besser vom Hintergrund abhebt.",
-      "Neu: Unter Persönlich → Wichtiges (ganz vorne in der Leiste) gibt es jetzt eine größere Tafel-Ansicht für deine gespeicherten Links und Notizen, gruppiert nach Kategorie, mit Platz für ausführlichere Notizen zu jedem Eintrag, ähnlich wie bei Milanote. Die Daten sind dieselben wie beim 🔖-Button oben, beide Ansichten zeigen also immer denselben Stand.",
-      "Neu: Unter Persönlich → Wichtiges stehen die Kategorien jetzt als richtige Boards nebeneinander, wie bei Milanote. Über die kleinen Punkte ⠿⠿⠿ oben an einer Karte lässt sie sich direkt mit Maus oder Finger in ein anderes Board ziehen. Über \"+ Neues Board\" kannst du auch ein leeres Board für später anlegen.",
-      "Mehr Abstand zwischen den Symbolen oben und der Navigationsleiste darunter, war zu eng beieinander.",
-      "Die Navigationsleiste (Überblick, Glücksmomente, usw.) hat jetzt einen eigenen, leicht sichtbaren Hintergrund, damit sie nicht blass oder verschwommen wirkt.",
-      "Neu: Unter Einstellungen → Mein Profil lässt sich der Kinder-Bereich komplett ausblenden, falls keine Kinder vorhanden sind (z.B. bei einer Kundin ohne Kinder). Daten bleiben dabei erhalten.",
-      "Rechtlicher Hinweis (kein Heilversprechen) bei der Kindergesundheit-Infobox ergänzt, sowie eine Formulierung beim Allergie-Husten-Kalender abgeschwächt. Alle anderen Gesundheits-Infoboxen wurden geprüft und hatten den Hinweis bereits.",
-      "Unter Einstellungen → Backup & Update steht jetzt klar erklärt, wo Daten gespeichert werden (lokal auf dem Gerät, nicht im Internet) und wie man sie z.B. über einen Google-Drive-Ordner auf ein anderes Gerät übertragen kann.",
-      "Die 🔖- und ⚙️-Symbole oben im Kopfbereich wurden entfernt. Wichtiges erreichst du jetzt über den 💭-Button oder Persönlich → Wichtiges, Einstellungen über das Profilbild oben rechts (wie bisher schon möglich).",
-      "Mehr Abstand zwischen der Navigationsleiste und den Inhalten darunter.",
-      "Das Fühlkraft-Logo auf der Startseite ist jetzt größer.",
-      "Beim Backup speichern lässt sich am Computer (Chrome/Edge) jetzt der Speicherort selbst auswählen, dort wird automatisch der \"Speichern als\"-Dialog angezeigt.",
-      "Fehler behoben: Beim erneuten Öffnen der App (z.B. nach Pull-to-Refresh) wurde die Startseite nur kurz angezeigt und automatisch übersprungen. Jetzt bleibt die Startseite immer stehen, bis bewusst auf \"Meinen Kalender öffnen\" getippt wird.",
-      "Die Startseite skaliert jetzt besser auf Tablets, vorher blieb sie auf Handy-Größe begrenzt. Logo und Foto-Kreis sind außerdem größer.",
-      "Neu: Unter Organisation → Gesprächsnotizen lässt sich festhalten, mit wem worüber gesprochen wurde, mit Datum, Thema, Notiztext und optionalem Folgetermin. Allgemein nutzbar für jedes Gespräch, mit Suche.",
-      "Ursache der großen Lücke zwischen Logo und Spruch auf der Startseite gefunden und behoben: Die Logo-Bilddatei hatte sehr viel unsichtbaren leeren Rand eingebaut (fast 30% reine Leerfläche unterhalb des Logos), der mit der letzten Vergrößerung mitgewachsen ist. Das Bild ist jetzt passend zugeschnitten, Logo, Titel und Foto rutschen dadurch automatisch näher zusammen.",
-      "Der 💭-Button schwebte auf sehr breiten Computer-Bildschirmen weit am rechten Bildschirmrand, losgelöst vom eigentlichen Inhalt. Jetzt bleibt er auch dort nah an der Inhaltsspalte.",
-      "Neu: Sprachnotizen! Beim 💭-Button (Schnell-Erfassen) gibt es jetzt einen Tab \"🎙️ Sprachnotiz\", einfach drauflos sprechen (max. 2 Minuten), landet zum Abhören in der Inbox auf Mein Überblick.",
-      "Hinweis: Sprachnotizen brauchen mehr Speicherplatz als Text oder Fotos. Die App warnt, falls der Gerätespeicher dafür nicht mehr ausreicht, statt Daten zu verlieren."
-    ],
-    "kinder": [
-      "Bei Gesundheit gibt es jetzt über \"mehr erfahren\" einen Überblick zu den U-Untersuchungen, dem Impfkalender und worauf man zusätzlich achten kann.",
-      "Neu: Stundenplan, eine Wochentafel pro Kind zum Eintragen der Fächer.",
-      "Packliste komplett überarbeitet: vorausgefüllt mit Kategorien (Dokumente, Kleidung, Pflege & Gesundheit, Schule & Aktivität, Sonstiges), genau wie beim Pferdeurlaub, mit Fortschrittsbalken und Reset-Button.",
-      "Bei Kosten gibt es jetzt über \"mehr erfahren\" eine Übersicht zu den häufigsten Kostenarten für Kinder, Kindergeld und ein paar Spartipps.",
-      "Meilensteine komplett neu gestaltet: ein eigenes, warmes Design mit Zeitstrahl statt Tabelle, mit Infobox zur Erklärung und einem Festhalten-Formular wie in einem Erinnerungsbuch.",
-      "Bei Meilensteinen lässt sich zu jedem Moment jetzt auch ein Foto hinzufügen.",
-      "Die Einführungs-Karte oben bei Kinder wurde entfernt.",
-      "Neu: Bei jedem Kind unter Meine Kinder lässt sich einzeln einstellen, ob es auf der Startseite erscheinen soll. Dieselbe Einstellung steht auch unter Einstellungen → Mein Profil, beide Stellen sind immer synchron.",
-      "Neu: Bei jedem Kind lässt sich eine eigene Farbe für den Meilensteine-Zeitstrahl wählen (Rosa, Blau, Grün, Lila, Orange, Türkis).",
-      "Neu: Beim Stundenplan gibt es jetzt pro Wochentag eine kleine Packliste (z.B. Deutschbuch bei Deutsch), eigene Punkte lassen sich ergänzen und abhaken.",
-      "Neu: Bei Meilensteine lässt sich zu jedem Moment auch eine Sprachnotiz aufnehmen, z.B. um das erste Wort in der eigenen Stimme festzuhalten."
     ]
   }
 }
