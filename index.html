@@ -107,7 +107,6 @@ body{background:var(--grad);font-family:Arial,sans-serif;color:var(--text);min-h
 .header-nav::-webkit-scrollbar{display:none;}
 @media(max-width:640px){
   .header-nav{justify-content:flex-start;padding-left:4px;}
-  .main-nav{justify-content:flex-start !important;}
   .nav-scroll-arrow{display:none !important;}
 }
 .logo{font-family:Georgia,serif;font-size:20px;font-weight:600;color:var(--deep);cursor:pointer;flex-shrink:0;white-space:nowrap;}
@@ -3909,7 +3908,7 @@ return html2pdf;
       <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-persoenlich" onclick="switchTab('persoenlich')">✨ Persönlich<span class="tab-update-dot" id="tab-update-dot-persoenlich" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>✨ Persönlich</strong><br>Wichtiges, Habits, Routinen, Reflexion, Vision Board, Fitness, Geburtstage, Lebensrad, Bucket List, Weltkarte und Zeitstrahl.</div></div>
       <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-organisation" onclick="switchTab('organisation')">📋 Organisation<span class="tab-update-dot" id="tab-update-dot-organisation" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>📋 Organisation</strong><br>Ziele, Braindump, To-Dos, Verleih, Urlaub, Essen, Vorsorge, Wann-zuletzt, Putzplan, Finanzen und Abos.</div></div>
       <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-kalender" onclick="switchTab('kalender')">📆 Kalender<span class="tab-update-dot" id="tab-update-dot-kalender" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>📆 Kalender</strong><br>Monats- und Tagesansicht mit Pferde-Einträgen, Tagesnotizen, Intentionen und Journal. Für Mensch und Pferd gemeinsam.</div></div>
-      <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-finanzen" onclick="switchTab('finanzen')">💰 Finanzen</button><div class="nav-tooltip"><strong>💰 Finanzen</strong><br>Kosten aus Pferde, Kinder und deinen persönlichen Finanzen an einem Ort, damit du auf einen Blick siehst, was wirklich ausgegeben wurde.</div></div>
+      <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-finanzen" onclick="switchTab('finanzen')">💰 Finanzen<span class="tab-update-dot" id="tab-update-dot-finanzen" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>💰 Finanzen</strong><br>Kosten aus Pferde, Kinder und deinen persönlichen Finanzen an einem Ort, damit du auf einen Blick siehst, was wirklich ausgegeben wurde.</div></div>
       <div class="nav-tooltip-wrap"><button class="main-nav-btn" id="tab-vorlagen" onclick="switchTab('vorlagen')">📄 Vorlagen<span class="tab-update-dot" id="tab-update-dot-vorlagen" style="display:none;width:7px;height:7px;border-radius:50%;background:#e85555;margin-left:4px;vertical-align:middle;"></span></button><div class="nav-tooltip"><strong>📄 Vorlagen</strong><br>38 Vorlagen: Liniert, Kariert, Journal, Cornell, Pomodoro, Dankbarkeit, Zyklus-Tracker und mehr. Alle druckfertig.</div></div>
       <!-- Backup und Kalenderfarbe sind jetzt ausschließlich über ⚙️ Einstellungen erreichbar -->
     </div>
@@ -8098,7 +8097,7 @@ function goToCover(){
   document.getElementById('cover').style.display='flex';
   document.getElementById('app').style.display='none';
   // Alle Sections verstecken damit beim nächsten Öffnen sauber gestartet wird
-  ['pferde','andere-tiere','kinder','glueck','persoenlich','organisation','kalender','ueberblick','vorlagen'].forEach(s=>{
+  ['pferde','andere-tiere','kinder','glueck','persoenlich','organisation','kalender','ueberblick','vorlagen','finanzen'].forEach(s=>{
     const el=document.getElementById('section-'+s);if(el)el.style.display='none';
   });
   document.querySelectorAll('#main-nav-inner .main-nav-btn').forEach(b=>b.classList.remove('active'));
@@ -9817,7 +9816,7 @@ function dismissBackupReminder(){
 
 
 function applyTabUpdateDots(changesByTab){
-  var tabs = ['ueberblick','glueck','pferde','andere-tiere','kinder','persoenlich','organisation','kalender','vorlagen'];
+  var tabs = ['ueberblick','glueck','pferde','andere-tiere','kinder','persoenlich','organisation','kalender','finanzen','vorlagen'];
   tabs.forEach(function(tab){
     var dot = document.getElementById('tab-update-dot-' + tab);
     if(!dot) return;
@@ -10829,7 +10828,7 @@ function renderSettingsDesign(container){
 }
 
 // ── BACKUP & UPDATE (nutzt bestehende Funktionen) ──
-const FK_APP_VERSION='3.25.0';
+const FK_APP_VERSION='3.25.4';
 // Wird in der Demo-Version auf true gesetzt (eigene GitHub-Seite, eigene Daten, nur zum Zeigen).
 // In der echten Version (diese Datei) bleibt es immer false.
 const IS_DEMO_BUILD=false;
@@ -13999,7 +13998,18 @@ function scrollMainNavBy(px){
   var nav=document.getElementById('main-nav-inner');
   if(nav)nav.scrollBy({left:px,behavior:'smooth'});
 }
+function updateMainNavAlignment(){
+  var nav=document.getElementById('main-nav-inner');
+  if(!nav)return;
+  // Passt nur ins Bild, wenn wirklich alles ohne Scrollen sichtbar ist (mit
+  // 1px Tolueranz gegen Rundungsfehler). Sobald gescrollt werden muss, MUSS
+  // es bei flex-start bleiben, sonst tritt wieder der alte Tablet-Fehler auf
+  // (erster Reiter "Überblick" rutscht unsichtbar aus dem Bild).
+  var fitsWithoutScroll = nav.scrollWidth <= nav.clientWidth + 1;
+  nav.style.justifyContent = fitsWithoutScroll ? 'center' : 'flex-start';
+}
 function initScrollFades(){
+  updateMainNavAlignment();
   // Haupt-Tab-Leiste: Event-Listener nur EINMAL anhängen, aber Status IMMER neu berechnen
   var mainNav = document.getElementById('main-nav-inner');
   if(mainNav){
@@ -14023,6 +14033,7 @@ function initScrollFades(){
 // Bei jedem Tab-Wechsel und Resize neu prüfen (neue Inhalte könnten dazugekommen sein)
 window.addEventListener('resize', function(){
   document.querySelectorAll('.sub-nav, .pk-subnav-inner, #main-nav-inner').forEach(updateScrollFade);
+  updateMainNavAlignment();
 });
 
 function fkIsTermineImminent(dk, z){
@@ -19171,7 +19182,7 @@ setTimeout(()=>{renderUeberblick();renderReflex();renderFitnessWeek();},100);
 
 // ═══ SWIPE NAVIGATION ═══
 (function(){
-  var TABS=['ueberblick','glueck','pferde','andere-tiere','kinder','persoenlich','organisation','kalender','vorlagen'];
+  var TABS=['ueberblick','glueck','pferde','andere-tiere','kinder','persoenlich','organisation','kalender','finanzen','vorlagen'];
   var sx=0,sy=0,dragging=false;
 
   function currentIdx(){
@@ -19254,8 +19265,6 @@ setTimeout(()=>{renderUeberblick();renderReflex();renderFitnessWeek();},100);
     if(m1&&m1.style.display==='block')return;
     var m2=document.getElementById('cover-longpress-menu');
     if(m2&&m2.style.display==='block')return;
-    // In einer Unteransicht (z.B. Gesundheitsakte, Reflexion, Ziele) → kein Tab-Swipe
-    if(inDetailView())return;
     // Auf einer horizontal scrollbaren Leiste (z.B. Pferde-Module-Kacheln) → kein Tab-Swipe
     if(isInsideHScroll(t))return;
 
