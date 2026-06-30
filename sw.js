@@ -24,7 +24,7 @@
 //    das verhindert das versehentliche, unangekündigte Update.
 // ════════════════════════════════════════════════════════════════
 
-const SW_VERSION = '3.24.0';
+const SW_VERSION = '3.25.0';
 const CACHE_NAME = 'fuehlkraft-kalender-' + SW_VERSION;
 
 // Die wichtigsten Dateien, die direkt beim Installieren vorbereitet werden.
@@ -92,6 +92,13 @@ self.addEventListener('fetch', function (event) {
   // sw.js selbst nie aus dem Cache bedienen, damit der Browser dessen
   // Änderungen jederzeit zuverlässig erkennen kann.
   if (req.url.indexOf('sw.js') !== -1) return;
+  // version.json wird bewusst NIE vom Service Worker abgefangen oder gecacht.
+  // Die manuelle Update-Prüfung in der App (Button "Update prüfen") muss
+  // garantiert immer direkt zum Server durchgehen, ganz ohne jede
+  // Zwischenschicht, damit sie zuverlässig erkennt, ob es eine neue
+  // Version gibt, statt versehentlich eine alte, zwischengespeicherte
+  // Antwort zu bekommen.
+  if (req.url.indexOf('version.json') !== -1) return;
 
   event.respondWith(
     caches.match(req).then(function (cached) {
