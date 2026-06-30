@@ -31,8 +31,9 @@
   <meta name="application-name" content="Fühlkraft Kalender">
   <meta name="theme-color" content="#f7f3ee">
   <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="icon.svg">
-  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
   <script>
   // Service Worker für automatische Updates
   if('serviceWorker' in navigator){
@@ -102,18 +103,19 @@ body{background:var(--grad);font-family:Arial,sans-serif;color:var(--text);min-h
 .header{background:rgba(255,255,255,0.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:8px 24px 0;display:flex;flex-direction:column;align-items:center;border-bottom:1px solid rgba(255,255,255,0.7);position:sticky;top:0;z-index:50;box-shadow:0 2px 20px rgba(180,160,220,0.12);overflow:visible;width:100%;box-sizing:border-box;}
 .header-top{display:flex;align-items:center;justify-content:center;width:100%;padding-bottom:12px;}
 .header-nav{display:flex;align-items:center;justify-content:center;width:100%;padding:8px 0 14px;box-sizing:border-box;background:rgba(255,255,255,0.4);}
-.header-nav-inner-wrap{display:flex;align-items:center;width:100%;max-width:1500px;padding:0 24px;box-sizing:border-box;position:relative;}
+.header-nav-inner-wrap{display:flex;align-items:center;width:100%;max-width:1500px;padding:0 32px;box-sizing:border-box;position:relative;}
 .header-nav::-webkit-scrollbar{display:none;}
 @media(max-width:640px){
   .header-nav{justify-content:flex-start;padding-left:4px;}
   .main-nav{justify-content:flex-start !important;}
+  .nav-scroll-arrow{display:none !important;}
 }
 .logo{font-family:Georgia,serif;font-size:20px;font-weight:600;color:var(--deep);cursor:pointer;flex-shrink:0;white-space:nowrap;}
 .logo em{font-style:italic;color:var(--muted);}
 .main-nav{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;overflow-y:visible;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:2px 0;justify-content:flex-start;min-width:0;max-width:100%;}
 .nav-scroll-arrow{display:none;position:absolute;top:0;bottom:0;width:32px;border:none;background:none;font-size:22px;font-weight:700;color:var(--deep);cursor:pointer;z-index:20;align-items:center;justify-content:center;}
-.nav-scroll-arrow-left{left:24px;background:linear-gradient(90deg,rgba(255,255,255,0.95) 40%,rgba(255,255,255,0));}
-.nav-scroll-arrow-right{right:24px;background:linear-gradient(270deg,rgba(255,255,255,0.95) 40%,rgba(255,255,255,0));}
+.nav-scroll-arrow-left{left:32px;background:linear-gradient(90deg,rgba(255,255,255,0.95) 40%,rgba(255,255,255,0));}
+.nav-scroll-arrow-right{right:32px;background:linear-gradient(270deg,rgba(255,255,255,0.95) 40%,rgba(255,255,255,0));}
 #header-nav-wrap.has-more-left .nav-scroll-arrow-left,
 #header-nav-wrap.has-more-right .nav-scroll-arrow-right{display:flex;}
 #header-nav-wrap.has-more-right #main-nav-inner{padding-right:36px;}
@@ -10827,7 +10829,7 @@ function renderSettingsDesign(container){
 }
 
 // ── BACKUP & UPDATE (nutzt bestehende Funktionen) ──
-const FK_APP_VERSION='3.24.0';
+const FK_APP_VERSION='3.25.0';
 // Wird in der Demo-Version auf true gesetzt (eigene GitHub-Seite, eigene Daten, nur zum Zeigen).
 // In der echten Version (diese Datei) bleibt es immer false.
 const IS_DEMO_BUILD=false;
