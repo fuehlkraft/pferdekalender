@@ -1,6 +1,6 @@
 {
-  "version": "3.25.0",
-  "info": "Scroll-Pfeile auf dem Handy ausgeblendet, Update-Prüfung zuverlässiger",
+  "version": "3.25.4",
+  "info": "Wischen aus Pferde-Unterseiten heraus funktioniert jetzt wieder",
   "changes": {
     "organisation": [
       "Urlaubstage komplett überarbeitet: eigener Anspruch pro Jahr, ein Log für genommene Urlaubs- und Krankheitstage mit Grund, und automatisch berechnete Brückentage-Tipps für Niedersachsen, jedes Jahr neu berechnet.",
@@ -21,6 +21,10 @@
       "Beim Termin-Eintragen gibt es jetzt eine Wiederholung direkt im Formular: Einmalig, Täglich, Wöchentlich, Monatlich, Jährlich oder Benutzerdefiniert. Bei Benutzerdefiniert stellst du das Intervall, bestimmte Wochentage und ein Ende (nie, an einem Datum, oder nach X Malen) selbst ein."
     ],
     "allgemein": [
+      "Fehler behoben: Sobald innerhalb von Pferde eine Unterseite geöffnet war (z.B. Gesundheitsakte, Training, Hufpflege, alles außer Jahresübersicht), war das Wischen zwischen den Hauptreitern komplett blockiert, in beide Richtungen. Das war eine zu vorsichtig gedachte Sicherheitsregel von früher, die jetzt entfernt wurde. Wischen funktioniert jetzt überall gleich zuverlässig, ganz egal auf welcher Pferde-Unterseite man gerade ist.",
+      "Beim Wischen (Finger-Geste) zwischen den Reitern wurde Finanzen übersprungen, der Reiter war beim Wischen also nicht erreichbar. Nebenbei auch zwei weitere Stellen gefunden und korrigiert, an denen Finanzen seit seiner Einführung übersehen wurde: das rote Update-Hinweis-Pünktchen fehlte am Finanzen-Reiter, und beim Zurückkehren zur Startseite blieb die Finanzen-Seite eventuell unsichtbar im Hintergrund hängen.",
+      "Die neue automatische Zentrierung der Reiter-Leiste griff auf manchen Tablet-Breiten nicht, weil eine alte, fest einprogrammierte Regel das mit höchster Priorität verhindert hat. Diese veraltete Regel ist jetzt entfernt, die Zentrierung funktioniert jetzt einheitlich auf allen Bildschirmgrößen.",
+      "Die Reiter-Leiste startete bisher immer links, auch auf breiten Bildschirmen, wo eigentlich alle Reiter Platz hätten. Jetzt prüft die App bei jedem Öffnen und bei jeder Fenstergröße automatisch: passt alles ohne Scrollen hinein, wird die Leiste mittig angezeigt, wie gewohnt. Reicht der Platz nicht, bleibt sie links-bündig und scrollbar (das verhindert weiterhin den alten Tablet-Fehler, bei dem \"Überblick\" aus dem Bild rutschen konnte).",
       "Die Scroll-Pfeile an der Reiter-Leiste (nur für PC mit Maus gedacht) waren auch auf dem Handy sichtbar und sahen dort fehl am Platz aus. Sind jetzt nur noch auf größeren Bildschirmen zu sehen, auf dem Handy wischt man ohnehin ganz natürlich mit dem Finger.",
       "Inhalt und Reiter-Leiste sind auf großen Bildschirmen jetzt breiter (1500px statt 1200px), dadurch passen am PC meist alle Reiter ohne Scrollen hinein. Die Scroll-Pfeile bleiben als Reserve, falls später noch mehr Reiter dazukommen oder das Fenster schmaler ist.",
       "Auf dem PC mit Maus gab es bisher keinen sichtbaren Hinweis, dass und wie man die Reiter-Leiste weiterscrollen kann, wenn nicht alle Reiter gleichzeitig hineinpassen. Jetzt erscheinen kleine klickbare Pfeile ‹ › an den Rändern, sobald es wirklich mehr zu sehen gibt, zum Antippen/Anklicken.",
